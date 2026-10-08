@@ -102,7 +102,7 @@ function Hero() {
   }, []);
 
   return (
-    <section className="hero-stage relative -mt-20 flex min-h-[min(740px,88vh)] items-end overflow-hidden pt-36 pb-12 sm:pb-16">
+    <section className="hero-stage relative -mt-20 flex min-h-[min(680px,86vh)] sm:min-h-[min(740px,88vh)] items-end overflow-hidden pt-28 sm:pt-36 pb-10 sm:pb-16">
       <div className="hero-media absolute inset-0" aria-live="off">
         {heroSlides.map((slide, index) => (
           <img key={slide.src} src={slide.src} alt={index === activeSlide ? slide.alt : ""} aria-hidden={index !== activeSlide} style={{ objectPosition: slide.position }} className={`hero-slide absolute inset-0 h-full w-full object-cover ${index === activeSlide ? "is-active" : ""}`} />
@@ -110,17 +110,17 @@ function Hero() {
       </div>
       <div className="hero-scrim absolute inset-0" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background via-background/70 to-transparent" />
-      <div className="relative mx-auto w-full max-w-[1200px] px-6">
+      <div className="relative mx-auto w-full max-w-[1200px] px-4 sm:px-6">
         <div className="animate-rise max-w-[710px]">
-          <h1 className="text-[44px] font-extrabold leading-[0.98] text-hero-foreground sm:text-6xl lg:text-[76px]">
+          <h1 className="text-[34px] min-[380px]:text-[42px] sm:text-6xl lg:text-[76px] font-extrabold leading-[1.04] sm:leading-[0.98] text-hero-foreground">
             Build. Hack.<br />Drive the <span className="text-hero-accent">Future.</span>
           </h1>
-          <p className="mt-6 max-w-[590px] text-lg text-hero-muted sm:text-xl">
+          <p className="mt-4 sm:mt-6 max-w-[590px] text-base sm:text-lg lg:text-xl text-hero-muted">
             Discover hackathons, competitions and technology events built for ambitious developers, creators and innovators.
           </p>
-          <div className="mt-9 flex flex-wrap gap-3">
-            <PrimaryBtn>Explore Hackathons <ArrowRight className="size-4" /></PrimaryBtn>
-            <GhostBtn href="/contact" className="hero-ghost">Host an Event</GhostBtn>
+          <div className="mt-7 sm:mt-9 flex flex-col min-[480px]:flex-row gap-3 w-full sm:w-auto">
+            <PrimaryBtn className="w-full min-[480px]:w-auto justify-center">Explore Hackathons <ArrowRight className="size-4" /></PrimaryBtn>
+            <GhostBtn href="/contact" className="hero-ghost w-full min-[480px]:w-auto justify-center">Host an Event</GhostBtn>
           </div>
         </div>
       </div>
@@ -210,40 +210,40 @@ function Stats() {
   ];
 
   return (
-    <section className="relative z-20 mx-auto max-w-[1280px] px-4 pt-4 pb-6 sm:px-6 sm:pt-6 sm:pb-8">
+    <section className="relative z-20 mx-auto max-w-[1280px] px-3 sm:px-6 pt-2 sm:pt-6 pb-6 sm:pb-8">
       <Reveal>
         <div className="stats-laser-border">
-          <div className="relative rounded-[calc(1.5rem-1.5px)] bg-[#070d08]/95 p-5 sm:p-7 backdrop-blur-2xl">
+          <div className="relative rounded-[calc(1.5rem-1.5px)] bg-[#070d08]/95 p-4 sm:p-7 backdrop-blur-2xl">
             {/* Ambient inner neon glow */}
             <div className="pointer-events-none absolute -right-16 -top-16 size-60 rounded-full bg-neon/10 blur-3xl" />
             <div className="pointer-events-none absolute -bottom-16 -left-16 size-60 rounded-full bg-lime/10 blur-3xl" />
 
             {/* High-Tech Telemetry Header */}
-            <div className="relative flex flex-wrap items-center justify-between gap-3 border-b border-border/60 pb-4">
+            <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3 border-b border-border/60 pb-3.5 sm:pb-4">
               <div className="flex items-center gap-2.5">
                 <span className="relative flex size-2.5">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-neon opacity-80" />
                   <span className="relative inline-flex size-2.5 rounded-full bg-neon" />
                 </span>
-                <span className="text-xs font-black uppercase tracking-[0.2em] text-neon">
+                <span className="text-[11px] sm:text-xs font-black uppercase tracking-[0.16em] sm:tracking-[0.2em] text-neon">
                   Vybe Driven Impact Metrics
                 </span>
               </div>
-              <div className="flex items-center gap-3 text-[11px] font-mono tracking-wider text-muted-foreground">
+              <div className="flex items-center gap-2 sm:gap-3 text-[10px] sm:text-[11px] font-mono tracking-wider text-muted-foreground">
                 <span className="inline-block size-1.5 rounded-full bg-neon/60" />
                 <span>ECOSYSTEM STATS</span>
-                <span className="hidden sm:inline">· ALL-INDIA NETWORK</span>
+                <span>· ALL-INDIA NETWORK</span>
               </div>
             </div>
 
             {/* 4 Futuristic Stat Pods */}
-            <div className="relative mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="relative mt-4 sm:mt-5 grid grid-cols-1 gap-3 sm:gap-4 min-[520px]:grid-cols-2 lg:grid-cols-4">
               {statsList.map((stat) => {
                 const Icon = stat.icon;
                 return (
                   <div
                     key={stat.title}
-                    className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-border/80 bg-surface/60 p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:border-neon/50 hover:bg-surface/90 hover:shadow-[0_0_28px_rgba(57,255,20,0.18)]"
+                    className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-border/80 bg-surface/60 p-4 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:border-neon/50 hover:bg-surface/90 hover:shadow-[0_0_28px_rgba(57,255,20,0.18)]"
                   >
                     {/* Hover glow orb */}
                     <div className="pointer-events-none absolute -right-8 -top-8 size-28 rounded-full bg-neon/0 blur-2xl transition-all duration-300 group-hover:bg-neon/15" />
@@ -251,7 +251,7 @@ function Stats() {
                     <div>
                       {/* Card top row: Icon + Micro-tag */}
                       <div className="flex items-center justify-between gap-3">
-                        <div className="grid size-12 shrink-0 place-items-center rounded-xl border border-neon/30 bg-neon/10 text-neon transition-all duration-300 group-hover:scale-110 group-hover:bg-neon group-hover:text-black group-hover:shadow-[0_0_20px_rgba(57,255,20,0.45)]">
+                        <div className="grid size-11 sm:size-12 shrink-0 place-items-center rounded-xl border border-neon/30 bg-neon/10 text-neon transition-all duration-300 group-hover:scale-110 group-hover:bg-neon group-hover:text-black group-hover:shadow-[0_0_20px_rgba(57,255,20,0.45)]">
                           <Icon className="size-5 sm:size-6" />
                         </div>
                         <span className="rounded-full border border-neon/20 bg-neon/5 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-neon">
@@ -260,15 +260,15 @@ function Stats() {
                       </div>
 
                       {/* Number value with animated counter */}
-                      <div className="mt-5">
-                        <div className="text-3xl font-black tracking-tight text-white sm:text-4xl transition-colors duration-200 group-hover:text-neon">
+                      <div className="mt-4 sm:mt-5">
+                        <div className="text-3xl sm:text-4xl font-black tracking-tight text-white transition-colors duration-200 group-hover:text-neon">
                           <AnimatedCounter
                             end={stat.num}
                             prefix={stat.prefix}
                             suffix={stat.suffix}
                           />
                         </div>
-                        <p className="mt-1 text-base font-bold text-foreground">
+                        <p className="mt-1 text-sm sm:text-base font-bold text-foreground">
                           {stat.title}
                         </p>
                         <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
@@ -336,63 +336,63 @@ function Events() {
     .sort((a, b) => Number(a.status === "Opening soon") - Number(b.status === "Opening soon"))
     .slice(0, 9);
   return (
-    <section id="events" className="mx-auto max-w-[1200px] scroll-mt-28 px-6 py-12">
+    <section id="events" className="mx-auto max-w-[1200px] scroll-mt-28 px-4 sm:px-6 py-10 sm:py-14">
       <Reveal>
         <Eyebrow>DISCOVER</Eyebrow>
-        <div className="mt-3 flex flex-col justify-between gap-6 md:flex-row md:items-end">
-          <h2 className="text-4xl font-extrabold leading-[1.02] tracking-tight sm:text-5xl">Find Your <span className="text-gradient">Next<br />Hackathon.</span></h2>
-          <p className="max-w-md text-muted-foreground">Explore challenges, competitions and events where ambitious builders turn ideas into reality.</p>
+        <div className="mt-3 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+          <h2 className="text-3xl font-extrabold leading-[1.04] tracking-tight sm:text-5xl">Find Your <span className="text-gradient">Next<br />Hackathon.</span></h2>
+          <p className="max-w-md text-sm sm:text-base text-muted-foreground">Explore challenges, competitions and events where ambitious builders turn ideas into reality.</p>
         </div>
-        <div className="mt-8 flex flex-wrap gap-2">
+        <div className="mt-6 sm:mt-8 -mx-4 px-4 flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none sm:mx-0 sm:px-0 sm:flex-wrap sm:pb-0">
           {filters.map((x) => (
             <button key={x} onClick={() => setF(x)}
-              className={`rounded-full px-4 py-2 text-sm font-medium transition ${f === x ? "bg-neon text-primary-foreground" : "border border-border bg-surface text-muted-foreground hover:text-foreground"}`}>
+              className={`shrink-0 rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition ${f === x ? "bg-neon text-primary-foreground shadow-glow-soft" : "border border-border bg-surface text-muted-foreground hover:text-foreground"}`}>
               {x}
             </button>
           ))}
         </div>
       </Reveal>
 
-      <Reveal className="mt-10">
-        <article className="group grid overflow-hidden rounded-3xl border border-neon/25 bg-surface shadow-glow-soft md:grid-cols-[1.2fr_1fr]">
-          <div className="relative overflow-hidden">
-            <img src={featured.image} alt={featured.title} loading="lazy" width={1280} height={768} className="h-full min-h-64 w-full bg-background object-contain transition duration-700 group-hover:scale-[1.02]" />
+      <Reveal className="mt-8 sm:mt-10">
+        <article className="group grid overflow-hidden rounded-2xl sm:rounded-3xl border border-neon/25 bg-surface shadow-glow-soft md:grid-cols-[1.2fr_1fr]">
+          <div className="relative overflow-hidden min-h-[220px] sm:min-h-[280px] md:min-h-full">
+            <img src={featured.image} alt={featured.title} loading="lazy" width={1280} height={768} className="h-full w-full bg-background object-contain transition duration-700 group-hover:scale-[1.02]" />
             <div className="absolute inset-0 bg-gradient-to-r from-transparent to-surface/80" />
-            <span className="absolute left-5 top-5 rounded-full bg-neon px-3 py-1 text-xs font-bold text-primary-foreground">FEATURED</span>
+            <span className="absolute left-4 top-4 sm:left-5 sm:top-5 rounded-full bg-neon px-3 py-1 text-xs font-bold text-primary-foreground">FEATURED</span>
           </div>
-          <div className="flex flex-col justify-center p-8 sm:p-10">
+          <div className="flex flex-col justify-center p-5 sm:p-8 md:p-10">
             <p className="text-xs font-semibold tracking-[0.18em] text-neon">{featured.tag.toUpperCase()}</p>
-            <h3 className="mt-3 text-4xl font-extrabold tracking-tight">{featured.title}</h3>
-            <p className="mt-3 text-muted-foreground">{featured.description}</p>
-            <div className="mt-6 space-y-2.5 text-sm">
+            <h3 className="mt-2.5 sm:mt-3 text-2xl min-[400px]:text-3xl sm:text-4xl font-extrabold tracking-tight">{featured.title}</h3>
+            <p className="mt-2.5 sm:mt-3 text-sm text-muted-foreground">{featured.description}</p>
+            <div className="mt-5 sm:mt-6 space-y-2 text-xs sm:text-sm">
               <p className="flex items-center gap-2"><Globe className="size-4 text-neon" /> {featured.format}</p>
               <p className="flex items-center gap-2"><Calendar className="size-4 text-neon" /> {featured.date}</p>
               <p className="flex items-center gap-2"><Trophy className="size-4 text-neon" /> {featured.prize} Prize Pool</p>
             </div>
-            <Link to="/opportunities/$slug" params={{ slug: featured.slug }} className="mt-8 inline-flex self-start items-center justify-center gap-2 rounded-full bg-gradient-brand px-6 py-3.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110 hover:shadow-glow">Explore Event <ArrowRight className="size-4" /></Link>
+            <Link to="/opportunities/$slug" params={{ slug: featured.slug }} className="mt-6 sm:mt-8 inline-flex w-full sm:w-auto self-stretch sm:self-start items-center justify-center gap-2 rounded-full bg-gradient-brand px-6 py-3.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110 hover:shadow-glow">Explore Event <ArrowRight className="size-4" /></Link>
           </div>
         </article>
       </Reveal>
 
-      <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-6 sm:mt-8 grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {list.map((e, i) => (
           <Reveal key={e.title} delay={i * 60}>
             <Link to="/opportunities/$slug" params={{ slug: e.slug }} aria-label={`View ${e.title} details`} className="group block h-full rounded-[22px] outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"><article className="flex h-full flex-col overflow-hidden rounded-[22px] border border-border bg-surface transition duration-300 group-hover:-translate-y-1.5 group-hover:border-neon/40 group-hover:shadow-glow">
               <div className="relative aspect-[16/10] overflow-hidden">
                 <img src={e.image} alt={e.title} loading="lazy" width={1024} height={640} style={e.imagePosition ? { objectPosition: e.imagePosition } : undefined} className={`h-full w-full bg-surface transition duration-700 group-hover:scale-[1.02] ${e.imageFit === "contain" ? "object-contain" : "object-cover"}`} />
                 <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent" />
-                <span className="glass absolute left-4 top-4 rounded-full border border-border px-3 py-1 text-[11px] font-semibold">{e.tag}</span>
+                <span className="glass absolute left-3 top-3 sm:left-4 sm:top-4 rounded-full border border-border px-2.5 sm:px-3 py-1 text-[10px] sm:text-[11px] font-semibold">{e.tag}</span>
               </div>
-              <div className="flex flex-1 flex-col p-6">
-                <h3 className="text-xl font-bold">{e.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{e.description}</p>
-                <div className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-xs text-muted-foreground">
+              <div className="flex flex-1 flex-col p-4 sm:p-6">
+                <h3 className="text-lg sm:text-xl font-bold">{e.title}</h3>
+                <p className="mt-2 text-xs sm:text-sm text-muted-foreground">{e.description}</p>
+                <div className="mt-4 sm:mt-5 flex flex-wrap gap-x-4 gap-y-2 text-xs text-muted-foreground">
                   <span className="flex items-center gap-1.5"><Calendar className="size-3.5 text-neon" />{e.date}</span>
                   <span className="flex items-center gap-1.5"><MapPin className="size-3.5 text-neon" />{e.location}</span>
                 </div>
-                <div className="mt-6 flex items-center justify-between border-t border-border pt-5">
-                  <div><p className="text-[11px] text-muted-foreground">{e.prize ? "Prize Pool" : "Status"}</p><p className="font-bold text-lime">{e.prize ?? e.status}</p></div>
-                   <span className="flex items-center gap-1 text-sm font-semibold transition group-hover:text-neon">View Event <ArrowRight className="size-4" /></span>
+                <div className="mt-5 sm:mt-6 flex items-center justify-between border-t border-border pt-4 sm:pt-5">
+                  <div><p className="text-[10px] sm:text-[11px] text-muted-foreground">{e.prize ? "Prize Pool" : "Status"}</p><p className="text-sm sm:text-base font-bold text-lime">{e.prize ?? e.status}</p></div>
+                   <span className="flex items-center gap-1 text-xs sm:text-sm font-semibold transition group-hover:text-neon">View Event <ArrowRight className="size-4" /></span>
                 </div>
               </div>
              </article></Link>
@@ -413,18 +413,18 @@ function Features() {
     { i: Award, t: "Get Recognized", d: "Earn prizes, badges and a profile that recruiters actually look at." },
   ];
   return (
-    <section className="mx-auto max-w-[1200px] px-6 py-14">
+    <section className="mx-auto max-w-[1200px] px-4 sm:px-6 py-10 sm:py-14">
       <Reveal>
         <Eyebrow>BUILT FOR BUILDERS</Eyebrow>
-        <h2 className="mt-3 text-4xl font-extrabold leading-[1.02] tracking-tight sm:text-5xl">Everything You Need<br />to <span className="text-gradient">Build What's Next.</span></h2>
+        <h2 className="mt-3 text-3xl font-extrabold leading-[1.04] tracking-tight sm:text-5xl">Everything You Need<br />to <span className="text-gradient">Build What's Next.</span></h2>
       </Reveal>
-      <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-8 sm:mt-12 grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {f.map(({ i: I, t, d }, idx) => (
           <Reveal key={t} delay={idx * 50}>
-            <div className="group h-full rounded-2xl border border-border bg-surface p-7 transition hover:border-neon/30">
+            <div className="group h-full rounded-2xl border border-border bg-surface p-5 sm:p-7 transition hover:border-neon/30">
               <span className="grid size-11 place-items-center rounded-xl border border-border bg-surface-2 text-neon transition group-hover:bg-neon group-hover:text-primary-foreground"><I className="size-5" /></span>
-              <h3 className="mt-5 text-lg font-bold">{t}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{d}</p>
+              <h3 className="mt-4 sm:mt-5 text-base sm:text-lg font-bold">{t}</h3>
+              <p className="mt-2 text-xs sm:text-sm text-muted-foreground">{d}</p>
             </div>
           </Reveal>
         ))}
@@ -441,21 +441,21 @@ function Why() {
     { n: "04", i: Code2, t: "Built for Developers", d: "Clean workflows, GitHub-first submissions and zero unnecessary friction." },
   ];
   return (
-    <section className="relative py-14">
+    <section className="relative py-10 sm:py-14">
       <div className="pointer-events-none absolute inset-x-0 top-1/2 mx-auto h-80 max-w-3xl -translate-y-1/2 rounded-full bg-neon/8 blur-[120px]" />
-      <div className="relative mx-auto max-w-[1200px] px-6">
+      <div className="relative mx-auto max-w-[1200px] px-4 sm:px-6">
         <Reveal className="text-center">
-          <h2 className="text-4xl font-extrabold tracking-tight sm:text-5xl">Why <span className="text-gradient">Vybe Driven?</span></h2>
-          <p className="mx-auto mt-4 max-w-xl text-muted-foreground">More than events. It's an ecosystem built to turn ideas into impact.</p>
+          <h2 className="text-3xl font-extrabold tracking-tight sm:text-5xl">Why <span className="text-gradient">Vybe Driven?</span></h2>
+          <p className="mx-auto mt-3 sm:mt-4 max-w-xl text-sm sm:text-base text-muted-foreground">More than events. It's an ecosystem built to turn ideas into impact.</p>
         </Reveal>
-        <div className="mt-12 grid gap-5 md:grid-cols-2">
+        <div className="mt-8 sm:mt-12 grid gap-4 sm:gap-5 md:grid-cols-2">
           {w.map(({ n, i: I, t, d }, idx) => (
             <Reveal key={n} delay={idx * 70}>
-              <div className="relative h-full overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-surface-2 to-background p-8 sm:p-10">
-                <span className="absolute -right-2 -top-6 text-[140px] font-black leading-none text-neon/10">{n}</span>
+              <div className="relative h-full overflow-hidden rounded-2xl sm:rounded-3xl border border-border bg-gradient-to-br from-surface-2 to-background p-6 sm:p-8 md:p-10">
+                <span className="absolute -right-2 -top-6 text-[84px] sm:text-[140px] font-black leading-none text-neon/10 select-none pointer-events-none">{n}</span>
                 <I className="relative size-6 text-neon" />
-                <h3 className="relative mt-8 text-2xl font-bold">{t}</h3>
-                <p className="relative mt-3 max-w-sm text-muted-foreground">{d}</p>
+                <h3 className="relative mt-6 sm:mt-8 text-xl sm:text-2xl font-bold">{t}</h3>
+                <p className="relative mt-2 sm:mt-3 max-w-sm text-sm sm:text-base text-muted-foreground">{d}</p>
               </div>
             </Reveal>
           ))}
@@ -467,28 +467,28 @@ function Why() {
 
 function Community() {
   const g = [
-    { img: engagedCrowd, l: "Community Sessions", c: "md:col-span-2 md:row-span-2", position: "center 45%" },
-    { img: youngTechSeminar, l: "Tech Talks & Seminars", c: "md:col-span-2", position: "center 48%" },
-    { img: sprkothonCelebration, l: "Hackathon Celebrations", c: "md:col-span-2", position: "center 40%" },
-    { img: computerLabGroup, l: "Hands-on Sprints", c: "md:col-span-2", position: "center 46%" },
-    { img: growTogetherHall, l: "Grow Together · Hub Meetups", c: "md:col-span-2", position: "center 45%" },
-    { img: repoForgeCelebration, l: "Together We Build · Vybe Driven", c: "md:col-span-4", position: "center 42%" },
+    { img: engagedCrowd, l: "Community Sessions", c: "sm:col-span-2 md:col-span-2 md:row-span-2", position: "center 45%" },
+    { img: youngTechSeminar, l: "Tech Talks & Seminars", c: "sm:col-span-1 md:col-span-2", position: "center 48%" },
+    { img: sprkothonCelebration, l: "Hackathon Celebrations", c: "sm:col-span-1 md:col-span-2", position: "center 40%" },
+    { img: computerLabGroup, l: "Hands-on Sprints", c: "sm:col-span-1 md:col-span-2", position: "center 46%" },
+    { img: growTogetherHall, l: "Grow Together · Hub Meetups", c: "sm:col-span-1 md:col-span-2", position: "center 45%" },
+    { img: repoForgeCelebration, l: "Together We Build · Vybe Driven", c: "sm:col-span-2 md:col-span-4", position: "center 42%" },
   ];
   return (
-    <section id="community" className="mx-auto max-w-[1200px] scroll-mt-28 px-6 py-14">
-      <Reveal className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+    <section id="community" className="mx-auto max-w-[1200px] scroll-mt-28 px-4 sm:px-6 py-10 sm:py-14">
+      <Reveal className="flex flex-col justify-between gap-3 sm:gap-4 md:flex-row md:items-end">
         <div>
           <Eyebrow>COMMUNITY</Eyebrow>
-          <h2 className="mt-3 text-4xl font-extrabold tracking-tight sm:text-5xl">Built by the <span className="text-gradient">Community</span></h2>
+          <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-5xl">Built by the <span className="text-gradient">Community</span></h2>
         </div>
-        <p className="max-w-sm text-muted-foreground">Meet the people who build, compete and create together.</p>
+        <p className="max-w-sm text-sm sm:text-base text-muted-foreground">Meet the people who build, compete and create together.</p>
       </Reveal>
-      <div className="mt-10 grid auto-rows-[220px] gap-4 md:grid-cols-4">
+      <div className="mt-8 sm:mt-10 grid auto-rows-[170px] sm:auto-rows-[220px] gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
         {g.map((x) => (
           <div key={x.l} className={`group relative overflow-hidden rounded-2xl ${x.c}`}>
             <img src={x.img} alt={x.l} loading="lazy" style={{ objectPosition: x.position }} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
             <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent transition group-hover:bg-neon/15" />
-            <span className="absolute bottom-4 left-4 flex items-center gap-1.5 text-sm font-semibold"><Sparkles className="size-3.5 text-neon" />{x.l}</span>
+            <span className="absolute bottom-3.5 left-3.5 sm:bottom-4 sm:left-4 flex items-center gap-1.5 text-xs sm:text-sm font-semibold"><Sparkles className="size-3.5 text-neon" />{x.l}</span>
           </div>
         ))}
       </div>
@@ -498,17 +498,17 @@ function Community() {
 
 function CTA() {
   return (
-    <section className="mx-auto max-w-[1200px] px-6 py-8">
+    <section className="mx-auto max-w-[1200px] px-4 sm:px-6 py-6 sm:py-8">
       <Reveal>
-        <div className="relative overflow-hidden rounded-[32px] border border-neon/20 bg-surface-3 px-8 py-14 text-center sm:px-16">
+        <div className="relative overflow-hidden rounded-2xl sm:rounded-[32px] border border-neon/20 bg-surface-3 px-5 py-10 sm:px-16 sm:py-14 text-center">
           <div className="bg-grid pointer-events-none absolute inset-0" />
           <div className="pointer-events-none absolute -bottom-40 left-1/2 size-[600px] -translate-x-1/2 rounded-full bg-neon/20 blur-[120px]" />
           <div className="relative">
-            <h2 className="text-4xl font-extrabold leading-[1.02] tracking-tight sm:text-6xl">Ready to<br /><span className="text-gradient">Drive What's Next?</span></h2>
-            <p className="mx-auto mt-5 max-w-lg text-muted-foreground">Find your next challenge, build with great people and turn your ideas into something real.</p>
-            <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
-            <PrimaryBtn href="/hackathons">Explore Hackathons <ArrowRight className="size-4" /></PrimaryBtn>
-              <GhostBtn href="/auth?mode=signin&next=%2Fprofile">Join Vybe Driven</GhostBtn>
+            <h2 className="text-3xl font-extrabold leading-[1.04] tracking-tight sm:text-5xl lg:text-6xl">Ready to<br /><span className="text-gradient">Drive What's Next?</span></h2>
+            <p className="mx-auto mt-4 sm:mt-5 max-w-lg text-sm sm:text-base text-muted-foreground">Find your next challenge, build with great people and turn your ideas into something real.</p>
+            <div className="mt-7 sm:mt-9 flex flex-col justify-center gap-3 sm:flex-row">
+              <PrimaryBtn href="/hackathons" className="w-full sm:w-auto justify-center">Explore Hackathons <ArrowRight className="size-4" /></PrimaryBtn>
+              <GhostBtn href="/auth?mode=signin&next=%2Fprofile" className="w-full sm:w-auto justify-center">Join Vybe Driven</GhostBtn>
             </div>
           </div>
         </div>

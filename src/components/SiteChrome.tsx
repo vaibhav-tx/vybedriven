@@ -67,26 +67,66 @@ export function Navbar() {
   const { user, loading } = useAuth();
   const location = useLocation();
   return (
-    <header className="sticky top-4 z-50 px-4">
-      <nav className="relative mx-auto flex h-[72px] max-w-[1120px] items-center justify-between rounded-[24px] border border-border px-4 backdrop-blur-xl transition-colors" style={{ background: "var(--nav-bg)", boxShadow: "var(--nav-shadow)" }}>
+    <header className="sticky top-2 sm:top-4 z-50 px-2.5 sm:px-4">
+      <nav className="relative mx-auto flex h-[64px] sm:h-[72px] max-w-[1120px] items-center justify-between rounded-2xl sm:rounded-[24px] border border-border px-3.5 sm:px-4 backdrop-blur-xl transition-colors" style={{ background: "var(--nav-bg)", boxShadow: "var(--nav-shadow)" }}>
         <ul className="hidden items-center gap-2 lg:flex">
           {links.map((item) => {
             const active = item.to === "/" ? location.pathname === "/" : location.pathname.startsWith(item.to);
             return <li key={item.label} className="group relative"><Link to={item.to} aria-label={item.label} title={item.label} className={`nav-icon grid size-11 place-items-center rounded-full border-2 transition ${active ? "is-active border-lime shadow-glow" : "border-transparent hover:border-border hover:bg-surface"}`}><img src={item.image} alt="" className="nav-art size-6 object-contain" /></Link><span className="pointer-events-none absolute left-1/2 top-[calc(100%+10px)] -translate-x-1/2 rounded-md bg-foreground px-2 py-1 text-xs text-background opacity-0 shadow-sm transition group-hover:opacity-100 group-focus-within:opacity-100">{item.label}</span></li>;
           })}
         </ul>
-        <div className="lg:absolute lg:left-1/2 lg:-translate-x-1/2"><Logo className="h-11" /></div>
+        <div className="lg:absolute lg:left-1/2 lg:-translate-x-1/2"><Logo className="h-8.5 sm:h-11" /></div>
         <div className="hidden items-center gap-2 lg:flex">
           <Link to="/contact" className="rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition hover:text-neon">Contact Us</Link>
           {!loading && (user ? <ProfileMenu /> : <Button asChild className="rounded-full bg-gradient-brand text-primary-foreground hover:brightness-105"><Link to="/auth" search={{ mode: "signin", next: "/" }}>Sign In</Link></Button>)}
         </div>
-        <div className="flex items-center gap-2 lg:hidden"><Button variant="ghost" size="icon" className="rounded-full" onClick={() => setOpen((value) => !value)} aria-label="Toggle menu">{open ? <X /> : <Menu />}</Button></div>
+        <div className="flex items-center gap-2 lg:hidden">
+          <Button variant="ghost" size="icon" className="size-10 rounded-full border border-border/60 bg-surface/40 hover:bg-surface hover:text-neon text-foreground" onClick={() => setOpen((value) => !value)} aria-label="Toggle menu">{open ? <X className="size-5" /> : <Menu className="size-5" />}</Button>
+        </div>
       </nav>
-      {open && <div className="mx-auto mt-2 max-w-[1120px] rounded-2xl border border-border p-3 backdrop-blur-xl lg:hidden" style={{ background: "var(--nav-bg)", boxShadow: "var(--nav-shadow)" }}>
-        {links.map((item) => <Link key={item.label} to={item.to} onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground hover:bg-surface"><img src={item.image} alt="" className="nav-art size-6 object-contain" />{item.label}</Link>)}
-        <Link to="/contact" onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground hover:bg-surface"><Phone className="size-5 text-neon" />Contact Us</Link>
-        <div className="mt-3 border-t border-border pt-3">{!loading && (user ? <Link to="/profile" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold"><User className="size-4" />Profile</Link> : <Button asChild className="w-full rounded-full bg-gradient-brand text-primary-foreground"><Link to="/auth" search={{ mode: "signin", next: "/" }}>Sign In</Link></Button>)}</div>
-      </div>}
+      {open && (
+        <div className="mx-auto mt-2 max-w-[1120px] rounded-2xl border border-neon/25 bg-[#060b07]/95 p-3.5 shadow-2xl backdrop-blur-2xl lg:hidden animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="space-y-1">
+            {links.map((item) => {
+              const active = item.to === "/" ? location.pathname === "/" : location.pathname.startsWith(item.to);
+              return (
+                <Link
+                  key={item.label}
+                  to={item.to}
+                  onClick={() => setOpen(false)}
+                  className={`flex items-center gap-3 rounded-xl px-3.5 py-3 text-sm font-semibold transition ${
+                    active ? "bg-neon/15 text-neon border border-neon/30" : "text-foreground hover:bg-surface/80 hover:text-neon"
+                  }`}
+                >
+                  <img src={item.image} alt="" className="nav-art size-5.5 object-contain" />
+                  {item.label}
+                </Link>
+              );
+            })}
+            <Link
+              to="/contact"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-3 rounded-xl px-3.5 py-3 text-sm font-semibold text-foreground hover:bg-surface/80 hover:text-neon transition"
+            >
+              <Phone className="size-5 text-neon" />
+              Contact Us
+            </Link>
+          </div>
+          <div className="mt-3 border-t border-border/80 pt-3">
+            {!loading && (user ? (
+              <div className="flex flex-col gap-2">
+                <Link to="/profile" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-foreground hover:bg-surface">
+                  <User className="size-4 text-neon" />Profile
+                </Link>
+              </div>
+            ) : (
+              <Button asChild className="w-full h-11 rounded-full bg-gradient-brand text-primary-foreground font-bold shadow-glow-soft">
+                <Link to="/auth" search={{ mode: "signin", next: "/" }}>Sign In to Vybe Driven</Link>
+              </Button>
+            ))}
+          </div>
+        </div>
+      )}
     </header>
   );
 }
@@ -230,9 +270,9 @@ export function Footer() {
         <div className="absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-border to-transparent" />
         <div className="footer-glow-beam absolute top-0 h-[1.5px] w-64 bg-gradient-to-r from-transparent via-neon to-transparent" />
 
-        <div className="relative mx-auto max-w-[1400px] px-4 text-center">
-          <div className="group relative inline-block cursor-default">
-            <h2 className="footer-big-brand text-[clamp(2.75rem,13.5vw,12.5rem)] font-black tracking-[-0.04em] leading-none transition-all duration-700">
+        <div className="relative mx-auto max-w-[1400px] px-3 sm:px-4 text-center">
+          <div className="group relative inline-block cursor-default max-w-full overflow-hidden">
+            <h2 className="footer-big-brand text-[clamp(1.9rem,11.2vw,12.5rem)] font-black tracking-[-0.03em] sm:tracking-[-0.04em] leading-none transition-all duration-700 select-none">
               VYBE DRIVEN
             </h2>
             {/* Ambient ground reflection */}
