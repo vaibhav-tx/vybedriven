@@ -1,0 +1,518 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState, useRef } from "react";
+import {
+  ArrowRight, Users, Calendar, Trophy, Radio, MapPin, Search, UsersRound, Rocket, LineChart,
+  Swords, Award, Zap, Globe, Activity, Code2, Sparkles,
+} from "lucide-react";
+import { Navbar, Footer } from "@/components/SiteChrome";
+import { Reveal, Eyebrow, PrimaryBtn, GhostBtn } from "@/components/ui-hd";
+
+import engagedCrowd from "@/assets/community-real/Engaged Crowd at a Tech Meetup.webp";
+import computerLabGroup from "@/assets/community-real/Group Photo in a Modern Computer Lab.webp";
+import repoForgeCelebration from "@/assets/community-real/Repo Forge Celebration Group Photo.webp";
+import sprkothonCelebration from "@/assets/community-real/SPRK-OTHON Certificate Celebration.webp";
+import youngTechSeminar from "@/assets/community-real/Young Tech Seminar Audience.webp";
+import growTogetherHall from "@/assets/community-real/Grow Together Tech Hall.webp";
+import { opportunities, type Opportunity } from "@/data/opportunities";
+
+export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Vybe Driven — Discover Hackathons & Tech Events" },
+      { name: "description", content: "Discover hackathons, competitions and technology events built for ambitious developers, creators and innovators." },
+      { property: "og:title", content: "Vybe Driven — Build. Hack. Drive the Future." },
+      { property: "og:description", content: "Find your next hackathon, team up and build what's next on Vybe Driven." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: Index,
+});
+
+type HomeFilter = "All" | "Hackathons" | "Competitions" | "Tech Events";
+const filters: HomeFilter[] = ["All", "Hackathons", "Competitions", "Tech Events"];
+
+function matchesHomeFilter(item: Opportunity, filter: HomeFilter) {
+  if (filter === "All") return true;
+  if (filter === "Hackathons") return item.type === "Hackathon";
+  if (filter === "Competitions") return item.type === "Competition";
+  return item.type === "Meetup" || item.type === "Conference" || item.type === "Networking";
+}
+
+const heroSlides = [
+  { src: growTogetherHall, alt: "Grow Together — Vybe Driven community meetup at tech hub", position: "center 45%" },
+  { src: repoForgeCelebration, alt: "Vybe Driven community members at Repo Forge celebration", position: "center 42%" },
+  { src: computerLabGroup, alt: "Students and builders coding in modern computer lab", position: "center 45%" },
+  { src: sprkothonCelebration, alt: "SPRK-OTHON hackathon certificate ceremony", position: "center 40%" },
+  { src: engagedCrowd, alt: "Engaged crowd at a Vybe Driven tech meetup", position: "center 45%" },
+  { src: youngTechSeminar, alt: "Young developers and innovators attending tech seminar", position: "center 42%" },
+];
+
+const partners = [
+  { name: "Pizza Hut", logo: "/partners/pizza-hut.webp", badge: false },
+  { name: "GitHub", logo: "/partners/github.webp", badge: false },
+  { name: "Google Developers", logo: "/partners/google-developers.webp", badge: true },
+  { name: "n8n", logo: "/partners/n8n.webp", badge: false },
+  { name: "Cisco", logo: "/partners/cisco.webp", badge: false },
+  { name: "infraon", logo: "/partners/infraon.webp", badge: false },
+  { name: "IET", logo: "/partners/iet.webp", badge: true },
+  { name: "DevSphere India", logo: "/partners/devsphere-india.webp", badge: false },
+  { name: "CSI SIES GST", logo: "/partners/csi-siesgst.webp", badge: false },
+  { name: "NIIT Foundation", logo: "/partners/niit-foundation.webp", badge: true },
+  { name: "Thakur Shyamnarayan Engineering College", logo: "/partners/thakur-tsec.webp", badge: true },
+  { name: "Dwarkadas J. Sanghvi College of Engineering", logo: "/partners/djsce.webp", badge: true },
+  { name: "IcyPluto", logo: "/partners/icypluto.webp", badge: true },
+  { name: "Fr. C. Rodrigues Institute of Technology", logo: "/partners/fcrit.webp", badge: true },
+  { name: "Thadomal Shahani Engineering College", logo: "/partners/thadomal-tsec.webp", badge: true },
+  { name: "Institution's Innovation Council", logo: "/partners/iic.webp", badge: true },
+  { name: "Xavier Institute of Engineering", logo: "/partners/xie.webp", badge: true },
+  { name: "IIC DJSCE", logo: "/partners/iic-djsce.webp", badge: true },
+  { name: "ACM TSEC", logo: "/partners/acm-tsec.webp", badge: true },
+  { name: "IEEE SLRTCE", logo: "/partners/ieee-slrtce.webp", badge: true },
+];
+
+function Index() {
+  return (
+    <div className="min-h-screen">
+      <Navbar />
+      <main>
+        <Hero />
+        <Stats />
+        <Partners />
+        <Events />
+        <Features />
+        <Why />
+        <Community />
+        <CTA />
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
+function Hero() {
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const timer = window.setInterval(() => {
+      setActiveSlide((current) => (current + 1) % heroSlides.length);
+    }, 5000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  return (
+    <section className="hero-stage relative -mt-20 flex min-h-[min(740px,88vh)] items-end overflow-hidden pt-36 pb-12 sm:pb-16">
+      <div className="hero-media absolute inset-0" aria-live="off">
+        {heroSlides.map((slide, index) => (
+          <img key={slide.src} src={slide.src} alt={index === activeSlide ? slide.alt : ""} aria-hidden={index !== activeSlide} style={{ objectPosition: slide.position }} className={`hero-slide absolute inset-0 h-full w-full object-cover ${index === activeSlide ? "is-active" : ""}`} />
+        ))}
+      </div>
+      <div className="hero-scrim absolute inset-0" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background via-background/70 to-transparent" />
+      <div className="relative mx-auto w-full max-w-[1200px] px-6">
+        <div className="animate-rise max-w-[710px]">
+          <h1 className="text-[44px] font-extrabold leading-[0.98] text-hero-foreground sm:text-6xl lg:text-[76px]">
+            Build. Hack.<br />Drive the <span className="text-hero-accent">Future.</span>
+          </h1>
+          <p className="mt-6 max-w-[590px] text-lg text-hero-muted sm:text-xl">
+            Discover hackathons, competitions and technology events built for ambitious developers, creators and innovators.
+          </p>
+          <div className="mt-9 flex flex-wrap gap-3">
+            <PrimaryBtn>Explore Hackathons <ArrowRight className="size-4" /></PrimaryBtn>
+            <GhostBtn href="/contact" className="hero-ghost">Host an Event</GhostBtn>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AnimatedCounter({ end, prefix = "", suffix = "", duration = 1800 }: { end: number; prefix?: string; suffix?: string; duration?: number }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const started = useRef(false);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry?.isIntersecting && !started.current) {
+          started.current = true;
+          const startTime = performance.now();
+          const step = (currentTime: number) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+            setCount(Math.floor(ease * end));
+            if (progress < 1) {
+              requestAnimationFrame(step);
+            } else {
+              setCount(end);
+            }
+          };
+          requestAnimationFrame(step);
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [end, duration]);
+
+  return (
+    <span ref={ref} className="tabular-nums font-black">
+      {prefix}{count}{suffix}
+    </span>
+  );
+}
+
+function Stats() {
+  const statsList = [
+    {
+      num: 20,
+      suffix: "K+",
+      prefix: "",
+      title: "Community Members",
+      description: "Students & working professionals active across top tech domains.",
+      badge: "ACTIVE BUILDERS",
+      icon: Users,
+    },
+    {
+      num: 100,
+      suffix: "+",
+      prefix: "",
+      title: "Tech Events Hosted",
+      description: "Workshops, hands-on meetups, and developer conferences.",
+      badge: "HOSTED & SPRINTED",
+      icon: Calendar,
+    },
+    {
+      num: 30,
+      suffix: "+",
+      prefix: "",
+      title: "Hackathons Organized",
+      description: "National, collegiate, and regional competitive hackathons.",
+      badge: "FLAGSHIP SPRINTS",
+      icon: Swords,
+    },
+    {
+      num: 500,
+      suffix: "K+",
+      prefix: "₹",
+      title: "Prize Pool Awarded",
+      description: "Direct cash bounties, grants, and ecosystem reward pools.",
+      badge: "TOTAL REWARDS",
+      icon: Trophy,
+    },
+  ];
+
+  return (
+    <section className="relative z-20 mx-auto max-w-[1280px] px-4 pt-4 pb-6 sm:px-6 sm:pt-6 sm:pb-8">
+      <Reveal>
+        <div className="stats-laser-border">
+          <div className="relative rounded-[calc(1.5rem-1.5px)] bg-[#070d08]/95 p-5 sm:p-7 backdrop-blur-2xl">
+            {/* Ambient inner neon glow */}
+            <div className="pointer-events-none absolute -right-16 -top-16 size-60 rounded-full bg-neon/10 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-16 -left-16 size-60 rounded-full bg-lime/10 blur-3xl" />
+
+            {/* High-Tech Telemetry Header */}
+            <div className="relative flex flex-wrap items-center justify-between gap-3 border-b border-border/60 pb-4">
+              <div className="flex items-center gap-2.5">
+                <span className="relative flex size-2.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-neon opacity-80" />
+                  <span className="relative inline-flex size-2.5 rounded-full bg-neon" />
+                </span>
+                <span className="text-xs font-black uppercase tracking-[0.2em] text-neon">
+                  Vybe Driven Impact Metrics
+                </span>
+              </div>
+              <div className="flex items-center gap-3 text-[11px] font-mono tracking-wider text-muted-foreground">
+                <span className="inline-block size-1.5 rounded-full bg-neon/60" />
+                <span>ECOSYSTEM STATS</span>
+                <span className="hidden sm:inline">· ALL-INDIA NETWORK</span>
+              </div>
+            </div>
+
+            {/* 4 Futuristic Stat Pods */}
+            <div className="relative mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {statsList.map((stat) => {
+                const Icon = stat.icon;
+                return (
+                  <div
+                    key={stat.title}
+                    className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-border/80 bg-surface/60 p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:border-neon/50 hover:bg-surface/90 hover:shadow-[0_0_28px_rgba(57,255,20,0.18)]"
+                  >
+                    {/* Hover glow orb */}
+                    <div className="pointer-events-none absolute -right-8 -top-8 size-28 rounded-full bg-neon/0 blur-2xl transition-all duration-300 group-hover:bg-neon/15" />
+
+                    <div>
+                      {/* Card top row: Icon + Micro-tag */}
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="grid size-12 shrink-0 place-items-center rounded-xl border border-neon/30 bg-neon/10 text-neon transition-all duration-300 group-hover:scale-110 group-hover:bg-neon group-hover:text-black group-hover:shadow-[0_0_20px_rgba(57,255,20,0.45)]">
+                          <Icon className="size-5 sm:size-6" />
+                        </div>
+                        <span className="rounded-full border border-neon/20 bg-neon/5 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-neon">
+                          {stat.badge}
+                        </span>
+                      </div>
+
+                      {/* Number value with animated counter */}
+                      <div className="mt-5">
+                        <div className="text-3xl font-black tracking-tight text-white sm:text-4xl transition-colors duration-200 group-hover:text-neon">
+                          <AnimatedCounter
+                            end={stat.num}
+                            prefix={stat.prefix}
+                            suffix={stat.suffix}
+                          />
+                        </div>
+                        <p className="mt-1 text-base font-bold text-foreground">
+                          {stat.title}
+                        </p>
+                        <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                          {stat.description}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Bottom active neon indicator line */}
+                    <div className="mt-4 h-[2px] w-full rounded-full bg-border/40 overflow-hidden">
+                      <div className="h-full w-0 bg-gradient-to-r from-neon to-lime transition-all duration-500 group-hover:w-full" />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </Reveal>
+    </section>
+  );
+}
+
+function Partners() {
+  const firstRow = partners.filter((_, index) => index % 2 === 0);
+  const secondRow = partners.filter((_, index) => index % 2 === 1);
+  const renderRow = (items: typeof partners, direction: "left" | "right") => {
+    const repeated = [...items, ...items, ...items, ...items, ...items, ...items];
+    return (
+      <div className="partner-window">
+        <div className={`partner-track partner-track-${direction}`}>
+          {repeated.map((partner, index) => (
+            <div
+              key={`${partner.name}-${index}`}
+              className={`partner-logo ${partner.badge ? "partner-badge-card" : ""}`}
+              aria-hidden={index >= items.length}
+            >
+              <img src={partner.logo} alt={index < items.length ? partner.name : ""} loading="eager" decoding="async" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+  return (
+    <section className="partner-band relative overflow-hidden border-b border-border bg-background pt-2 sm:pt-4 pb-12 sm:pb-14" aria-labelledby="partners-title">
+      <div className="pointer-events-none absolute inset-x-[15%] top-1/2 h-44 -translate-y-1/2 rounded-full bg-neon/5 blur-3xl" />
+      <div className="relative mx-auto max-w-[1400px] px-4 sm:px-6">
+        <p id="partners-title" className="mb-6 text-center text-xs font-semibold tracking-[0.2em] text-muted-foreground sm:mb-7 sm:text-sm">TRUSTED BY AMAZING PARTNERS</p>
+        <div className="space-y-6 sm:space-y-8">
+          {renderRow(firstRow, "right")}
+          {renderRow(secondRow, "left")}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Events() {
+  const [f, setF] = useState<HomeFilter>("All");
+  const featured = opportunities.find((item) => item.slug === "vecna-verse-2026");
+  if (!featured) return null;
+  const list = opportunities
+    .filter((item) => item.slug !== featured.slug && matchesHomeFilter(item, f))
+    .sort((a, b) => Number(a.status === "Opening soon") - Number(b.status === "Opening soon"))
+    .slice(0, 9);
+  return (
+    <section id="events" className="mx-auto max-w-[1200px] scroll-mt-28 px-6 py-12">
+      <Reveal>
+        <Eyebrow>DISCOVER</Eyebrow>
+        <div className="mt-3 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+          <h2 className="text-4xl font-extrabold leading-[1.02] tracking-tight sm:text-5xl">Find Your <span className="text-gradient">Next<br />Hackathon.</span></h2>
+          <p className="max-w-md text-muted-foreground">Explore challenges, competitions and events where ambitious builders turn ideas into reality.</p>
+        </div>
+        <div className="mt-8 flex flex-wrap gap-2">
+          {filters.map((x) => (
+            <button key={x} onClick={() => setF(x)}
+              className={`rounded-full px-4 py-2 text-sm font-medium transition ${f === x ? "bg-neon text-primary-foreground" : "border border-border bg-surface text-muted-foreground hover:text-foreground"}`}>
+              {x}
+            </button>
+          ))}
+        </div>
+      </Reveal>
+
+      <Reveal className="mt-10">
+        <article className="group grid overflow-hidden rounded-3xl border border-neon/25 bg-surface shadow-glow-soft md:grid-cols-[1.2fr_1fr]">
+          <div className="relative overflow-hidden">
+            <img src={featured.image} alt={featured.title} loading="lazy" width={1280} height={768} className="h-full min-h-64 w-full bg-background object-contain transition duration-700 group-hover:scale-[1.02]" />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-surface/80" />
+            <span className="absolute left-5 top-5 rounded-full bg-neon px-3 py-1 text-xs font-bold text-primary-foreground">FEATURED</span>
+          </div>
+          <div className="flex flex-col justify-center p-8 sm:p-10">
+            <p className="text-xs font-semibold tracking-[0.18em] text-neon">{featured.tag.toUpperCase()}</p>
+            <h3 className="mt-3 text-4xl font-extrabold tracking-tight">{featured.title}</h3>
+            <p className="mt-3 text-muted-foreground">{featured.description}</p>
+            <div className="mt-6 space-y-2.5 text-sm">
+              <p className="flex items-center gap-2"><Globe className="size-4 text-neon" /> {featured.format}</p>
+              <p className="flex items-center gap-2"><Calendar className="size-4 text-neon" /> {featured.date}</p>
+              <p className="flex items-center gap-2"><Trophy className="size-4 text-neon" /> {featured.prize} Prize Pool</p>
+            </div>
+            <Link to="/opportunities/$slug" params={{ slug: featured.slug }} className="mt-8 inline-flex self-start items-center justify-center gap-2 rounded-full bg-gradient-brand px-6 py-3.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110 hover:shadow-glow">Explore Event <ArrowRight className="size-4" /></Link>
+          </div>
+        </article>
+      </Reveal>
+
+      <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {list.map((e, i) => (
+          <Reveal key={e.title} delay={i * 60}>
+            <Link to="/opportunities/$slug" params={{ slug: e.slug }} aria-label={`View ${e.title} details`} className="group block h-full rounded-[22px] outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"><article className="flex h-full flex-col overflow-hidden rounded-[22px] border border-border bg-surface transition duration-300 group-hover:-translate-y-1.5 group-hover:border-neon/40 group-hover:shadow-glow">
+              <div className="relative aspect-[16/10] overflow-hidden">
+                <img src={e.image} alt={e.title} loading="lazy" width={1024} height={640} style={e.imagePosition ? { objectPosition: e.imagePosition } : undefined} className={`h-full w-full bg-surface transition duration-700 group-hover:scale-[1.02] ${e.imageFit === "contain" ? "object-contain" : "object-cover"}`} />
+                <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent" />
+                <span className="glass absolute left-4 top-4 rounded-full border border-border px-3 py-1 text-[11px] font-semibold">{e.tag}</span>
+              </div>
+              <div className="flex flex-1 flex-col p-6">
+                <h3 className="text-xl font-bold">{e.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{e.description}</p>
+                <div className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-xs text-muted-foreground">
+                  <span className="flex items-center gap-1.5"><Calendar className="size-3.5 text-neon" />{e.date}</span>
+                  <span className="flex items-center gap-1.5"><MapPin className="size-3.5 text-neon" />{e.location}</span>
+                </div>
+                <div className="mt-6 flex items-center justify-between border-t border-border pt-5">
+                  <div><p className="text-[11px] text-muted-foreground">{e.prize ? "Prize Pool" : "Status"}</p><p className="font-bold text-lime">{e.prize ?? e.status}</p></div>
+                   <span className="flex items-center gap-1 text-sm font-semibold transition group-hover:text-neon">View Event <ArrowRight className="size-4" /></span>
+                </div>
+              </div>
+             </article></Link>
+          </Reveal>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function Features() {
+  const f = [
+    { i: Search, t: "Discover Events", d: "Browse hackathons and competitions filtered to your stack and interests." },
+    { i: UsersRound, t: "Team Up", d: "Find teammates with complementary skills before the clock starts." },
+    { i: Rocket, t: "Build & Submit", d: "Ship your project and submit demos, repos and decks in one place." },
+    { i: LineChart, t: "Track Progress", d: "Follow milestones, deadlines and judging rounds in real time." },
+    { i: Swords, t: "Compete", d: "Go head to head with the sharpest builders across India and beyond." },
+    { i: Award, t: "Get Recognized", d: "Earn prizes, badges and a profile that recruiters actually look at." },
+  ];
+  return (
+    <section className="mx-auto max-w-[1200px] px-6 py-14">
+      <Reveal>
+        <Eyebrow>BUILT FOR BUILDERS</Eyebrow>
+        <h2 className="mt-3 text-4xl font-extrabold leading-[1.02] tracking-tight sm:text-5xl">Everything You Need<br />to <span className="text-gradient">Build What's Next.</span></h2>
+      </Reveal>
+      <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {f.map(({ i: I, t, d }, idx) => (
+          <Reveal key={t} delay={idx * 50}>
+            <div className="group h-full rounded-2xl border border-border bg-surface p-7 transition hover:border-neon/30">
+              <span className="grid size-11 place-items-center rounded-xl border border-border bg-surface-2 text-neon transition group-hover:bg-neon group-hover:text-primary-foreground"><I className="size-5" /></span>
+              <h3 className="mt-5 text-lg font-bold">{t}</h3>
+              <p className="mt-2 text-sm text-muted-foreground">{d}</p>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function Why() {
+  const w = [
+    { n: "01", i: Zap, t: "Powerful Innovation", d: "Challenges designed with industry partners around problems that matter now." },
+    { n: "02", i: Globe, t: "Open Community", d: "A welcoming place for students, independent builders and working professionals." },
+    { n: "03", i: Activity, t: "Real-Time Experience", d: "Live updates, leaderboards and announcements from kickoff to final demo." },
+    { n: "04", i: Code2, t: "Built for Developers", d: "Clean workflows, GitHub-first submissions and zero unnecessary friction." },
+  ];
+  return (
+    <section className="relative py-14">
+      <div className="pointer-events-none absolute inset-x-0 top-1/2 mx-auto h-80 max-w-3xl -translate-y-1/2 rounded-full bg-neon/8 blur-[120px]" />
+      <div className="relative mx-auto max-w-[1200px] px-6">
+        <Reveal className="text-center">
+          <h2 className="text-4xl font-extrabold tracking-tight sm:text-5xl">Why <span className="text-gradient">Vybe Driven?</span></h2>
+          <p className="mx-auto mt-4 max-w-xl text-muted-foreground">More than events. It's an ecosystem built to turn ideas into impact.</p>
+        </Reveal>
+        <div className="mt-12 grid gap-5 md:grid-cols-2">
+          {w.map(({ n, i: I, t, d }, idx) => (
+            <Reveal key={n} delay={idx * 70}>
+              <div className="relative h-full overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-surface-2 to-background p-8 sm:p-10">
+                <span className="absolute -right-2 -top-6 text-[140px] font-black leading-none text-neon/10">{n}</span>
+                <I className="relative size-6 text-neon" />
+                <h3 className="relative mt-8 text-2xl font-bold">{t}</h3>
+                <p className="relative mt-3 max-w-sm text-muted-foreground">{d}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Community() {
+  const g = [
+    { img: engagedCrowd, l: "Community Sessions", c: "md:col-span-2 md:row-span-2", position: "center 45%" },
+    { img: youngTechSeminar, l: "Tech Talks & Seminars", c: "md:col-span-2", position: "center 48%" },
+    { img: sprkothonCelebration, l: "Hackathon Celebrations", c: "md:col-span-2", position: "center 40%" },
+    { img: computerLabGroup, l: "Hands-on Sprints", c: "md:col-span-2", position: "center 46%" },
+    { img: growTogetherHall, l: "Grow Together · Hub Meetups", c: "md:col-span-2", position: "center 45%" },
+    { img: repoForgeCelebration, l: "Together We Build · Vybe Driven", c: "md:col-span-4", position: "center 42%" },
+  ];
+  return (
+    <section id="community" className="mx-auto max-w-[1200px] scroll-mt-28 px-6 py-14">
+      <Reveal className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+        <div>
+          <Eyebrow>COMMUNITY</Eyebrow>
+          <h2 className="mt-3 text-4xl font-extrabold tracking-tight sm:text-5xl">Built by the <span className="text-gradient">Community</span></h2>
+        </div>
+        <p className="max-w-sm text-muted-foreground">Meet the people who build, compete and create together.</p>
+      </Reveal>
+      <div className="mt-10 grid auto-rows-[220px] gap-4 md:grid-cols-4">
+        {g.map((x) => (
+          <div key={x.l} className={`group relative overflow-hidden rounded-2xl ${x.c}`}>
+            <img src={x.img} alt={x.l} loading="lazy" style={{ objectPosition: x.position }} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
+            <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent transition group-hover:bg-neon/15" />
+            <span className="absolute bottom-4 left-4 flex items-center gap-1.5 text-sm font-semibold"><Sparkles className="size-3.5 text-neon" />{x.l}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function CTA() {
+  return (
+    <section className="mx-auto max-w-[1200px] px-6 py-8">
+      <Reveal>
+        <div className="relative overflow-hidden rounded-[32px] border border-neon/20 bg-surface-3 px-8 py-14 text-center sm:px-16">
+          <div className="bg-grid pointer-events-none absolute inset-0" />
+          <div className="pointer-events-none absolute -bottom-40 left-1/2 size-[600px] -translate-x-1/2 rounded-full bg-neon/20 blur-[120px]" />
+          <div className="relative">
+            <h2 className="text-4xl font-extrabold leading-[1.02] tracking-tight sm:text-6xl">Ready to<br /><span className="text-gradient">Drive What's Next?</span></h2>
+            <p className="mx-auto mt-5 max-w-lg text-muted-foreground">Find your next challenge, build with great people and turn your ideas into something real.</p>
+            <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
+            <PrimaryBtn href="/hackathons">Explore Hackathons <ArrowRight className="size-4" /></PrimaryBtn>
+              <GhostBtn href="/auth?mode=signin&next=%2Fprofile">Join Vybe Driven</GhostBtn>
+            </div>
+          </div>
+        </div>
+      </Reveal>
+    </section>
+  );
+}

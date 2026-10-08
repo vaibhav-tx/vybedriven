@@ -1,0 +1,33 @@
+# Roadmap
+
+- [x] Align the light theme to the supplied reference while preserving dark mode
+- [x] Replace navbar words with icon navigation and tooltips
+- [x] Add Hackathons, Events, and Discover pages with filters
+- [x] Add working sign-in, registration, and editable user profiles
+- [x] Verify desktop and mobile flows
+- [x] Add the confirmed Instagram and contact email everywhere they appear
+- [x] Refine light-theme navigation icons to monochrome with a green active indicator
+- [x] Add complete event detail pages and connect every event card
+- [x] Remove remaining dead links and placeholder actions in the touched event journey
+- [x] Verify event discovery and detail flows on desktop and mobile
+- [x] Refine the homepage light theme against the Hackbriven reference
+- [x] Add a licensed rotating homepage photo sequence
+- [x] Add the confirmed partner logo section
+- [x] Verify the refreshed homepage on desktop and mobile
+- [x] Replace three dummy hackathons with IPL, ELEVATE 1.0, and Hack in Hills ’26
+- [x] Add their supplied posters, complete details, contacts, and registration links
+- [x] Verify all three listings and detail pages on desktop and mobile
+- [x] Add VECNA VERSE to Hackathons with complete confirmed details
+- [x] Replace the homepage dummy featured event with VECNA VERSE
+- [x] Verify the listing, homepage feature, detail page, and registration link
+- [x] Replace artificial homepage slideshow photos with supplied real community photos
+- [x] Mix supplied real photos into the Built by the Community gallery
+- [x] Verify photo crops and readability on desktop and mobile
+- [x] Replace four dummy event listings with the supplied real Mumbai events
+- [x] Connect each real event to its poster, details, and registration destination
+- [x] Make the homepage event section use the shared real opportunity listings
+- [x] Verify homepage, Events, and all four detail pages on desktop and mobile
+- [x] Add Clinical AI Summit, Durable DevOps, and Allin1Place Mumbai meetup
+- [x] Tighten excess spacing across the homepage and listing pages
+- [x] Fix the INSPIRE poster presentation and refresh selected homepage imagery
+- [x] Verify the final homepage, Hackathons, Events, and new event details
