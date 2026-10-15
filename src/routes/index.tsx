@@ -67,7 +67,6 @@ const partners = [
   { name: "Institution's Innovation Council", logo: "/partners/iic.webp", badge: true },
   { name: "Xavier Institute of Engineering", logo: "/partners/xie.webp", badge: true },
   { name: "IIC DJSCE", logo: "/partners/iic-djsce.webp", badge: true },
-  { name: "ACM TSEC", logo: "/partners/acm-tsec.webp", badge: true },
   { name: "IEEE SLRTCE", logo: "/partners/ieee-slrtce.webp", badge: true },
 ];
 
