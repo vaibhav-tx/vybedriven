@@ -7,12 +7,16 @@ import {
 import { Navbar, Footer } from "@/components/SiteChrome";
 import { Reveal, Eyebrow, PrimaryBtn, GhostBtn } from "@/components/ui-hd";
 
+import ornateConferenceHall from "@/assets/community-real/Ornate Conference Hall and Engaged Audience.webp";
+import hackOnTrackWinners from "@/assets/community-real/IMG_08741.webp";
+import repoForgeCelebration from "@/assets/community-real/1792571314963.webp";
+import computerLabSprint from "@/assets/community-real/1792571325314.webp";
+import projectPitchDemo from "@/assets/community-real/PXL_20261003_132342890.MP.webp";
+import auditoriumKeynote from "@/assets/community-real/1791132680468.webp";
 import engagedCrowd from "@/assets/community-real/Engaged Crowd at a Tech Meetup.webp";
-import computerLabGroup from "@/assets/community-real/Group Photo in a Modern Computer Lab.webp";
-import repoForgeCelebration from "@/assets/community-real/Repo Forge Celebration Group Photo.webp";
-import sprkothonCelebration from "@/assets/community-real/SPRK-OTHON Certificate Celebration.webp";
+import labVictoryCohort from "@/assets/community-real/WhatsApp Image 2026-10-18 at 11.18.30 AM.webp";
+import repoForgePodium from "@/assets/community-real/1792571315335.webp";
 import youngTechSeminar from "@/assets/community-real/Young Tech Seminar Audience.webp";
-import growTogetherHall from "@/assets/community-real/Grow Together Tech Hall.webp";
 import { opportunities, type Opportunity } from "@/data/opportunities";
 
 export const Route = createFileRoute("/")({
@@ -40,11 +44,14 @@ function matchesHomeFilter(item: Opportunity, filter: HomeFilter) {
 }
 
 const heroSlides = [
-  { src: growTogetherHall, alt: "Grow Together — Vybe Driven community meetup at tech hub", position: "center 45%" },
-  { src: repoForgeCelebration, alt: "Vybe Driven community members at Repo Forge celebration", position: "center 42%" },
-  { src: computerLabGroup, alt: "Students and builders coding in modern computer lab", position: "center 45%" },
-  { src: sprkothonCelebration, alt: "SPRK-OTHON hackathon certificate ceremony", position: "center 40%" },
-  { src: engagedCrowd, alt: "Engaged crowd at a Vybe Driven tech meetup", position: "center 45%" },
+  { src: ornateConferenceHall, alt: "Massive gathering of developers and students at tech summit", position: "center 42%" },
+  { src: hackOnTrackWinners, alt: "Hack On Track hackathon winners celebrating with prize cheques", position: "center 38%" },
+  { src: repoForgeCelebration, alt: "Vybe Driven builders and students at Repo Forge hackathon celebration", position: "center 42%" },
+  { src: computerLabSprint, alt: "Intense overnight hackathon coding and sprinting in computer lab", position: "center 45%" },
+  { src: projectPitchDemo, alt: "Live AI project demo and team pitch on stage", position: "center 45%" },
+  { src: auditoriumKeynote, alt: "Tech conference hall with keynote presentation on stage", position: "center 45%" },
+  { src: labVictoryCohort, alt: "Student developers celebrating after a successful hackathon sprint", position: "center 40%" },
+  { src: engagedCrowd, alt: "Engaged audience and builders at Vybe Driven tech meetup", position: "center 45%" },
   { src: youngTechSeminar, alt: "Young developers and innovators attending tech seminar", position: "center 42%" },
 ];
 
@@ -109,6 +116,23 @@ function Hero() {
       </div>
       <div className="hero-scrim absolute inset-0" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background via-background/70 to-transparent" />
+      
+      {/* Real Community Moments slide switcher */}
+      <div className="absolute bottom-4 sm:bottom-6 right-4 sm:right-6 z-20 hidden min-[540px]:flex items-center gap-1.5 rounded-full border border-border/50 bg-background/70 px-3 py-1.5 backdrop-blur-md shadow-sm">
+        <span className="text-[10px] font-semibold tracking-wider uppercase text-muted-foreground mr-1">Moments</span>
+        {heroSlides.map((_, idx) => (
+          <button
+            key={idx}
+            type="button"
+            onClick={() => setActiveSlide(idx)}
+            className={`h-1.5 rounded-full transition-all duration-300 ${
+              idx === activeSlide ? "w-5 bg-neon" : "w-1.5 bg-foreground/25 hover:bg-foreground/50"
+            }`}
+            aria-label={`Go to slide ${idx + 1}`}
+          />
+        ))}
+      </div>
+
       <div className="relative mx-auto w-full max-w-[1200px] px-4 sm:px-6">
         <div className="animate-rise max-w-[710px]">
           <h1 className="text-[34px] min-[380px]:text-[42px] sm:text-6xl lg:text-[76px] font-extrabold leading-[1.04] sm:leading-[0.98] text-hero-foreground">
@@ -118,7 +142,7 @@ function Hero() {
             Discover hackathons, competitions and technology events built for ambitious developers, creators and innovators.
           </p>
           <div className="mt-7 sm:mt-9 flex flex-col min-[480px]:flex-row gap-3 w-full sm:w-auto">
-            <PrimaryBtn className="w-full min-[480px]:w-auto justify-center">Explore Hackathons <ArrowRight className="size-4" /></PrimaryBtn>
+            <PrimaryBtn href="/hackathons" className="w-full min-[480px]:w-auto justify-center">Explore Hackathons <ArrowRight className="size-4" /></PrimaryBtn>
             <GhostBtn href="/contact" className="hero-ghost w-full min-[480px]:w-auto justify-center">Host an Event</GhostBtn>
           </div>
         </div>
@@ -466,12 +490,16 @@ function Why() {
 
 function Community() {
   const g = [
-    { img: engagedCrowd, l: "Community Sessions", c: "sm:col-span-2 md:col-span-2 md:row-span-2", position: "center 45%" },
-    { img: youngTechSeminar, l: "Tech Talks & Seminars", c: "sm:col-span-1 md:col-span-2", position: "center 48%" },
-    { img: sprkothonCelebration, l: "Hackathon Celebrations", c: "sm:col-span-1 md:col-span-2", position: "center 40%" },
-    { img: computerLabGroup, l: "Hands-on Sprints", c: "sm:col-span-1 md:col-span-2", position: "center 46%" },
-    { img: growTogetherHall, l: "Grow Together · Hub Meetups", c: "sm:col-span-1 md:col-span-2", position: "center 45%" },
-    { img: repoForgeCelebration, l: "Together We Build · Vybe Driven", c: "sm:col-span-2 md:col-span-4", position: "center 42%" },
+    { img: ornateConferenceHall, l: "Grand Tech Summits & Conferences", c: "sm:col-span-2 md:col-span-2 md:row-span-2", position: "center 42%" },
+    { img: hackOnTrackWinners, l: "Hackathon Winners & Cash Grants", c: "sm:col-span-2 md:col-span-2 md:row-span-1", position: "center 36%" },
+    { img: projectPitchDemo, l: "Demo Day & Live Project Pitches", c: "sm:col-span-2 md:col-span-2 md:row-span-1", position: "center 45%" },
+    { img: computerLabSprint, l: "Intense Overnight Hacking Sprints", c: "sm:col-span-2 md:col-span-2 md:row-span-1", position: "center 45%" },
+    { img: repoForgeCelebration, l: "Together We Build · Hackathon Cohorts", c: "sm:col-span-2 md:col-span-2 md:row-span-1", position: "center 42%" },
+    { img: labVictoryCohort, l: "Student Innovator Networks", c: "sm:col-span-2 md:col-span-2 md:row-span-1", position: "center 40%" },
+    { img: repoForgePodium, l: "Stage Honors & Awards", c: "sm:col-span-1 md:col-span-1 md:row-span-1", position: "center 42%" },
+    { img: youngTechSeminar, l: "Tech Talks & Seminars", c: "sm:col-span-1 md:col-span-1 md:row-span-1", position: "center 45%" },
+    { img: auditoriumKeynote, l: "Auditorium Keynotes & Tech Sessions", c: "sm:col-span-2 md:col-span-2 md:row-span-1", position: "center 45%" },
+    { img: engagedCrowd, l: "Interactive Meetups & Q&A", c: "sm:col-span-2 md:col-span-2 md:row-span-1", position: "center 45%" },
   ];
   return (
     <section id="community" className="mx-auto max-w-[1200px] scroll-mt-28 px-4 sm:px-6 py-10 sm:py-14">
@@ -480,14 +508,14 @@ function Community() {
           <Eyebrow>COMMUNITY</Eyebrow>
           <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-5xl">Built by the <span className="text-gradient">Community</span></h2>
         </div>
-        <p className="max-w-sm text-sm sm:text-base text-muted-foreground">Meet the people who build, compete and create together.</p>
+        <p className="max-w-sm text-sm sm:text-base text-muted-foreground">Real builders, real hackathons, and real moments across India.</p>
       </Reveal>
-      <div className="mt-8 sm:mt-10 grid auto-rows-[170px] sm:auto-rows-[220px] gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+      <div className="mt-8 sm:mt-10 grid auto-rows-[180px] sm:auto-rows-[220px] md:auto-rows-[240px] gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
         {g.map((x) => (
-          <div key={x.l} className={`group relative overflow-hidden rounded-2xl ${x.c}`}>
+          <div key={x.l} className={`group relative overflow-hidden rounded-2xl border border-border/40 bg-surface ${x.c}`}>
             <img src={x.img} alt={x.l} loading="lazy" style={{ objectPosition: x.position }} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
-            <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent transition group-hover:bg-neon/15" />
-            <span className="absolute bottom-3.5 left-3.5 sm:bottom-4 sm:left-4 flex items-center gap-1.5 text-xs sm:text-sm font-semibold"><Sparkles className="size-3.5 text-neon" />{x.l}</span>
+            <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/25 to-transparent transition duration-300 group-hover:via-background/10" />
+            <span className="absolute bottom-3.5 left-3.5 sm:bottom-4 sm:left-4 flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-foreground drop-shadow-sm"><Sparkles className="size-3.5 text-neon" />{x.l}</span>
           </div>
         ))}
       </div>
@@ -500,6 +528,9 @@ function CTA() {
     <section className="mx-auto max-w-[1200px] px-4 sm:px-6 py-6 sm:py-8">
       <Reveal>
         <div className="relative overflow-hidden rounded-2xl sm:rounded-[32px] border border-neon/20 bg-surface-3 px-5 py-10 sm:px-16 sm:py-14 text-center">
+          <div className="absolute inset-0 pointer-events-none select-none opacity-[0.07] dark:opacity-[0.14] mix-blend-luminosity">
+            <img src={hackOnTrackWinners} alt="" className="h-full w-full object-cover object-center filter saturate-0" />
+          </div>
           <div className="bg-grid pointer-events-none absolute inset-0" />
           <div className="pointer-events-none absolute -bottom-40 left-1/2 size-[600px] -translate-x-1/2 rounded-full bg-neon/20 blur-[120px]" />
           <div className="relative">
