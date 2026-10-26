@@ -392,6 +392,19 @@ function Events() {
               <p className="flex items-center gap-2"><Calendar className="size-4 text-neon" /> {featured.date}</p>
               <p className="flex items-center gap-2"><Trophy className="size-4 text-neon" /> {featured.prize} Prize Pool</p>
             </div>
+            {featured.perks && featured.perks.length > 0 && (
+              <div className="mt-5 pt-4 border-t border-border/70">
+                <p className="text-[11px] font-semibold tracking-wider uppercase text-neon mb-2.5">What's in store for you:</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {featured.perks.slice(0, 4).map((p) => (
+                    <div key={p.title} className="flex items-center gap-2 rounded-xl border border-border/70 bg-surface-2/70 px-2.5 py-1.5 text-xs text-foreground">
+                      <span className="text-base shrink-0 select-none">{p.emoji}</span>
+                      <span className="font-semibold truncate">{p.title}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
             <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3">
               {featured.registrationUrl ? (
                 <a href={featured.registrationUrl} target="_blank" rel="noopener noreferrer" className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-gradient-brand px-6 py-3.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110 hover:shadow-glow">Register now <ArrowRight className="size-4" /></a>

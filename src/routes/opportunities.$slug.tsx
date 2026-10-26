@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { Calendar, CheckCircle2, Clock3, ExternalLink, MapPin, MessageCircle, Trophy, Users, WalletCards } from "lucide-react";
+import { Calendar, CheckCircle2, Clock3, ExternalLink, MapPin, MessageCircle, Trophy, Users, WalletCards, Gift, Rocket, Laptop, Coffee, Award, Handshake, Brain, Sparkles } from "lucide-react";
 import { Navbar, Footer } from "@/components/SiteChrome";
 import { Button } from "@/components/ui/button";
 import { getOpportunity } from "@/data/opportunities";
@@ -35,7 +35,58 @@ function OpportunityDetails() {
       <div className="grid overflow-hidden rounded-2xl border border-border bg-card grid-cols-2 lg:grid-cols-3">{facts.map(({ icon: Icon, label, value }) => <div key={label} className="border-b border-border p-4 sm:p-5 [&:nth-child(odd)]:border-r sm:[&:nth-child(even)]:border-r"><Icon className="size-4 sm:size-5 text-neon" /><p className="mt-2 sm:mt-3 text-[11px] sm:text-xs font-semibold text-muted-foreground">{label}</p><p className="mt-1 text-xs sm:text-sm font-semibold">{value}</p></div>)}</div>
       <section className="py-7 sm:py-9"><h2 className="text-xl sm:text-2xl font-bold">About this {item.type.toLowerCase()}</h2><p className="mt-3 sm:mt-4 max-w-3xl text-sm sm:text-base leading-relaxed text-muted-foreground">{item.overview}</p></section>
       <section className="border-t border-border py-7 sm:py-9"><h2 className="text-xl sm:text-2xl font-bold">Stages and timeline</h2><ol className="mt-6 space-y-5">{item.schedule.map((step, index) => <li key={step.title} className="grid grid-cols-[36px_1fr] gap-3 sm:gap-4"><span className="grid size-9 place-items-center rounded-full bg-neon font-bold text-primary-foreground">{index + 1}</span><div><div className="flex flex-wrap items-baseline justify-between gap-1.5 sm:gap-2"><h3 className="text-sm sm:text-base font-semibold">{step.title}</h3><p className="text-xs sm:text-sm font-medium text-neon">{step.date}</p></div><p className="mt-1 text-xs sm:text-sm leading-relaxed text-muted-foreground">{step.description}</p></div></li>)}</ol></section>
-      {item.prize && <section className="border-t border-border py-8 sm:py-12"><Trophy className="size-6 sm:size-7 text-neon" /><h2 className="mt-3 sm:mt-4 text-xl sm:text-2xl font-bold">Rewards and prizes</h2><p className="mt-2 sm:mt-3 text-2xl sm:text-3xl font-extrabold text-neon">{item.prize}</p><p className="mt-2 text-xs sm:text-sm text-muted-foreground">Final distribution and award categories will be announced with registration.</p></section>}
+      {(item.prize || (item.perks && item.perks.length > 0)) && (
+        <section className="border-t border-border py-8 sm:py-12">
+          <div className="flex items-center gap-3">
+            <span className="grid size-11 place-items-center rounded-2xl bg-neon/15 text-neon shadow-glow-soft">
+              <Trophy className="size-6 text-neon" />
+            </span>
+            <div>
+              <p className="text-xs font-semibold tracking-wider uppercase text-neon">What's in Store</p>
+              <h2 className="mt-0.5 text-xl sm:text-2xl font-bold">Rewards, Perks & Opportunities</h2>
+            </div>
+          </div>
+
+          {item.prize && (
+            <div className="mt-5 rounded-2xl border border-neon/30 bg-gradient-to-br from-neon/10 via-surface to-surface p-5 sm:p-6 shadow-glow-soft">
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Total Prize Pool</p>
+              <p className="mt-1 text-2xl sm:text-4xl font-extrabold text-neon">{item.prize}</p>
+              <p className="mt-2 text-xs sm:text-sm text-muted-foreground">Cash prizes, certificates, and recognition for top qualifying innovators.</p>
+            </div>
+          )}
+
+          {item.perks && item.perks.length > 0 && (
+            <div className="mt-6">
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Participant Benefits & Perks</p>
+              <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
+                {item.perks.map((perk) => (
+                  <div key={perk.title} className="group relative flex gap-3.5 rounded-xl sm:rounded-2xl border border-border bg-card p-4 transition duration-300 hover:border-neon/40 hover:bg-surface-2 hover:shadow-glow-soft">
+                    <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-neon/10 text-neon group-hover:bg-neon group-hover:text-primary-foreground transition duration-300">
+                      {perk.icon === "gift" ? <Gift className="size-5" /> :
+                       perk.icon === "rocket" ? <Rocket className="size-5" /> :
+                       perk.icon === "laptop" ? <Laptop className="size-5" /> :
+                       perk.icon === "coffee" ? <Coffee className="size-5" /> :
+                       perk.icon === "award" ? <Award className="size-5" /> :
+                       perk.icon === "handshake" ? <Handshake className="size-5" /> :
+                       perk.icon === "brain" ? <Brain className="size-5" /> :
+                       <Sparkles className="size-5" />}
+                    </span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-1.5">
+                        {perk.emoji && <span className="text-base select-none">{perk.emoji}</span>}
+                        <h3 className="text-sm sm:text-base font-bold text-foreground group-hover:text-neon transition">{perk.title}</h3>
+                      </div>
+                      {perk.description && (
+                        <p className="mt-1 text-xs sm:text-sm text-muted-foreground leading-relaxed">{perk.description}</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </section>
+      )}
     </div><aside className="lg:sticky lg:top-28 lg:self-start"><div className="rounded-2xl border border-border bg-card p-5 sm:p-6 shadow-sm"><p className="text-xs font-semibold text-muted-foreground">REGISTRATION</p>{item.registrationUrl ? (<><h2 className="mt-2 text-lg sm:text-xl font-bold">{item.status === "Sold out" ? "Sold out" : item.status === "Event full" ? "Event full" : item.status === "Approval required" ? "Approval required" : "Registrations open"}</h2><p className="mt-2.5 sm:mt-3 text-xs sm:text-sm leading-relaxed text-muted-foreground">{item.registrationNote ?? (item.registrationDeadline === "To be announced" ? "Register now through the official event link. The closing date will be announced." : `Register through the official event link before ${item.registrationDeadline}.`)}</p>{item.status !== "Sold out" && <Button asChild className="mt-5 sm:mt-6 w-full rounded-full bg-gradient-brand text-primary-foreground font-bold shadow-glow-soft hover:brightness-105"><a href={item.registrationUrl} target="_blank" rel="noopener noreferrer">{item.registrationLabel ?? "Register now"}<ExternalLink className="ml-2 inline size-4" /></a></Button>}{item.groupUrl && (<a href={item.groupUrl} target="_blank" rel="noopener noreferrer" className="mt-3 flex w-full items-center justify-center gap-2 rounded-full border border-neon/40 bg-surface/80 px-4 py-2.5 text-xs sm:text-sm font-semibold text-neon transition hover:border-neon hover:bg-neon/15 hover:shadow-glow-soft"><MessageCircle className="size-4 text-neon" /><span>{item.groupLabel ?? "Join Group for Further Details"}</span><ExternalLink className="size-3.5 opacity-80" /></a>)}{item.relatedLinks && <div className="mt-4 space-y-2">{item.relatedLinks.map((link) => <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between rounded-lg border border-border px-3 py-2 text-xs sm:text-sm font-medium hover:border-neon hover:text-neon"><span>{link.label}</span><ExternalLink className="size-3.5" /></a>)}</div>}{item.contacts && (<div className="mt-5 border-t border-border pt-4"><p className="text-xs font-semibold text-muted-foreground">QUERIES</p><ul className="mt-2 space-y-1.5">{item.contacts.map((contact) => <li key={contact.phone} className="text-xs sm:text-sm"><a href={`tel:${contact.phone}`} className="font-medium hover:text-neon">{contact.name}</a><span className="text-muted-foreground"> · {contact.phone}</span></li>)}</ul></div>)}<a href="mailto:vybedriven@gmail.com" className="mt-3.5 block text-center text-xs text-muted-foreground hover:text-neon transition">Have questions? Ask Vybe Driven</a></>) : (<><h2 className="mt-2 text-lg sm:text-xl font-bold">Opening soon</h2><p className="mt-2.5 sm:mt-3 text-xs sm:text-sm leading-relaxed text-muted-foreground">Registration is not live yet. Sign in now to prepare your profile for when applications open.</p><Button asChild className="mt-5 sm:mt-6 w-full rounded-full bg-gradient-brand text-primary-foreground"><Link to="/auth" search={{ mode: "signin", next: `/opportunities/${item.slug}` }}>Sign in to Vybe Driven</Link></Button><a href="mailto:vybedriven@gmail.com" className="mt-4 block text-center text-xs sm:text-sm font-semibold text-neon">Ask the organiser</a></>)}</div></aside></div></section>
   </main><Footer /></div>;
 }

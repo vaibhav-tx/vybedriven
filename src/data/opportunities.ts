@@ -14,6 +14,14 @@ import durableDevOpsPoster from "@/assets/events/durable-devops-tech-meetup.png.
 import allInOnePoster from "@/assets/events/allin1place-ai-human-touch.png.asset.json";
 
 export type OpportunityType = "Hackathon" | "Competition" | "Meetup" | "Conference" | "Networking";
+
+export type OpportunityPerk = {
+  icon?: "gift" | "rocket" | "laptop" | "coffee" | "award" | "handshake" | "brain" | string;
+  emoji?: string;
+  title: string;
+  description?: string;
+};
+
 export type Opportunity = {
   slug: string;
   title: string;
@@ -24,6 +32,7 @@ export type Opportunity = {
   location: string;
   format: "Online" | "In person" | "Hybrid";
   prize?: string;
+  perks?: OpportunityPerk[];
   image: string;
   imagePosition?: string;
   imageFit?: "cover" | "contain";
@@ -55,6 +64,50 @@ export const opportunities: Opportunity[] = [
     location: "Fr. CRCE, Bandra, Mumbai · Hybrid",
     format: "Hybrid",
     prize: "₹50,000+",
+    perks: [
+      {
+        icon: "rocket",
+        emoji: "🚀",
+        title: "Incubation Opportunities",
+        description: "Direct incubation pathway and handoff for eligible finalists to launch and scale real startups.",
+      },
+      {
+        icon: "laptop",
+        emoji: "💻",
+        title: "Interview Opportunities",
+        description: "Exclusive interview and internship access for all eligible teams with partner companies.",
+      },
+      {
+        icon: "brain",
+        emoji: "🧠",
+        title: "Expert Mentorship & Hands-on POC",
+        description: "2–3 months of 1-on-1 guidance from founders and industry leaders to validate ideas and engineer functional prototypes.",
+      },
+      {
+        icon: "award",
+        emoji: "🪪",
+        title: "Certificates on Clearing Each Round",
+        description: "Official achievement certificates awarded on clearing each round, recognized by E-Cell CRCE & partners.",
+      },
+      {
+        icon: "gift",
+        emoji: "🎁",
+        title: "Exciting Goodies & Perks",
+        description: "Exclusive builder swag, digital perks, and goodies for participants.",
+      },
+      {
+        icon: "handshake",
+        emoji: "🤝",
+        title: "Networking with Founders & Leaders",
+        description: "Direct networking with successful founders, investors, and startup leaders at the Grand Finale.",
+      },
+      {
+        icon: "coffee",
+        emoji: "🍣",
+        title: "Light Snacks & Beverages",
+        description: "Complimentary refreshments and snacks provided during offline mentoring sessions and the Grand Finale.",
+      },
+    ],
     image: "/events/idea-competition-2026.webp",
     imageFit: "contain",
     imagePosition: "center center",
@@ -90,6 +143,38 @@ export const opportunities: Opportunity[] = [
     location: "MPSTME, Mumbai",
     format: "Hybrid",
     prize: "₹50,000",
+    perks: [
+      {
+        icon: "rocket",
+        emoji: "⛱️",
+        title: "Staycation for Winners",
+        description: "Special staycation package awarded to the top winning team.",
+      },
+      {
+        icon: "award",
+        emoji: "📜",
+        title: "Certificates from GfK, Unstop & BMW",
+        description: "Official co-branded certificates recognized by top global and tech organizations.",
+      },
+      {
+        icon: "gift",
+        emoji: "🎁",
+        title: "Hampers Worth 10K & Goodies",
+        description: "Gift hampers for winners and runner-ups plus free goodies for Round 2 qualifiers.",
+      },
+      {
+        icon: "laptop",
+        emoji: "💼",
+        title: "Internship Opportunities",
+        description: "Direct internship opportunities for top performing builders.",
+      },
+      {
+        icon: "handshake",
+        emoji: "🤝",
+        title: "Industrial Connections",
+        description: "Build relationships and interact with industry evaluators and technical mentors.",
+      },
+    ],
     image: "/events/adappt-5-0.webp",
     imageFit: "contain",
     imagePosition: "center top",
