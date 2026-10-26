@@ -45,6 +45,41 @@ export type Opportunity = {
 };
 
 export const opportunities: Opportunity[] = [
+  {
+    slug: "idea-competition-2026",
+    title: "IDEA COMPETITION 2026",
+    type: "Hackathon",
+    tag: "Idea to Incubation · Startup Program",
+    description: "Turn your idea into a potential startup with E-Cell CRCE. 4 impact tracks, expert mentorship, incubation handoff & ₹50K+ prizes.",
+    date: "Oct 28, 2026 – Feb 6, 2027",
+    location: "Fr. CRCE, Bandra, Mumbai · Hybrid",
+    format: "Hybrid",
+    prize: "₹50,000+",
+    image: "/events/idea-competition-2026.webp",
+    imageFit: "contain",
+    imagePosition: "center center",
+    organizer: "E-Cell CRCE · Union Bank of India · Vybe Driven",
+    registrationDeadline: "Oct 28, 2026",
+    eligibility: "Student innovators, developers, aspiring founders, and teams across all colleges and departments",
+    teamSize: "1–4 members",
+    fee: "Free · Register on Unstop",
+    status: "Registration open",
+    registrationUrl: "https://unstop.com/hackathons/idea-competition-2026-fr-conceicao-rodrigues-college-of-engineering-frcrce-bandra-1736048",
+    contacts: [
+      { name: "Atharva Jagtap", phone: "+917066935597" },
+      { name: "Arnav Potale", phone: "+918830331242" },
+    ],
+    relatedLinks: [
+      { label: "Official Exploration Portal", url: "https://ideacompetition.ecell-crce.in/explore" },
+      { label: "Register on Unstop", url: "https://unstop.com/hackathons/idea-competition-2026-fr-conceicao-rodrigues-college-of-engineering-frcrce-bandra-1736048" },
+    ],
+    overview: "IDEA COMPETITION 2026 is an idea-to-incubation startup program presented by E-Cell CRCE (Fr. Conceicao Rodrigues College of Engineering, Bandra) with Title Sponsor Union Bank of India, Platform Partner Vybe Driven, and Community Partner Mumbai Tech Week. Designed to bridge the gap between ideation and a real startup, the challenge features 4 core impact tracks: 1) Healthcare & Well-being, 2) Energy & Sustainability, 3) Education & Technology, and 4) Smart Cities & Urban Development. Top teams receive 2–3 months of intensive mentorship to build functional POCs, followed by an offline Grand Finale on 6th February 2027 at Fr. CRCE Bandra before venture founders and incubation partners. Over ₹50,000 in prize pool, incubation handoff, interview opportunities, goodies, and round-wise certificates.",
+    schedule: [
+      { title: "Round 1 · Register & Submit Idea (Online)", date: "Deadline: Oct 28, 2026", description: "Register on Unstop and submit your problem statement, market approach, and proposed solution via PPT." },
+      { title: "Round 2 · Mentorship & Judging (Online)", date: "Nov 2026 – Jan 2027", description: "Shortlisted teams receive 2–3 months of 1-on-1 expert mentorship to validate their idea and engineer a working Proof of Concept (POC)." },
+      { title: "Round 3 · Grand Finale (Offline)", date: "Feb 6, 2027", description: "Pitch your developed prototype and venture live to founders, investors, and incubation heads at Fr. CRCE, Bandra, Mumbai." },
+    ],
+  },
   { slug: "vecna-verse-2026", title: "VECNA VERSE", type: "Hackathon", tag: "National Level Hackathon", description: "Enter the unknown, build the impossible, and compete for prizes, opportunities, and national recognition.", date: "Oct 24–25, 2026", location: "Online round · Offline finale for qualifiers", format: "Hybrid", prize: "₹3 lakh+", image: vecnaVersePoster.url, imageFit: "contain", organizer: "Vybe Driven · RAAHIWORKS", registrationDeadline: "To be announced", eligibility: "B.Sc, B.Tech, B.E, M.Tech, PhD, and Diploma students from any year; cross-college, cross-branch, and cross-year teams welcome", teamSize: "Up to 4 members", fee: "See official registration", status: "Registration open", registrationUrl: "https://forms.gle/cchs5bTCBp5N9g9X9", groupUrl: "https://chat.whatsapp.com/Bq82iqnQZz58uJbRp2k2C9", groupLabel: "Join WhatsApp Group for Details", overview: "VECNA VERSE is a national-level hackathon presented by Vybe Driven and powered by RAAHIWORKS. Participants enter an online first round (Oct 24–25) before qualifying teams advance to an offline finale. The ₹3 lakh+ prize pool is joined by cash prizes, internship and job opportunities, exclusive goodies, platform credits, and networking with industry experts.", schedule: [{ title: "Registration", date: "Open now", description: "Gather a team of up to four members and register through the official VECNA VERSE registration form." }, { title: "Round 1 · Online", date: "Oct 24–25, 2026", description: "Teams compete online during the first qualifying round." }, { title: "Round 2 · Offline", date: "To be announced", description: "Qualifying teams receive the final date, venue, and complete offline-round details." }] },
   {
     slug: "adappt-5-0",

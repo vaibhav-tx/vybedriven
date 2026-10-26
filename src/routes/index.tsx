@@ -352,10 +352,10 @@ function Partners() {
 
 function Events() {
   const [f, setF] = useState<HomeFilter>("All");
-  const featured = opportunities.find((item) => item.slug === "vecna-verse-2026");
+  const featured = opportunities.find((item) => item.slug === "idea-competition-2026");
   if (!featured) return null;
   const list = opportunities
-    .filter((item) => item.slug !== featured.slug && matchesHomeFilter(item, f))
+    .filter((item) => matchesHomeFilter(item, f))
     .sort((a, b) => Number(a.status === "Opening soon") - Number(b.status === "Opening soon"))
     .slice(0, 9);
   return (
@@ -377,22 +377,27 @@ function Events() {
       </Reveal>
 
       <Reveal className="mt-8 sm:mt-10">
-        <article className="group grid overflow-hidden rounded-2xl sm:rounded-3xl border border-neon/25 bg-surface shadow-glow-soft md:grid-cols-[1.2fr_1fr]">
-          <div className="relative overflow-hidden min-h-[220px] sm:min-h-[280px] md:min-h-full">
-            <img src={featured.image} alt={featured.title} loading="lazy" width={1280} height={768} className="h-full w-full bg-background object-contain transition duration-700 group-hover:scale-[1.02]" />
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-surface/80" />
-            <span className="absolute left-4 top-4 sm:left-5 sm:top-5 rounded-full bg-neon px-3 py-1 text-xs font-bold text-primary-foreground">FEATURED</span>
+        <article className="group grid overflow-hidden rounded-2xl sm:rounded-3xl border border-neon/25 bg-surface shadow-glow-soft md:grid-cols-[1.1fr_1fr]">
+          <div className="relative flex items-center justify-center overflow-hidden bg-black/60 p-3 sm:p-5 min-h-[260px] sm:min-h-[320px] md:min-h-[420px]">
+            <img src={featured.image} alt={featured.title} loading="eager" width={1254} height={1254} className="h-full max-h-[440px] w-full object-contain transition duration-700 group-hover:scale-[1.02]" />
+            <div className="pointer-events-none absolute inset-0 hidden md:block bg-gradient-to-r from-transparent via-transparent to-surface/80" />
+            <span className="absolute left-4 top-4 sm:left-5 sm:top-5 rounded-full bg-neon px-3 py-1 text-xs font-bold text-primary-foreground shadow-glow-soft">FEATURED</span>
           </div>
           <div className="flex flex-col justify-center p-5 sm:p-8 md:p-10">
             <p className="text-xs font-semibold tracking-[0.18em] text-neon">{featured.tag.toUpperCase()}</p>
             <h3 className="mt-2.5 sm:mt-3 text-2xl min-[400px]:text-3xl sm:text-4xl font-extrabold tracking-tight">{featured.title}</h3>
             <p className="mt-2.5 sm:mt-3 text-sm text-muted-foreground">{featured.description}</p>
             <div className="mt-5 sm:mt-6 space-y-2 text-xs sm:text-sm">
-              <p className="flex items-center gap-2"><Globe className="size-4 text-neon" /> {featured.format}</p>
+              <p className="flex items-center gap-2"><Globe className="size-4 text-neon" /> {featured.format} · {featured.location}</p>
               <p className="flex items-center gap-2"><Calendar className="size-4 text-neon" /> {featured.date}</p>
               <p className="flex items-center gap-2"><Trophy className="size-4 text-neon" /> {featured.prize} Prize Pool</p>
             </div>
-            <Link to="/opportunities/$slug" params={{ slug: featured.slug }} className="mt-6 sm:mt-8 inline-flex w-full sm:w-auto self-stretch sm:self-start items-center justify-center gap-2 rounded-full bg-gradient-brand px-6 py-3.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110 hover:shadow-glow">Explore Event <ArrowRight className="size-4" /></Link>
+            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3">
+              <Link to="/opportunities/$slug" params={{ slug: featured.slug }} className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-gradient-brand px-6 py-3.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110 hover:shadow-glow">Explore Event <ArrowRight className="size-4" /></Link>
+              {featured.registrationUrl && (
+                <a href={featured.registrationUrl} target="_blank" rel="noopener noreferrer" className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-neon/40 bg-surface/80 px-6 py-3.5 text-sm font-semibold text-neon transition hover:border-neon hover:bg-neon/15 hover:shadow-glow-soft">Register on Unstop</a>
+              )}
+            </div>
           </div>
         </article>
       </Reveal>
