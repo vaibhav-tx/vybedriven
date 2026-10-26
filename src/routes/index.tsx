@@ -377,9 +377,9 @@ function Events() {
       </Reveal>
 
       <Reveal className="mt-8 sm:mt-10">
-        <article className="group grid overflow-hidden rounded-2xl sm:rounded-3xl border border-neon/25 bg-surface shadow-glow-soft md:grid-cols-[1.1fr_1fr]">
-          <div className="relative flex items-center justify-center overflow-hidden bg-black/60 p-3 sm:p-5 min-h-[260px] sm:min-h-[320px] md:min-h-[420px]">
-            <img src={featured.image} alt={featured.title} loading="eager" width={1254} height={1254} className="h-full max-h-[440px] w-full object-contain transition duration-700 group-hover:scale-[1.02]" />
+        <article className="group grid overflow-hidden rounded-2xl sm:rounded-3xl border border-neon/25 bg-surface shadow-glow-soft md:grid-cols-[0.95fr_1.05fr]">
+          <div className="relative flex items-center justify-center overflow-hidden bg-black/60 p-4 sm:p-6 min-h-[300px] sm:min-h-[380px] md:min-h-[460px]">
+            <img src={featured.image} alt={featured.title} loading="eager" width={819} height={1024} className="h-full max-h-[460px] w-auto max-w-full object-contain transition duration-700 group-hover:scale-[1.02]" />
             <div className="pointer-events-none absolute inset-0 hidden md:block bg-gradient-to-r from-transparent via-transparent to-surface/80" />
             <span className="absolute left-4 top-4 sm:left-5 sm:top-5 rounded-full bg-neon px-3 py-1 text-xs font-bold text-primary-foreground shadow-glow-soft">FEATURED</span>
           </div>
@@ -393,10 +393,10 @@ function Events() {
               <p className="flex items-center gap-2"><Trophy className="size-4 text-neon" /> {featured.prize} Prize Pool</p>
             </div>
             <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3">
-              <Link to="/opportunities/$slug" params={{ slug: featured.slug }} className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-gradient-brand px-6 py-3.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110 hover:shadow-glow">Explore Event <ArrowRight className="size-4" /></Link>
-              {featured.registrationUrl && (
-                <a href={featured.registrationUrl} target="_blank" rel="noopener noreferrer" className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-neon/40 bg-surface/80 px-6 py-3.5 text-sm font-semibold text-neon transition hover:border-neon hover:bg-neon/15 hover:shadow-glow-soft">Register on Unstop</a>
-              )}
+              {featured.registrationUrl ? (
+                <a href={featured.registrationUrl} target="_blank" rel="noopener noreferrer" className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-gradient-brand px-6 py-3.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110 hover:shadow-glow">Register now <ArrowRight className="size-4" /></a>
+              ) : null}
+              <Link to="/opportunities/$slug" params={{ slug: featured.slug }} className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-neon/40 bg-surface/80 px-6 py-3.5 text-sm font-semibold text-neon transition hover:border-neon hover:bg-neon/15 hover:shadow-glow-soft">Explore Event</Link>
             </div>
           </div>
         </article>

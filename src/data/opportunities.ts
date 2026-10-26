@@ -62,7 +62,7 @@ export const opportunities: Opportunity[] = [
     registrationDeadline: "Oct 28, 2026",
     eligibility: "Student innovators, developers, aspiring founders, and teams across all colleges and departments",
     teamSize: "1–4 members",
-    fee: "Free · Register on Unstop",
+    fee: "Free",
     status: "Registration open",
     registrationUrl: "https://unstop.com/hackathons/idea-competition-2026-fr-conceicao-rodrigues-college-of-engineering-frcrce-bandra-1736048",
     contacts: [
@@ -71,7 +71,6 @@ export const opportunities: Opportunity[] = [
     ],
     relatedLinks: [
       { label: "Official Exploration Portal", url: "https://ideacompetition.ecell-crce.in/explore" },
-      { label: "Register on Unstop", url: "https://unstop.com/hackathons/idea-competition-2026-fr-conceicao-rodrigues-college-of-engineering-frcrce-bandra-1736048" },
     ],
     overview: "IDEA COMPETITION 2026 is an idea-to-incubation startup program presented by E-Cell CRCE (Fr. Conceicao Rodrigues College of Engineering, Bandra) with Title Sponsor Union Bank of India, Platform Partner Vybe Driven, and Community Partner Mumbai Tech Week. Designed to bridge the gap between ideation and a real startup, the challenge features 4 core impact tracks: 1) Healthcare & Well-being, 2) Energy & Sustainability, 3) Education & Technology, and 4) Smart Cities & Urban Development. Top teams receive 2–3 months of intensive mentorship to build functional POCs, followed by an offline Grand Finale on 6th February 2027 at Fr. CRCE Bandra before venture founders and incubation partners. Over ₹50,000 in prize pool, incubation handoff, interview opportunities, goodies, and round-wise certificates.",
     schedule: [
