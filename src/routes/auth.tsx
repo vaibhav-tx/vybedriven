@@ -4,7 +4,6 @@ import { ArrowLeft, CheckCircle2, Eye, EyeOff, LockKeyhole, Mail, Sparkles, User
 import { Navbar } from "@/components/SiteChrome";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable";
 import { useAuth } from "@/lib/auth";
 
 type AuthSearch = { mode: "signin" | "signup"; next: string };
@@ -175,40 +174,33 @@ function AuthPage() {
     sessionStorage.setItem("hd-auth-next", search.next);
 
     try {
-      const result = await lovable.auth.signInWithOAuth("google");
+      const redirectTo = `${window.location.origin}/auth?next=${encodeURIComponent(search.next)}`;
+      const { data, error: oauthError } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo,
+        },
+      });
 
-      if (result.redirected) {
-        // Page is redirecting to the Google OAuth sign-in flow
-        return;
-      }
-
-      if (result.error) {
+      if (oauthError) {
         setBusy(false);
-        const errMessage = result.error.message || "";
-        if (
-          errMessage.toLowerCase().includes("cancel") ||
-          errMessage.toLowerCase().includes("closed")
-        ) {
-          setMessage("Google sign-in was cancelled.");
-          return;
+        if (oauthError.message.includes("missing OAuth secret")) {
+          setError(
+            "⚠️ Google OAuth credentials (Client ID & Secret) are not yet configured in your Supabase dashboard (Authentication -> Providers -> Google)."
+          );
+        } else {
+          setError(oauthError.message);
         }
-        setError(errMessage || "Failed to sign in with Google.");
         return;
       }
 
-      // If tokens were returned in-page (e.g. popup mode)
-      await navigate({ to: search.next, replace: true });
+      if (data?.url) {
+        window.location.assign(data.url);
+      }
     } catch (err: unknown) {
       setBusy(false);
       const errMsg = err instanceof Error ? err.message : "Unable to initiate Google sign-in.";
-      if (
-        errMsg.toLowerCase().includes("cancel") ||
-        errMsg.toLowerCase().includes("closed")
-      ) {
-        setMessage("Google sign-in was cancelled.");
-      } else {
-        setError(errMsg);
-      }
+      setError(errMsg);
     }
   };
 
