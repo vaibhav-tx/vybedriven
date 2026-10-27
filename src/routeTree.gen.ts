@@ -17,7 +17,10 @@ import { Route as DiscoverRouteImport } from './routes/discover'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as HackathonsRouteImport } from './routes/hackathons'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as SigninRouteImport } from './routes/signin'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as OpportunitiesSlugRouteImport } from './routes/opportunities.$slug'
 
@@ -60,9 +63,24 @@ const HackathonsRoute = HackathonsRouteImport.update({
   path: '/hackathons',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SigninRoute = SigninRouteImport.update({
+  id: '/signin',
+  path: '/signin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
@@ -84,7 +102,10 @@ export interface FileRoutesByFullPath {
   '/events': typeof EventsRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/hackathons': typeof HackathonsRoute
+  '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/signin': typeof SigninRoute
+  '/signup': typeof SignupRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/opportunities/$slug': typeof OpportunitiesSlugRoute
 }
@@ -96,7 +117,10 @@ export interface FileRoutesByTo {
   '/events': typeof EventsRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/hackathons': typeof HackathonsRoute
+  '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/signin': typeof SigninRoute
+  '/signup': typeof SignupRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/opportunities/$slug': typeof OpportunitiesSlugRoute
 }
@@ -110,7 +134,10 @@ export interface FileRoutesById {
   '/events': typeof EventsRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/hackathons': typeof HackathonsRoute
+  '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/signin': typeof SigninRoute
+  '/signup': typeof SignupRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/opportunities/$slug': typeof OpportunitiesSlugRoute
 }
@@ -124,7 +151,10 @@ export interface FileRouteTypes {
     | '/events'
     | '/forgot-password'
     | '/hackathons'
+    | '/login'
     | '/reset-password'
+    | '/signin'
+    | '/signup'
     | '/profile'
     | '/opportunities/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -136,7 +166,10 @@ export interface FileRouteTypes {
     | '/events'
     | '/forgot-password'
     | '/hackathons'
+    | '/login'
     | '/reset-password'
+    | '/signin'
+    | '/signup'
     | '/profile'
     | '/opportunities/$slug'
   id:
@@ -149,7 +182,10 @@ export interface FileRouteTypes {
     | '/events'
     | '/forgot-password'
     | '/hackathons'
+    | '/login'
     | '/reset-password'
+    | '/signin'
+    | '/signup'
     | '/_authenticated/profile'
     | '/opportunities/$slug'
   fileRoutesById: FileRoutesById
@@ -163,7 +199,10 @@ export interface RootRouteChildren {
   EventsRoute: typeof EventsRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   HackathonsRoute: typeof HackathonsRoute
+  LoginRoute: typeof LoginRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  SigninRoute: typeof SigninRoute
+  SignupRoute: typeof SignupRoute
   OpportunitiesSlugRoute: typeof OpportunitiesSlugRoute
 }
 
@@ -225,11 +264,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HackathonsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reset-password': {
       id: '/reset-password'
       path: '/reset-password'
       fullPath: '/reset-password'
       preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signin': {
+      id: '/signin'
+      path: '/signin'
+      fullPath: '/signin'
+      preLoaderRoute: typeof SigninRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/profile': {
@@ -269,7 +329,10 @@ const rootRouteChildren: RootRouteChildren = {
   EventsRoute: EventsRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   HackathonsRoute: HackathonsRoute,
+  LoginRoute: LoginRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  SigninRoute: SigninRoute,
+  SignupRoute: SignupRoute,
   OpportunitiesSlugRoute: OpportunitiesSlugRoute,
 }
 export const routeTree = rootRouteImport
