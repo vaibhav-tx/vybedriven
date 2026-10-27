@@ -174,7 +174,7 @@ function AuthPage() {
     sessionStorage.setItem("hd-auth-next", search.next);
 
     try {
-      const redirectTo = `${window.location.origin}/auth?next=${encodeURIComponent(search.next)}`;
+      const redirectTo = `${window.location.origin}/auth`;
       const { data, error: oauthError } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
