@@ -175,9 +175,7 @@ function AuthPage() {
     sessionStorage.setItem("hd-auth-next", search.next);
 
     try {
-      const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: `${window.location.origin}/auth`,
-      });
+      const result = await lovable.auth.signInWithOAuth("google");
 
       if (result.redirected) {
         // Page is redirecting to the Google OAuth sign-in flow
