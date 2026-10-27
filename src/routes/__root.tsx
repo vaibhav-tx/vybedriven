@@ -125,28 +125,65 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
+  const [profile, setProfile] = useState<import("@/lib/auth").Profile | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const fetchProfile = async (userId: string) => {
+    try {
+      const { data } = await supabase.from("profiles").select("*").eq("id", userId).maybeSingle();
+      setProfile((data as import("@/lib/auth").Profile) ?? null);
+    } catch {
+      setProfile(null);
+    }
+  };
+
+  const refreshProfile = async () => {
+    if (user) {
+      await fetchProfile(user.id);
+    }
+  };
 
   useEffect(() => {
     let active = true;
     supabase.auth.getUser().then(({ data }) => {
       if (!active) return;
-      setUser(data.user ?? null);
-      setLoading(false);
+      const currentUser = data.user ?? null;
+      setUser(currentUser);
+      if (currentUser) {
+        fetchProfile(currentUser.id).finally(() => {
+          if (active) setLoading(false);
+        });
+      } else {
+        setProfile(null);
+        setLoading(false);
+      }
     });
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
-      setUser(session?.user ?? null);
+      const currentUser = session?.user ?? null;
+      setUser(currentUser);
+      if (currentUser) {
+        fetchProfile(currentUser.id);
+      } else {
+        setProfile(null);
+      }
       setLoading(false);
       router.invalidate();
       if (event !== "SIGNED_OUT") queryClient.invalidateQueries();
     });
-    return () => { active = false; subscription.unsubscribe(); };
+
+    return () => {
+      active = false;
+      subscription.unsubscribe();
+    };
   }, [queryClient, router]);
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider value={{ user, loading }}><Outlet /></AuthProvider>
+      <AuthProvider value={{ user, profile, loading, refreshProfile }}>
+        <Outlet />
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

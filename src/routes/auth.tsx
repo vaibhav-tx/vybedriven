@@ -129,6 +129,8 @@ function AuthPage() {
     }
   };
 
+  const [showGoogleHelp, setShowGoogleHelp] = useState(false);
+
   const signInGoogle = async () => {
     setBusy(true);
     setError("");
@@ -136,17 +138,42 @@ function AuthPage() {
     sessionStorage.setItem("hd-auth-next", search.next);
 
     try {
-      const { error: oauthError } = await supabase.auth.signInWithOAuth({
+      const { data, error: oauthError } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
           redirectTo: `${window.location.origin}/auth?next=${encodeURIComponent(search.next)}`,
+          skipBrowserRedirect: true,
         },
       });
 
       if (oauthError) {
         setBusy(false);
-        setError("Google authentication is not yet enabled on this Supabase project. Please use Email & Password below.");
+        setError("Google authentication error: " + oauthError.message);
+        return;
       }
+
+      if (data?.url) {
+        // Preflight probe to check if Supabase provider has OAuth secret configured
+        try {
+          const res = await fetch(data.url, { method: "GET" });
+          if (!res.ok) {
+            const errData = await res.json().catch(() => null);
+            if (errData && (errData.msg?.includes("missing OAuth secret") || errData.error_code === "validation_failed")) {
+              setBusy(false);
+              setError("⚠️ Google OAuth Secret is not configured in your Supabase dashboard yet. Please enter your Google Client ID & Secret in Supabase -> Authentication -> Providers -> Google, or use Email / Demo login below.");
+              setShowGoogleHelp(true);
+              return;
+            }
+          }
+        } catch {
+          // If CORS prevents reading response, proceed to browser redirect
+        }
+
+        window.location.href = data.url;
+        return;
+      }
+
+      setBusy(false);
     } catch (err: unknown) {
       setBusy(false);
       setError(err instanceof Error ? err.message : "Unable to initiate Google authentication.");
@@ -301,6 +328,29 @@ function AuthPage() {
             <span className="text-base font-bold text-neon mr-2">G</span>
             Continue with Google
           </Button>
+
+          <div className="mt-2 text-center">
+            <button
+              type="button"
+              onClick={() => setShowGoogleHelp((v) => !v)}
+              className="text-[11px] text-muted-foreground hover:text-neon underline transition"
+            >
+              {showGoogleHelp ? "Hide Google Setup Guide" : "Why Google login says 'missing OAuth secret'?"}
+            </button>
+            {showGoogleHelp && (
+              <div className="mt-2 text-left rounded-xl border border-neon/30 bg-surface/90 p-3.5 text-xs text-foreground space-y-2 animate-in fade-in">
+                <p className="font-bold text-neon">How to enable Google Login in Supabase (2 mins):</p>
+                <ol className="list-decimal pl-4 space-y-1.5 text-muted-foreground">
+                  <li>Go to <strong className="text-foreground">Google Cloud Console</strong> &rarr; APIs & Services &rarr; Credentials &rarr; Create OAuth Client ID (Web Application).</li>
+                  <li>Set Authorized Redirect URI to: <code className="text-neon bg-black/60 px-1 py-0.5 rounded text-[10px] break-all">https://qcgcemmhwjuhnwuqkfbk.supabase.co/auth/v1/callback</code></li>
+                  <li>Go to <strong className="text-foreground">Supabase Dashboard</strong> &rarr; Authentication &rarr; Providers &rarr; Google &rarr; Paste your <strong className="text-foreground">Client ID</strong> and <strong className="text-foreground">Client Secret</strong> &rarr; Click Save!</li>
+                </ol>
+                <p className="text-[11px] text-neon/90 pt-1 border-t border-border/60">
+                  💡 Tip: You can also use Email/Password or the ⚡ Quick Demo Builder Login button below for instant access!
+                </p>
+              </div>
+            )}
+          </div>
 
           <div className="my-5 flex items-center gap-3 text-[11px] font-semibold text-muted-foreground tracking-wider">
             <span className="h-px flex-1 bg-border" />

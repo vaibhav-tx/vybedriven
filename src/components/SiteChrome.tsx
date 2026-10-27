@@ -1,12 +1,29 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
-import { Menu, X, Instagram, Mail, User, LogOut, ChevronDown, Phone, ArrowUp, ArrowRight } from "lucide-react";
+import {
+  Menu,
+  X,
+  Instagram,
+  Mail,
+  User,
+  LogOut,
+  ChevronDown,
+  ChevronRight,
+  Phone,
+  ArrowUp,
+  ArrowRight,
+  Gift,
+  Trophy,
+  Settings,
+  Sparkles,
+} from "lucide-react";
 import homeIcon from "@/assets/nav/home.png.asset.json";
 import hackathonsIcon from "@/assets/nav/hackathons.png.asset.json";
 import eventsIcon from "@/assets/nav/events.png.asset.json";
 import discoverIcon from "@/assets/nav/discover.png.asset.json";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/lib/auth";
+import { useAuth, type Profile } from "@/lib/auth";
+import type { User as SupabaseUser } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
 
 function Logo({ className = "h-9" }: { className?: string }) {
@@ -35,57 +52,312 @@ const links = [
   { label: "Discover", to: "/discover" as const, image: discoverIcon.url },
 ];
 
+function getProfileCompletion(profile: Profile | null): number {
+  if (!profile) return 30;
+  let score = 0;
+  if (profile.display_name?.trim()) score += 20;
+  if (profile.avatar_url?.trim()) score += 15;
+  if (profile.headline?.trim()) score += 15;
+  if (profile.location?.trim()) score += 15;
+  if (profile.skills && profile.skills.length > 0) score += 15;
+  if (profile.bio?.trim()) score += 10;
+  if (profile.college_or_company?.trim() || profile.github_url || profile.linkedin_url) score += 10;
+  return Math.min(100, Math.max(25, score));
+}
+
 function ProfileMenu() {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const { user, profile } = useAuth();
+
   useEffect(() => {
-    const close = (event: MouseEvent) => { if (ref.current && !ref.current.contains(event.target as Node)) setOpen(false); };
+    const close = (event: MouseEvent) => {
+      if (ref.current && !ref.current.contains(event.target as Node)) setOpen(false);
+    };
     document.addEventListener("mousedown", close);
     return () => document.removeEventListener("mousedown", close);
   }, []);
+
   const signOut = async () => {
     await supabase.auth.signOut();
     setOpen(false);
     await navigate({ to: "/", replace: true });
   };
+
+  if (!user) return null;
+
+  const displayName =
+    profile?.display_name?.trim() ||
+    user.user_metadata?.["full_name"] ||
+    user.email?.split("@")[0] ||
+    "Builder";
+  const firstName = displayName.split(" ")[0] || "Builder";
+  const avatar = profile?.avatar_url?.trim() || "👨‍💻";
+  const email = user.email || "";
+  const completion = getProfileCompletion(profile);
+
+  // Circular progress math (radius 22, circumference 138.2)
+  const radius = 22;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference - (completion / 100) * circumference;
+
   return (
     <div ref={ref} className="relative">
-      <Button onClick={() => setOpen((value) => !value)} aria-label="Open profile menu" variant="outline" className="h-10 rounded-full bg-surface px-3">
-        <User className="size-4" /><ChevronDown className="size-3" />
-      </Button>
-      {open && <div className="absolute right-0 mt-2 w-48 rounded-xl border border-border bg-popover p-2 shadow-glow-soft">
-        <Link to="/profile" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-popover-foreground hover:bg-surface hover:text-neon"><User className="size-4" />Complete profile</Link>
-        <Button onClick={signOut} variant="ghost" className="h-auto w-full justify-start rounded-lg px-3 py-2 font-normal text-popover-foreground hover:bg-surface hover:text-neon"><LogOut className="size-4" />Sign out</Button>
-      </div>}
+      {/* Navbar Trigger Button */}
+      <button
+        type="button"
+        onClick={() => setOpen((value) => !value)}
+        aria-label="Open builder profile menu"
+        className="group flex items-center gap-2 rounded-full border border-border/80 bg-surface/80 py-1 pl-1.5 pr-3 transition-all hover:border-neon hover:bg-surface hover:shadow-glow-soft"
+      >
+        <span className="grid size-8 place-items-center rounded-full bg-neon/15 text-lg shadow-inner">
+          {avatar}
+        </span>
+        <span className="text-xs font-bold text-foreground hidden sm:inline max-w-[110px] truncate">
+          {firstName}
+        </span>
+        <ChevronDown
+          className={`size-3.5 text-muted-foreground transition-transform duration-200 ${
+            open ? "rotate-180 text-neon" : ""
+          }`}
+        />
+      </button>
+
+      {/* Unstop-Style Rich Profile Card Dropdown */}
+      {open && (
+        <div className="absolute right-0 mt-3 w-80 sm:w-84 rounded-3xl border border-neon/30 bg-[#070e09]/95 p-5 shadow-2xl backdrop-blur-2xl animate-in fade-in slide-in-from-top-2 duration-200 z-50 text-foreground">
+          {/* Top Row: Avatar with Progress Ring + Edit Profile Button */}
+          <div className="flex items-start justify-between gap-3">
+            <div className="relative flex size-16 shrink-0 items-center justify-center">
+              <svg className="size-full -rotate-90" viewBox="0 0 52 52">
+                <circle
+                  cx="26"
+                  cy="26"
+                  r={radius}
+                  className="stroke-muted/30"
+                  strokeWidth="3.5"
+                  fill="transparent"
+                />
+                <circle
+                  cx="26"
+                  cy="26"
+                  r={radius}
+                  className="stroke-neon transition-all duration-700 ease-out"
+                  strokeWidth="3.5"
+                  strokeDasharray={circumference}
+                  strokeDashoffset={strokeDashoffset}
+                  strokeLinecap="round"
+                  fill="transparent"
+                />
+              </svg>
+              <div className="absolute inset-1 flex items-center justify-center rounded-full bg-surface text-2xl shadow-inner">
+                {avatar}
+              </div>
+              <span className="absolute -bottom-1.5 rounded-full border border-neon/50 bg-[#030804] px-1.5 py-0.2 text-[9px] font-black text-neon shadow-glow">
+                {completion}%
+              </span>
+            </div>
+
+            <Link
+              to="/profile"
+              onClick={() => setOpen(false)}
+              className="inline-flex items-center gap-1 rounded-full border border-border bg-surface/70 px-3 py-1.5 text-xs font-semibold text-foreground transition hover:border-neon hover:bg-neon/15 hover:text-neon"
+            >
+              <span>Edit Profile</span>
+              <ChevronRight className="size-3" />
+            </Link>
+          </div>
+
+          {/* Name & Email */}
+          <div className="mt-3">
+            <h3 className="text-base font-extrabold text-foreground truncate">
+              {displayName}
+            </h3>
+            <p className="text-xs text-muted-foreground truncate">
+              {email}
+            </p>
+          </div>
+
+          {/* Stats Row (Unstop style XP & Badges) */}
+          <div className="mt-4 grid grid-cols-2 gap-2 rounded-2xl border border-border/80 bg-surface/60 p-2.5">
+            <div className="flex items-center gap-2 rounded-xl bg-background/50 px-2.5 py-2">
+              <span className="text-amber-400 text-sm">⭐</span>
+              <div>
+                <p className="text-[10px] uppercase font-semibold text-muted-foreground">Builder XP</p>
+                <p className="text-xs font-black text-foreground">{completion >= 80 ? "670 pts" : "150 pts"}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 rounded-xl bg-background/50 px-2.5 py-2">
+              <span className="text-neon text-sm">🏆</span>
+              <div>
+                <p className="text-[10px] uppercase font-semibold text-muted-foreground">Rank</p>
+                <p className="text-xs font-black text-neon">{completion >= 80 ? "Verified" : "Rising"}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Menu Navigation Items */}
+          <div className="mt-4 space-y-1 text-xs sm:text-sm">
+            <Link
+              to="/hackathons"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-foreground/90 font-medium transition hover:bg-surface hover:text-neon"
+            >
+              <Gift className="size-4 text-neon" />
+              <span>Registered Hackathons</span>
+            </Link>
+
+            <Link
+              to="/opportunities/$slug"
+              params={{ slug: "adappt-5-0" }}
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-foreground/90 font-medium transition hover:bg-surface hover:text-neon"
+            >
+              <Trophy className="size-4 text-amber-400" />
+              <span>ADAPPT 5.0 Challenge</span>
+            </Link>
+
+            <Link
+              to="/opportunities/$slug"
+              params={{ slug: "idea-competition-2026" }}
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-foreground/90 font-medium transition hover:bg-surface hover:text-neon"
+            >
+              <Sparkles className="size-4 text-cyan-400" />
+              <span>Idea Competition '26</span>
+            </Link>
+
+            <Link
+              to="/profile"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-foreground/90 font-medium transition hover:bg-surface hover:text-neon"
+            >
+              <Settings className="size-4 text-muted-foreground" />
+              <span>Profile Settings</span>
+            </Link>
+
+            <Link
+              to="/contact"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-foreground/90 font-medium transition hover:bg-surface hover:text-neon"
+            >
+              <Phone className="size-4 text-muted-foreground" />
+              <span>Contact Support</span>
+            </Link>
+          </div>
+
+          {/* Logout Divider & Button */}
+          <div className="mt-3 border-t border-border/80 pt-2">
+            <button
+              type="button"
+              onClick={signOut}
+              className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs sm:text-sm font-semibold text-destructive transition hover:bg-destructive/10"
+            >
+              <LogOut className="size-4 text-destructive" />
+              <span>Logout</span>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
-  const { user, loading } = useAuth();
+  const { user, profile, loading } = useAuth();
   const location = useLocation();
+
+  const displayName =
+    profile?.display_name?.trim() ||
+    user?.user_metadata?.["full_name"] ||
+    user?.email?.split("@")[0] ||
+    "Builder";
+  const avatar = profile?.avatar_url?.trim() || "👨‍💻";
+  const completion = getProfileCompletion(profile);
+
   return (
     <header className="sticky top-2 sm:top-4 z-50 px-2.5 sm:px-4">
-      <nav className="relative mx-auto flex h-[64px] sm:h-[72px] max-w-[1120px] items-center justify-between rounded-2xl sm:rounded-[24px] border border-border px-3.5 sm:px-4 backdrop-blur-xl transition-colors" style={{ background: "var(--nav-bg)", boxShadow: "var(--nav-shadow)" }}>
+      <nav
+        className="relative mx-auto flex h-[64px] sm:h-[72px] max-w-[1120px] items-center justify-between rounded-2xl sm:rounded-[24px] border border-border px-3.5 sm:px-4 backdrop-blur-xl transition-colors"
+        style={{ background: "var(--nav-bg)", boxShadow: "var(--nav-shadow)" }}
+      >
         <ul className="hidden items-center gap-2 lg:flex">
           {links.map((item) => {
             const active = item.to === "/" ? location.pathname === "/" : location.pathname.startsWith(item.to);
-            return <li key={item.label} className="group relative"><Link to={item.to} aria-label={item.label} title={item.label} className={`nav-icon grid size-11 place-items-center rounded-full border-2 transition ${active ? "is-active border-lime shadow-glow" : "border-transparent hover:border-border hover:bg-surface"}`}><img src={item.image} alt="" className="nav-art size-6 object-contain" /></Link><span className="pointer-events-none absolute left-1/2 top-[calc(100%+10px)] -translate-x-1/2 rounded-md bg-foreground px-2 py-1 text-xs text-background opacity-0 shadow-sm transition group-hover:opacity-100 group-focus-within:opacity-100">{item.label}</span></li>;
+            return (
+              <li key={item.label} className="group relative">
+                <Link
+                  to={item.to}
+                  aria-label={item.label}
+                  title={item.label}
+                  className={`nav-icon grid size-11 place-items-center rounded-full border-2 transition ${
+                    active ? "is-active border-lime shadow-glow" : "border-transparent hover:border-border hover:bg-surface"
+                  }`}
+                >
+                  <img src={item.image} alt="" className="nav-art size-6 object-contain" />
+                </Link>
+                <span className="pointer-events-none absolute left-1/2 top-[calc(100%+10px)] -translate-x-1/2 rounded-md bg-foreground px-2 py-1 text-xs text-background opacity-0 shadow-sm transition group-hover:opacity-100 group-focus-within:opacity-100">
+                  {item.label}
+                </span>
+              </li>
+            );
           })}
         </ul>
-        <div className="lg:absolute lg:left-1/2 lg:-translate-x-1/2"><Logo className="h-8.5 sm:h-11" /></div>
+        <div className="lg:absolute lg:left-1/2 lg:-translate-x-1/2">
+          <Logo className="h-8.5 sm:h-11" />
+        </div>
         <div className="hidden items-center gap-2 lg:flex">
-          <Link to="/contact" className="rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition hover:text-neon">Contact Us</Link>
-          {!loading && (user ? <ProfileMenu /> : <Button asChild className="rounded-full bg-gradient-brand text-primary-foreground hover:brightness-105"><Link to="/auth" search={{ mode: "signin", next: "/" }}>Sign In</Link></Button>)}
+          <Link
+            to="/contact"
+            className="rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition hover:text-neon"
+          >
+            Contact Us
+          </Link>
+          {!loading &&
+            (user ? (
+              <ProfileMenu />
+            ) : (
+              <Button asChild className="rounded-full bg-gradient-brand text-primary-foreground hover:brightness-105">
+                <Link to="/auth" search={{ mode: "signin", next: "/" }}>
+                  Sign In
+                </Link>
+              </Button>
+            ))}
         </div>
         <div className="flex items-center gap-2 lg:hidden">
-          <Button variant="ghost" size="icon" className="size-10 rounded-full border border-border/60 bg-surface/40 hover:bg-surface hover:text-neon text-foreground" onClick={() => setOpen((value) => !value)} aria-label="Toggle menu">{open ? <X className="size-5" /> : <Menu className="size-5" />}</Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="size-10 rounded-full border border-border/60 bg-surface/40 hover:bg-surface hover:text-neon text-foreground"
+            onClick={() => setOpen((value) => !value)}
+            aria-label="Toggle menu"
+          >
+            {open ? <X className="size-5" /> : <Menu className="size-5" />}
+          </Button>
         </div>
       </nav>
       {open && (
         <div className="mx-auto mt-2 max-w-[1120px] rounded-2xl border border-neon/25 bg-[#060b07]/95 p-3.5 shadow-2xl backdrop-blur-2xl lg:hidden animate-in fade-in slide-in-from-top-2 duration-200">
+          {/* Mobile Profile Header if Logged In */}
+          {user && (
+            <div className="mb-3 flex items-center justify-between rounded-xl border border-border bg-surface/80 p-3">
+              <div className="flex items-center gap-3">
+                <span className="grid size-11 place-items-center rounded-full bg-neon/15 text-2xl shadow-inner">
+                  {avatar}
+                </span>
+                <div>
+                  <p className="text-sm font-bold text-foreground truncate max-w-[160px]">{displayName}</p>
+                  <p className="text-xs text-muted-foreground truncate max-w-[160px]">{user.email}</p>
+                </div>
+              </div>
+              <span className="rounded-full border border-neon/50 bg-[#030804] px-2 py-0.5 text-[10px] font-bold text-neon shadow-glow">
+                {completion}%
+              </span>
+            </div>
+          )}
+
           <div className="space-y-1">
             {links.map((item) => {
               const active = item.to === "/" ? location.pathname === "/" : location.pathname.startsWith(item.to);
@@ -95,7 +367,9 @@ export function Navbar() {
                   to={item.to}
                   onClick={() => setOpen(false)}
                   className={`flex items-center gap-3 rounded-xl px-3.5 py-3 text-sm font-semibold transition ${
-                    active ? "bg-neon/15 text-neon border border-neon/30" : "text-foreground hover:bg-surface/80 hover:text-neon"
+                    active
+                      ? "bg-neon/15 text-neon border border-neon/30"
+                      : "text-foreground hover:bg-surface/80 hover:text-neon"
                   }`}
                 >
                   <img src={item.image} alt="" className="nav-art size-5.5 object-contain" />
@@ -113,17 +387,40 @@ export function Navbar() {
             </Link>
           </div>
           <div className="mt-3 border-t border-border/80 pt-3">
-            {!loading && (user ? (
-              <div className="flex flex-col gap-2">
-                <Link to="/profile" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-foreground hover:bg-surface">
-                  <User className="size-4 text-neon" />Profile
-                </Link>
-              </div>
-            ) : (
-              <Button asChild className="w-full h-11 rounded-full bg-gradient-brand text-primary-foreground font-bold shadow-glow-soft">
-                <Link to="/auth" search={{ mode: "signin", next: "/" }}>Sign In to Vybe Driven</Link>
-              </Button>
-            ))}
+            {!loading &&
+              (user ? (
+                <div className="flex flex-col gap-2">
+                  <Link
+                    to="/profile"
+                    onClick={() => setOpen(false)}
+                    className="flex items-center gap-2 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-foreground hover:bg-surface"
+                  >
+                    <Settings className="size-4 text-neon" />
+                    Edit Builder Profile
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      await supabase.auth.signOut();
+                      setOpen(false);
+                      window.location.href = "/";
+                    }}
+                    className="flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-semibold text-destructive hover:bg-destructive/10 text-left"
+                  >
+                    <LogOut className="size-4 text-destructive" />
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <Button
+                  asChild
+                  className="w-full h-11 rounded-full bg-gradient-brand text-primary-foreground font-bold shadow-glow-soft"
+                >
+                  <Link to="/auth" search={{ mode: "signin", next: "/" }}>
+                    Sign In to Vybe Driven
+                  </Link>
+                </Button>
+              ))}
           </div>
         </div>
       )}
