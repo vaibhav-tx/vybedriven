@@ -228,6 +228,153 @@ We're bringing together people who don't just want to talk about ideas — they 
   },
 
   {
+    slug: "beyond-9to5-buildathon-mumbai-2026",
+    title: "BEYOND 9TO5 — Buildathon",
+    type: "Hackathon",
+    tag: "8-Hour Offline Buildathon · Working Professionals",
+    description: "Your 9TO5 Ends. Your Building Begins. An 8-hour offline buildathon at Paytm Office, Mumbai for working professionals, engineers, and founders to turn ideas into working prototypes.",
+    date: "Nov 22, 2026 · 10:00 AM – 6:00 PM IST",
+    location: "Paytm Office, Mumbai (Vile Parle)",
+    format: "In person",
+    prize: "Showcases, Mentorship & Partner Perks",
+    image: "/events/beyond-9to5-mumbai.jpg",
+    imageFit: "contain",
+    organizer: "Vybe Driven × EtriqAI × Paytm AI",
+    registrationDeadline: "Nov 21, 2026 · 11:59 PM IST",
+    eligibility: "Working professionals, developers, engineers, founders & technology enthusiasts",
+    teamSize: "Solo or 1–4 Members",
+    fee: "Free (Approval Required)",
+    status: "Registration open",
+    registrationUrl: "https://luma.com/ikcmraz8?utm_source=vybedriven&utm_medium=community&utm_campaign=beyond9to5_mumbai",
+    registrationLabel: "Request to Join",
+    registrationNote: "Participation is application-based and strictly limited to 150 selected participants. Applications are reviewed on a rolling basis.",
+    groupUrl: "https://chat.whatsapp.com/B55qEAoXwRWJIzqMivTsZk?s=cl&p=a&mlu=4&ilr=4&utm_source=luma",
+    groupLabel: "Join Official WhatsApp Group",
+    contacts: [
+      { name: "Vybe Driven Support", phone: "+91 80979 26578" },
+      { name: "Mumbai Tech Community", phone: "hello@vybedriven.in" },
+    ],
+    relatedLinks: [
+      { label: "Lu.ma Registration Page", url: "https://luma.com/ikcmraz8?utm_source=vybedriven&utm_medium=community&utm_campaign=beyond9to5_mumbai" },
+      { label: "Paytm Office Venue (Google Maps)", url: "https://www.google.com/maps/search/?api=1&query=19.1073081%2C72.85295780000001&query_place_id=ChIJZ-9pOgDJ5zsRcaixJ14BC2o" },
+      { label: "WhatsApp Announcements", url: "https://chat.whatsapp.com/B55qEAoXwRWJIzqMivTsZk?s=cl&p=a&mlu=4&ilr=4&utm_source=luma" },
+    ],
+    perks: [
+      {
+        icon: "rocket",
+        emoji: "⚡",
+        title: "8 Hours of High-Energy Building",
+        description: "Intense, focused sprint solving real-world problem statements shared directly by organizers.",
+      },
+      {
+        icon: "handshake",
+        emoji: "🤝",
+        title: "Expert Mentorship & Guidance",
+        description: "Hands-on guidance and code architecture reviews from experienced builders and tech leads.",
+      },
+      {
+        icon: "award",
+        emoji: "🏆",
+        title: "Live Prototype Demos & Judging",
+        description: "Present working prototypes to industry judges, founders, and peer builders.",
+      },
+      {
+        icon: "coffee",
+        emoji: "🏢",
+        title: "Paytm Office Experience & Networking",
+        description: "In-person building at Paytm Office, Mumbai alongside 150 curated developers and founders.",
+      },
+    ],
+    overview: `### Your 9TO5 Ends. Your Building Begins.
+
+What if your best ideas started after work? **BEYOND 9TO5** is an 8-hour offline buildathon designed specifically for working professionals, engineers, product builders, founders, and technology enthusiasts who want to step beyond their day jobs, solve real-world problems, and turn innovative ideas into functional prototypes.
+
+Bring your skills, collaborate with fellow builders, and transform ideas into practical solutions.
+
+---
+
+### What to Expect
+- **8 Hours of Focused Building**: Rapid prototyping and collaborative execution in a fast-paced environment.
+- **Real-World Problem Statements**: Handcrafted problem statements shared on the event morning.
+- **Hands-On Mentorship**: Direct guidance from seasoned tech leads, engineers, and entrepreneurs.
+- **Functional Prototypes & Demos**: Showcase what you built to the entire room and get instant expert feedback.
+- **High-Impact Networking**: Connect with 150 selected builders across Mumbai's thriving tech ecosystem.
+
+---
+
+### Key Information & Venue
+- **Date**: Sunday, 22 November 2026 (10:00 AM – 6:00 PM IST)
+- **Venue**: Paytm Office — Viacom Building, Tukaram Sandam Marg, Navpada, Netaji Subhash Nagar, Vile Parle, Mumbai, Maharashtra 400057, India.
+- **Team Size**: Solo or 1–4 members per team.
+- **Capacity**: Strictly limited to 150 selected participants.
+- **Format**: 100% Offline Buildathon.
+
+---
+
+### Partners
+- **Platform Partner**: Vybe Driven (vybedriven.in)
+- **Ecosystem Partners**: EtriqAI, Paytm AI
+- **Community Partners**: Oriane, Tavily, Nexconn, Mumbai Tech Community
+
+---
+
+### Selection & Approval Process
+Participation is application-based and limited to 150 selected participants. Submitting an application does not guarantee selection. Shortlisted participants will receive approval confirmation and further instructions via email and WhatsApp.`,
+    schedule: [
+      {
+        title: "Check-in & Opening Address",
+        dateBadge: "10:00 AM",
+        date: "22 Nov 2026 · 10:00 AM – 10:30 AM",
+        description: "Arrival at Paytm Office Mumbai, attendee verification, and welcome keynote.",
+      },
+      {
+        title: "Problem Statements Reveal & Team Formation",
+        dateBadge: "10:30 AM",
+        date: "22 Nov 2026 · 10:30 AM – 11:00 AM",
+        description: "Official announcement of problem tracks, rules, and finalizing squad rosters.",
+      },
+      {
+        title: "8-Hour Build Sprint & Checkpoint Mentoring",
+        dateBadge: "11:00 AM",
+        date: "22 Nov 2026 · 11:00 AM – 4:30 PM",
+        description: "Intense prototyping, development sprints, and architecture feedback from mentors.",
+      },
+      {
+        title: "Project Submission & Code Freeze",
+        dateBadge: "4:30 PM",
+        date: "22 Nov 2026 · 04:30 PM",
+        description: "Final submission of working code repositories, live demo links, and presentation decks.",
+      },
+      {
+        title: "Live Showcases, Judging & Awards",
+        dateBadge: "5:00 PM",
+        date: "22 Nov 2026 · 5:00 PM – 6:00 PM",
+        description: "Finalists demo their prototypes to jury members, followed by announcements and networking.",
+      },
+    ],
+    rewards: [
+      {
+        title: "Top Prototype Winner Accolades",
+        description: "Top-rated prototypes receive official awards, ecosystem recognition, and media spotlights.",
+        badge: "Winner",
+        type: "certificate",
+      },
+      {
+        title: "Partner Tool Credits & Perks",
+        description: "Exclusive API credits, platform access, and perks supported by ecosystem partners.",
+        badge: "Perks",
+        type: "perk",
+      },
+      {
+        title: "Certificate of Participation",
+        description: "Official certificate released for all attending builders who build and ship at the event.",
+        badge: "Certificate",
+        type: "certificate",
+      },
+    ],
+  },
+
+  {
     slug: "luminar-creators-award-2027",
     title: "Luminar Creators Award 2027",
     type: "Competition",

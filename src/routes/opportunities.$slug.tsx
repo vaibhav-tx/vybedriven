@@ -49,6 +49,7 @@ type OpportunitySearch = {
   register?: string;
   joinCode?: string;
   joinTeam?: string;
+  autoredirect?: string;
 };
 
 export const Route = createFileRoute("/opportunities/$slug")({
@@ -56,6 +57,7 @@ export const Route = createFileRoute("/opportunities/$slug")({
     register: typeof search["register"] === "string" ? search["register"] : undefined,
     joinCode: typeof search["joinCode"] === "string" ? search["joinCode"] : undefined,
     joinTeam: typeof search["joinTeam"] === "string" ? search["joinTeam"] : undefined,
+    autoredirect: typeof search["autoredirect"] === "string" ? search["autoredirect"] : undefined,
   }),
   loader: ({ params }) => {
     const opportunity = getOpportunity(params.slug);
@@ -253,7 +255,7 @@ function EventAuthGateDialog({
     setBusy(true);
     setError("");
     try {
-      const redirectTo = `${window.location.origin}/opportunities/${item.slug}`;
+      const redirectTo = `${window.location.origin}/opportunities/${item.slug}${item.registrationUrl ? "?autoredirect=1" : ""}`;
       const { data, error: oauthErr } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
@@ -315,6 +317,9 @@ function EventAuthGateDialog({
           toast.success(`Welcome, ${fullName.trim()}! Event unlocked.`);
           setBusy(false);
           onOpenChange(false);
+          if (item.registrationUrl && typeof window !== "undefined") {
+            window.open(item.registrationUrl, "_blank", "noopener,noreferrer");
+          }
           return;
         }
       }
@@ -335,6 +340,9 @@ function EventAuthGateDialog({
         toast.success("Welcome back! Event unlocked.");
         setBusy(false);
         onOpenChange(false);
+        if (item.registrationUrl && typeof window !== "undefined") {
+          window.open(item.registrationUrl, "_blank", "noopener,noreferrer");
+        }
         return;
       }
     } catch (err: unknown) {
@@ -537,6 +545,23 @@ function OpportunityDetails() {
   const handleRegisterClick = () => {
     setRegModalOpen(true);
   };
+
+  const handleExternalRegisterClick = () => {
+    if (!item.registrationUrl) return;
+    if (!user) {
+      setExploreGateOpen(true);
+      toast.info("Please sign in or create a free builder account to proceed to registration.");
+    } else {
+      window.open(item.registrationUrl, "_blank", "noopener,noreferrer");
+    }
+  };
+
+  // Auto-redirect to external registration if redirected after Google OAuth
+  useEffect(() => {
+    if (search.autoredirect === "1" && user && item.registrationUrl) {
+      window.open(item.registrationUrl, "_blank", "noopener,noreferrer");
+    }
+  }, [search.autoredirect, user, item.registrationUrl]);
 
   const registrations = useEventRegistrations(item.slug);
   const regCount = registrations.length;
@@ -817,15 +842,14 @@ function OpportunityDetails() {
                 ) : (
                   <div className="mt-3.5 space-y-2">
                     {item.registrationUrl ? (
-                      <a
-                        href={item.registrationUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-brand px-5 py-3 text-sm font-bold text-primary-foreground shadow-glow hover:brightness-105 transition"
+                      <Button
+                        type="button"
+                        onClick={handleExternalRegisterClick}
+                        className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-brand px-5 py-3.5 text-sm font-bold text-primary-foreground shadow-glow hover:brightness-105 transition"
                       >
-                        Register Now
+                        {item.registrationLabel || "Register Now"}
                         <ArrowRight className="size-4" />
-                      </a>
+                      </Button>
                     ) : (
                       item.status !== "Sold out" && (
                         <Button
@@ -1130,7 +1154,10 @@ function OpportunityDetails() {
                   <ul className="mt-2 space-y-1.5">
                     {item.contacts.map((contact) => (
                       <li key={contact.phone} className="text-xs">
-                        <a href={`tel:${contact.phone}`} className="font-semibold text-foreground hover:text-neon">
+                        <a
+                          href={contact.phone.includes("@") ? `mailto:${contact.phone}` : `tel:${contact.phone}`}
+                          className="font-semibold text-foreground hover:text-neon"
+                        >
                           {contact.name}
                         </a>
                         <span className="text-muted-foreground"> · {contact.phone}</span>
@@ -1343,15 +1370,14 @@ function OpportunityDetails() {
                   <div className="mt-5 space-y-3">
                     {/* Primary Registration Action */}
                     {item.registrationUrl ? (
-                      <a
-                        href={item.registrationUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-brand px-6 py-3.5 text-sm font-bold text-primary-foreground shadow-glow hover:brightness-105 transition"
+                      <Button
+                        type="button"
+                        onClick={handleExternalRegisterClick}
+                        className="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-brand px-6 py-6 text-sm font-bold text-primary-foreground shadow-glow hover:brightness-105 transition"
                       >
-                        Register Now
+                        {item.registrationLabel || "Register Now"}
                         <ArrowRight className="size-4" />
-                      </a>
+                      </Button>
                     ) : (
                       item.status !== "Sold out" && (
                         <Button
@@ -1388,7 +1414,10 @@ function OpportunityDetails() {
                     <ul className="mt-2 space-y-1.5">
                       {item.contacts.map((contact) => (
                         <li key={contact.phone} className="text-xs sm:text-sm">
-                          <a href={`tel:${contact.phone}`} className="font-medium hover:text-neon">
+                          <a
+                            href={contact.phone.includes("@") ? `mailto:${contact.phone}` : `tel:${contact.phone}`}
+                            className="font-medium hover:text-neon"
+                          >
                             {contact.name}
                           </a>
                           <span className="text-muted-foreground"> · {contact.phone}</span>
@@ -1442,14 +1471,13 @@ function OpportunityDetails() {
                   </Button>
                 )
               ) : item.registrationUrl ? (
-                <a
-                  href={item.registrationUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Button
+                  size="sm"
+                  onClick={handleExternalRegisterClick}
                   className="inline-flex items-center gap-1 rounded-full bg-gradient-brand px-5 py-2.5 text-xs font-black text-primary-foreground shadow-glow"
                 >
-                  Register Now <ArrowRight className="size-3.5" />
-                </a>
+                  {item.registrationLabel || "Register Now"} <ArrowRight className="size-3.5" />
+                </Button>
               ) : (
                 <Button
                   onClick={handleRegisterClick}
