@@ -41,19 +41,43 @@ function OpportunityCard({ item }: { item: Opportunity }) {
   );
 }
 
+const HACKATHON_PAGE_ORDER: Record<string, number> = {
+  "goa-buildathon-2027": 1,
+  "beyond-9to5-buildathon-bengaluru-2026": 2,
+  "beyond-9to5-buildathon-mumbai-2026": 3,
+};
+
 export function OpportunityBrowser({ allowedTypes, showTypeFilter = false }: { allowedTypes?: OpportunityType[]; showTypeFilter?: boolean }) {
   const allOpportunities = useOpportunities();
   const [query, setQuery] = useState("");
   const [type, setType] = useState<OpportunityType | "All">("All");
   const [format, setFormat] = useState<(typeof formats)[number]>("All formats");
 
-  const list = useMemo(() => allOpportunities.filter((item) => {
-    const allowed = !allowedTypes || allowedTypes.includes(item.type);
-    const matchesType = type === "All" || item.type === type;
-    const matchesFormat = format === "All formats" || item.format === format;
-    const haystack = `${item.title} ${item.tag} ${item.location} ${item.description}`.toLowerCase();
-    return allowed && matchesType && matchesFormat && haystack.includes(query.toLowerCase());
-  }), [allOpportunities, allowedTypes, format, query, type]);
+  const list = useMemo(() => {
+    const isHackathonView = Boolean(
+      allowedTypes &&
+      allowedTypes.includes("Hackathon") &&
+      !allowedTypes.includes("Meetup")
+    );
+
+    const filtered = allOpportunities.filter((item) => {
+      const allowed = !allowedTypes || allowedTypes.includes(item.type);
+      const matchesType = type === "All" || item.type === type;
+      const matchesFormat = format === "All formats" || item.format === format;
+      const haystack = `${item.title} ${item.tag} ${item.location} ${item.description}`.toLowerCase();
+      return allowed && matchesType && matchesFormat && haystack.includes(query.toLowerCase());
+    });
+
+    if (isHackathonView) {
+      return [...filtered].sort((a, b) => {
+        const orderA = HACKATHON_PAGE_ORDER[a.slug] ?? 99;
+        const orderB = HACKATHON_PAGE_ORDER[b.slug] ?? 99;
+        return orderA - orderB;
+      });
+    }
+
+    return filtered;
+  }, [allOpportunities, allowedTypes, format, query, type]);
 
   return (
     <>

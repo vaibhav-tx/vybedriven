@@ -1,5 +1,3 @@
-import evCool from "@/assets/ev-cool.jpg";
-import evCyber from "@/assets/ev-cyber.jpg";
 import inspirePoster from "@/assets/inspire-colloquium.png.asset.json";
 import iplPoster from "@/assets/events/ipl-innovation-pitch-league-2026.jpeg.asset.json";
 import elevatePoster from "@/assets/events/elevate-1-0-2026.png.asset.json";
@@ -72,6 +70,301 @@ export type Opportunity = {
 };
 
 export const opportunities: Opportunity[] = [
+  {
+    slug: "beyond-9to5-buildathon-mumbai-2026",
+    title: "BEYOND 9TO5 — Buildathon (Mumbai Edition)",
+    type: "Hackathon",
+    tag: "8-Hour Offline Buildathon · Working Professionals",
+    description: "Your 9TO5 Ends. Your Building Begins. An 8-hour offline buildathon at Paytm Office, Mumbai for working professionals, engineers, and founders to turn ideas into working prototypes.",
+    date: "Nov 22, 2026 · 10:00 AM – 6:00 PM IST",
+    location: "Paytm Office, Mumbai (Vile Parle)",
+    format: "In person",
+    prize: "Showcases, Mentorship & Partner Perks",
+    image: "/events/beyond-9to5-mumbai.jpg",
+    imageFit: "contain",
+    organizer: "Vybe Driven × EtriqAI × Paytm AI",
+    registrationDeadline: "Nov 21, 2026 · 11:59 PM IST",
+    eligibility: "Working professionals, developers, engineers, founders & technology enthusiasts",
+    teamSize: "Solo or 1–4 Members",
+    fee: "Free (Approval Required)",
+    status: "Registration open",
+    registrationUrl: "https://luma.com/ikcmraz8?utm_source=vybedriven&utm_medium=community&utm_campaign=beyond9to5_mumbai",
+    registrationLabel: "Request to Join",
+    registrationNote: "Participation is application-based and strictly limited to 150 selected participants. Applications are reviewed on a rolling basis.",
+    groupUrl: "https://chat.whatsapp.com/B55qEAoXwRWJIzqMivTsZk?s=cl&p=a&mlu=4&ilr=4&utm_source=luma",
+    groupLabel: "Join Official WhatsApp Group",
+    contacts: [
+      { name: "Vybe Driven Support", phone: "+91 80979 26578" },
+      { name: "Mumbai Tech Community", phone: "hello@vybedriven.in" },
+    ],
+    relatedLinks: [
+      { label: "Lu.ma Registration Page", url: "https://luma.com/ikcmraz8?utm_source=vybedriven&utm_medium=community&utm_campaign=beyond9to5_mumbai" },
+      { label: "Paytm Office Venue (Google Maps)", url: "https://www.google.com/maps/search/?api=1&query=19.1073081%2C72.85295780000001&query_place_id=ChIJZ-9pOgDJ5zsRcaixJ14BC2o" },
+      { label: "WhatsApp Announcements", url: "https://chat.whatsapp.com/B55qEAoXwRWJIzqMivTsZk?s=cl&p=a&mlu=4&ilr=4&utm_source=luma" },
+    ],
+    perks: [
+      {
+        icon: "rocket",
+        emoji: "⚡",
+        title: "8 Hours of High-Energy Building",
+        description: "Intense, focused sprint solving real-world problem statements shared directly by organizers.",
+      },
+      {
+        icon: "handshake",
+        emoji: "🤝",
+        title: "Expert Mentorship & Guidance",
+        description: "Hands-on guidance and code architecture reviews from experienced builders and tech leads.",
+      },
+      {
+        icon: "award",
+        emoji: "🏆",
+        title: "Live Prototype Demos & Judging",
+        description: "Present working prototypes to industry judges, founders, and peer builders.",
+      },
+      {
+        icon: "coffee",
+        emoji: "🏢",
+        title: "Paytm Office Experience & Networking",
+        description: "In-person building at Paytm Office, Mumbai alongside 150 curated developers and founders.",
+      },
+    ],
+    overview: `### Your 9TO5 Ends. Your Building Begins.
+
+What if your best ideas started after work? **BEYOND 9TO5** is an 8-hour offline buildathon designed specifically for working professionals, engineers, product builders, founders, and technology enthusiasts who want to step beyond their day jobs, solve real-world problems, and turn innovative ideas into functional prototypes.
+
+Bring your skills, collaborate with fellow builders, and transform ideas into practical solutions.
+
+---
+
+### What to Expect
+- **8 Hours of Focused Building**: Rapid prototyping and collaborative execution in a fast-paced environment.
+- **Real-World Problem Statements**: Handcrafted problem statements shared on the event morning.
+- **Hands-On Mentorship**: Direct guidance from seasoned tech leads, engineers, and entrepreneurs.
+- **Functional Prototypes & Demos**: Showcase what you built to the entire room and get instant expert feedback.
+- **High-Impact Networking**: Connect with 150 selected builders across Mumbai's thriving tech ecosystem.
+
+---
+
+### Key Information & Venue
+- **Date**: Sunday, 22 November 2026 (10:00 AM – 6:00 PM IST)
+- **Venue**: Paytm Office — Viacom Building, Tukaram Sandam Marg, Navpada, Netaji Subhash Nagar, Vile Parle, Mumbai, Maharashtra 400057, India.
+- **Team Size**: Solo or 1–4 members per team.
+- **Capacity**: Strictly limited to 150 selected participants.
+- **Format**: 100% Offline Buildathon.
+
+---
+
+### Partners
+- **Platform Partner**: Vybe Driven (vybedriven.in)
+- **Ecosystem Partners**: EtriqAI, Paytm AI
+- **Community Partners**: Oriane, Tavily, Nexconn, Mumbai Tech Community
+
+---
+
+### Selection & Approval Process
+Participation is application-based and limited to 150 selected participants. Submitting an application does not guarantee selection. Shortlisted participants will receive approval confirmation and further instructions via email and WhatsApp.`,
+    schedule: [
+      {
+        title: "Check-in & Opening Address",
+        dateBadge: "10:00 AM",
+        date: "22 Nov 2026 · 10:00 AM – 10:30 AM",
+        description: "Arrival at Paytm Office Mumbai, attendee verification, and welcome keynote.",
+      },
+      {
+        title: "Problem Statements Reveal & Team Formation",
+        dateBadge: "10:30 AM",
+        date: "22 Nov 2026 · 10:30 AM – 11:00 AM",
+        description: "Official announcement of problem tracks, rules, and finalizing squad rosters.",
+      },
+      {
+        title: "8-Hour Build Sprint & Checkpoint Mentoring",
+        dateBadge: "11:00 AM",
+        date: "22 Nov 2026 · 11:00 AM – 4:30 PM",
+        description: "Intense prototyping, development sprints, and architecture feedback from mentors.",
+      },
+      {
+        title: "Project Submission & Code Freeze",
+        dateBadge: "4:30 PM",
+        date: "22 Nov 2026 · 04:30 PM",
+        description: "Final submission of working code repositories, live demo links, and presentation decks.",
+      },
+      {
+        title: "Live Showcases, Judging & Awards",
+        dateBadge: "5:00 PM",
+        date: "22 Nov 2026 · 5:00 PM – 6:00 PM",
+        description: "Finalists demo their prototypes to jury members, followed by announcements and networking.",
+      },
+    ],
+    rewards: [
+      {
+        title: "Top Prototype Winner Accolades",
+        description: "Top-rated prototypes receive official awards, ecosystem recognition, and media spotlights.",
+        badge: "Winner",
+        type: "certificate",
+      },
+      {
+        title: "Partner Tool Credits & Perks",
+        description: "Exclusive API credits, platform access, and perks supported by ecosystem partners.",
+        badge: "Perks",
+        type: "perk",
+      },
+      {
+        title: "Certificate of Participation",
+        description: "Official certificate released for all attending builders who build and ship at the event.",
+        badge: "Certificate",
+        type: "certificate",
+      },
+    ],
+  },
+
+  {
+    slug: "beyond-9to5-buildathon-bengaluru-2026",
+    title: "BEYOND 9TO5 — Buildathon (Bengaluru Edition)",
+    type: "Hackathon",
+    tag: "8-Hour Offline Buildathon · Working Professionals",
+    description: "Your 9TO5 Ends. Your Building Begins. An 8-hour offline buildathon at Paytm Office, Bengaluru for working professionals, developers, AI/ML practitioners, and founders.",
+    date: "Nov 21, 2026 · 10:00 AM – 6:00 PM IST",
+    location: "Paytm Office, Bengaluru (J. P. Nagar)",
+    format: "In person",
+    prize: "Showcases, Mentorship & Partner Perks",
+    image: "/events/beyond-9to5-bengaluru.jpg",
+    imageFit: "contain",
+    organizer: "Vybe Driven × EtriqAI × Paytm AI",
+    registrationDeadline: "Nov 20, 2026 · 11:59 PM IST",
+    eligibility: "Working professionals, developers, software engineers, AI/ML practitioners, Web3 builders, cybersecurity professionals, quantum enthusiasts & founders",
+    teamSize: "Solo or 1–4 Members",
+    fee: "Free (Approval Required)",
+    status: "Registration open",
+    registrationUrl: "https://luma.com/sfljztb7?utm_source=vybedriven&utm_medium=community&utm_campaign=beyond9to5_bengaluru",
+    registrationLabel: "Request to Join",
+    registrationNote: "Participation is application-based and limited to 150–200 selected participants. Applications are reviewed on a rolling basis.",
+    groupUrl: "https://chat.whatsapp.com/GqDy72gqOIUAjcbQdTFTP4?s=cl&p=a&mlu=4&ilr=4&utm_source=luma",
+    groupLabel: "Join Official WhatsApp Group",
+    contacts: [
+      { name: "Vybe Driven Desk", phone: "+91 80979 26578" },
+      { name: "India Tech Community", phone: "hello@vybedriven.in" },
+    ],
+    relatedLinks: [
+      { label: "Lu.ma Registration Page", url: "https://luma.com/sfljztb7?utm_source=vybedriven&utm_medium=community&utm_campaign=beyond9to5_bengaluru" },
+      { label: "Paytm Office Venue (Google Maps)", url: "https://www.google.com/maps/search/?api=1&query=12.916787%2C77.5790099&query_place_id=ChIJwxiOJgAVrjsRzCmUmq72y8U" },
+      { label: "WhatsApp Announcements", url: "https://chat.whatsapp.com/GqDy72gqOIUAjcbQdTFTP4?s=cl&p=a&mlu=4&ilr=4&utm_source=luma" },
+    ],
+    perks: [
+      {
+        icon: "rocket",
+        emoji: "⚡",
+        title: "8 Hours of Focused Building",
+        description: "Turn your ideas into functional working prototypes in a fast-paced, high-energy environment.",
+      },
+      {
+        icon: "handshake",
+        emoji: "🤝",
+        title: "Mentorship & Guidance",
+        description: "Direct guidance and technical reviews from experienced builders and engineering leaders.",
+      },
+      {
+        icon: "award",
+        emoji: "🏆",
+        title: "Expert Judging & Demos",
+        description: "Demonstrate your working MVP in front of industry experts, founders, and peer builders.",
+      },
+      {
+        icon: "coffee",
+        emoji: "🏢",
+        title: "Paytm Office Experience & Networking",
+        description: "Collaborate in-person at Paytm Office Bengaluru alongside 150–200 curated tech professionals.",
+      },
+    ],
+    overview: `### Your 9TO5 Ends. Your Building Begins.
+
+What if your best ideas started after work? **BEYOND 9TO5** is an 8-hour offline buildathon designed for working professionals who want to step beyond their daily roles, explore new possibilities, and turn ideas into working prototypes.
+
+Whether you're a developer, software engineer, AI/ML practitioner, Web3 builder, cybersecurity professional, quantum enthusiast, or founder — bring your skills, collaborate with fellow builders, and build something that matters.
+
+---
+
+### What to Expect
+- **8 Hours of Focused Building**: Rapid prototyping, technical innovation, and practical problem-solving.
+- **Prototypes Over Slides**: An environment focused on shipping working code and functional MVPs.
+- **Freedom to Build**: Participate solo or collaborate with a team of up to 4 members.
+- **Experienced Mentorship**: Mentorship and architecture feedback from seasoned builders.
+- **Expert Judging & Showcases**: Present your project to an esteemed jury and ecosystem leaders.
+- **High-Impact Networking**: Connect with 150–200 top tech professionals across Bengaluru.
+
+---
+
+### Key Information & Venue
+- **Date**: Saturday, 21 November 2026 (10:00 AM – 6:00 PM IST)
+- **Venue**: Paytm Office (keralam) — WH8H+PJ6, CR Layout, 1st Phase, J. P. Nagar, Bengaluru, Karnataka 560078, India.
+- **Team Size**: Solo or 1–4 members per team.
+- **Capacity**: Strictly 150–200 selected participants.
+- **Format**: 100% Offline Buildathon.
+
+---
+
+### Partners
+- **Platform Partner**: Vybe Driven (vybedriven.in)
+- **Ecosystem Partners**: EtriqAI, Paytm AI
+- **Community Partners**: Oriane, Tavily, Nexconn, India Tech Community
+
+---
+
+### Selection & Approval Process
+Participation is application-based and limited to 150–200 selected participants. Submitting an application does not guarantee selection. Shortlisted participants will receive approval confirmation and further instructions via email and WhatsApp.`,
+    schedule: [
+      {
+        title: "Check-in & Opening Address",
+        dateBadge: "10:00 AM",
+        date: "21 Nov 2026 · 10:00 AM – 10:30 AM",
+        description: "Arrival at Paytm Office Bengaluru, attendee verification, and opening remarks.",
+      },
+      {
+        title: "Problem Statements Reveal & Team Formation",
+        dateBadge: "10:30 AM",
+        date: "21 Nov 2026 · 10:30 AM – 11:00 AM",
+        description: "Official announcement of problem tracks, rules, and finalizing squad rosters.",
+      },
+      {
+        title: "8-Hour Build Sprint & Checkpoint Mentoring",
+        dateBadge: "11:00 AM",
+        date: "21 Nov 2026 · 11:00 AM – 4:30 PM",
+        description: "Intense prototyping, development sprints, and architecture feedback from mentors.",
+      },
+      {
+        title: "Project Submission & Code Freeze",
+        dateBadge: "4:30 PM",
+        date: "21 Nov 2026 · 04:30 PM",
+        description: "Final submission of working code repositories, live demo links, and presentation decks.",
+      },
+      {
+        title: "Live Showcases, Judging & Awards",
+        dateBadge: "5:00 PM",
+        date: "21 Nov 2026 · 5:00 PM – 6:00 PM",
+        description: "Finalists demo their prototypes to jury members, followed by announcements and networking.",
+      },
+    ],
+    rewards: [
+      {
+        title: "Top Prototype Winner Accolades",
+        description: "Top-rated prototypes receive official awards, ecosystem recognition, and media spotlights.",
+        badge: "Winner",
+        type: "certificate",
+      },
+      {
+        title: "Partner Tool Credits & Perks",
+        description: "Exclusive API credits, platform access, and perks supported by ecosystem partners.",
+        badge: "Perks",
+        type: "perk",
+      },
+      {
+        title: "Certificate of Participation",
+        description: "Official certificate released for all attending builders who build and ship at the event.",
+        badge: "Certificate",
+        type: "certificate",
+      },
+    ],
+  },
+
   {
     slug: "goa-buildathon-2027",
     title: "Goa Buildathon '27",
@@ -225,153 +518,6 @@ We're bringing together people who don't just want to talk about ideas — they 
       },
     ],
     rewardsFootnote: "* All the prizes and certificate will be released within 30 days after the event is over",
-  },
-
-  {
-    slug: "beyond-9to5-buildathon-mumbai-2026",
-    title: "BEYOND 9TO5 — Buildathon",
-    type: "Hackathon",
-    tag: "8-Hour Offline Buildathon · Working Professionals",
-    description: "Your 9TO5 Ends. Your Building Begins. An 8-hour offline buildathon at Paytm Office, Mumbai for working professionals, engineers, and founders to turn ideas into working prototypes.",
-    date: "Nov 22, 2026 · 10:00 AM – 6:00 PM IST",
-    location: "Paytm Office, Mumbai (Vile Parle)",
-    format: "In person",
-    prize: "Showcases, Mentorship & Partner Perks",
-    image: "/events/beyond-9to5-mumbai.jpg",
-    imageFit: "contain",
-    organizer: "Vybe Driven × EtriqAI × Paytm AI",
-    registrationDeadline: "Nov 21, 2026 · 11:59 PM IST",
-    eligibility: "Working professionals, developers, engineers, founders & technology enthusiasts",
-    teamSize: "Solo or 1–4 Members",
-    fee: "Free (Approval Required)",
-    status: "Registration open",
-    registrationUrl: "https://luma.com/ikcmraz8?utm_source=vybedriven&utm_medium=community&utm_campaign=beyond9to5_mumbai",
-    registrationLabel: "Request to Join",
-    registrationNote: "Participation is application-based and strictly limited to 150 selected participants. Applications are reviewed on a rolling basis.",
-    groupUrl: "https://chat.whatsapp.com/B55qEAoXwRWJIzqMivTsZk?s=cl&p=a&mlu=4&ilr=4&utm_source=luma",
-    groupLabel: "Join Official WhatsApp Group",
-    contacts: [
-      { name: "Vybe Driven Support", phone: "+91 80979 26578" },
-      { name: "Mumbai Tech Community", phone: "hello@vybedriven.in" },
-    ],
-    relatedLinks: [
-      { label: "Lu.ma Registration Page", url: "https://luma.com/ikcmraz8?utm_source=vybedriven&utm_medium=community&utm_campaign=beyond9to5_mumbai" },
-      { label: "Paytm Office Venue (Google Maps)", url: "https://www.google.com/maps/search/?api=1&query=19.1073081%2C72.85295780000001&query_place_id=ChIJZ-9pOgDJ5zsRcaixJ14BC2o" },
-      { label: "WhatsApp Announcements", url: "https://chat.whatsapp.com/B55qEAoXwRWJIzqMivTsZk?s=cl&p=a&mlu=4&ilr=4&utm_source=luma" },
-    ],
-    perks: [
-      {
-        icon: "rocket",
-        emoji: "⚡",
-        title: "8 Hours of High-Energy Building",
-        description: "Intense, focused sprint solving real-world problem statements shared directly by organizers.",
-      },
-      {
-        icon: "handshake",
-        emoji: "🤝",
-        title: "Expert Mentorship & Guidance",
-        description: "Hands-on guidance and code architecture reviews from experienced builders and tech leads.",
-      },
-      {
-        icon: "award",
-        emoji: "🏆",
-        title: "Live Prototype Demos & Judging",
-        description: "Present working prototypes to industry judges, founders, and peer builders.",
-      },
-      {
-        icon: "coffee",
-        emoji: "🏢",
-        title: "Paytm Office Experience & Networking",
-        description: "In-person building at Paytm Office, Mumbai alongside 150 curated developers and founders.",
-      },
-    ],
-    overview: `### Your 9TO5 Ends. Your Building Begins.
-
-What if your best ideas started after work? **BEYOND 9TO5** is an 8-hour offline buildathon designed specifically for working professionals, engineers, product builders, founders, and technology enthusiasts who want to step beyond their day jobs, solve real-world problems, and turn innovative ideas into functional prototypes.
-
-Bring your skills, collaborate with fellow builders, and transform ideas into practical solutions.
-
----
-
-### What to Expect
-- **8 Hours of Focused Building**: Rapid prototyping and collaborative execution in a fast-paced environment.
-- **Real-World Problem Statements**: Handcrafted problem statements shared on the event morning.
-- **Hands-On Mentorship**: Direct guidance from seasoned tech leads, engineers, and entrepreneurs.
-- **Functional Prototypes & Demos**: Showcase what you built to the entire room and get instant expert feedback.
-- **High-Impact Networking**: Connect with 150 selected builders across Mumbai's thriving tech ecosystem.
-
----
-
-### Key Information & Venue
-- **Date**: Sunday, 22 November 2026 (10:00 AM – 6:00 PM IST)
-- **Venue**: Paytm Office — Viacom Building, Tukaram Sandam Marg, Navpada, Netaji Subhash Nagar, Vile Parle, Mumbai, Maharashtra 400057, India.
-- **Team Size**: Solo or 1–4 members per team.
-- **Capacity**: Strictly limited to 150 selected participants.
-- **Format**: 100% Offline Buildathon.
-
----
-
-### Partners
-- **Platform Partner**: Vybe Driven (vybedriven.in)
-- **Ecosystem Partners**: EtriqAI, Paytm AI
-- **Community Partners**: Oriane, Tavily, Nexconn, Mumbai Tech Community
-
----
-
-### Selection & Approval Process
-Participation is application-based and limited to 150 selected participants. Submitting an application does not guarantee selection. Shortlisted participants will receive approval confirmation and further instructions via email and WhatsApp.`,
-    schedule: [
-      {
-        title: "Check-in & Opening Address",
-        dateBadge: "10:00 AM",
-        date: "22 Nov 2026 · 10:00 AM – 10:30 AM",
-        description: "Arrival at Paytm Office Mumbai, attendee verification, and welcome keynote.",
-      },
-      {
-        title: "Problem Statements Reveal & Team Formation",
-        dateBadge: "10:30 AM",
-        date: "22 Nov 2026 · 10:30 AM – 11:00 AM",
-        description: "Official announcement of problem tracks, rules, and finalizing squad rosters.",
-      },
-      {
-        title: "8-Hour Build Sprint & Checkpoint Mentoring",
-        dateBadge: "11:00 AM",
-        date: "22 Nov 2026 · 11:00 AM – 4:30 PM",
-        description: "Intense prototyping, development sprints, and architecture feedback from mentors.",
-      },
-      {
-        title: "Project Submission & Code Freeze",
-        dateBadge: "4:30 PM",
-        date: "22 Nov 2026 · 04:30 PM",
-        description: "Final submission of working code repositories, live demo links, and presentation decks.",
-      },
-      {
-        title: "Live Showcases, Judging & Awards",
-        dateBadge: "5:00 PM",
-        date: "22 Nov 2026 · 5:00 PM – 6:00 PM",
-        description: "Finalists demo their prototypes to jury members, followed by announcements and networking.",
-      },
-    ],
-    rewards: [
-      {
-        title: "Top Prototype Winner Accolades",
-        description: "Top-rated prototypes receive official awards, ecosystem recognition, and media spotlights.",
-        badge: "Winner",
-        type: "certificate",
-      },
-      {
-        title: "Partner Tool Credits & Perks",
-        description: "Exclusive API credits, platform access, and perks supported by ecosystem partners.",
-        badge: "Perks",
-        type: "perk",
-      },
-      {
-        title: "Certificate of Participation",
-        description: "Official certificate released for all attending builders who build and ship at the event.",
-        badge: "Certificate",
-        type: "certificate",
-      },
-    ],
   },
 
   {
@@ -631,8 +777,6 @@ Bio ke link pe click karo (luminarcreatorsaward.com), form fill karo aur apna sl
   { slug: "ipl-innovation-pitch-league-2026", title: "IPL – Innovation Pitch League", type: "Hackathon", tag: "Innovation / Talent", description: "A two-day IPL-inspired experience combining placements, an auction, team building, and a six-hour innovation hackathon.", date: "Oct 9–10, 2026 · 8 AM", location: "SIES Graduate School of Technology, Nerul", format: "In person", prize: "₹30,000", image: iplPoster.url, imageFit: "contain", organizer: "IET On Campus SIES GST", registrationDeadline: "Before event capacity is filled", eligibility: "Individual participation; shortlisted participants advance from aptitude, GD, and resume review", teamSize: "Individual entry; selected teams have 1 captain, 5 participants, and a mentor", fee: "₹100 per participant", status: "Registration open", registrationUrl: "https://forms.gle/Ku84EXvjiFvU25us9", contacts: [{ name: "Gaurav", phone: "+918850439707" }, { name: "Ovee", phone: "+918850544242" }, { name: "Sudhanshu", phone: "+919325959412" }, { name: "Taazeen", phone: "+918591524096" }], relatedLinks: [{ label: "Event website", url: "https://iet-ipl-2026.vercel.app" }, { label: "Official Event Page", url: "https://unstop.com/competitions/ipl-innovation-pitch-league-iet-on-campus-sies-graduate-school-of-technology-navi-mumbai-maharashtra-1758032" }], overview: "IET On Campus SIES GST presents a two-day, IPL-inspired mega event with a mock placement experience, internship opportunities, talent auction, leadership and team-building activities, food, and a six-hour hackathon. The top eight performers become captains, while the next 40 shortlisted participants enter the auction to form eight teams and solve real-world industry problems.", schedule: [{ title: "Aptitude and group discussion", date: "Oct 9, 2026", description: "Participants are assessed through aptitude, group discussion, and resume review." }, { title: "Captain selection and talent auction", date: "Oct 9, 2026", description: "The top eight become captains and 40 shortlisted participants enter the IPL-style auction." }, { title: "Innovation Challenge", date: "Oct 10, 2026", description: "Eight formed teams compete in a six-hour hackathon on real-world industry problems." }, { title: "Final pitch and awards", date: "Oct 10, 2026", description: "Teams pitch their solutions for ₹15,000, ₹10,000, and ₹5,000 prizes." }] },
   { slug: "elevate-1-0-2026", title: "ELEVATE 1.0", type: "Hackathon", tag: "National / 24 Hours", description: "A national-level 24-hour hackathon where teams turn real-world challenges into working technology solutions.", date: "Oct 10–11, 2026", location: "Dwarkadas J. Sanghvi College of Engineering, Mumbai", format: "In person", prize: "₹1,00,000+", image: elevatePoster.url, imageFit: "contain", organizer: "DJS NSDC × DJS InfoMatrix", registrationDeadline: "Oct 3, 2026", eligibility: "Builders ready to tackle real-world challenges at a national-level hackathon", teamSize: "Team participation", fee: "See official registration", status: "Registration open", registrationUrl: "https://unstop.com/o/PMU41BH", contacts: [{ name: "Vrindaa Talwar", phone: "+919419253635" }, { name: "Swayam Panchal", phone: "+919833507492" }, { name: "Samarth Bhirud", phone: "+918408917498" }], relatedLinks: [{ label: "Explore ELEVATE 1.0", url: "https://elevate1-0.vercel.app/" }, { label: "Event WhatsApp channel", url: "https://chat.whatsapp.com/IU1yrudPUvg7IBw46i1wkh" }], overview: "ELEVATE 1.0 is a national-level hackathon organised by DJS NSDC and DJS InfoMatrix, with Mumbai Tech Community as Community Partner. Across 24 hours, participants tackle real-world challenges, build working solutions, and compete for a ₹1,00,000+ prize pool along with goodies and surprises.", schedule: [{ title: "Registration deadline", date: "Oct 3, 2026", description: "Complete registration before seats close." }, { title: "Hackathon begins", date: "Oct 10, 2026", description: "Teams start 24 hours of coding, building, and problem-solving." }, { title: "Final demos and awards", date: "Oct 11, 2026", description: "Teams present their solutions and winners are selected." }] },
   { slug: "hack-in-hills-2026", title: "Hack in Hills ’26", type: "Hackathon", tag: "PPT → Prototype → Manali", description: "Compete online for one of 40 builder spots at a 24+ hour offline hackathon in the mountains of Manali.", date: "Nov 20, 2026", location: "Manali, Himachal Pradesh", format: "Hybrid", prize: "₹50,000 bounty pool", image: hackInHillsPoster.url, imageFit: "contain", organizer: "Web3 India × Builder Base", registrationDeadline: "Oct 5, 2026", eligibility: "Open registration; only 40 builders advance to the offline finale", teamSize: "See official registration", fee: "Free", status: "Registration open", registrationUrl: "https://unstop.com/o/dRs01iP/?ref=punmZRNS", overview: "Hack in Hills ’26 takes builders from PPT to prototype and then to Manali. From more than 7,000 registrations and 190,000+ reach, only 40 builders will qualify for the 24+ hour offline finale in the mountains, competing for a ₹50,000 bounty pool. Registration is completely free.", schedule: [{ title: "Registration closes", date: "Oct 5, 2026", description: "Submit through the official registration page." }, { title: "PPT and prototype selection", date: "Before Nov 20, 2026", description: "Entries progress from idea presentation to prototype review as 40 finalists are selected." }, { title: "Offline mountain sprint", date: "Nov 20, 2026", description: "The selected 40 builders compete in a 24+ hour offline hackathon in Manali." }] },
-  { slug: "cooling-everything", title: "Cooling Everything", type: "Competition", tag: "Hardware / Climate", description: "Engineer efficient cooling for data centres and connected devices.", date: "Oct 22–24", location: "Pune", format: "In person", prize: "₹75,000", image: evCool, organizer: "Vybe Driven", registrationDeadline: "To be announced", eligibility: "Students, engineers, and product teams", teamSize: "2–4 members", fee: "Free", status: "Opening soon", overview: "Design an energy-conscious cooling concept for high-density computing and connected devices, backed by clear assumptions and a testable prototype.", schedule: [{ title: "Registration", date: "Opening soon", description: "Team applications will open after venue confirmation." }, { title: "Challenge sprint", date: "Oct 22–24", description: "Build and validate your proposed solution in Pune." }, { title: "Jury review", date: "Oct 24", description: "Finalists demonstrate impact, feasibility, and efficiency." }] },
-  { slug: "cyber-trail", title: "Cyber Trail", type: "Competition", tag: "Security / CTF", description: "Capture the flag across 40 challenges in one high-energy weekend.", date: "Nov 2–3", location: "Online", format: "Online", prize: "₹50,000", image: evCyber, organizer: "Vybe Driven", registrationDeadline: "To be announced", eligibility: "Open to security learners and professionals", teamSize: "1–3 members", fee: "Free", status: "Opening soon", overview: "Work through progressive web, cryptography, reverse-engineering, and forensics challenges in a time-boxed online capture-the-flag competition.", schedule: [{ title: "Registration", date: "Opening soon", description: "Register your team and complete the readiness check." }, { title: "CTF window", date: "Nov 2–3", description: "Challenges remain available throughout the competition window." }, { title: "Results", date: "Nov 3", description: "Scores are verified before the final leaderboard is announced." }] },
   { slug: "unicorn-ai-gpu-pre-summit", title: "UNICORN × AI × GPU Pre Summit", type: "Networking", tag: "GPU / Datacentre", description: "A focused Mumbai connect for GPU and datacentre leaders.", date: "Oct 15, 2026 · 4–6 PM", location: "Earth Cafe @ BKC, Bandra East, Mumbai", format: "In person", image: unicornSummitPoster.url, imageFit: "contain", organizer: "GPU.NET", registrationDeadline: "Until capacity is reached", eligibility: "GPU, AI infrastructure, and datacentre leaders and professionals", teamSize: "Individual registration", fee: "See official registration", status: "Registration open", registrationUrl: "https://luma.com/d1f99fgo", overview: "GPU.NET presents the UNICORN × AI × GPU Pre Summit in Mumbai, bringing GPU and datacentre leaders together for an evening of focused conversation and connections at Earth Cafe in BKC.", schedule: [{ title: "Registration", date: "Open now", description: "Reserve a place through the official event page while capacity remains." }, { title: "Leaders connect", date: "Oct 15, 2026 · 4–6 PM", description: "Meet GPU and datacentre leaders at Earth Cafe @ BKC in Mumbai." }] },
   { slug: "structuring-the-ai-way", title: "Structuring the AI Way", type: "Meetup", tag: "AI / Financial Workflows", description: "See how AI transforms complex structuring workflows into fast, reliable execution.", date: "Oct 24, 2026 · 10 AM–1 PM", location: "Mumbai, Maharashtra · Exact address after approval", format: "In person", image: structuringAiPoster.url, imageFit: "contain", organizer: "Kannan · OpenArrow", registrationDeadline: "Until limited capacity is reached", eligibility: "Wealth managers, bank relationship managers, structured product issuers, and NBFC and SME treasury desks", teamSize: "Individual registration", fee: "See official registration", status: "Approval required", registrationUrl: "https://luma.com/c6v1qjx0", registrationLabel: "Request to join", registrationNote: "Registration is reviewed by the host. Approved attendees receive the exact Mumbai address.", overview: "Join an exclusive OpenArrow walkthrough showing how intelligent automation can reduce manual term-sheet friction, accelerate pricing workflows, and improve desk efficiency. The session covers automated term-sheet generation, risk modelling, seamless desk execution, a live demonstration, and direct Q&A with the OpenArrow team. Attendees receive two weeks of complimentary trial access after the event.", schedule: [{ title: "Request approval", date: "Open now", description: "Submit your registration for host review; space is intentionally limited." }, { title: "Live walkthrough", date: "Oct 24, 2026 · 10 AM", description: "See AI-driven structuring, term-sheet generation, risk modelling, and desk execution in practice." }, { title: "Q&A session", date: "Oct 24, 2026", description: "Discuss custom integrations and deployment directly with the OpenArrow team." }] },
   { slug: "ai-at-work-copilot-apps-agents", title: "AI at Work: Copilot, Apps & Agents", type: "Meetup", tag: "AI-Native Work", description: "A closed-door Mumbai session with real demonstrations and candid discussion about AI at work.", date: "Oct 24, 2026 · 11 AM–3 PM", location: "Mumbai, Maharashtra · Address shared with attendees", format: "In person", image: aiAtWorkPoster.url, imageFit: "contain", organizer: "Mumbai Techy", registrationDeadline: "Event full · Waitlist available", eligibility: "Operators, builders, and decision-makers interested in practical AI adoption", teamSize: "Individual registration", fee: "See official registration", status: "Event full", registrationUrl: "https://luma.com/gbzxsgj4", registrationLabel: "Join waitlist", registrationNote: "The event is currently full. Join the waitlist to be notified if a place becomes available.", overview: "AI at Work is an exclusive, limited-seat session for operators, builders, and decision-makers who want practical insight instead of generic keynotes. Expect a focused room, real demonstrations, and candid conversation about how Copilot, Apps, and Agents are already changing day-to-day work.", schedule: [{ title: "Join the waitlist", date: "Available now", description: "Add your name to be notified if more places become available." }, { title: "AI at Work session", date: "Oct 24, 2026 · 11 AM–3 PM", description: "Explore practical uses of Copilot, Apps, and Agents through live demonstrations and discussion." }] },
