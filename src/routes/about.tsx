@@ -148,7 +148,7 @@ const faqs: FaqItem[] = [
       "Are you a university council, student tech club, developer community, or tech enterprise looking to host a high-energy hackathon or summit?",
       "Vybe Driven offers end-to-end event infrastructure: registration management, automated squad forming, Round 1 PPT deck submissions, jury scoring dashboards, and real-time announcement feeds.",
       "Our team provides marketing reach to 100k+ builders, sponsor connectivity, and on-ground technical advisory to make your event a massive success.",
-      "To host your event, click 'Host an Event' below or contact our events desk directly at vybedriven@gmail.com (or hello@goabuilds.com). We will get your event live within 24 hours.",
+      "To host your event, click 'Host an Event' below or contact our events desk directly at vybedriven@gmail.com. We will get your event live within 24 hours.",
     ],
     action: { label: "Host on Vybe Driven", href: "/host" },
   },
@@ -183,8 +183,7 @@ const faqs: FaqItem[] = [
     icon: Mail,
     a: [
       "We are here to support builders and organizers 7 days a week:",
-      "• General Partnerships & Event Hosting: vybedriven@gmail.com",
-      "• Hackathon Desk & Registration Queries: hello@goabuilds.com",
+      "• General Inquiries, Partnerships & Event Hosting: vybedriven@gmail.com",
       "• Direct Contact Form: Visit our Contact Us page to submit your inquiry directly to our team.",
       "We typically respond to emails within 12–24 business hours.",
     ],
@@ -193,7 +192,7 @@ const faqs: FaqItem[] = [
 ];
 
 function AboutPage() {
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const toggleFaq = (idx: number) => {
     setOpenFaq((prev) => (prev === idx ? null : idx));
@@ -544,7 +543,7 @@ function AboutPage() {
                     Need instant coordination?
                   </div>
                   <div className="text-sm font-bold text-foreground">
-                    Direct Email: <a href="mailto:vybedriven@gmail.com" className="text-neon hover:underline">vybedriven@gmail.com</a> · Hackathon Desk: <a href="mailto:hello@goabuilds.com" className="text-neon hover:underline">hello@goabuilds.com</a>
+                    Direct Email: <a href="mailto:vybedriven@gmail.com" className="text-neon hover:underline">vybedriven@gmail.com</a>
                   </div>
                 </div>
               </div>

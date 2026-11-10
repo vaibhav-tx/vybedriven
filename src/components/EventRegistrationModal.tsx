@@ -810,7 +810,7 @@ Participation   : ${confirmedReg.teamType.toUpperCase()}
 Team Name       : ${confirmedReg.teamName || "Solo Builder"}
 Status          : ${confirmedReg.status}
 
-Official Desk: hello@goabuilds.com
+Official Desk: ${opportunity.organizerEmail || "vybedriven@gmail.com"}
 Platform Support: vybedriven@gmail.com
 ========================================================`;
       const blob = new Blob([textContent], { type: "text/plain;charset=utf-8" });
