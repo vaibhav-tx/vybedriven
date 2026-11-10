@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 import {
   ArrowRight, Users, Calendar, Trophy, Swords, Zap, Globe, Activity, Code2,
   Search, UsersRound, Rocket, LineChart, Award, Sparkles, CheckCircle2, ShieldCheck,
+  HelpCircle, Mail, Building2, UserPlus, ChevronDown, ChevronUp, ExternalLink,
 } from "lucide-react";
 import { Navbar, Footer } from "@/components/SiteChrome";
 import { Reveal, Eyebrow, PrimaryBtn, GhostBtn } from "@/components/ui-hd";
@@ -15,19 +17,19 @@ import projectPitchDemo from "@/assets/community-real/PXL_20261003_132342890.MP.
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About Us — Vybe Driven (Vybe) | India's Builder & Hackathon Ecosystem" },
+      { title: "About Us — Vybe Driven (Vybe) | India's Largest Hackathon & Event Ecosystem" },
       {
         name: "description",
-        content: "Learn about Vybe Driven (Vybe / Vibe Driven). Our mission is to connect ambitious developers, student innovators, and creators across India with tier-1 hackathons, industry bounties, and real opportunities.",
+        content: "Vybe Driven (Vybe / Vibe Driven) is one of India's largest hosting platforms for hackathons, collegiate tech fests, builder sprints, and developer summits. Connecting 20k+ daily visitors, 100k+ weekly active builders, and 20,000+ students and working professionals.",
       },
       {
         name: "keywords",
-        content: "about vybe driven, vybe driven story, what is vybe driven, vybe, vibe driven, hackathon ecosystem india, student developer community",
+        content: "what is vybe driven, why vybe driven, about vybe driven, host hackathon india, sponsor hackathons, vybe driven community, vybe, vibe driven, student hackathon platform",
       },
       { property: "og:title", content: "About Vybe Driven — Powering India's Ambitious Builders" },
       {
         property: "og:description",
-        content: "More than events. Vybe Driven is an ecosystem built to turn ideas into prototypes and real impact.",
+        content: "One of India's premier hosting platforms for hackathons, tech summits, and developer sprints with 100k+ weekly builders.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://www.vybedriven.in/about" },
@@ -40,31 +42,31 @@ export const Route = createFileRoute("/about")({
 
 const statsList = [
   {
+    num: "100K+",
+    title: "Weekly Active Builders",
+    description: "Students & working professionals discovering sprints, hackathons & events.",
+    badge: "WEEKLY REACH",
+    icon: Activity,
+  },
+  {
     num: "20K+",
-    title: "Community Members",
-    description: "Students & working professionals active across top tech domains.",
-    badge: "ACTIVE BUILDERS",
+    title: "Daily Active Visitors",
+    description: "Builders actively exploring hackathons, workshops, and flagship summits.",
+    badge: "DAILY ENGAGEMENT",
     icon: Users,
   },
   {
-    num: "100+",
-    title: "Tech Events Hosted",
-    description: "Workshops, hands-on meetups, and developer conferences.",
-    badge: "HOSTED & SPRINTED",
-    icon: Calendar,
+    num: "20,000+",
+    title: "Community Network",
+    description: "Connected across official WhatsApp builder squads & regional tech chapters.",
+    badge: "WHATSAPP & DISCORD",
+    icon: Globe,
   },
   {
-    num: "30+",
-    title: "Hackathons Organized",
-    description: "National, collegiate, and regional competitive hackathons.",
-    badge: "FLAGSHIP SPRINTS",
-    icon: Swords,
-  },
-  {
-    num: "₹500K+",
-    title: "Prize Pool Awarded",
-    description: "Direct cash bounties, grants, and ecosystem reward pools.",
-    badge: "TOTAL REWARDS",
+    num: "₹10,00,000+",
+    title: "Prize Pools & Bounties",
+    description: "Direct cash bounties, ecosystem grants, and corporate rewards awarded.",
+    badge: "TOTAL VALUE",
     icon: Trophy,
   },
 ];
@@ -105,9 +107,143 @@ const features = [
   { i: Award, t: "Earn Real Rewards", d: "Win direct cash prizes, official trophies, certificates, and opportunities recruiters actively notice." },
 ];
 
+interface FaqItem {
+  q: string;
+  badge: string;
+  icon: typeof HelpCircle;
+  a: string[];
+  action?: { label: string; href: string; external?: boolean };
+}
+
+const faqs: FaqItem[] = [
+  {
+    q: "What is Vybe Driven?",
+    badge: "PLATFORM OVERVIEW",
+    icon: HelpCircle,
+    a: [
+      "Vybe Driven (also widely known as Vybe or Vibe Driven) is one of India's largest and premier hosting platforms for offline & online hackathons, collegiate tech fests, developer summits, and creative builder experiences.",
+      "Engineered from the ground up to turn ambitious ideas into functional prototypes and venture-ready solutions, Vybe Driven bridges students, developers, designers, and innovators with real-world industry problem statements.",
+      "The ecosystem currently powers over 20,000+ daily active visitors, 100,000+ weekly community users, and an active network of 20,000+ student engineers and working professionals connected through dedicated WhatsApp builder squads, college ambassador programs, and regional city chapters.",
+    ],
+    action: { label: "Explore Hackathons & Events", href: "/hackathons" },
+  },
+  {
+    q: "Why Vybe Driven?",
+    badge: "WHY BUILD HERE",
+    icon: Zap,
+    a: [
+      "Unlike generic event directories, Vybe Driven is built builder-first with zero gatekeeping, rapid squad assembly, and transparent evaluation criteria.",
+      "• Real Impact & Bounties: Access verified industry problem statements with direct cash prize pools, cloud credits, and direct interview pipelines.",
+      "• Squad Matchmaking: Form complementary squads (AI/ML, backend, fullstack, design) instantly with fellow builders.",
+      "• Integrated Submission Workflows: Submit PPT decks, GitHub repositories, and live demo links with live status tracking and jury feedback.",
+      "• Official Entry Passes: Instant verified passes with digital entry credentials for offline hackathon venues across Goa, Mumbai, Bengaluru, and Pune.",
+    ],
+    action: { label: "Learn About Our Ethos", href: "#ethos" },
+  },
+  {
+    q: "Want to host a hackathon, college fest, or developer sprint?",
+    badge: "HOST AN EVENT",
+    icon: Building2,
+    a: [
+      "Are you a university council, student tech club, developer community, or tech enterprise looking to host a high-energy hackathon or summit?",
+      "Vybe Driven offers end-to-end event infrastructure: registration management, automated squad forming, Round 1 PPT deck submissions, jury scoring dashboards, and real-time announcement feeds.",
+      "Our team provides marketing reach to 100k+ builders, sponsor connectivity, and on-ground technical advisory to make your event a massive success.",
+      "To host your event, click 'Host an Event' below or contact our events desk directly at vybedriven@gmail.com (or hello@goabuilds.com). We will get your event live within 24 hours.",
+    ],
+    action: { label: "Host on Vybe Driven", href: "/host" },
+  },
+  {
+    q: "Want to be a sponsor or ecosystem partner?",
+    badge: "SPONSORS & PARTNERS",
+    icon: Award,
+    a: [
+      "Sponsoring a Vybe Driven hackathon puts your product, developer APIs, cloud platform, or brand directly in front of India's most ambitious engineering and product talent.",
+      "We offer tailored partnership packages including custom track bounties, mentor slots, keynote speaking opportunities, resume books, and branded swag showcases.",
+      "Past and ongoing partner collaborations include leading AI tooling companies, fintech giants, venture accelerators, and grassroots developer communities.",
+      "Reach out to our strategic partnerships team at vybedriven@gmail.com with the subject 'Sponsorship / Partner Inquiry' to discuss customized track opportunities.",
+    ],
+    action: { label: "Contact Partnerships Desk", href: "/contact" },
+  },
+  {
+    q: "Want to participate as a student or working professional?",
+    badge: "JOIN AS A BUILDER",
+    icon: UserPlus,
+    a: [
+      "Participation on Vybe Driven is 100% free, beginner-friendly, and open to anyone passionate about building software, AI agents, hardware, or innovative startups.",
+      "1. Browse our Hackathons & Opportunities section and select an event (e.g., Goa Buildathon '27, Beyond 9to5 Buildathons).",
+      "2. Sign in with Google or create an account, fill in your profile, and form or join a squad.",
+      "3. Submit your Round 1 PPT deck or project concept directly from your dashboard.",
+      "4. Unlock your official entry pass and join the exclusive WhatsApp community squad for real-time announcements, mentoring sessions, and problem statements.",
+    ],
+    action: { label: "Browse Active Hackathons", href: "/hackathons" },
+  },
+  {
+    q: "How can I contact Vybe Driven for queries or support?",
+    badge: "QUERIES & SUPPORT",
+    icon: Mail,
+    a: [
+      "We are here to support builders and organizers 7 days a week:",
+      "• General Partnerships & Event Hosting: vybedriven@gmail.com",
+      "• Hackathon Desk & Registration Queries: hello@goabuilds.com",
+      "• Direct Contact Form: Visit our Contact Us page to submit your inquiry directly to our team.",
+      "We typically respond to emails within 12–24 business hours.",
+    ],
+    action: { label: "Go to Contact Page", href: "/contact" },
+  },
+];
+
 function AboutPage() {
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
+
+  const toggleFaq = (idx: number) => {
+    setOpenFaq((prev) => (prev === idx ? null : idx));
+  };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map((faq) => ({
+      "@type": "Question",
+      "name": faq.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.a.join(" "),
+      },
+    })),
+  };
+
+  const orgSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Vybe Driven",
+    "alternateName": ["Vybe", "Vibe Driven", "VybeDriven"],
+    "url": "https://www.vybedriven.in",
+    "logo": "https://www.vybedriven.in/brand/vybe-icon.svg",
+    "description": "Vybe Driven is one of India's largest hosting platforms for hackathons, collegiate tech fests, developer summits, and builder sprints with 20k+ daily users, 100k+ weekly active builders, and 20,000+ students and working professionals in WhatsApp community networks.",
+    "email": "vybedriven@gmail.com",
+    "contactPoint": [
+      {
+        "@type": "ContactPoint",
+        "email": "vybedriven@gmail.com",
+        "contactType": "customer service",
+        "areaServed": "IN",
+        "availableLanguage": ["English", "Hindi"],
+      },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {/* Search Engine & AI Bot Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
+      />
+
       <Navbar />
 
       <main className="overflow-hidden">
@@ -124,7 +260,7 @@ function AboutPage() {
                 An Ecosystem Built to <span className="text-gradient">Drive What's Next.</span>
               </h1>
               <p className="mx-auto mt-4 sm:mt-6 max-w-2xl text-base sm:text-lg text-muted-foreground leading-relaxed">
-                Vybe Driven (Vybe) is India&apos;s builder-first technology platform. We bridge ambitious student developers, creators, and innovators with premier hackathons, collegiate challenges, and real developer communities.
+                Vybe Driven (Vybe / Vibe Driven) is one of India&apos;s largest hosting platforms for hackathons, collegiate tech fests, developer summits, and innovation sprints. Connecting <strong className="text-foreground">20K+ daily active visitors</strong> and <strong className="text-foreground">100K+ weekly builders</strong> with industry problem statements and verified talent squads.
               </p>
               <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
                 <PrimaryBtn href="/hackathons">Explore Hackathons <ArrowRight className="size-4" /></PrimaryBtn>
@@ -150,12 +286,12 @@ function AboutPage() {
                       <span className="relative inline-flex size-2.5 rounded-full bg-neon" />
                     </span>
                     <span className="text-xs sm:text-sm font-black uppercase tracking-[0.18em] text-neon">
-                      Vybe Driven Impact Metrics
+                      Vybe Driven Network Telemetry
                     </span>
                   </div>
                   <div className="flex items-center gap-2 text-xs font-mono tracking-wider text-muted-foreground">
                     <span className="inline-block size-1.5 rounded-full bg-neon/60" />
-                    <span>VERIFIED NETWORK STATS</span>
+                    <span>VERIFIED LIVE METRICS</span>
                   </div>
                 </div>
 
@@ -204,7 +340,7 @@ function AboutPage() {
         </section>
 
         {/* Why Vybe Driven - 4 Core Pillars */}
-        <section className="relative py-12 sm:py-16 border-t border-border/60 bg-surface/30">
+        <section id="ethos" className="relative py-12 sm:py-16 border-t border-border/60 bg-surface/30">
           <div className="relative mx-auto max-w-[1200px] px-4 sm:px-6">
             <Reveal className="text-center">
               <Eyebrow>OUR CORE ETHOS</Eyebrow>
@@ -299,6 +435,125 @@ function AboutPage() {
                   <Sparkles className="size-3.5 text-neon" /> Live Demo Days & Jury Pitching
                 </span>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Comprehensive FAQ & Knowledge Base (AI Bot & Crawler Optimized) */}
+        <section id="faq" className="border-t border-border/60 bg-surface/30 py-16 sm:py-24">
+          <div className="mx-auto max-w-[1200px] px-4 sm:px-6">
+            <Reveal className="text-center">
+              <Eyebrow>FREQUENTLY ASKED QUESTIONS</Eyebrow>
+              <h2 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-5xl">
+                Everything You Need to Know About <span className="text-gradient">Vybe Driven</span>
+              </h2>
+              <p className="mx-auto mt-3 max-w-2xl text-sm sm:text-base text-muted-foreground">
+                Official answers regarding platform mission, event hosting, corporate sponsorships, builder registration, and community guidelines.
+              </p>
+            </Reveal>
+
+            <div className="mt-10 sm:mt-12 mx-auto max-w-4xl space-y-4">
+              {faqs.map((faq, idx) => {
+                const isOpen = openFaq === idx;
+                const FaqIcon = faq.icon;
+                return (
+                  <Reveal key={faq.q} delay={idx * 40}>
+                    <div
+                      className={`overflow-hidden rounded-2xl border transition-all duration-300 ${
+                        isOpen
+                          ? "border-neon/50 bg-surface shadow-glow-soft"
+                          : "border-border/80 bg-surface/60 hover:border-border hover:bg-surface/80"
+                      }`}
+                    >
+                      <button
+                        type="button"
+                        onClick={() => toggleFaq(idx)}
+                        className="flex w-full items-start justify-between gap-4 p-5 sm:p-6 text-left transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-neon"
+                        aria-expanded={isOpen}
+                      >
+                        <div className="flex items-start gap-3.5 sm:gap-4">
+                          <div className={`mt-0.5 grid size-10 shrink-0 place-items-center rounded-xl border transition-colors ${
+                            isOpen
+                              ? "border-neon bg-neon text-black"
+                              : "border-neon/30 bg-neon/10 text-neon"
+                          }`}>
+                            <FaqIcon className="size-5" />
+                          </div>
+                          <div>
+                            <span className="inline-block rounded-md border border-neon/20 bg-neon/5 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-neon">
+                              {faq.badge}
+                            </span>
+                            <h3 className="mt-1.5 text-base sm:text-lg font-bold text-foreground">
+                              {faq.q}
+                            </h3>
+                          </div>
+                        </div>
+
+                        <div className="mt-1 shrink-0 grid size-8 place-items-center rounded-lg border border-border/80 bg-surface-2 text-muted-foreground transition-transform duration-200">
+                          {isOpen ? <ChevronUp className="size-4 text-neon" /> : <ChevronDown className="size-4" />}
+                        </div>
+                      </button>
+
+                      {isOpen && (
+                        <div className="border-t border-border/40 px-5 pb-6 pt-4 sm:px-6 sm:pb-6">
+                          <div className="space-y-3 text-sm sm:text-base leading-relaxed text-muted-foreground">
+                            {faq.a.map((paragraph, pIdx) => (
+                              <p key={pIdx}>{paragraph}</p>
+                            ))}
+                          </div>
+
+                          {faq.action && (
+                            <div className="mt-5 flex items-center gap-3 pt-2">
+                              {faq.action.external ? (
+                                <a
+                                  href={faq.action.href}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-2 rounded-xl bg-neon px-4 py-2 text-xs sm:text-sm font-bold text-black transition hover:bg-neon/90"
+                                >
+                                  {faq.action.label}
+                                  <ExternalLink className="size-3.5" />
+                                </a>
+                              ) : (
+                                <Link
+                                  to={faq.action.href}
+                                  className="inline-flex items-center gap-2 rounded-xl bg-neon px-4 py-2 text-xs sm:text-sm font-bold text-black transition hover:bg-neon/90"
+                                >
+                                  {faq.action.label}
+                                  <ArrowRight className="size-3.5" />
+                                </Link>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </Reveal>
+                );
+              })}
+            </div>
+
+            {/* Quick Contact Micro-Card */}
+            <div className="mt-8 mx-auto max-w-4xl rounded-2xl border border-border/60 bg-surface/40 p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+              <div className="flex items-center gap-3">
+                <div className="grid size-10 place-items-center rounded-xl bg-neon/10 text-neon border border-neon/20">
+                  <Mail className="size-5" />
+                </div>
+                <div>
+                  <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    Need instant coordination?
+                  </div>
+                  <div className="text-sm font-bold text-foreground">
+                    Direct Email: <a href="mailto:vybedriven@gmail.com" className="text-neon hover:underline">vybedriven@gmail.com</a> · Hackathon Desk: <a href="mailto:hello@goabuilds.com" className="text-neon hover:underline">hello@goabuilds.com</a>
+                  </div>
+                </div>
+              </div>
+              <Link
+                to="/contact"
+                className="shrink-0 rounded-xl border border-neon/30 bg-surface-2 px-3.5 py-1.5 text-xs font-bold text-foreground hover:border-neon hover:text-neon transition"
+              >
+                Send Message →
+              </Link>
             </div>
           </div>
         </section>
