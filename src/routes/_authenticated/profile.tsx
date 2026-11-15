@@ -123,35 +123,62 @@ function ProfilePage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    let localMeta: any = {};
+    try {
+      const stored = typeof window !== "undefined" ? localStorage.getItem(`builder_profile_metadata_${user.id}`) : null;
+      if (stored) {
+        localMeta = JSON.parse(stored);
+      }
+    } catch {}
+
+    const authMeta: any = user.user_metadata || {};
+
     supabase
       .from("profiles")
       .select("*")
       .eq("id", user.id)
       .maybeSingle()
       .then(({ data }) => {
-        const profile = data as Profile | null;
-        if (profile) {
-          setForm({
-            display_name: profile.display_name || "",
-            username: profile.username ?? "",
-            headline: profile.headline || "",
-            bio: profile.bio || "",
-            location: profile.location || "",
-            college_or_company: profile.college_or_company || "",
-            skills: (profile.skills || []).join(", "),
-            interests: (profile.interests || []).join(", "),
-            github_url: profile.github_url ?? "",
-            linkedin_url: profile.linkedin_url ?? "",
-            website_url: profile.website_url ?? "",
-            avatar_url: profile.avatar_url || "👨‍💻",
-          });
-        } else {
-          setForm((prev) => ({
-            ...prev,
-            display_name: String(user.user_metadata?.["full_name"] ?? user.email?.split("@")[0] ?? ""),
-            avatar_url: "👨‍💻",
-          }));
-        }
+        const profile = data as any;
+        const skillsVal =
+          (Array.isArray(localMeta.skills) ? localMeta.skills.join(", ") : localMeta.skills) ||
+          (Array.isArray(authMeta.skills) ? authMeta.skills.join(", ") : authMeta.skills) ||
+          (Array.isArray(profile?.skills) ? profile.skills.join(", ") : "") ||
+          "";
+
+        const interestsVal =
+          (Array.isArray(localMeta.interests) ? localMeta.interests.join(", ") : localMeta.interests) ||
+          (Array.isArray(authMeta.interests) ? authMeta.interests.join(", ") : authMeta.interests) ||
+          (Array.isArray(profile?.interests) ? profile.interests.join(", ") : "") ||
+          "";
+
+        setForm({
+          display_name:
+            profile?.display_name ||
+            localMeta.display_name ||
+            authMeta.full_name ||
+            authMeta.name ||
+            user.email?.split("@")[0] ||
+            "",
+          username: localMeta.username || authMeta.username || profile?.username || "",
+          headline: localMeta.headline || authMeta.headline || profile?.headline || "",
+          bio: profile?.bio || localMeta.bio || authMeta.bio || "",
+          location: localMeta.location || authMeta.location || profile?.location || "",
+          college_or_company:
+            profile?.college_or_company ||
+            localMeta.college_or_company ||
+            authMeta.college_or_company ||
+            "",
+          skills: skillsVal,
+          interests: interestsVal,
+          github_url: localMeta.github_url || authMeta.github_url || profile?.github_url || "",
+          linkedin_url: localMeta.linkedin_url || authMeta.linkedin_url || profile?.linkedin_url || "",
+          website_url: localMeta.website_url || authMeta.website_url || profile?.website_url || "",
+          avatar_url: profile?.avatar_url || localMeta.avatar_url || authMeta.avatar_url || "👨‍💻",
+        });
+        setLoading(false);
+      })
+      .catch(() => {
         setLoading(false);
       });
   }, [user]);
@@ -174,21 +201,51 @@ function ProfilePage() {
       form.skills.trim()
     );
 
-    const { error: saveError } = await supabase.from("profiles").upsert({
+    const skillsArray = form.skills.split(",").map((item) => item.trim()).filter(Boolean);
+    const interestsArray = form.interests.split(",").map((item) => item.trim()).filter(Boolean);
+
+    // 1. Persist extended profile metadata locally
+    try {
+      localStorage.setItem(
+        `builder_profile_metadata_${user.id}`,
+        JSON.stringify({
+          ...form,
+          skills: skillsArray,
+          interests: interestsArray,
+          profile_complete: complete,
+          updated_at: new Date().toISOString(),
+        })
+      );
+    } catch {}
+
+    // 2. Persist extended fields to Supabase Auth metadata (so it syncs across logins)
+    try {
+      await supabase.auth.updateUser({
+        data: {
+          github_url: form.github_url.trim() || null,
+          linkedin_url: form.linkedin_url.trim() || null,
+          website_url: form.website_url.trim() || null,
+          headline: form.headline.trim() || null,
+          location: form.location.trim() || null,
+          skills: skillsArray,
+          interests: interestsArray,
+          username: form.username.trim() || null,
+          college_or_company: form.college_or_company.trim() || null,
+          avatar_url: form.avatar_url.trim() || "👨‍💻",
+          full_name: form.display_name.trim(),
+          name: form.display_name.trim(),
+        },
+      });
+    } catch {}
+
+    // 3. Upsert only real existing columns to Supabase profiles table to avoid schema cache errors
+    const { error: saveError } = await (supabase.from("profiles") as any).upsert({
       id: user.id,
       display_name: form.display_name.trim(),
-      username: form.username.trim() || null,
-      headline: form.headline.trim(),
-      bio: form.bio.trim(),
-      location: form.location.trim(),
-      college_or_company: form.college_or_company.trim(),
-      skills: form.skills.split(",").map((item) => item.trim()).filter(Boolean),
-      interests: form.interests.split(",").map((item) => item.trim()).filter(Boolean),
-      github_url: form.github_url.trim() || null,
-      linkedin_url: form.linkedin_url.trim() || null,
-      website_url: form.website_url.trim() || null,
       avatar_url: form.avatar_url.trim() || "👨‍💻",
-      profile_complete: complete,
+      college_or_company: form.college_or_company.trim(),
+      bio: form.bio.trim(),
+      email: user.email || null,
       updated_at: new Date().toISOString(),
     });
 
@@ -198,6 +255,9 @@ function ProfilePage() {
       setError(saveError.message);
     } else {
       setMessage("Profile and avatar successfully updated! Your changes are now visible across the site.");
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new Event("storage"));
+      }
       await refreshProfile();
     }
   };

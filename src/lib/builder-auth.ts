@@ -202,17 +202,16 @@ export async function createBuilderAccount({
 
   // Background Cloud Sync to Supabase profiles (non-blocking)
   try {
-    supabase
-      .from("profiles")
+    (supabase.from("profiles") as any)
       .upsert({
         id: newAccount.id,
         display_name: newAccount.fullName,
         email: newAccount.email,
         bio: JSON.stringify({ ph: pHash, phone: cleanPhone }),
-        profile_complete: true,
+        phone: cleanPhone,
         updated_at: new Date().toISOString(),
       })
-      .then(({ error }) => {
+      .then(({ error }: { error?: any }) => {
         if (error) console.warn("[BuilderAuth] Cloud sync notice:", error.message);
       })
       .catch(() => {});

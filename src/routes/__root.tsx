@@ -192,10 +192,63 @@ function RootComponent() {
   const [profile, setProfile] = useState<import("@/lib/auth").Profile | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchProfile = async (userId: string) => {
+  const fetchProfile = async (userId: string, currentUser?: User | null) => {
     try {
       const { data } = await supabase.from("profiles").select("*").eq("id", userId).maybeSingle();
-      setProfile((data as import("@/lib/auth").Profile) ?? null);
+      const p = (data as any) ?? {};
+
+      let localMeta: any = {};
+      try {
+        const stored = typeof window !== "undefined" ? localStorage.getItem(`builder_profile_metadata_${userId}`) : null;
+        if (stored) localMeta = JSON.parse(stored);
+      } catch {}
+
+      const authUser = currentUser ?? user;
+      const authMeta: any = authUser?.user_metadata || {};
+
+      const parseArray = (val: any): string[] => {
+        if (Array.isArray(val)) return val;
+        if (typeof val === "string" && val.trim()) {
+          return val.split(",").map((s: string) => s.trim()).filter(Boolean);
+        }
+        return [];
+      };
+
+      const skills = parseArray(localMeta.skills).length ? parseArray(localMeta.skills) :
+                     parseArray(authMeta.skills).length ? parseArray(authMeta.skills) :
+                     parseArray(p.skills);
+
+      const interests = parseArray(localMeta.interests).length ? parseArray(localMeta.interests) :
+                        parseArray(authMeta.interests).length ? parseArray(authMeta.interests) :
+                        parseArray(p.interests);
+
+      const mergedProfile = {
+        ...p,
+        id: userId,
+        display_name: p.display_name || localMeta.display_name || authMeta.full_name || authMeta.name || authUser?.email?.split("@")[0] || "",
+        avatar_url: p.avatar_url || localMeta.avatar_url || authMeta.avatar_url || "👨‍💻",
+        bio: p.bio || localMeta.bio || authMeta.bio || "",
+        college_or_company: p.college_or_company || localMeta.college_or_company || authMeta.college_or_company || "",
+        headline: localMeta.headline || authMeta.headline || p.headline || "",
+        location: localMeta.location || authMeta.location || p.location || "",
+        github_url: localMeta.github_url || authMeta.github_url || p.github_url || null,
+        linkedin_url: localMeta.linkedin_url || authMeta.linkedin_url || p.linkedin_url || null,
+        website_url: localMeta.website_url || authMeta.website_url || p.website_url || null,
+        skills,
+        interests,
+        username: localMeta.username || authMeta.username || p.username || null,
+        email: p.email || authUser?.email || null,
+        created_at: p.created_at || new Date().toISOString(),
+        updated_at: p.updated_at || new Date().toISOString(),
+        profile_complete: Boolean(
+          (p.display_name || localMeta.display_name || authMeta.full_name) &&
+          (localMeta.headline || authMeta.headline) &&
+          (localMeta.location || authMeta.location) &&
+          skills.length
+        ),
+      };
+
+      setProfile(mergedProfile as import("@/lib/auth").Profile);
     } catch {
       setProfile(null);
     }
@@ -203,7 +256,7 @@ function RootComponent() {
 
   const refreshProfile = async () => {
     if (user) {
-      await fetchProfile(user.id);
+      await fetchProfile(user.id, user);
     }
   };
 
@@ -216,7 +269,7 @@ function RootComponent() {
       if (builderUser) {
         if (!active) return;
         setUser(builderUser);
-        fetchProfile(builderUser.id).finally(() => {
+        fetchProfile(builderUser.id, builderUser).finally(() => {
           if (active) setLoading(false);
         });
         return;
@@ -228,7 +281,7 @@ function RootComponent() {
       const currentUser = data?.session?.user ?? null;
       setUser(currentUser);
       if (currentUser) {
-        fetchProfile(currentUser.id).finally(() => {
+        fetchProfile(currentUser.id, currentUser).finally(() => {
           if (active) setLoading(false);
         });
       } else {
@@ -244,7 +297,7 @@ function RootComponent() {
       // If a builder user is already active, prioritize unless Supabase sign-in occurred
       if (event === "SIGNED_IN" && session?.user) {
         setUser(session.user);
-        fetchProfile(session.user.id);
+        fetchProfile(session.user.id, session.user);
         setLoading(false);
         router.invalidate();
         queryClient.invalidateQueries();
