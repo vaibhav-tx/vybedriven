@@ -16,6 +16,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { AuthProvider } from "@/lib/auth";
 import { TeamInviteBanner } from "@/components/TeamInviteBanner";
 import { getBuilderSession, BUILDER_AUTH_CHANGE_EVENT } from "@/lib/builder-auth";
+import { syncCloudStore } from "@/data/events-store";
 import type { User } from "@supabase/supabase-js";
 
 function NotFoundComponent() {
@@ -262,6 +263,9 @@ function RootComponent() {
 
   useEffect(() => {
     let active = true;
+
+    // Synchronize latest cloud hackathons, updates & registrations
+    syncCloudStore();
 
     const syncSession = async () => {
       // 1. Check custom builder auth session first

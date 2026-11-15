@@ -126,6 +126,9 @@ export const EXCLUDED_TEST_IDS = [
   "GB27-45653",
   "GB27-82035",
   "GB27-37406",
+  "GB27-43750",
+  "TEST-PROBE-1",
+  "TEST-PROBE-DUP",
 ];
 
 export const GOA_BUILDATHON_ORGANIZER_EMAILS = [
@@ -149,7 +152,16 @@ export function getStoredRegistrations(): EventRegistration[] {
     const list = JSON.parse(raw) as EventRegistration[];
     if (!Array.isArray(list)) return [];
     return list.filter(
-      (r) => r && r.status !== "deleted" && !EXCLUDED_TEST_IDS.includes(r.id)
+      (r) =>
+        r &&
+        r.status !== "deleted" &&
+        r.status !== "event_config" &&
+        !r.id?.startsWith("EVENT_CONFIG::") &&
+        !r.id?.startsWith("SYSTEM_") &&
+        !EXCLUDED_TEST_IDS.includes(r.id) &&
+        !r.email?.toLowerCase().includes("leader-gb27-43750") &&
+        !r.email?.toLowerCase().includes("testbuilder@example.com") &&
+        !r.email?.toLowerCase().includes("probe@example.com")
     );
   } catch (error) {
     console.error("Failed to parse registrations:", error);
@@ -168,11 +180,12 @@ export function slugifyTitle(title: string): string {
   return base || "event-" + Math.random().toString(36).substring(2, 8);
 }
 
-// Return all opportunities (Built-in + Hosted by users)
+// Return all opportunities (Built-in + Hosted by users, deduplicated with hosted overrides prioritized)
 export function getAllMergedOpportunities(): Opportunity[] {
   const hosted = getStoredHostedEvents();
-  // User hosted events appear at the top so new hosts immediately see their listing
-  return [...hosted, ...opportunities];
+  const hostedSlugs = new Set(hosted.map((h) => h.slug));
+  const remainingBuiltIn = opportunities.filter((o) => !hostedSlugs.has(o.slug));
+  return [...hosted, ...remainingBuiltIn];
 }
 
 // Get single opportunity by slug
@@ -258,6 +271,26 @@ export function createHostedOpportunity(input: {
     notifyStoreChange();
   }
 
+  // Cloud sync to Supabase so new event is immediately visible across all users & devices
+  try {
+    import("@/integrations/supabase/client").then(({ supabase }) => {
+      supabase.from("registrations" as any).upsert([
+        {
+          id: `EVENT_CONFIG::${newEvent.slug}`,
+          opportunity_slug: newEvent.slug,
+          opportunity_title: newEvent.title,
+          email: newEvent.organizerEmail || "events@vybedriven.in",
+          full_name: newEvent.organizer || "Organizer",
+          phone: newEvent.organizerPhone || "0000000000",
+          college_or_company: "Vybe Driven Platform",
+          team_members: JSON.stringify(newEvent),
+          status: "event_config",
+          updated_at: new Date().toISOString(),
+        },
+      ]).then(() => {});
+    });
+  } catch {}
+
   return newEvent;
 }
 
@@ -316,7 +349,7 @@ export function isEventOrganizer(
   return false;
 }
 
-// Update existing hosted event
+// Update existing hosted or built-in event with live cloud synchronization
 export function updateHostedOpportunity(
   slug: string,
   updates: Partial<HostedEvent>,
@@ -324,24 +357,55 @@ export function updateHostedOpportunity(
 ): HostedEvent | null {
   const list = getStoredHostedEvents();
   const index = list.findIndex((e) => e.slug === slug);
-  if (index === -1) return null;
+  const existing = findOpportunity(slug);
+  if (!existing && index === -1) return null;
 
-  // Authorization check: Only the actual host can edit
-  if (user && !isEventOrganizer(list[index], user)) {
+  // Authorization check: Only the actual host or platform admin can edit
+  const targetEvent = index !== -1 ? list[index] : existing;
+  if (user && !isEventOrganizer(targetEvent, user)) {
     throw new Error("Unauthorized: Only the event creator can edit this event.");
   }
 
+  const base = index !== -1 ? list[index] : (existing as HostedEvent);
   const updated: HostedEvent = {
-    ...list[index],
+    ...base,
     ...updates,
+    slug,
+    isHosted: true,
     updatedAt: new Date().toISOString(),
   };
 
-  list[index] = updated;
+  if (index !== -1) {
+    list[index] = updated;
+  } else {
+    list.unshift(updated);
+  }
+
   if (typeof window !== "undefined") {
     localStorage.setItem(STORAGE_HOSTED_EVENTS, JSON.stringify(list));
     notifyStoreChange();
   }
+
+  // Cloud sync to Supabase registrations table so all users see the updated event
+  try {
+    import("@/integrations/supabase/client").then(({ supabase }) => {
+      supabase.from("registrations" as any).upsert([
+        {
+          id: `EVENT_CONFIG::${updated.slug}`,
+          opportunity_slug: updated.slug,
+          opportunity_title: updated.title,
+          email: updated.organizerEmail || "events@vybedriven.in",
+          full_name: updated.organizer || "Organizer",
+          phone: updated.organizerPhone || "0000000000",
+          college_or_company: "Vybe Driven Platform",
+          team_members: JSON.stringify(updated),
+          status: "event_config",
+          updated_at: new Date().toISOString(),
+        },
+      ]).then(() => {});
+    });
+  } catch {}
+
   return updated;
 }
 
@@ -351,7 +415,7 @@ export function deleteHostedOpportunity(
   user?: { id?: string; email?: string | null } | null
 ): boolean {
   const list = getStoredHostedEvents();
-  const target = list.find((e) => e.slug === slug);
+  const target = list.find((e) => e.slug === slug) || (findOpportunity(slug) as HostedEvent | undefined);
   if (!target) return false;
 
   if (user && !isEventOrganizer(target, user)) {
@@ -363,6 +427,14 @@ export function deleteHostedOpportunity(
     localStorage.setItem(STORAGE_HOSTED_EVENTS, JSON.stringify(filtered));
     notifyStoreChange();
   }
+
+  // Cloud sync deletion to Supabase
+  try {
+    import("@/integrations/supabase/client").then(({ supabase }) => {
+      supabase.from("registrations" as any).update({ status: "deleted" }).eq("id", `EVENT_CONFIG::${slug}`).then(() => {});
+    });
+  } catch {}
+
   return true;
 }
 
@@ -491,11 +563,50 @@ export function mergeRemoteRegistrations(remoteRows: any[]): void {
   }
 
   // Overlay remote records from Supabase
+  let hasEventConfigUpdates = false;
+
   for (const row of remoteRows) {
-    if (row.status === "deleted" || EXCLUDED_TEST_IDS.includes(row.id)) {
+    // 1. Process Event Config cloud synchronization (live hackathon updates)
+    if (row.id?.startsWith("EVENT_CONFIG::") || row.status === "event_config") {
+      const eventSlug = row.opportunity_slug || row.id.replace("EVENT_CONFIG::", "");
+      if (row.status === "deleted") {
+        const list = getStoredHostedEvents().filter((e) => e.slug !== eventSlug);
+        localStorage.setItem(STORAGE_HOSTED_EVENTS, JSON.stringify(list));
+        hasEventConfigUpdates = true;
+      } else if (row.team_members && typeof row.team_members === "string") {
+        try {
+          const parsedEvent = JSON.parse(row.team_members);
+          if (parsedEvent && parsedEvent.slug) {
+            const list = getStoredHostedEvents();
+            const idx = list.findIndex((e) => e.slug === parsedEvent.slug);
+            if (idx !== -1) {
+              list[idx] = { ...list[idx], ...parsedEvent };
+            } else {
+              list.unshift(parsedEvent);
+            }
+            localStorage.setItem(STORAGE_HOSTED_EVENTS, JSON.stringify(list));
+            hasEventConfigUpdates = true;
+          }
+        } catch {}
+      }
       map.delete(row.id);
       continue;
     }
+
+    // 2. Exclude deleted, system, probe, and dummy records
+    if (
+      row.status === "deleted" ||
+      row.status === "event_config" ||
+      row.id?.startsWith("SYSTEM_") ||
+      EXCLUDED_TEST_IDS.includes(row.id) ||
+      row.email?.toLowerCase().includes("leader-gb27-43750") ||
+      row.email?.toLowerCase().includes("testbuilder@example.com") ||
+      row.email?.toLowerCase().includes("probe@example.com")
+    ) {
+      map.delete(row.id);
+      continue;
+    }
+
     const existing = map.get(row.id);
     let parsedSubmission: IdeaSubmission | undefined = existing?.submission;
     let cleanTeamMembers = row.team_members;
@@ -551,9 +662,11 @@ export function mergeRemoteRegistrations(remoteRows: any[]): void {
   const prevJson = typeof window !== "undefined" ? localStorage.getItem(STORAGE_REGISTRATIONS) : null;
   const nextJson = JSON.stringify(merged);
 
-  if (prevJson !== nextJson) {
+  if (prevJson !== nextJson || hasEventConfigUpdates) {
     if (typeof window !== "undefined") {
-      localStorage.setItem(STORAGE_REGISTRATIONS, nextJson);
+      if (prevJson !== nextJson) {
+        localStorage.setItem(STORAGE_REGISTRATIONS, nextJson);
+      }
       notifyStoreChange();
     }
   }
@@ -1144,7 +1257,8 @@ export function isUserRegistered(slug: string, userIdOrEmail?: string): boolean 
 export function exportRegistrationsToCSV(
   slug: string,
   eventTitle: string,
-  user?: { id?: string; email?: string | null } | null
+  user?: { id?: string; email?: string | null } | null,
+  customList?: EventRegistration[]
 ) {
   if (typeof window === "undefined") return;
   const targetEvent = findOpportunity(slug);
@@ -1159,7 +1273,7 @@ export function exportRegistrationsToCSV(
     return;
   }
 
-  const list = getRegistrationsBySlug(slug);
+  const list = customList && customList.length ? customList : getRegistrationsBySlug(slug);
   if (!list.length) {
     alert("No registrations to export yet.");
     return;
@@ -1377,5 +1491,23 @@ export function useEventRegistrations(slug: string) {
   }, [slug]);
 
   return list;
+}
+
+// Global cloud synchronizer for all events & registrations across the platform
+export function syncCloudStore(): void {
+  if (typeof window === "undefined") return;
+  import("@/integrations/supabase/client")
+    .then(({ supabase }) => {
+      supabase
+        .from("registrations" as any)
+        .select("*")
+        .then(({ data, error }) => {
+          if (!error && data && Array.isArray(data)) {
+            mergeRemoteRegistrations(data);
+          }
+        })
+        .catch(() => {});
+    })
+    .catch(() => {});
 }
 
