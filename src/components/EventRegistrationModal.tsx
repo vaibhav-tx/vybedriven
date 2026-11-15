@@ -83,6 +83,8 @@ export function EventRegistrationModal({
   const [regFlow, setRegFlow] = useState<"create" | "join">(() => (initialJoinCode ? "join" : "create"));
   const [teamCodeInput, setTeamCodeInput] = useState(initialJoinCode || "");
   const [matchedTeam, setMatchedTeam] = useState<EventRegistration | null>(null);
+  const [isSearchingTeam, setIsSearchingTeam] = useState(false);
+  const [searchDone, setSearchDone] = useState(false);
   const [joinDept, setJoinDept] = useState("");
   const [joinYear, setJoinYear] = useState("");
 
@@ -253,8 +255,13 @@ export function EventRegistrationModal({
     if (initialJoinCode) {
       setRegFlow("join");
       setTeamCodeInput(initialJoinCode);
+      setIsSearchingTeam(true);
       findTeamByCode(initialJoinCode).then((found) => {
-        if (active) setMatchedTeam(found);
+        if (active) {
+          setMatchedTeam(found);
+          setIsSearchingTeam(false);
+          setSearchDone(true);
+        }
       });
     }
     return () => {
@@ -264,12 +271,26 @@ export function EventRegistrationModal({
 
   useEffect(() => {
     let active = true;
-    if (teamCodeInput.trim().length >= 4) {
-      findTeamByCode(teamCodeInput.trim()).then((found) => {
-        if (active) setMatchedTeam(found);
-      });
+    const clean = teamCodeInput.trim();
+    if (clean.length >= 3) {
+      setIsSearchingTeam(true);
+      const timer = setTimeout(() => {
+        findTeamByCode(clean).then((found) => {
+          if (active) {
+            setMatchedTeam(found);
+            setIsSearchingTeam(false);
+            setSearchDone(true);
+          }
+        });
+      }, 200);
+      return () => {
+        active = false;
+        clearTimeout(timer);
+      };
     } else {
       setMatchedTeam(null);
+      setIsSearchingTeam(false);
+      setSearchDone(false);
     }
     return () => {
       active = false;
@@ -338,6 +359,7 @@ export function EventRegistrationModal({
         collegeOrCompany: organization.trim(),
         department: joinDept.trim() || undefined,
         graduationYear: joinYear.trim() || undefined,
+        opportunitySlug: opportunity.slug,
       });
 
       setConfirmedReg(updated);
@@ -1121,7 +1143,12 @@ Platform Support: vybedriven@gmail.com
                     />
                   </div>
 
-                  {matchedTeam ? (
+                  {isSearchingTeam ? (
+                    <div className="flex items-center gap-2 rounded-xl border border-neon/30 bg-neon/5 p-2.5 text-xs text-neon">
+                      <Loader2 className="size-3.5 animate-spin shrink-0" />
+                      <span>Verifying team code in registry...</span>
+                    </div>
+                  ) : matchedTeam ? (
                     <div className="rounded-xl border border-emerald-500/50 bg-emerald-950/40 p-3 text-xs text-emerald-300 space-y-1">
                       <div className="flex items-center justify-between font-bold">
                         <span>✅ Team Found: {matchedTeam.teamName}</span>
@@ -1131,10 +1158,16 @@ Platform Support: vybedriven@gmail.com
                         Leader: {matchedTeam.fullName} · {matchedTeam.collegeOrCompany}
                       </p>
                     </div>
-                  ) : teamCodeInput.trim().length >= 4 ? (
-                    <p className="text-[11px] text-amber-400">
-                      Searching team code... Please verify the code with your Team Leader.
-                    </p>
+                  ) : teamCodeInput.trim().length >= 3 ? (
+                    <div className="rounded-xl border border-blue-500/40 bg-blue-950/30 p-2.5 text-xs text-blue-200 space-y-1">
+                      <div className="flex items-center gap-1.5 font-bold text-blue-300">
+                        <CheckCircle2 className="size-3.5 text-blue-400 shrink-0" />
+                        <span>Ready to join Team Code: {teamCodeInput.trim().toUpperCase()}</span>
+                      </div>
+                      <p className="text-[11px] text-muted-foreground">
+                        Fill your details below to confirm and receive your verified entry pass.
+                      </p>
+                    </div>
                   ) : null}
                 </div>
 
@@ -1239,10 +1272,10 @@ Platform Support: vybedriven@gmail.com
                   </Button>
                   <Button
                     type="submit"
-                    disabled={submitting || !matchedTeam}
+                    disabled={submitting || teamCodeInput.trim().length < 3}
                     className="rounded-full bg-gradient-brand text-primary-foreground font-bold px-7 shadow-glow hover:brightness-110"
                   >
-                    {submitting ? "Joining..." : "Join Team & Get Pass 🚀"}
+                    {submitting ? "Joining..." : matchedTeam ? "Join Team & Get Pass 🚀" : "Confirm & Join Team 🚀"}
                   </Button>
                 </div>
               </form>

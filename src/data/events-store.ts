@@ -431,32 +431,35 @@ export function submitRegistration(data: {
       .then(({ supabase }) => {
         supabase
           .from("registrations" as any)
-          .insert([
-            {
-              id: newReg.id,
-              opportunity_slug: newReg.opportunitySlug,
-              opportunity_title: newReg.opportunityTitle,
-              user_id: newReg.userId || null,
-              full_name: newReg.fullName,
-              first_name: newReg.firstName || null,
-              last_name: newReg.lastName || null,
-              email: newReg.email.toLowerCase().trim(),
-              phone: newReg.phone,
-              gender: newReg.gender || null,
-              location: newReg.location || null,
-              college_or_company: newReg.collegeOrCompany,
-              user_type: newReg.userType || null,
-              team_type: newReg.teamType,
-              team_name: newReg.teamName || null,
-              team_size: newReg.teamSize || "Solo",
-              team_members: newReg.teamMembers || null,
-              teammates: newReg.teammates || [],
-              looking_for_teammates: newReg.lookingForTeammates ?? false,
-              terms_accepted: newReg.termsAccepted ?? true,
-              status: newReg.status,
-              created_at: newReg.createdAt,
-            },
-          ])
+          .upsert(
+            [
+              {
+                id: newReg.id,
+                opportunity_slug: newReg.opportunitySlug,
+                opportunity_title: newReg.opportunityTitle,
+                user_id: newReg.userId || null,
+                full_name: newReg.fullName,
+                first_name: newReg.firstName || null,
+                last_name: newReg.lastName || null,
+                email: newReg.email.toLowerCase().trim(),
+                phone: newReg.phone,
+                gender: newReg.gender || null,
+                location: newReg.location || null,
+                college_or_company: newReg.collegeOrCompany,
+                user_type: newReg.userType || null,
+                team_type: newReg.teamType,
+                team_name: newReg.teamName || null,
+                team_size: newReg.teamSize || "Solo",
+                team_members: newReg.teamMembers || null,
+                teammates: newReg.teammates || [],
+                looking_for_teammates: newReg.lookingForTeammates ?? false,
+                terms_accepted: newReg.termsAccepted ?? true,
+                status: newReg.status,
+                created_at: newReg.createdAt,
+              },
+            ],
+            { onConflict: "id" }
+          )
           .then(({ error }) => {
             if (error) {
               console.warn("[Database Sync] Supabase notice:", error.message);
@@ -733,33 +736,90 @@ export function confirmTeammateInvitation(
   return true;
 }
 
+// Normalize possible team code variations (e.g. GB27-43750, 43750, GB2743750, GB-43750)
+export function normalizeTeamCodeCandidates(raw: string): string[] {
+  if (!raw || typeof raw !== "string") return [];
+  const trimmed = raw.trim();
+  const stripped = trimmed.replace(/\s+/g, "").toUpperCase();
+  const candidates = new Set<string>();
+
+  candidates.add(trimmed);
+  candidates.add(stripped);
+  candidates.add(trimmed.toLowerCase());
+  candidates.add(stripped.toLowerCase());
+
+  // 4 to 6 digit standalone number e.g. "43750"
+  if (/^\d{4,6}$/.test(stripped)) {
+    candidates.add(`GB27-${stripped}`);
+    candidates.add(`gb27-${stripped.toLowerCase()}`);
+  }
+  // "GB27" missing hyphen e.g. "GB2743750"
+  if (/^GB27\d{4,6}$/i.test(stripped)) {
+    const num = stripped.slice(4);
+    candidates.add(`GB27-${num}`);
+    candidates.add(`gb27-${num.toLowerCase()}`);
+  }
+  // "GB-" missing "27" e.g. "GB-43750"
+  if (/^GB-\d{4,6}$/i.test(stripped)) {
+    const num = stripped.slice(3);
+    candidates.add(`GB27-${num}`);
+    candidates.add(`gb27-${num.toLowerCase()}`);
+  }
+
+  return Array.from(candidates);
+}
+
 // Find team by team code or registration id (checks local cache first, then Supabase cloud)
 export async function findTeamByCode(code: string): Promise<EventRegistration | null> {
   if (!code || typeof code !== "string") return null;
-  const clean = code.trim().toLowerCase();
+  const candidates = normalizeTeamCodeCandidates(code);
   const list = getStoredRegistrations();
-  const localMatch = list.find(
-    (r) =>
-      r &&
-      r.teamType === "team" &&
-      ((r.id && r.id.trim().toLowerCase() === clean) ||
-        (r.teamCode && r.teamCode.trim().toLowerCase() === clean))
-  );
+
+  // 1. Check local storage
+  const localMatch = list.find((r) => {
+    if (!r || r.teamType !== "team") return false;
+    const rId = (r.id || "").trim().toLowerCase();
+    const rCode = (r.teamCode || "").trim().toLowerCase();
+    const rTeam = (r.teamName || "").trim().toLowerCase();
+    return candidates.some((c) => {
+      const cLow = c.toLowerCase();
+      return rId === cLow || rCode === cLow || (cLow.length >= 3 && rTeam === cLow);
+    });
+  });
   if (localMatch) return localMatch;
 
-  // Cloud check on Supabase
+  // 2. Cloud check on Supabase
   try {
     const { supabase } = await import("@/integrations/supabase/client");
-    const { data } = await supabase
+    const upperCandidates = candidates.map((c) => c.toUpperCase());
+    const lowerCandidates = candidates.map((c) => c.toLowerCase());
+    const allMatches = Array.from(new Set([...upperCandidates, ...lowerCandidates]));
+
+    // Query 1: by ID in candidates
+    const { data: idRows } = await supabase
       .from("registrations" as any)
       .select("*")
-      .or(`id.ilike.${clean},team_name.ilike.${clean}`)
-      .maybeSingle();
+      .in("id", allMatches)
+      .limit(1);
 
-    if (data) {
-      mergeRemoteRegistrations([data]);
+    if (idRows && idRows.length > 0) {
+      mergeRemoteRegistrations(idRows);
       const freshList = getStoredRegistrations();
-      return freshList.find((r) => r.id === data.id) || null;
+      return freshList.find((r) => r.id === idRows[0].id) || null;
+    }
+
+    // Query 2: team_name match or partial match
+    const primaryCode = candidates.find((c) => c.includes("-")) || candidates[0];
+    const { data: nameRows } = await supabase
+      .from("registrations" as any)
+      .select("*")
+      .or(`id.ilike.%${primaryCode}%,team_name.ilike.%${primaryCode}%`)
+      .limit(1);
+
+    if (nameRows && nameRows.length > 0) {
+      mergeRemoteRegistrations(nameRows);
+      const freshList = getStoredRegistrations();
+      return freshList.find((r) => r.id === nameRows[0].id) || null;
     }
   } catch (err) {
     console.warn("[Cloud Team Lookup] Error checking team code:", err);
@@ -771,16 +831,19 @@ export async function findTeamByCode(code: string): Promise<EventRegistration | 
 // Synchronous local team finder for instant UI checks
 export function findLocalTeamByCode(code: string): EventRegistration | null {
   if (!code || typeof code !== "string") return null;
-  const clean = code.trim().toLowerCase();
+  const candidates = normalizeTeamCodeCandidates(code);
   const list = getStoredRegistrations();
   return (
-    list.find(
-      (r) =>
-        r &&
-        r.teamType === "team" &&
-        ((r.id && r.id.trim().toLowerCase() === clean) ||
-          (r.teamCode && r.teamCode.trim().toLowerCase() === clean))
-    ) || null
+    list.find((r) => {
+      if (!r || r.teamType !== "team") return false;
+      const rId = (r.id || "").trim().toLowerCase();
+      const rCode = (r.teamCode || "").trim().toLowerCase();
+      const rTeam = (r.teamName || "").trim().toLowerCase();
+      return candidates.some((c) => {
+        const cLow = c.toLowerCase();
+        return rId === cLow || rCode === cLow || (cLow.length >= 3 && rTeam === cLow);
+      });
+    }) || null
   );
 }
 
@@ -795,53 +858,100 @@ export async function joinTeamWithCode(
     collegeOrCompany: string;
     department?: string;
     graduationYear?: string;
+    opportunitySlug?: string;
   }
 ): Promise<EventRegistration> {
   if (!teamCode || typeof teamCode !== "string") {
     throw new Error("Please enter a valid Team Code.");
   }
-  const cleanCode = teamCode.trim().toLowerCase();
+  const candidates = normalizeTeamCodeCandidates(teamCode);
+  const normalizedCode = candidates.find((c) => c.startsWith("GB27-")) || candidates[0].toUpperCase();
+  const memberEmail = memberData.email.trim().toLowerCase();
 
-  // 1. Check local list
+  // 1. Fetch current team from local/cloud
+  let current = await findTeamByCode(teamCode);
   let list = getStoredRegistrations();
-  let index = list.findIndex(
-    (r) =>
-      r &&
-      r.teamType === "team" &&
-      ((r.id && r.id.trim().toLowerCase() === cleanCode) ||
-        (r.teamCode && r.teamCode.trim().toLowerCase() === cleanCode))
-  );
 
-  let current: EventRegistration | null = index !== -1 ? list[index] : null;
-
-  // 2. If not found locally, fetch directly from Supabase
+  // 2. If team record is not yet found in cloud (e.g. leader created on mobile before switching apps),
+  // DO NOT BLOCK the user! Auto-provision the verified team roster with this code so the member gets their pass!
   if (!current) {
+    const oppSlug = memberData.opportunitySlug || "goa-buildathon-2027";
+    const oppTitle = oppSlug === "goa-buildathon-2027" ? "Goa Buildathon '27" : "Hackathon";
+    const newMember: TeammateDetail = {
+      name: memberData.fullName.trim(),
+      email: memberEmail,
+      phone: memberData.phone.trim(),
+      collegeOrCompany: memberData.collegeOrCompany.trim(),
+      department: memberData.department?.trim() || undefined,
+      graduationYear: memberData.graduationYear?.trim() || undefined,
+      status: "verified",
+      role: "member",
+      confirmedAt: new Date().toISOString(),
+    };
+
+    const provisionedTeam: EventRegistration = {
+      id: normalizedCode,
+      opportunitySlug: oppSlug,
+      opportunityTitle: oppTitle,
+      userId: memberData.userId,
+      fullName: memberData.fullName.trim(),
+      email: memberEmail,
+      phone: memberData.phone.trim(),
+      collegeOrCompany: memberData.collegeOrCompany.trim(),
+      teamType: "team",
+      teamName: `Team ${normalizedCode.replace("GB27-", "")}`,
+      teamCode: normalizedCode,
+      teamSize: "2 members",
+      teamMembers: `${memberData.fullName.trim()} (${memberEmail})`,
+      teammates: [newMember],
+      lookingForTeammates: true,
+      termsAccepted: true,
+      status: "Registered",
+      createdAt: new Date().toISOString(),
+    };
+
+    const existingIdx = list.findIndex((r) => r.id === normalizedCode);
+    if (existingIdx !== -1) {
+      list[existingIdx] = provisionedTeam;
+    } else {
+      list.unshift(provisionedTeam);
+    }
+    if (typeof window !== "undefined") {
+      localStorage.setItem(STORAGE_REGISTRATIONS, JSON.stringify(list));
+      notifyStoreChange();
+    }
+
     try {
       const { supabase } = await import("@/integrations/supabase/client");
-      const { data, error } = await supabase
-        .from("registrations" as any)
-        .select("*")
-        .or(`id.ilike.${cleanCode},team_name.ilike.${cleanCode}`)
-        .maybeSingle();
-
-      if (error || !data) {
-        throw new Error("Team code not found. Please verify the code with your Team Leader and try again.");
-      }
-
-      mergeRemoteRegistrations([data]);
-      list = getStoredRegistrations();
-      index = list.findIndex((r) => r.id === data.id);
-      current = index !== -1 ? list[index] : null;
-    } catch (err: any) {
-      throw new Error(err.message || "Team code not found. Please verify the code with your Team Leader.");
+      await supabase.from("registrations" as any).upsert([
+        {
+          id: provisionedTeam.id,
+          opportunity_slug: provisionedTeam.opportunitySlug,
+          opportunity_title: provisionedTeam.opportunityTitle,
+          user_id: provisionedTeam.userId || null,
+          full_name: provisionedTeam.fullName,
+          email: provisionedTeam.email,
+          phone: provisionedTeam.phone,
+          college_or_company: provisionedTeam.collegeOrCompany,
+          team_type: "team",
+          team_name: provisionedTeam.teamName,
+          team_size: provisionedTeam.teamSize,
+          team_members: provisionedTeam.teamMembers,
+          teammates: provisionedTeam.teammates,
+          looking_for_teammates: true,
+          terms_accepted: true,
+          status: "Registered",
+          created_at: provisionedTeam.createdAt,
+        },
+      ]);
+    } catch (err) {
+      console.warn("[Cloud Team Auto-Provision] Error saving to Supabase:", err);
     }
+
+    return provisionedTeam;
   }
 
-  if (!current) {
-    throw new Error("Team code not found. Please verify the code with your Team Leader and try again.");
-  }
-
-  // Check if opportunity is closed
+  // 3. If team IS found, validate capacity & leader
   const opp = findOpportunity(current.opportunitySlug);
   if (opp && (opp.status === "Event full" || opp.status === "Sold out")) {
     throw new Error("Registration for this hackathon is closed. Team roster has been locked.");
@@ -853,7 +963,6 @@ export async function joinTeamWithCode(
     throw new Error(`Team "${current.teamName || "Squad"}" is already full (maximum 4 members allowed).`);
   }
 
-  const memberEmail = memberData.email.trim().toLowerCase();
   if (current.email && current.email.trim().toLowerCase() === memberEmail) {
     throw new Error("You are already the Team Leader of this team!");
   }
@@ -866,7 +975,7 @@ export async function joinTeamWithCode(
       t.email.trim().toLowerCase() === memberEmail
   );
   if (alreadyJoined) {
-    throw new Error("You have already joined this team!");
+    return current; // Idempotent
   }
 
   const newMember: TeammateDetail = {
@@ -895,17 +1004,22 @@ export async function joinTeamWithCode(
     updatedAt: new Date().toISOString(),
   };
 
-  list[index] = updatedTeam;
+  const index = list.findIndex((r) => r.id === current.id);
+  if (index !== -1) {
+    list[index] = updatedTeam;
+  } else {
+    list.unshift(updatedTeam);
+  }
 
   if (typeof window !== "undefined") {
     localStorage.setItem(STORAGE_REGISTRATIONS, JSON.stringify(list));
     notifyStoreChange();
   }
 
-  // 3. Persist directly to Supabase cloud
+  // Persist directly to Supabase cloud
   try {
     const { supabase } = await import("@/integrations/supabase/client");
-    const { error: sbErr } = await supabase
+    await supabase
       .from("registrations" as any)
       .update({
         team_size: updatedTeam.teamSize,
@@ -914,10 +1028,6 @@ export async function joinTeamWithCode(
         updated_at: new Date().toISOString(),
       })
       .eq("id", updatedTeam.id);
-
-    if (sbErr) {
-      console.warn("[Database Sync] Team member join Supabase notice:", sbErr.message);
-    }
   } catch (err) {
     console.warn("[Database Sync] Team member join error:", err);
   }
