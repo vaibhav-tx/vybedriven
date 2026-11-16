@@ -119,25 +119,9 @@ function ManageEventsPage() {
 
   const [applicantQuery, setApplicantQuery] = useState("");
   const [applicantStatusFilter, setApplicantStatusFilter] = useState<string>("All");
-  const [teamSizeFilter, setTeamSizeFilter] = useState<"all" | "1" | "2" | "3" | "4">("all");
-  const [pptFilter, setPptFilter] = useState<"all" | "submitted" | "pending">("all");
-  const [teamTypeFilter, setTeamTypeFilter] = useState<"all" | "team" | "solo">("all");
   const [syncTick, setSyncTick] = useState(0);
   const [inspectingApplicant, setInspectingApplicant] = useState<EventRegistration | null>(null);
   const [managingTeamReg, setManagingTeamReg] = useState<EventRegistration | null>(null);
-
-  const getRegistrationTeamSize = (r: EventRegistration): number => {
-    if (r.teamType === "solo") return 1;
-    const tmCount = Array.isArray(r.teammates) ? r.teammates.length : 0;
-    return tmCount + 1;
-  };
-
-  const getRegistrationPptStatus = (r: EventRegistration): "submitted" | "pending" => {
-    if (r.submission?.pptUrl?.trim() || r.submission?.projectTitle?.trim()) {
-      return "submitted";
-    }
-    return "pending";
-  };
 
   // Sync Supabase registrations on mount and listen to store changes
   useEffect(() => {
@@ -224,93 +208,16 @@ function ManageEventsPage() {
     return myEvents.reduce((acc, e) => acc + getRegistrationsBySlug(e.slug).length, 0);
   }, [myEvents, syncTick]);
 
-  // Detailed slice stats for the active event (Team sizes, PPT counts, etc.)
-  const eventSliceStats = useMemo(() => {
-    let soloCount = 0;
-    let size2Count = 0;
-    let size3Count = 0;
-    let size4Count = 0;
-    let pptSubmittedCount = 0;
-    let pptPendingCount = 0;
-
-    for (const r of eventRegistrations) {
-      const sz = getRegistrationTeamSize(r);
-      if (sz === 1) soloCount++;
-      else if (sz === 2) size2Count++;
-      else if (sz === 3) size3Count++;
-      else if (sz >= 4) size4Count++;
-
-      const ppt = getRegistrationPptStatus(r);
-      if (ppt === "submitted") pptSubmittedCount++;
-      else pptPendingCount++;
-    }
-
-    return {
-      total: eventRegistrations.length,
-      soloCount,
-      size2Count,
-      size3Count,
-      size4Count,
-      pptSubmittedCount,
-      pptPendingCount,
-    };
-  }, [eventRegistrations]);
-
-  // Filtered applicants based on Search, Status, Team Size, and PPT submission
+  // Filtered applicants
   const filteredApplicants = useMemo(() => {
     return eventRegistrations.filter((r) => {
-      // 1. Status Filter
       const matchesStatus =
         applicantStatusFilter === "All" || r.status === applicantStatusFilter;
-
-      // 2. Team Size Filter
-      const sz = getRegistrationTeamSize(r);
-      let matchesSize = true;
-      if (teamSizeFilter === "1") matchesSize = sz === 1;
-      else if (teamSizeFilter === "2") matchesSize = sz === 2;
-      else if (teamSizeFilter === "3") matchesSize = sz === 3;
-      else if (teamSizeFilter === "4") matchesSize = sz >= 4;
-
-      // 3. PPT Filter
-      const ppt = getRegistrationPptStatus(r);
-      let matchesPpt = true;
-      if (pptFilter === "submitted") matchesPpt = ppt === "submitted";
-      else if (pptFilter === "pending") matchesPpt = ppt === "pending";
-
-      // 4. Team Type Filter
-      let matchesType = true;
-      if (teamTypeFilter === "team") matchesType = r.teamType === "team";
-      else if (teamTypeFilter === "solo") matchesType = r.teamType === "solo";
-
-      // 5. Text Search Query
-      const haystack = `${r.fullName || ""} ${r.email || ""} ${r.phone || ""} ${r.collegeOrCompany || ""} ${r.teamName || ""} ${r.submission?.projectTitle || ""} ${r.submission?.track || ""}`.toLowerCase();
+      const haystack = `${r.fullName || ""} ${r.email || ""} ${r.phone || ""} ${r.collegeOrCompany || ""} ${r.teamName || ""}`.toLowerCase();
       const matchesQuery = !applicantQuery || haystack.includes(applicantQuery.toLowerCase());
-
-      return matchesStatus && matchesSize && matchesPpt && matchesType && matchesQuery;
+      return matchesStatus && matchesQuery;
     });
-  }, [
-    eventRegistrations,
-    applicantStatusFilter,
-    teamSizeFilter,
-    pptFilter,
-    teamTypeFilter,
-    applicantQuery,
-  ]);
-
-  const isAnyFilterActive =
-    teamSizeFilter !== "all" ||
-    pptFilter !== "all" ||
-    teamTypeFilter !== "all" ||
-    applicantStatusFilter !== "All" ||
-    Boolean(applicantQuery.trim());
-
-  const resetAllFilters = () => {
-    setTeamSizeFilter("all");
-    setPptFilter("all");
-    setTeamTypeFilter("all");
-    setApplicantStatusFilter("All");
-    setApplicantQuery("");
-  };
+  }, [eventRegistrations, applicantStatusFilter, applicantQuery]);
 
   const handleStatusChange = (
     regId: string,
@@ -609,232 +516,27 @@ function ManageEventsPage() {
               {currentEvent && (
                 <div className="flex items-center gap-2">
                   <Button
-                    onClick={() => exportRegistrationsToCSV(currentEvent.slug, currentEvent.title, user, filteredApplicants)}
+                    onClick={() => exportRegistrationsToCSV(currentEvent.slug, currentEvent.title, user)}
                     disabled={eventRegistrations.length === 0}
                     className="rounded-full bg-neon text-primary-foreground font-bold shadow-glow-soft hover:brightness-105 text-xs sm:text-sm"
                   >
-                    <Download className="mr-2 size-4" /> Download Excel/CSV{" "}
-                    {filteredApplicants.length < eventRegistrations.length
-                      ? `(${filteredApplicants.length} filtered)`
-                      : `(${eventRegistrations.length})`}
+                    <Download className="mr-2 size-4" /> Download Excel/CSV ({eventRegistrations.length})
                   </Button>
                 </div>
               )}
             </div>
 
-            {/* Quick Interactive Stat Chips for Organizers */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                  Quick Analytics & Slices:
-                </span>
-                {isAnyFilterActive && (
-                  <button
-                    type="button"
-                    onClick={resetAllFilters}
-                    className="inline-flex items-center gap-1 text-xs font-semibold text-neon hover:underline"
-                  >
-                    <X className="size-3" /> Clear All Filters
-                  </button>
-                )}
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-                {/* Total */}
-                <button
-                  type="button"
-                  onClick={resetAllFilters}
-                  className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-semibold transition ${
-                    !isAnyFilterActive
-                      ? "border-neon bg-neon text-primary-foreground shadow-glow-soft"
-                      : "border-border bg-card text-foreground hover:border-neon/50"
-                  }`}
-                >
-                  <Users className="size-3.5" />
-                  <span>All Registered</span>
-                  <span className="rounded-full bg-black/20 px-1.5 py-0.2 text-[11px] font-mono">
-                    {eventSliceStats.total}
-                  </span>
-                </button>
-
-                {/* 4 Members */}
-                <button
-                  type="button"
-                  onClick={() => setTeamSizeFilter((prev) => (prev === "4" ? "all" : "4"))}
-                  className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-semibold transition ${
-                    teamSizeFilter === "4"
-                      ? "border-emerald-500 bg-emerald-500 text-black font-bold shadow-glow-soft"
-                      : "border-border bg-card text-foreground hover:border-emerald-500/50"
-                  }`}
-                >
-                  <span>🔥 4 Members (Squad)</span>
-                  <span className="rounded-full bg-emerald-950/40 text-emerald-300 px-1.5 py-0.2 text-[11px] font-mono">
-                    {eventSliceStats.size4Count}
-                  </span>
-                </button>
-
-                {/* 3 Members */}
-                <button
-                  type="button"
-                  onClick={() => setTeamSizeFilter((prev) => (prev === "3" ? "all" : "3"))}
-                  className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-semibold transition ${
-                    teamSizeFilter === "3"
-                      ? "border-emerald-500 bg-emerald-500 text-black font-bold shadow-glow-soft"
-                      : "border-border bg-card text-foreground hover:border-emerald-500/50"
-                  }`}
-                >
-                  <span>👥 3 Members</span>
-                  <span className="rounded-full bg-surface-2 px-1.5 py-0.2 text-[11px] font-mono">
-                    {eventSliceStats.size3Count}
-                  </span>
-                </button>
-
-                {/* 2 Members */}
-                <button
-                  type="button"
-                  onClick={() => setTeamSizeFilter((prev) => (prev === "2" ? "all" : "2"))}
-                  className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-semibold transition ${
-                    teamSizeFilter === "2"
-                      ? "border-emerald-500 bg-emerald-500 text-black font-bold shadow-glow-soft"
-                      : "border-border bg-card text-foreground hover:border-emerald-500/50"
-                  }`}
-                >
-                  <span>✌️ 2 Members</span>
-                  <span className="rounded-full bg-surface-2 px-1.5 py-0.2 text-[11px] font-mono">
-                    {eventSliceStats.size2Count}
-                  </span>
-                </button>
-
-                {/* Solo */}
-                <button
-                  type="button"
-                  onClick={() => setTeamSizeFilter((prev) => (prev === "1" ? "all" : "1"))}
-                  className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-semibold transition ${
-                    teamSizeFilter === "1"
-                      ? "border-emerald-500 bg-emerald-500 text-black font-bold shadow-glow-soft"
-                      : "border-border bg-card text-foreground hover:border-emerald-500/50"
-                  }`}
-                >
-                  <span>👤 Solo / 1 Member</span>
-                  <span className="rounded-full bg-surface-2 px-1.5 py-0.2 text-[11px] font-mono">
-                    {eventSliceStats.soloCount}
-                  </span>
-                </button>
-
-                {/* PPT Submitted */}
-                <button
-                  type="button"
-                  onClick={() => setPptFilter((prev) => (prev === "submitted" ? "all" : "submitted"))}
-                  className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-semibold transition ${
-                    pptFilter === "submitted"
-                      ? "border-neon bg-neon text-primary-foreground font-bold shadow-glow-soft"
-                      : "border-border bg-card text-foreground hover:border-neon/50"
-                  }`}
-                >
-                  <CheckCircle2 className="size-3.5 text-emerald-400" />
-                  <span>PPT Submitted</span>
-                  <span className="rounded-full bg-emerald-500/20 text-emerald-300 px-1.5 py-0.2 text-[11px] font-mono font-bold">
-                    {eventSliceStats.pptSubmittedCount}
-                  </span>
-                </button>
-
-                {/* PPT Pending */}
-                <button
-                  type="button"
-                  onClick={() => setPptFilter((prev) => (prev === "pending" ? "all" : "pending"))}
-                  className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-semibold transition ${
-                    pptFilter === "pending"
-                      ? "border-amber-500 bg-amber-500 text-black font-bold shadow-glow-soft"
-                      : "border-border bg-card text-foreground hover:border-amber-500/50"
-                  }`}
-                >
-                  <Clock className="size-3.5 text-amber-400" />
-                  <span>PPT Pending</span>
-                  <span className="rounded-full bg-amber-500/15 text-amber-300 px-1.5 py-0.2 text-[11px] font-mono">
-                    {eventSliceStats.pptPendingCount}
-                  </span>
-                </button>
-              </div>
-            </div>
-
-            {/* Filter & Search Bar */}
-            <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-3 shadow-sm lg:flex-row lg:items-center">
+            {/* Search Bar */}
+            <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-3 shadow-sm sm:flex-row">
               <label className="flex min-h-11 flex-1 items-center gap-3 rounded-xl bg-surface px-4 focus-within:ring-2 focus-within:ring-ring">
                 <Search className="size-4 text-muted-foreground" />
                 <input
                   value={applicantQuery}
                   onChange={(e) => setApplicantQuery(e.target.value)}
-                  placeholder="Search participants by name, email, phone, college, team, or project title..."
+                  placeholder="Search participants by name, email, phone, college or team..."
                   className="w-full bg-transparent text-xs sm:text-sm outline-none placeholder:text-muted-foreground"
                 />
-                {applicantQuery && (
-                  <button
-                    type="button"
-                    onClick={() => setApplicantQuery("")}
-                    className="text-muted-foreground hover:text-foreground"
-                  >
-                    <X className="size-3.5" />
-                  </button>
-                )}
               </label>
-
-              {/* Filters Group */}
-              <div className="flex flex-wrap items-center gap-2">
-                {/* Team Size Dropdown */}
-                <select
-                  value={teamSizeFilter}
-                  onChange={(e) => setTeamSizeFilter(e.target.value as any)}
-                  className="h-11 rounded-xl border border-border bg-surface px-3 text-xs font-semibold text-foreground outline-none focus:border-neon"
-                >
-                  <option value="all">All Team Sizes</option>
-                  <option value="4">4 Members (Full Squad)</option>
-                  <option value="3">3 Members</option>
-                  <option value="2">2 Members</option>
-                  <option value="1">Solo (1 Member)</option>
-                </select>
-
-                {/* PPT Status Dropdown */}
-                <select
-                  value={pptFilter}
-                  onChange={(e) => setPptFilter(e.target.value as any)}
-                  className="h-11 rounded-xl border border-border bg-surface px-3 text-xs font-semibold text-foreground outline-none focus:border-neon"
-                >
-                  <option value="all">All PPT Status</option>
-                  <option value="submitted">PPT Submitted (Round 1)</option>
-                  <option value="pending">PPT Pending</option>
-                </select>
-
-                {/* Participation Type Dropdown */}
-                <select
-                  value={teamTypeFilter}
-                  onChange={(e) => setTeamTypeFilter(e.target.value as any)}
-                  className="h-11 rounded-xl border border-border bg-surface px-3 text-xs font-semibold text-foreground outline-none focus:border-neon"
-                >
-                  <option value="all">All Participation Types</option>
-                  <option value="team">Teams Only</option>
-                  <option value="solo">Solo Builders Only</option>
-                </select>
-
-                {isAnyFilterActive && (
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={resetAllFilters}
-                    className="h-11 rounded-xl text-xs font-bold text-destructive hover:bg-destructive/10"
-                  >
-                    <X className="mr-1 size-3.5" /> Reset
-                  </Button>
-                )}
-              </div>
-            </div>
-
-            {/* Active Filters Summary */}
-            <div className="flex items-center justify-between text-xs text-muted-foreground px-1">
-              <span>
-                Showing <strong className="text-foreground">{filteredApplicants.length}</strong> of{" "}
-                <strong className="text-foreground">{eventRegistrations.length}</strong> registered participants
-                {isAnyFilterActive && " (Filtered)"}
-              </span>
             </div>
 
             {/* Applicant Table */}
