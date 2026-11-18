@@ -717,7 +717,7 @@ Bio ke link pe click karo (luminarcreatorsaward.com), form fill karo aur apna sl
     format: "In person",
     prize: "Deep Tech Knowledge & Founder Networking",
     image: "/events/semiconductor-deep-dive-hackerfab.jpg",
-    imageFit: "contain",
+    imageFit: "cover",
     organizer: "HackerFab IIT Bombay × M33 × ABC",
     registrationDeadline: "Dec 5, 2026 · 1:30 PM IST",
     eligibility: "Students, founders, researchers, hardware engineers, chip designers & deep tech builders",
@@ -791,7 +791,7 @@ Hosted by **M33**, with **ABC** as the venue partner.
     format: "In person",
     prize: "Interactive Simulation, Swag & Year-End Mixer",
     image: "/events/mumbai-community-year-end-meet.jpg",
-    imageFit: "contain",
+    imageFit: "cover",
     organizer: "Agent Builders Community × UiPath",
     registrationDeadline: "Dec 5, 2026 · 9:30 AM IST",
     eligibility: "Developers, automation architects, AI engineers, product leaders & curious builders",
@@ -874,7 +874,7 @@ Can't wait to enjoy the day with you all!`,
     format: "In person",
     prize: "Rich Conversations & Diverse Perspectives",
     image: "/events/paranormal-real-or-not-versova.jpg",
-    imageFit: "contain",
+    imageFit: "cover",
     organizer: "Philosophy Connect · Hosted by Shravan Vishwakarma",
     registrationDeadline: "Nov 29, 2026 · 1:30 PM IST",
     eligibility: "Believers, skeptics, philosophers, storytellers & open-minded thinkers",
@@ -943,7 +943,7 @@ The conversation is open and guided — think real stories, thoughtful debate, a
     format: "In person",
     prize: "Showcases, Feedback & Community Connections",
     image: "/events/lovable-builders-bangalore.jpg",
-    imageFit: "contain",
+    imageFit: "cover",
     organizer: "Lovable Community · Hosted by Vinay Singh & Prasoon Nigam",
     registrationDeadline: "Dec 11, 2026 · 11:59 PM IST",
     eligibility: "Developers, software engineers, UI/UX designers, founders, creators & technology innovators",
@@ -1014,7 +1014,7 @@ Come with ideas, curiosity, and a passion to build. Let's connect, collaborate, 
     format: "In person",
     prize: "Art Community Bond, Showcases & Open Air Vibes",
     image: "/events/the-big-aaaart-club-delhi.jpg",
-    imageFit: "contain",
+    imageFit: "cover",
     organizer: "The Art Curry",
     registrationDeadline: "Nov 29, 2026 · 1:00 PM IST",
     eligibility: "Everyone welcome! Whether you sketch daily or haven't held a pencil since childhood.",
@@ -1072,6 +1072,387 @@ No prior art experience needed. Just bring yourself and your creative energy <3
       { title: "Open Creative Session", date: "Nov 29, 2026 · 2:30 PM – 4:30 PM", description: "Sketch, paint, doodle, or write at your own relaxed pace." },
       { title: "Show & Tell and Art Circles", date: "Nov 29, 2026 · 4:30 PM – 5:30 PM", description: "Share your sketches, talk about your process, and learn from each other." },
       { title: "Sunset Wrap-up & Group Photos", date: "Nov 29, 2026 · 5:30 PM – 6:00 PM", description: "Capture memories, exchange Instagram handles, and wrap up before evening." },
+    ],
+  },
+
+  // UPCOMING NATIONAL HACKATHONS & COMPETITIONS
+  {
+    slug: "code-relay-5-iit-bhubaneswar",
+    title: "Code Relay 5.0",
+    type: "Hackathon",
+    tag: "Web2 & Web3 Hackathon · IIT Bhubaneswar",
+    description: "The flagship hackathon by WebnD, IIT Bhubaneswar. Web2 & Web3 tracks, ₹3,10,000 prizes, AI tokens, and direct PPI opportunities from CSM Technologies.",
+    date: "Nov 15, 2026 – Jan 17, 2027",
+    location: "IIT Bhubaneswar Campus, Odisha · Hybrid",
+    format: "Hybrid",
+    prize: "₹3,10,000 Worth + PPIs",
+    image: "/events/code-relay-5-iit-bhubaneswar.jpg",
+    imageFit: "cover",
+    organizer: "WebnD · IIT Bhubaneswar",
+    registrationDeadline: "Dec 12, 2026 · 11:59 PM IST",
+    eligibility: "Open to everyone! Students from any college, discipline, degree, or background. Cross-college teams welcome.",
+    teamSize: "2–4 Members",
+    fee: "Free",
+    status: "Registration open",
+    registrationUrl: "https://unstop.com/hackathons/code-relay-50-indian-institute-of-technology-iit-bhubaneswar-1810370",
+    registrationLabel: "Register now",
+    registrationNote: "Problem statements released to registered teams. Submit your idea PPT using the official template by Dec 12. Working prototype adds bonus points!",
+    contacts: [
+      { name: "Shantaneel Sarkar", phone: "gamingshantaneel@gmail.com" },
+      { name: "Aarush Mahawar", phone: "aarushmahawar2007@gmail.com" },
+      { name: "Kshitij Bhaisare", phone: "iitkshitijj@gmail.com" },
+    ],
+    relatedLinks: [
+      { label: "Unstop Official Registration", url: "https://unstop.com/hackathons/code-relay-50-indian-institute-of-technology-iit-bhubaneswar-1810370" },
+      { label: "Submission PPT Template", url: "https://d8it4huxumps7.cloudfront.net/uploads/attachements/files/a54a23bc-57b8-4245-bee6-1222252a0a0e.pptx" },
+      { label: "AI x Web3 Track Guidelines", url: "https://d8it4huxumps7.cloudfront.net/uploads/attachements/files/fb58242f-0f80-44fb-812e-1eb67eae6e56.pdf" },
+      { label: "Agentic AI & Automation Guidelines", url: "https://d8it4huxumps7.cloudfront.net/uploads/attachements/files/14e9ee7d-55a5-44fb-a335-11563409d61a.pdf" },
+      { label: "Onchain Payments Guidelines", url: "https://d8it4huxumps7.cloudfront.net/uploads/attachements/files/5cfa1f7f-351a-4b0c-8a15-be72065bdb6b.pdf" },
+    ],
+    perks: [
+      {
+        icon: "laptop",
+        emoji: "💼",
+        title: "CSM Technologies PPIs",
+        description: "Top performers in Web2 tracks get Pre-Placement Interview (PPI) opportunities.",
+      },
+      {
+        icon: "gift",
+        emoji: "💰",
+        title: "₹3,10,000 Total Rewards",
+        description: "₹1,50,000 cash prizes, ₹1,00,000 AI model credits, and ₹60,000 swag kits.",
+      },
+      {
+        icon: "rocket",
+        emoji: "⚡",
+        title: "30-Hour IIT BBS Onsite Sprint",
+        description: "Shortlisted teams advance to an intense 30-hour offline hackathon at IIT Bhubaneswar.",
+      },
+      {
+        icon: "award",
+        emoji: "📜",
+        title: "Official Merit & Participation Certificates",
+        description: "Valid submissions from Round 1 receive verified certificates from WebnD IIT Bhubaneswar.",
+      },
+    ],
+    overview: `### Five Editions. Pass The Baton, Build The Future.
+
+**WebnD**, the Web and Design Society of **IIT Bhubaneswar**, is back with the fifth edition of its flagship hackathon: **Code Relay 5.0**. Builders, dreamers, and problem-solvers from across India battle it out in two electrifying tracks: **Web2** and **Web3**.
+
+---
+
+### Challenge Tracks
+- **Web2 Tracks**:
+  - *Agentic AI × TrueFoundry*: Autonomous workflows, multi-agent frameworks, tool-calling bots. (₹40,000 Cash + Certificate)
+  - *AI for Bharat*: Groundbreaking solutions solving real-world Indian socio-economic challenges. (₹30,000 Cash + Certificate)
+  - *Social*: Technology tackling high-impact civic, community, and educational problems. (₹10,000 Cash + Certificate)
+- **Web3 Tracks**:
+  - *AI × Web3*: Intelligent dApps, decentralized agents, zero-knowledge AI inference. (₹30,000 Cash + Certificate)
+  - *Onchain Payments*: Next-generation micro-transactions, streaming money, crypto merchant rails. (₹40,000 Cash + Certificate)
+
+---
+
+### PPI & Placement Opportunities
+Top performers in the Web2 tracks get a direct shot at **Pre-Placement Interview (PPI) opportunities from CSM Technologies**. Build something great and land your dream tech career!
+
+---
+
+### Round Structure
+1. **Round 1 (Ideathon & Prototyping - Online)**: Nov 15 – Dec 12, 2026. Submit your problem statement PPT using the template. Bonus points for working prototype demos!
+2. **Round 2 (30-Hour Onsite Hackathon at IIT Bhubaneswar)**: Jan 15 – Jan 17, 2027. Shortlisted squads travel to IIT Bhubaneswar for a 30-hour marathon build sprint.`,
+    schedule: [
+      { title: "Round 1: Ideathon & Prototyping (Online)", date: "Nov 15 – Dec 12, 2026 · 11:59 PM IST", description: "Submit your team PPT deck using the official template. Attach working prototype demo for extra score." },
+      { title: "Registration & PPT Deadline", date: "Dec 12, 2026 · 11:59 PM IST", description: "Final cutoff to submit your proposal on Unstop." },
+      { title: "Shortlist Announcement", date: "Late Dec 2026", description: "Shortlisted teams selected for the offline round." },
+      { title: "Round 2: 30-Hour Onsite Hackathon (IIT Bhubaneswar)", date: "Jan 15, 10:00 AM – Jan 17, 11:59 PM IST, 2027", description: "Onsite build marathon at IIT Bhubaneswar campus with mentors, food, and live judging." },
+    ],
+  },
+  {
+    slug: "lighthouse-hackathon-chandigarh-university-2027",
+    title: "LightHouse - Hackathon",
+    type: "Hackathon",
+    tag: "Agentic AI · Autonomous Agents · Global Hackathon",
+    description: "International hackathon for builders of agentic AI by Chandigarh University. Ship autonomous AI agents that plan, reason, and take action. ₹5,10,000 prizes + Pre-Placement Interviews.",
+    date: "Nov 15, 2026 – Jan 10, 2027",
+    location: "Chandigarh University · Online Global Hackathon",
+    format: "Online",
+    prize: "₹5,10,000 (Cash + In-Kind) + PPIs",
+    image: "/events/lighthouse-hackathon-chandigarh.jpg",
+    imageFit: "cover",
+    organizer: "Chandigarh University (CU)",
+    registrationDeadline: "Dec 31, 2026 · 12:00 AM IST",
+    eligibility: "Open to students, developers, and AI builders worldwide. Inter-college and inter-specialization teams welcome.",
+    teamSize: "2–5 Members",
+    fee: "Free",
+    status: "Registration open",
+    registrationUrl: "https://unstop.com/hackathons/lighthouse-hackathon-chandigarh-university-cu-ajitgarh-punjab-1809486",
+    registrationLabel: "Register now",
+    registrationNote: "Mandatory: All team members (2 to 5) must individually fill the Profile Review Form at https://tally.so/r/1Wd0MM using their Unstop email.",
+    contacts: [
+      { name: "Subhash", phone: "subhash.t2282@cumail.in" },
+    ],
+    relatedLinks: [
+      { label: "Unstop Official Registration", url: "https://unstop.com/hackathons/lighthouse-hackathon-chandigarh-university-cu-ajitgarh-punjab-1809486" },
+      { label: "Mandatory Profile Review Form", url: "https://tally.so/r/1Wd0MM" },
+    ],
+    perks: [
+      {
+        icon: "laptop",
+        emoji: "💼",
+        title: "Pre-Placement Interviews (PPIs)",
+        description: "Grab direct interview opportunities with partner tech companies and AI startups.",
+      },
+      {
+        icon: "brain",
+        emoji: "🤖",
+        title: "Agentic AI Focus",
+        description: "Build cutting-edge multi-agent systems, tool-use chains, and reasoning architectures.",
+      },
+      {
+        icon: "gift",
+        emoji: "💰",
+        title: "₹5,10,000 Prize Value",
+        description: "Cash rewards for top 3 teams plus ₹5,00,000 in partner credits, tooling, and mentorship perks.",
+      },
+    ],
+    overview: `### LightHouse: Build Autonomous AI Agents That Take Action
+
+**LightHouse** is an international, online hackathon by **Chandigarh University** for builders of agentic AI. Over several weeks, teams design and ship autonomous AI agents that plan, reason, use tools, and take real-world action.
+
+Whether you're a student, a software engineer, or an early-stage founder, this is your chance to build, get noticed by tech employers, and win.
+
+---
+
+### Mandatory Registration Step
+Registration is complete **only** when all team members (2 to 5 members) individually fill out the Profile Review Form:
+👉 **Profile Review Form**: [https://tally.so/r/1Wd0MM](https://tally.so/r/1Wd0MM)
+
+---
+
+### Rewards Breakdown
+- **1st Place (Winner)**: ₹5,000 Cash + Pre-Placement Interview
+- **2nd Place (Runner-up)**: ₹3,000 Cash + Pre-Placement Interview
+- **3rd Place**: ₹2,000 Cash + Pre-Placement Interview
+- **In-Kind Pool**: Share of ₹5,00,000 partner credits, developer tools, and cloud infrastructure
+- **Participation Certificates**: Official certificates for all active squads`,
+    schedule: [
+      { title: "Profile Review & Registration", date: "Nov 15 – Dec 1, 2026 · 10:23 PM IST", description: "Form squads of 2–5 members and complete the individual profile review form." },
+      { title: "Problem Statements Release & Research", date: "Dec 1 – Dec 30, 2026", description: "Official agentic problem statements revealed for in-depth architecture research." },
+      { title: "Build Phase & Code Sprint", date: "Jan 1 – Jan 10, 2027", description: "Sprint to code, evaluate, and deploy autonomous agents." },
+      { title: "Evaluation & Winner Announcement", date: "Jan 2027", description: "Jury review and Pre-Placement Interview handoffs." },
+    ],
+  },
+  {
+    slug: "hacksprint-3-kahe-coimbatore",
+    title: "HackSprint 3.0",
+    type: "Hackathon",
+    tag: "36-Hour National Hackathon · Coimbatore",
+    description: "National-level 36-hour hackathon by Dept. of CSE, Karpagam Academy of Higher Education & Metaverse Association. Transform ideas into working prototypes.",
+    date: "Nov 8, 2026 – Feb 6, 2027",
+    location: "KAHE Campus, Coimbatore, Tamil Nadu · Hybrid",
+    format: "Hybrid",
+    prize: "Cash Prizes, Metaverse Perks & Certificates",
+    image: "/events/hacksprint-3-kahe-coimbatore.jpg",
+    imageFit: "cover",
+    organizer: "KAHE CSE × Metaverse Association",
+    registrationDeadline: "Dec 28, 2026 · 11:59 PM IST",
+    eligibility: "Undergraduate, Postgraduate, Engineering, Management, Arts & Science students nationwide",
+    teamSize: "2–4 Members",
+    fee: "Free",
+    status: "Registration open",
+    registrationUrl: "https://unstop.com/hackathons/hacksprint-30-karpagam-academy-of-higher-education-1778597",
+    registrationLabel: "Register now",
+    registrationNote: "Round 1 is an online idea proposal. Shortlisted teams advance to a 36-hour offline hackathon on KAHE campus in Coimbatore.",
+    contacts: [
+      { name: "KAHE Helpdesk", phone: "24becse016@kahedu.edu.in" },
+    ],
+    relatedLinks: [
+      { label: "Unstop Official Registration", url: "https://unstop.com/hackathons/hacksprint-30-karpagam-academy-of-higher-education-1778597" },
+    ],
+    perks: [
+      {
+        icon: "rocket",
+        emoji: "⚡",
+        title: "36-Hour Offline Arena",
+        description: "Intense overnight building experience on KAHE campus in Coimbatore.",
+      },
+      {
+        icon: "brain",
+        emoji: "🌐",
+        title: "Metaverse & AI Ecosystem",
+        description: "Organized in collaboration with the Metaverse Association with senior tech evaluators.",
+      },
+      {
+        icon: "award",
+        emoji: "🏆",
+        title: "National Recognition & Certificates",
+        description: "Official merit certificates, trophies, and cash prizes for top winning teams.",
+      },
+    ],
+    overview: `### HackSprint 3.0 — Build Bold. Ride Beyond.
+
+**HackSprint 3.0** is a national-level, 36-hour hackathon organized by the **Department of Computer Science and Engineering, Karpagam Academy of Higher Education (KAHE), Coimbatore**, in collaboration with the **Metaverse Association**.
+
+It brings together passionate developers, designers, problem-solvers, and innovators from across India to transform creative ideas into impactful, technology-driven solutions.
+
+---
+
+### Format
+- **Round 1 (Online Idea Submission)**: Nov 8 – Dec 28, 2026. Submit your problem statement, proposed solution, tech stack, and potential impact.
+- **Round 2 (Offline Grand Finale)**: Feb 5 – Feb 6, 2027. 36-hour non-stop prototyping sprint on KAHE campus in Coimbatore demonstrating live functional software to the jury.`,
+    schedule: [
+      { title: "Round 1: Idea Submission (Online)", date: "Nov 8 – Dec 28, 2026 · 11:59 PM IST", description: "Submit project title, problem statement, key features, and intended tech stack." },
+      { title: "Shortlist Announcement", date: "Jan 2027", description: "Top performing squads selected for the 36-hour offline round." },
+      { title: "Round 2: 36-Hour Offline Finale (KAHE Coimbatore)", date: "Feb 5, 08:00 AM – Feb 6, 08:00 PM IST, 2027", description: "36-hour coding marathon, mentor checkpoints, and final live demos." },
+    ],
+  },
+  {
+    slug: "skysparks-boeing-techkriti-iit-kanpur-2027",
+    title: "Skysparks - Boeing Aeromodelling Competition",
+    type: "Competition",
+    tag: "Aerospace · RC Aircraft · IIT Kanpur & Boeing",
+    description: "The official Boeing National Aeromodelling Competition at Techkriti'27, IIT Kanpur. Design, build, and pilot fixed-wing RC electric aircraft carrying payload drops.",
+    date: "Jan 28 – 31, 2027 (Registration closes Dec 31, 2026)",
+    location: "IIT Kanpur Campus, Kalyanpur, Uttar Pradesh",
+    format: "In person",
+    prize: "Boeing LoRs, Cash Prizes & Official Techkriti Awards",
+    image: "/events/skysparks-techkriti-iit-kanpur.jpg",
+    imageFit: "cover",
+    organizer: "Techkriti IIT Kanpur × The Boeing Company",
+    registrationDeadline: "Dec 31, 2026 · 01:50 PM IST",
+    eligibility: "Mechanical, Aerospace, Design, and Engineering students passionate about aeromodelling & robotics",
+    teamSize: "2–4 Members",
+    fee: "Free",
+    status: "Registration open",
+    registrationUrl: "https://unstop.com/hackathons/skysparks-boeing-national-aeromodelling-competition-techkriti27-techkriti-1764461",
+    registrationLabel: "Register now",
+    registrationNote: "Design and construct a fixed-wing RC aircraft (Max weight 1kg, wingspan limit 1.2m, electric only) to carry and drop payloads accurately within designated zones.",
+    contacts: [
+      { name: "Pratyush Srivastava", phone: "+91 87563 66441" },
+      { name: "Ridham Solanki", phone: "+91 84337 68226" },
+    ],
+    relatedLinks: [
+      { label: "Unstop Official Registration", url: "https://unstop.com/hackathons/skysparks-boeing-national-aeromodelling-competition-techkriti27-techkriti-1764461" },
+      { label: "Skysparks Rulebook (PDF)", url: "https://d8it4huxumps7.cloudfront.net/uploads/attachements/files/c95465b9-c128-44c5-af73-feeaa4a0bc8f.pdf" },
+      { label: "Techkriti 27 Fest Page", url: "https://unstop.com/college-fests/techkriti27-indian-institute-of-technology-iit-kanpur-513311" },
+    ],
+    perks: [
+      {
+        icon: "rocket",
+        emoji: "✈️",
+        title: "Letters of Recommendation from Boeing",
+        description: "Official Boeing LoRs and direct recognition for top aircraft engineers.",
+      },
+      {
+        icon: "gift",
+        emoji: "🏆",
+        title: "Cash Prizes & Techkriti Statuettes",
+        description: "Substantial cash rewards, winner trophies, and podium certificates.",
+      },
+      {
+        icon: "laptop",
+        emoji: "🛫",
+        title: "IIT Kanpur Flight Airstrip Arena",
+        description: "Compete live on IIT Kanpur's renowned airstrip during Asia's premier annual technical festival.",
+      },
+    ],
+    overview: `### Boeing National Aeromodelling Competition: Skysparks
+
+**Skysparks** is the flagship aeromodelling championship of **Techkriti'27 (33rd Edition), IIT Kanpur**, powered by **The Boeing Company**.
+
+Engineering teams design, fabricate, and fly fixed-wing RC aircraft subjected to rigorous flight endurance and precision payload drop trials.
+
+---
+
+### Aircraft & Flight Specifications
+- **Weight**: Maximum all-up weight of 1.0 kg (without payload).
+- **Wingspan**: Maximum wingspan limit of 1.2 meters.
+- **Power**: Only electric motors permitted (no IC engines).
+- **Control**: Manual RC flying (gyroscopes, FPV, and pre-programmed flight assistance strictly prohibited).
+- **Mission**: Carry and drop payloads (golf balls) into designated landing zones after a minimum continuous flight time of 30 seconds.`,
+    schedule: [
+      { title: "Design Abstract & Registration", date: "Until Dec 31, 2026 · 01:50 PM IST", description: "Submit team abstract with design specs, airfoil profile, and CAD details." },
+      { title: "Zonal Selection & Inspection", date: "Jan 2027", description: "Technical scrutiny and safety validation." },
+      { title: "On-Site Flying Arena (IIT Kanpur)", date: "Jan 28 – 31, 2027", description: "Payload drop runs, maneuver scoring, and Boeing LoR awards." },
+    ],
+  },
+  {
+    slug: "shaastra-ctf-iit-madras-2027",
+    title: "CTF - Capture The Flag (Shaastra 2027)",
+    type: "Competition",
+    tag: "Cybersecurity · Jeopardy CTF · IIT Madras",
+    description: "A nationwide Jeopardy-style Capture The Flag challenge by Shaastra 2027, IIT Madras. ₹70,000 cash prizes across Web Exploitation, Cryptography, Reverse Engineering & Forensics.",
+    date: "Dec 15, 2026 (Prelims) – Jan 6, 2027 (Finals)",
+    location: "Online Prelims · On-Campus Finale at IIT Madras, Chennai",
+    format: "Hybrid",
+    prize: "₹70,000 Total Cash Prizes",
+    image: "/events/shaastra-ctf-iit-madras.jpg",
+    imageFit: "cover",
+    organizer: "Shaastra 2027 · IIT Madras",
+    registrationDeadline: "Dec 1, 2026 · 12:00 AM IST",
+    eligibility: "Open to cybersecurity enthusiasts, ethical hackers, and computer science students of all skill levels.",
+    teamSize: "1–2 Members",
+    fee: "Free",
+    status: "Registration open",
+    registrationUrl: "https://unstop.com/hackathons/ctf-capture-the-flag-iit-madras-1782683",
+    registrationLabel: "Register now",
+    registrationNote: "Whether you're an experienced hacker or a curious beginner, race to capture flags across Web, OSINT, Crypto, and Reverse Engineering.",
+    contacts: [
+      { name: "Surya B", phone: "+91 79041 70145" },
+    ],
+    relatedLinks: [
+      { label: "Unstop Official Registration", url: "https://unstop.com/hackathons/ctf-capture-the-flag-iit-madras-1782683" },
+      { label: "Shaastra 2027 Fest Page", url: "https://unstop.com/college-fests/shaastra-2027-indian-institute-of-technology-iit-madras-522673" },
+    ],
+    perks: [
+      {
+        icon: "gift",
+        emoji: "💰",
+        title: "₹70,000 Cash Prize Pool",
+        description: "1st: ₹22,500 | 2nd: ₹17,500 | 3rd: ₹13,000 | 4th: ₹10,000 | 5th: ₹7,000.",
+      },
+      {
+        icon: "rocket",
+        emoji: "🏁",
+        title: "IIT Madras Finals",
+        description: "Qualifying teams race offline on IIT Madras campus during Shaastra 2027.",
+      },
+      {
+        icon: "brain",
+        emoji: "🛡️",
+        title: "Comprehensive Cyber Domains",
+        description: "Challenges in Web Exploitation, OSINT, Reverse Engineering, Binary Exploitation, Forensics & Cryptography.",
+      },
+    ],
+    overview: `### Welcome to CTF — Shaastra 2027 (IIT Madras)
+
+A nationwide **Capture The Flag (CTF)** competition for cybersecurity enthusiasts of every skill level. Whether you’re an experienced ethical hacker or a curious beginner, this event is designed for you.
+
+The competition follows a **Jeopardy-style CTF format**, and participants may form teams of up to 2 members.
+
+---
+
+### Challenge Categories
+- 🌐 **Web Exploitation**: XSS, SQLi, CSRF, SSRF, authentication bypasses
+- 🕵️ **OSINT**: Open source intelligence and forensic investigation
+- ⚙️ **Reverse Engineering**: Disassembling binaries and analyzing assembly flow
+- 💥 **Binary Exploitation**: Buffer overflows, ROP chains, memory corruption
+- 🔍 **Digital Forensics**: Memory dumps, packet captures (PCAP), hidden steganography
+- 🔐 **Cryptography**: Modern and classical ciphers, RSA, elliptic curve attacks
+
+---
+
+### Rewards (Total ₹70,000 Cash Pool)
+- **1st Rank**: ₹22,500 Cash + Certificate of Merit
+- **2nd Rank**: ₹17,500 Cash + Certificate of Merit
+- **3rd Rank**: ₹13,000 Cash + Certificate of Merit
+- **4th Rank**: ₹10,000 Cash + Certificate of Merit
+- **5th Rank**: ₹7,000 Cash + Certificate of Merit
+- **Participation Certificates**: Issued for all valid submissions`,
+    schedule: [
+      { title: "Registration Closes", date: "Dec 1, 2026 · 12:00 AM IST", description: "Squad cutoff to register on Unstop." },
+      { title: "Online Prelims Round", date: "Dec 15, 2026", description: "Jeopardy-style speed CTF challenge online." },
+      { title: "Final Round (IIT Madras Campus)", date: "Jan 6, 2027 · 01:46 PM – 03:47 PM IST", description: "Live speed hacking battle on IIT Madras campus." },
     ],
   },
 
