@@ -23,6 +23,11 @@ export const PRESET_EVENT_BANNERS = [
   { id: "art-club", title: "The Big Aaaaart Club Delhi", image: "/events/the-big-aaaart-club-delhi.jpg" },
   { id: "paranormal", title: "Paranormal Philosophy Meetup", image: "/events/paranormal-real-or-not-versova.jpg" },
   { id: "luminar", title: "Luminar Creators Award Gala", image: "/events/luminar-creators-award-2027.jpg" },
+  { id: "apify", title: "Apify AI Tools Hackathon", image: "/events/apify-ai-tools-that-earn.jpg" },
+  { id: "nwoc", title: "Nerds Winter of Code (Paytm)", image: "/events/nerds-winter-of-code.jpg" },
+  { id: "product-mixer", title: "Bangalore Product Mixer", image: "/events/bangalore-product-mixer.jpg" },
+  { id: "designmyx", title: "DesignMyx'26 (Myntra)", image: "/events/designmyx-myntra-bangalore.jpg" },
+  { id: "unboxed", title: "UNBOXED STEM Education", image: "/events/unboxed-stem-education.jpg" },
   { id: "cyber", title: "Cyber & Security Matrix", image: evCyber },
   { id: "code", title: "Code & Hack Sprint", image: evCool },
 ];

@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ArrowRight, Calendar, Trophy, MapPin, Globe, Sparkles, MessageCircle,
 } from "lucide-react";
@@ -204,13 +204,44 @@ function Partners() {
   );
 }
 
+const HOMEPAGE_PRIORITY: Record<string, number> = {
+  // Top Hackathons with rich posters
+  "beyond-9to5-buildathon-bengaluru-2026": 1,
+  "beyond-9to5-buildathon-mumbai-2026": 2,
+  "code-relay-5-iit-bhubaneswar": 3,
+  "apify-ai-tools-that-earn-bangalore-2026": 4,
+  "lighthouse-hackathon-chandigarh-university-2027": 5,
+  "hacksprint-3-kahe-coimbatore": 6,
+  "skysparks-boeing-techkriti-iit-kanpur-2027": 7,
+  "shaastra-ctf-iit-madras-2027": 8,
+  // Competitions
+  "idea-competition-2026": 9,
+  // Top Meetups & Summits
+  "semiconductor-deep-dive-hackerfab-mumbai": 10,
+  "mumbai-community-year-end-meet-ai-agents": 11,
+  "nerds-winter-of-code-paytm-noida-2026": 12,
+  "designmyx-26-myntra-bangalore": 13,
+  "bangalore-product-mixer-product-reactor": 14,
+  "unboxed-reimagining-stem-education-mumbai": 15,
+  "lovable-builders-in-bangalore-2026": 16,
+  "the-big-aaaart-club-delhi-2026": 17,
+  "paranormal-real-or-not-philosophical-discussion": 18,
+};
+
 function Events() {
   const [f, setF] = useState<HomeFilter>("All");
   const featured = opportunities.find((item) => item.slug === "goa-buildathon-2027") ?? opportunities[0];
   const featuredLuminar = opportunities.find((item) => item.slug === "luminar-creators-award-2027");
-  const list = opportunities
-    .filter((item) => item.status !== "Past event" && matchesHomeFilter(item, f))
-    .slice(0, 12);
+  const list = useMemo(() => {
+    return opportunities
+      .filter((item) => item.status !== "Past event" && matchesHomeFilter(item, f))
+      .sort((a, b) => {
+        const pA = HOMEPAGE_PRIORITY[a.slug] ?? 99;
+        const pB = HOMEPAGE_PRIORITY[b.slug] ?? 99;
+        return pA - pB;
+      })
+      .slice(0, 18);
+  }, [f]);
 
   return (
     <section id="events" className="mx-auto max-w-[1200px] scroll-mt-28 px-4 sm:px-6 py-10 sm:py-14">
@@ -278,11 +309,7 @@ function Events() {
                 </div>
               )}
               <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3">
-                {featured.registrationUrl ? (
-                  <a href={featured.registrationUrl} target="_blank" rel="noopener noreferrer" className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-gradient-brand px-6 py-3.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110 hover:shadow-glow">Register Now <ArrowRight className="size-4" /></a>
-                ) : (
-                  <Link to="/opportunities/$slug" params={{ slug: featured.slug }} search={{ register: "1" }} className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-gradient-brand px-6 py-3.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110 hover:shadow-glow">Register Now <ArrowRight className="size-4" /></Link>
-                )}
+                <Link to="/opportunities/$slug" params={{ slug: featured.slug }} search={{ register: "1" }} className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-gradient-brand px-6 py-3.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110 hover:shadow-glow">Register Now <ArrowRight className="size-4" /></Link>
                 <Link to="/opportunities/$slug" params={{ slug: featured.slug }} className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-neon/40 bg-surface/80 px-6 py-3.5 text-sm font-semibold text-neon transition hover:border-neon hover:bg-neon/15 hover:shadow-glow-soft">Explore Hackathon</Link>
               </div>
             </div>
@@ -352,14 +379,14 @@ function Events() {
                 </div>
               )}
               <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3">
-                <a
-                  href={featuredLuminar.registrationUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  to="/opportunities/$slug"
+                  params={{ slug: featuredLuminar.slug }}
+                  search={{ register: "1" }}
                   className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 px-6 py-3.5 text-sm font-bold text-black transition hover:brightness-110 hover:shadow-glow"
                 >
                   Register Now <ArrowRight className="size-4" />
-                </a>
+                </Link>
                 <Link
                   to="/opportunities/$slug"
                   params={{ slug: featuredLuminar.slug }}

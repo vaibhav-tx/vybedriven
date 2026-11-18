@@ -528,19 +528,29 @@ function OpportunityDetails() {
 
   // Mandatory Auth Gate: if visitor is not logged in, prompt them to sign in or create account
   useEffect(() => {
-    if (!loading && !user && search.register !== "1" && !incomingJoinCode) {
+    if (!loading && !user && !incomingJoinCode) {
       setExploreGateOpen(true);
     } else {
       setExploreGateOpen(false);
     }
-  }, [user, loading, search.register, incomingJoinCode]);
+  }, [user, loading, incomingJoinCode]);
 
-  // Auto-open modal if requested via ?register=1 or ?joinCode=...
+  // Auto-open modal or redirect if requested via ?register=1 or ?joinCode=...
   useEffect(() => {
-    if (search.register === "1" || incomingJoinCode) {
+    if (search.register === "1") {
+      if (item.registrationUrl) {
+        if (user) {
+          window.open(item.registrationUrl, "_blank", "noopener,noreferrer");
+        } else if (!loading) {
+          setExploreGateOpen(true);
+        }
+      } else {
+        setRegModalOpen(true);
+      }
+    } else if (incomingJoinCode) {
       setRegModalOpen(true);
     }
-  }, [search.register, incomingJoinCode]);
+  }, [search.register, incomingJoinCode, item.registrationUrl, user, loading]);
 
   const handleRegisterClick = () => {
     setRegModalOpen(true);

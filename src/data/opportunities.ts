@@ -1074,6 +1074,272 @@ No prior art experience needed. Just bring yourself and your creative energy <3
       { title: "Sunset Wrap-up & Group Photos", date: "Nov 29, 2026 · 5:30 PM – 6:00 PM", description: "Capture memories, exchange Instagram handles, and wrap up before evening." },
     ],
   },
+  {
+    slug: "nerds-winter-of-code-paytm-noida-2026",
+    title: "Nerds Winter of Code (NWOC 2026)",
+    type: "Meetup",
+    tag: "Winter of Code · Paytm Noida · Real Projects",
+    description: "A community-driven initiative by Nerds Room & The AI Collective at Paytm Office, Noida. Work on real-world projects, explore emerging tech, and build with top mentors all winter.",
+    date: "Nov 21, 2026 · 8:30 AM – 9:30 AM IST (Kickoff)",
+    location: "Paytm Office, One Skymark, Sector 98, Noida, Uttar Pradesh",
+    format: "In person",
+    prize: "Real Project Portfolios, Mentorship & Recognition",
+    image: "/events/nerds-winter-of-code.jpg",
+    imageFit: "cover",
+    organizer: "Nerds Room × The AI Collective",
+    registrationDeadline: "Nov 21, 2026 · 8:00 AM IST",
+    eligibility: "Developers, students, designers, and tech enthusiasts of all skill levels",
+    teamSize: "Individual / Project squads",
+    fee: "Free (Approval Required)",
+    status: "Approval required",
+    registrationUrl: "https://luma.com/nerds-winter-of-code",
+    registrationLabel: "Request to join",
+    registrationNote: "Hosted at Paytm One Skymark, Noida. Register on Lu.ma to request your kickoff invite.",
+    relatedLinks: [
+      { label: "Lu.ma Registration Page", url: "https://luma.com/nerds-winter-of-code" },
+      { label: "AI Collective Host", url: "https://luma.com/genai-collective?k=c" },
+      { label: "Paytm Noida (Google Maps)", url: "https://www.google.com/maps/search/?api=1&query=28.5324297%2C77.3612574&query_place_id=ChIJffiYu3TlDDkR3NQsZV6hSfU" },
+    ],
+    perks: [
+      {
+        icon: "laptop",
+        emoji: "💻",
+        title: "Hands-on Project Building",
+        description: "Work on production-grade open source projects and AI tools all winter.",
+      },
+      {
+        icon: "coffee",
+        emoji: "🏢",
+        title: "Paytm One Skymark Kickoff",
+        description: "Meet fellow builders live at Paytm's iconic Noida headquarters.",
+      },
+      {
+        icon: "award",
+        emoji: "🏆",
+        title: "Mentorship & Recognition",
+        description: "Direct guidance from senior developers and certificates of achievement.",
+      },
+    ],
+    overview: `### Winter Is Here, And It's Time To Build!
+
+**Nerds Winter of Code (NWOC) 2026** is a community-driven initiative by **Nerds Room** and **The AI Collective**, bringing together developers, students, designers, and aspiring tech enthusiasts to learn, build, experiment, and collaborate on real-world technology projects.
+
+Starting **November 21, 2026** at the **Paytm Headquarters in Noida**, participants will get the opportunity to work on exciting projects, explore new technologies, collaborate with experienced mentors, and turn their ideas into working solutions.
+
+---
+
+### What to Expect
+- **Real-World Projects**: Work on practical projects that solve meaningful problems.
+- **Hands-on Learning**: Explore technologies, frameworks, tools, and development workflows.
+- **Mentorship**: Learn from experienced developers and industry professionals.
+- **Community Collaboration**: Connect with developers, creators, and builders from across India.
+- **Building Challenges**: Participate in exciting challenges and project-based activities.
+- **Recognition**: Get recognised for your creativity, consistency, and project outcomes.
+
+The best way to learn technology is to build with it. Build Together. Learn Together. Grow Together!`,
+    schedule: [
+      { title: "Kickoff & Registration at Paytm", date: "Nov 21, 2026 · 8:30 AM – 9:30 AM IST", description: "Gather at Paytm One Skymark, Sector 98, Noida for the opening address and project allocation." },
+      { title: "Winter Building Sprint", date: "Nov 21 – Dec 30, 2026", description: "Collaborate in squads, receive mentor checkpoints, and ship weekly progress." },
+      { title: "Project Showcases & Awards", date: "Jan 2027", description: "Present working software to community leads and receive certificates." },
+    ],
+  },
+  {
+    slug: "designmyx-26-myntra-bangalore",
+    title: "DesignMyx'26 — Hosted by Myntra Design",
+    type: "Meetup",
+    tag: "Design Leaders · UX/UI · Myntra Office",
+    description: "Get ready to unleash your creativity at DesignMyx'26 hosted by Myntra Design. Fireside chats, enlightening talks, and networking with top design leaders of the industry at Myntra Office, Bengaluru.",
+    date: "Dec 4, 2026 · 3:00 PM – 7:00 PM IST",
+    location: "Myntra Office, Kadubeesanahalli, Bengaluru",
+    format: "In person",
+    prize: "Design Masterclasses, Portfolio Reviews & Leader Mixer",
+    image: "/events/designmyx-myntra-bangalore.jpg",
+    imageFit: "cover",
+    organizer: "Myntra Design Team",
+    registrationDeadline: "Dec 4, 2026 · 2:00 PM IST",
+    eligibility: "Product designers, UX/UI designers, design researchers, design leaders & creative technologists",
+    teamSize: "Individual registration",
+    fee: "Free (Approval Required)",
+    status: "Approval required",
+    registrationUrl: "https://luma.com/vsr5vbew",
+    registrationLabel: "Request to join",
+    registrationNote: "Your registration is subject to host approval. Please register to request entry to Myntra Office.",
+    relatedLinks: [
+      { label: "Lu.ma Registration Page", url: "https://luma.com/vsr5vbew" },
+      { label: "Myntra Office (Google Maps)", url: "https://www.google.com/maps/search/?api=1&query=12.9435144%2C77.6986423&query_place_id=ChIJaUnHeUcTrjsRICoKpfaQaXI" },
+    ],
+    perks: [
+      {
+        icon: "brain",
+        emoji: "🎨",
+        title: "Myntra Design Leadership Talks",
+        description: "Fireside chats and talks with heads of product design shaping e-commerce UX.",
+      },
+      {
+        icon: "laptop",
+        emoji: "🏢",
+        title: "Inside Myntra Office",
+        description: "Experience the vibrant campus at Indiqube Star, Outer Ring Road, Kadubeesanahalli.",
+      },
+      {
+        icon: "handshake",
+        emoji: "🤝",
+        title: "Peer Design Networking",
+        description: "Connect with fellow creative minds, UI/UX researchers, and design system leads.",
+      },
+    ],
+    overview: `### Unleash Your Creativity at DesignMyx'26
+
+Get ready to unleash your creativity at **DesignMyx'26** brought to you by **Myntra Design**!
+
+The event is packed with a variety of activities to keep you engaged and entertained. You can look forward to a fireside chat, enlightening talks, and get a chance to meet and network with design leaders of the industry. And of course, there will be plenty of opportunities for networking with other designers as well.
+
+So, come along and join the party. Let's celebrate design, learn from each other, and have a blast!
+
+---
+
+### Key Highlights
+- **Fireside Chats**: Honest conversations on building scalable design systems for millions of shoppers.
+- **Design Critique & Portfolio Jam**: Get candid feedback on product designs from senior Myntra leads.
+- **Networking & Socials**: Mingle with product designers, graphic illustrators, and UX researchers.`,
+    schedule: [
+      { title: "Doors Open & Welcome", date: "Dec 4, 2026 · 3:00 PM – 3:30 PM", description: "Check-in at Myntra Office (Indiqube Star, Kadubeesanahalli) and welcome drinks." },
+      { title: "Design Keynote & Fireside Chat", date: "Dec 4, 2026 · 3:30 PM – 5:00 PM", description: "Talks by leading design architects on future consumer interfaces and AI-assisted design." },
+      { title: "Interactive Workshop & Lightning Demos", date: "Dec 4, 2026 · 5:00 PM – 6:00 PM", description: "Hands-on creative challenge and design critiques." },
+      { title: "High-Tea & Community Networking", date: "Dec 4, 2026 · 6:00 PM – 7:00 PM", description: "Celebrate design, exchange contacts, and wrap up." },
+    ],
+  },
+  {
+    slug: "bangalore-product-mixer-product-reactor",
+    title: "Bangalore Product Mixer #4 | Product Reactor",
+    type: "Meetup",
+    tag: "Product Management · High Value Mixer · Bengaluru",
+    description: "A relaxed, high-value networking meetup created exclusively for product managers. Connect, exchange experiences, and build professional relationships with peers in the product craft.",
+    date: "Dec 5, 2026 · 6:00 PM – 8:00 PM IST",
+    location: "Bengaluru, Karnataka (Exact address revealed upon approval)",
+    format: "In person",
+    prize: "Product Insights, PM Community & Mentor Collisions",
+    image: "/events/bangalore-product-mixer.jpg",
+    imageFit: "cover",
+    organizer: "Product Reactor",
+    registrationDeadline: "Dec 5, 2026 · 5:00 PM IST",
+    eligibility: "Product managers of all levels. (Note: Exclusively for practicing PMs. Not open to current students or interns).",
+    teamSize: "Individual registration",
+    fee: "Free (Approval Required)",
+    status: "Approval required",
+    registrationUrl: "https://luma.com/232qy3xn",
+    registrationLabel: "Request to join",
+    registrationNote: "Registration is subject to host approval. Exclusively for practicing product professionals.",
+    relatedLinks: [
+      { label: "Lu.ma Registration Page", url: "https://luma.com/232qy3xn" },
+      { label: "Product Reactor Host Profile", url: "https://luma.com/productreactor?k=c" },
+    ],
+    perks: [
+      {
+        icon: "handshake",
+        emoji: "🤝",
+        title: "Curated PM Community",
+        description: "Exclusively for practicing product managers across seed startups to tech unicorns.",
+      },
+      {
+        icon: "brain",
+        emoji: "💡",
+        title: "Real Product Insights",
+        description: "Candid conversations on roadmaps, discovery frameworks, PRDs, and AI tooling.",
+      },
+      {
+        icon: "coffee",
+        emoji: "☕",
+        title: "Intimate Networking Evening",
+        description: "Relaxed Saturday evening mixer in the heart of Bengaluru.",
+      },
+    ],
+    overview: `### Bangalore Product Mixer #4 | Product Reactor
+
+**Product Managers Connect** is a relaxed, high value networking meetup created exclusively for product managers.
+
+The goal is simple: connect, exchange experiences, and build professional relationships with peers in the product community.
+
+---
+
+### What to Expect
+- A casual, conversation-driven environment.
+- Dedicated space to meet fellow product managers from diverse industries.
+- Discussions around product challenges, tools, workflows, and career growth.
+- Opportunities to discover collaborators, and mentors.
+
+### Who Should Attend?
+Product managers of all levels who want to expand their network and engage with a community of people who understand the product craft.
+
+*(NOTE: Do not attend if you are currently interning or still a student. Lying, misrepresentation or misleading of any sort will lead to permanent blacklisting).*`,
+    schedule: [
+      { title: "Arrival & Warm Welcome", date: "Dec 5, 2026 · 6:00 PM – 6:30 PM", description: "Arrive at the private Bengaluru venue, grab refreshments, and settle in." },
+      { title: "Roundtable: Product Challenges & AI Workflows", date: "Dec 5, 2026 · 6:30 PM – 7:30 PM", description: "Open discussion on modern product discovery, telemetry, and metrics that matter." },
+      { title: "Peer Networking & Connections", date: "Dec 5, 2026 · 7:30 PM – 8:00 PM", description: "Exchange contacts, find mentors, and explore collaborations." },
+    ],
+  },
+  {
+    slug: "unboxed-reimagining-stem-education-mumbai",
+    title: "UNBOXED: Reimagining STEM Education",
+    type: "Meetup",
+    tag: "Experiential Pop-Up · STEM Education · MakerGhat",
+    description: "An experiential pop-up by MakerGhat & Shikshagraha at Shikha Academy, Borivali Mumbai. Explore student projects, classrooms of the future, and hands-on learning by doing.",
+    date: "Dec 12, 2026 · 9:00 AM – 5:00 PM IST",
+    location: "Shikha Academy, Sumer Nagar, Borivali West, Mumbai",
+    format: "In person",
+    prize: "Interactive STEM Exhibits, Workshops & Ideas Exchange",
+    image: "/events/unboxed-stem-education.jpg",
+    imageFit: "cover",
+    organizer: "MakerGhat × Shikshagraha",
+    registrationDeadline: "Dec 12, 2026 · 8:30 AM IST",
+    eligibility: "Students, educators, parents, school leaders, NGOs, edtech builders & community members",
+    teamSize: "Individual / Family registration",
+    fee: "Free",
+    status: "Registration open",
+    registrationUrl: "https://luma.com/pfurunwu",
+    registrationLabel: "Register now",
+    registrationNote: "Welcome! Free registration on Lu.ma. Step into a space to explore the building blocks of our world and experiment with STEM in new ways.",
+    relatedLinks: [
+      { label: "Lu.ma Registration Page", url: "https://luma.com/pfurunwu" },
+      { label: "MakerGhat Calendar", url: "https://luma.com/calendar/cal-glGcU5BRiiKdwoL" },
+      { label: "Shikha Academy (Google Maps)", url: "https://www.google.com/maps/search/?api=1&query=19.2192933%2C72.853634&query_place_id=ChIJt1UpINi35zsR_jesoPSQbRQ" },
+    ],
+    perks: [
+      {
+        icon: "rocket",
+        emoji: "🚀",
+        title: "Hands-on STEM Exhibits",
+        description: "Interact with physical student prototypes, science kits, and creative DIY inventions.",
+      },
+      {
+        icon: "brain",
+        emoji: "🏫",
+        title: "Classrooms of the Future",
+        description: "Walk through learning environments designed to encourage experimentation and inquiry.",
+      },
+      {
+        icon: "handshake",
+        emoji: "🤝",
+        title: "Cross-Sector Education Dialogue",
+        description: "Engage with educators, government bodies, edtech founders, and community champions.",
+      },
+    ],
+    overview: `### An Experiential Pop-Up by MakerGhat
+
+**What does meaningful STEM learning look like for a child?**
+
+Step into **UNBOXED**, a space to explore the building blocks of our world, experiment with ideas, take on challenges, and discover STEM education in new ways.
+
+Explore hands-on experiences, discover student projects, walk through classrooms of the future, and see what learning can look like when children get to ask questions, experiment, and learn by doing.
+
+UNBOXED brings together students, educators, parents, schools, government, organisations, and communities to experience each other's work, exchange ideas, and reimagine STEM education together.`,
+    schedule: [
+      { title: "Doors Open & Exhibit Walkthrough", date: "Dec 12, 2026 · 9:00 AM – 11:30 AM", description: "Explore hands-on student science models and interactive technology experiments." },
+      { title: "Panel: Reimagining STEM Classrooms", date: "Dec 12, 2026 · 11:30 AM – 1:00 PM", description: "Educators, parents, and innovators discuss inquiry-based learning." },
+      { title: "Maker Workshops for Students & Teachers", date: "Dec 12, 2026 · 2:00 PM – 4:00 PM", description: "Hands-on building activities, electronics kits, and prototyping." },
+      { title: "Reflections & Closing Ceremony", date: "Dec 12, 2026 · 4:00 PM – 5:00 PM", description: "Community commitments to advancing experiential STEM in schools." },
+    ],
+  },
 
   // UPCOMING NATIONAL HACKATHONS & COMPETITIONS
   {
@@ -1240,6 +1506,79 @@ Registration is complete **only** when all team members (2 to 5 members) individ
       { title: "Problem Statements Release & Research", date: "Dec 1 – Dec 30, 2026", description: "Official agentic problem statements revealed for in-depth architecture research." },
       { title: "Build Phase & Code Sprint", date: "Jan 1 – Jan 10, 2027", description: "Sprint to code, evaluate, and deploy autonomous agents." },
       { title: "Evaluation & Winner Announcement", date: "Jan 2027", description: "Jury review and Pre-Placement Interview handoffs." },
+    ],
+  },
+  {
+    slug: "apify-ai-tools-that-earn-bangalore-2026",
+    title: "AI Tools that Earn: A Hackathon by Apify",
+    type: "Hackathon",
+    tag: "1-Day Hackathon · Apify Actors · Zostel Whitefield",
+    description: "Most hackathons die on Sunday night. This one is designed so yours doesn't. Build monetization-ready AI tools & Actors at Zostel Plus Whitefield, Bangalore. $1,500+ (₹1.5 Lakh) cash prizes + Apify credits.",
+    date: "Nov 22, 2026 · 8:00 AM – 6:00 PM IST",
+    location: "Zostel Plus Bangalore (Whitefield), Bengaluru",
+    format: "In person",
+    prize: "$1,500+ (₹1.5 Lakh) Cash + Credits",
+    image: "/events/apify-ai-tools-that-earn.jpg",
+    imageFit: "cover",
+    organizer: "Apify Events",
+    registrationDeadline: "Nov 21, 2026 · 11:59 PM IST",
+    eligibility: "Developers, AI builders, data engineers, and founders. Solo or squads of 1–4 members.",
+    teamSize: "1–4 Members",
+    fee: "Free (Event Full · Waitlist Open)",
+    status: "Event full",
+    registrationUrl: "https://luma.com/apify-yc12",
+    registrationLabel: "Join waitlist",
+    registrationNote: "The hackathon is currently at full capacity. Join the waitlist on Lu.ma to be alerted if spots open up. Complimentary breakfast, lunch, and chai provided!",
+    relatedLinks: [
+      { label: "Lu.ma Registration & Waitlist", url: "https://luma.com/apify-yc12" },
+      { label: "Apify Store", url: "https://apify.com/store?utm_source=luma" },
+      { label: "Apify Documentation", url: "https://docs.apify.com/?utm_source=luma" },
+      { label: "Zostel Plus Whitefield (Google Maps)", url: "https://www.google.com/maps/search/?api=1&query=12.9724332%2C77.7469155&query_place_id=ChIJ2acQJwANrjsRKs5JnAfPc1E" },
+    ],
+    perks: [
+      {
+        icon: "gift",
+        emoji: "💰",
+        title: "$1,500+ (₹1.5L) Cash Prize Pool",
+        description: "1st: $750 (₹75K) | 2nd: $500 (₹50K) | 3rd: $250 (₹25K) | 4th-10th: $50 Apify credits per member.",
+      },
+      {
+        icon: "brain",
+        emoji: "🧑‍🏫",
+        title: "13 Top Apify Creator Judges",
+        description: "Work directly alongside top creators from India & Nepal who make their living shipping Actors.",
+      },
+      {
+        icon: "coffee",
+        emoji: "🏡",
+        title: "Hacker House Vibes at Zostel Plus",
+        description: "Intense 1-day build sprint at Zostel Plus Whitefield with breakfast, lunch, snacks, and chai all day.",
+      },
+    ],
+    overview: `### Most Hackathons Die on Sunday Night. This One Doesn't.
+
+The **AI Tools that Earn Hackathon** is an exclusive, one-day event hosted by **Apify** at a **Zostel Plus hacker house in Whitefield, Bangalore**.
+
+The challenge: **Build solutions someone would actually pay for, not just a demo.** Extract data, combine tools, draw conclusions, trigger actions. If you can name who'd pay for it, you're on theme.
+
+---
+
+### Why Build On Apify?
+You'll build on the **Apify platform** and ship your project as an **Actor** to **Apify Store**, where 10k+ developers already publish and earn. Every Actor works with AI agents out of the box via **MCP (Model Context Protocol)** and agent plugins.
+
+Thirteen of the top creators from India and Nepal will be in the room all day as your mentors and judges. Several of them make their living from projects that started exactly like yours!
+
+---
+
+### Judging: The Commercial Test
+Every project is judged against one question: **Would someone actually pay for this?**
+Picture a real person who needs the output of your Actor. Your demo should name that person, show what they get, and run live.`,
+    schedule: [
+      { title: "Breakfast & Registration Check-in", date: "Nov 22, 2026 · 8:00 AM – 9:00 AM IST", description: "Arrive at Zostel Plus Whitefield, enjoy breakfast, and form squads." },
+      { title: "Opening Address & Keynote", date: "Nov 22, 2026 · 9:00 AM – 9:30 AM IST", description: "How to build high-value Actors using AI by Pushpak." },
+      { title: "Build Sprint & Mentorship", date: "Nov 22, 2026 · 10:15 AM – 2:30 PM IST", description: "Non-stop hacking with 13 top creator mentors on the floor (Lunch: 12-1 PM)." },
+      { title: "2-Minute Preliminary Demos", date: "Nov 22, 2026 · 2:30 PM – 3:15 PM IST", description: "Pitch live to the judges and demonstrate real commercial value." },
+      { title: "Top 10 Stage Demos & Awards", date: "Nov 22, 2026 · 3:30 PM – 6:00 PM IST", description: "Grand stage pitches, winner announcements, and closing celebration." },
     ],
   },
   {

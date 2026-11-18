@@ -52,12 +52,13 @@ const HACKATHON_PAGE_ORDER: Record<string, number> = {
   "beyond-9to5-buildathon-bengaluru-2026": 2,
   "beyond-9to5-buildathon-mumbai-2026": 3,
   "code-relay-5-iit-bhubaneswar": 4,
-  "lighthouse-hackathon-chandigarh-university-2027": 5,
-  "hacksprint-3-kahe-coimbatore": 6,
-  "skysparks-boeing-techkriti-iit-kanpur-2027": 7,
-  "shaastra-ctf-iit-madras-2027": 8,
-  "idea-competition-2026": 9,
-  "hack-in-hills-2026": 10,
+  "apify-ai-tools-that-earn-bangalore-2026": 5,
+  "lighthouse-hackathon-chandigarh-university-2027": 6,
+  "hacksprint-3-kahe-coimbatore": 7,
+  "skysparks-boeing-techkriti-iit-kanpur-2027": 8,
+  "shaastra-ctf-iit-madras-2027": 9,
+  "idea-competition-2026": 10,
+  "hack-in-hills-2026": 11,
 };
 
 export function OpportunityBrowser({ allowedTypes, showTypeFilter = false }: { allowedTypes?: OpportunityType[]; showTypeFilter?: boolean }) {
