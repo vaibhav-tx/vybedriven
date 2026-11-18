@@ -25,6 +25,7 @@ import {
   ChevronUp,
   Lock,
   LogIn,
+  Info,
 } from "lucide-react";
 import {
   Dialog,
@@ -601,6 +602,15 @@ function OpportunityDetails() {
   const isRegistered = Boolean(userRegRecord) || isUserRegistered(item.slug, userIdentifier);
   const isHost = isEventOrganizer(item, user);
 
+  const externalPlatform = useMemo(() => {
+    if (!item.registrationUrl) return null;
+    const url = item.registrationUrl.toLowerCase();
+    if (url.includes("luma.com") || url.includes("lu.ma")) return "Lu.ma";
+    if (url.includes("unstop.com")) return "Unstop";
+    if (url.includes("devfolio.co")) return "Devfolio";
+    return "the official host platform";
+  }, [item.registrationUrl]);
+
   const facts = [
     { icon: Calendar, label: "Event dates", value: item.date },
     { icon: MapPin, label: "Format", value: `${item.format} · ${item.location}` },
@@ -679,9 +689,9 @@ function OpportunityDetails() {
                     <Sparkles className="size-3" /> Community Hosted
                   </span>
                 )}
-                {(item.slug === "goa-buildathon-2027" || regCount > 0) && (
+                {item.slug === "goa-buildathon-2027" && (
                   <span className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-2.5 py-1 text-xs font-medium text-muted-foreground">
-                    <Users className="size-3 text-neon" /> {item.slug === "goa-buildathon-2027" ? "2,000+ Registrations" : `${regCount} ${regCount === 1 ? "applicant" : "applicants"}`}
+                    <Users className="size-3 text-neon" /> 2,000+ Registrations
                   </span>
                 )}
               </div>
@@ -743,9 +753,11 @@ function OpportunityDetails() {
                     <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
                     Registrations Open
                   </span>
-                  <span className="text-xs font-bold text-neon font-mono">
-                    {item.slug === "goa-buildathon-2027" ? "2,000+ Registrations" : `${regCount} applicants`}
-                  </span>
+                  {item.slug === "goa-buildathon-2027" && (
+                    <span className="text-xs font-bold text-neon font-mono">
+                      2,000+ Registrations
+                    </span>
+                  )}
                 </div>
 
                 <h3 className="mt-2 text-base font-black text-foreground">
@@ -885,6 +897,12 @@ function OpportunityDetails() {
                         </button>
                       </div>
                     )}
+
+                    {externalPlatform && (
+                      <p className="mt-2.5 rounded-lg border border-border/60 bg-surface-2/60 p-2.5 text-[11px] leading-relaxed text-muted-foreground">
+                        <span className="font-semibold text-foreground">Notice:</span> Hosted on {externalPlatform}. Vybe Driven has listed this event for community discovery. Registration and admissions are handled directly on {externalPlatform}.
+                      </p>
+                    )}
                   </div>
                 )}
               </div>
@@ -899,6 +917,16 @@ function OpportunityDetails() {
                   </div>
                 ))}
               </div>
+
+              {/* External Platform Disclaimer / Listing Notice */}
+              {externalPlatform && (
+                <div className="mt-4 flex items-start gap-2.5 rounded-xl border border-border/80 bg-surface-2/70 p-3 sm:p-3.5 text-xs text-muted-foreground">
+                  <Info className="size-4 shrink-0 text-neon mt-0.5" />
+                  <p className="leading-relaxed">
+                    <span className="font-semibold text-foreground">Platform Listing Notice:</span> This event is officially hosted on <span className="font-semibold text-foreground">{externalPlatform}</span>. Vybe Driven has listed this opportunity for builder community discovery. Registrations, admissions, and event proceedings are handled entirely by the host organization on {externalPlatform}.
+                  </p>
+                </div>
+              )}
 
               {/* About Section with Read More */}
               <section className="py-7 sm:py-9">
@@ -1216,9 +1244,11 @@ function OpportunityDetails() {
                   <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                     Registration
                   </p>
-                  <span className="text-xs font-semibold text-neon font-mono">
-                    {item.slug === "goa-buildathon-2027" ? "2,000+ Registrations" : `${regCount} ${regCount === 1 ? "applicant" : "applicants"}`}
-                  </span>
+                  {item.slug === "goa-buildathon-2027" && (
+                    <span className="text-xs font-semibold text-neon font-mono">
+                      2,000+ Registrations
+                    </span>
+                  )}
                 </div>
 
                 <h2 className="mt-2 text-lg sm:text-xl font-bold">
@@ -1426,6 +1456,15 @@ function OpportunityDetails() {
                         </button>
                       </div>
                     )}
+                  </div>
+                )}
+
+                {/* External Platform Disclaimer / Listing Notice */}
+                {externalPlatform && (
+                  <div className="mt-4 rounded-xl border border-border/70 bg-surface-2/60 p-3 text-[11px] leading-relaxed text-muted-foreground">
+                    <p>
+                      <span className="font-semibold text-foreground">Listing Notice:</span> This event is officially hosted on <span className="font-semibold text-foreground">{externalPlatform}</span>. Vybe Driven has listed this opportunity for builder community discovery; registrations and event proceedings are handled on {externalPlatform}.
+                    </p>
                   </div>
                 )}
 

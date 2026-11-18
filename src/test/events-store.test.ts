@@ -95,6 +95,16 @@ describe("Events Store & Vybe Driven Host Hub", () => {
       alexUser
     );
     expect(updated?.title).toBe("Global Builder Sprint 2.0");
+
+    // Built-in directory opportunities (e.g. Hacksprint) must NEVER grant organizer access
+    const hacksprint = findOpportunity("hacksprint-3-kahe-coimbatore");
+    expect(isEventOrganizer(hacksprint, { email: "hello@goabuilds.com" })).toBe(false);
+    expect(isEventOrganizer(hacksprint, alexUser)).toBe(false);
+
+    // Goa Buildathon grants organizer access ONLY to authorized emails
+    const goa = findOpportunity("goa-buildathon-2027");
+    expect(isEventOrganizer(goa, { email: "hello@goabuilds.com" })).toBe(true);
+    expect(isEventOrganizer(goa, { email: "guest@test.com" })).toBe(false);
   });
 
   it("handles event registration and isolates participant records", () => {

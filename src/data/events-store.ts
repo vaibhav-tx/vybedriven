@@ -318,7 +318,6 @@ const envAdminEmails = (
 export const ADMIN_EMAILS = [
   "vybedriven@gmail.com",
   "admin@vybedriven.in",
-  "hello@goabuilds.com",
   "pandeysatyam2030@gmail.com",
   ...envAdminEmails,
 ];
@@ -338,9 +337,6 @@ export function isEventOrganizer(
   const uId = user.id?.trim();
   const uEmail = user.email?.trim().toLowerCase();
 
-  // Platform admins can manage all events and view registrations
-  if (uEmail && ADMIN_EMAILS.includes(uEmail)) return true;
-
   // Specific check for Goa Buildathon 2027 (Authorized organizer emails)
   if (event.slug === "goa-buildathon-2027") {
     if (
@@ -351,6 +347,13 @@ export function isEventOrganizer(
     ) {
       return true;
     }
+    return false;
+  }
+
+  // Built-in directory opportunities (HackSprint, Code Relay, Lu.ma/Unstop listings, etc.)
+  // are NOT user-hosted events and should never show organizer controls.
+  if (!hosted.isHosted) {
+    return false;
   }
 
   const orgId = hosted.organizerId?.trim();
@@ -358,6 +361,8 @@ export function isEventOrganizer(
 
   if (uId && orgId && uId === orgId) return true;
   if (uEmail && orgEmail && uEmail === orgEmail) return true;
+  if (uEmail && ADMIN_EMAILS.includes(uEmail)) return true;
+
   return false;
 }
 
