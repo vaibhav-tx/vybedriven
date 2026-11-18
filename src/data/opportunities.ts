@@ -57,7 +57,7 @@ export type Opportunity = {
   eligibility: string;
   teamSize: string;
   fee: string;
-  status: "Opening soon" | "Registration open" | "Approval required" | "Event full" | "Sold out";
+  status: "Opening soon" | "Registration open" | "Approval required" | "Event full" | "Sold out" | "Past event";
   registrationUrl?: string;
   registrationLabel?: "Register now" | "Request to join" | "Join waitlist";
   registrationNote?: string;
@@ -705,7 +705,382 @@ Bio ke link pe click karo (luminarcreatorsaward.com), form fill karo aur apna sl
       { title: "Round 3 · Grand Finale (Offline)", date: "Feb 6, 2027", description: "Pitch your developed prototype and venture live to founders, investors, and incubation heads at Fr. CRCE, Bandra, Mumbai." },
     ],
   },
-  { slug: "vecna-verse-2026", title: "VECNA VERSE", type: "Hackathon", tag: "National Level Hackathon", description: "Enter the unknown, build the impossible, and compete for prizes, opportunities, and national recognition.", date: "Oct 24–25, 2026", location: "Online round · Offline finale for qualifiers", format: "Hybrid", prize: "₹3 lakh+", image: vecnaVersePoster.url, imageFit: "contain", organizer: "Vybe Driven · RAAHIWORKS", registrationDeadline: "To be announced", eligibility: "B.Sc, B.Tech, B.E, M.Tech, PhD, and Diploma students from any year; cross-college, cross-branch, and cross-year teams welcome", teamSize: "Up to 4 members", fee: "See official registration", status: "Registration open", registrationUrl: "https://forms.gle/cchs5bTCBp5N9g9X9", groupUrl: "https://chat.whatsapp.com/Bq82iqnQZz58uJbRp2k2C9", groupLabel: "Join WhatsApp Group for Details", overview: "VECNA VERSE is a national-level hackathon presented by Vybe Driven and powered by RAAHIWORKS. Participants enter an online first round (Oct 24–25) before qualifying teams advance to an offline finale. The ₹3 lakh+ prize pool is joined by cash prizes, internship and job opportunities, exclusive goodies, platform credits, and networking with industry experts.", schedule: [{ title: "Registration", date: "Open now", description: "Gather a team of up to four members and register through the official VECNA VERSE registration form." }, { title: "Round 1 · Online", date: "Oct 24–25, 2026", description: "Teams compete online during the first qualifying round." }, { title: "Round 2 · Offline", date: "To be announced", description: "Qualifying teams receive the final date, venue, and complete offline-round details." }] },
+  // UPCOMING NEW EVENTS
+  {
+    slug: "semiconductor-deep-dive-hackerfab-mumbai",
+    title: "Semiconductor Deep Dive: Lecture by HackerFab",
+    type: "Meetup",
+    tag: "Semiconductors · Hardware · Fabrication",
+    description: "An in-depth lecture by HackerFab IIT Bombay exploring semiconductor fabrication fundamentals, global industry trends, hardware startup journeys, and the India Semiconductor Mission.",
+    date: "Dec 5, 2026 · 2:00 PM – 5:00 PM IST",
+    location: "ATLAS SkillTech University, Kurla West, Mumbai",
+    format: "In person",
+    prize: "Deep Tech Knowledge & Founder Networking",
+    image: "/events/semiconductor-deep-dive-hackerfab.jpg",
+    imageFit: "contain",
+    organizer: "HackerFab IIT Bombay × M33 × ABC",
+    registrationDeadline: "Dec 5, 2026 · 1:30 PM IST",
+    eligibility: "Students, founders, researchers, hardware engineers, chip designers & deep tech builders",
+    teamSize: "Individual registration",
+    fee: "Free (Approval Required)",
+    status: "Approval required",
+    registrationUrl: "https://luma.com/qjs01ta3",
+    registrationLabel: "Request to join",
+    registrationNote: "Your registration is subject to host approval. Please register to request an invite.",
+    relatedLinks: [
+      { label: "Lu.ma Registration Page", url: "https://luma.com/qjs01ta3" },
+      { label: "Host (M33)", url: "https://luma.com/m33hq?k=c" },
+      { label: "ATLAS SkillTech University (Google Maps)", url: "https://www.google.com/maps/search/?api=1&query=19.070910299999998%2C72.8759417&query_place_id=ChIJ45sEySvJ5zsR7VTed_4-MG4" },
+    ],
+    perks: [
+      {
+        icon: "brain",
+        emoji: "🔬",
+        title: "Fabrication Physics & Theory",
+        description: "Demystify cleanrooms, lithography, silicon wafer processing, and precision fabrication tools.",
+      },
+      {
+        icon: "rocket",
+        emoji: "🇮🇳",
+        title: "India Semiconductor Mission",
+        description: "Learn what the policy incentives and domestic foundries mean for founders, researchers, and engineers.",
+      },
+      {
+        icon: "handshake",
+        emoji: "🤝",
+        title: "Deep Tech Community Connect",
+        description: "Network with IIT Bombay builders, deep tech entrepreneurs, hardware researchers, and investors.",
+      },
+    ],
+    overview: `### Semiconductors: Industry, Fabrication & Opportunities
+
+Semiconductors are at the heart of almost every major technological shift happening today. But how does the industry actually work, and where are the opportunities to build?
+
+Join us for an in-depth lecture by **HackerFab IIT Bombay**, covering the fundamentals of semiconductor fabrication, the tools and technologies behind it, and the current state of the global semiconductor industry.
+
+---
+
+### What We'll Explore
+- **How semiconductor fabrication works**: from the underlying theory and physics to the specialized tools and cleanroom equipment used in fabrication.
+- **Where the semiconductor industry stands today** and where it is headed globally over the next decade.
+- **A breakdown of semiconductor startups**: their journeys, critical engineering hurdles, and what made them succeed or fail.
+- **The India Semiconductor Mission (ISM)**: what it means for the domestic ecosystem, and how individuals, researchers, and engineers can get involved.
+
+---
+
+### Who Should Join?
+Students, hardware engineers, founders, researchers, chip designers, investors, and anyone interested in building in the semiconductor space.
+
+Hosted by **M33**, with **ABC** as the venue partner.
+📅 **5 Dec 2026** · 📍 **ATLAS SkillTech University, Kurla West, Mumbai**`,
+    schedule: [
+      { title: "Doors Open & Check-in", date: "Dec 5, 2026 · 2:00 PM", description: "Arrive at ATLAS SkillTech University (Equinox Business Park, Kurla West) and settle in." },
+      { title: "Deep Dive Lecture by HackerFab IITB", date: "Dec 5, 2026 · 2:30 PM", description: "Fabrication fundamentals, semiconductor physics, tooling, and global industry breakdown." },
+      { title: "Semiconductor Startups & India Mission", date: "Dec 5, 2026 · 4:00 PM", description: "Venture pathways, startup lessons, and opportunities in India's semiconductor landscape." },
+      { title: "Open Q&A and Community Mixer", date: "Dec 5, 2026 · 4:30 PM – 5:00 PM", description: "Interactive conversation with HackerFab leads, founders, and peer builders." },
+    ],
+  },
+  {
+    slug: "mumbai-community-year-end-meet-ai-agents",
+    title: "Mumbai Community's Year-End Meet: with AI & Agents",
+    type: "Meetup",
+    tag: "AI Agents · UiPath · Interactive Simulation",
+    description: "An interactive year-end meetup by Agent Builders Community & UiPath. No boring slides — the room acts as leadership making high-stakes AI & agent orchestration decisions for a live fictional company.",
+    date: "Dec 5, 2026 · 10:00 AM – 3:30 PM IST",
+    location: "Yashwantrao Chavan Centre, Nariman Point, Mumbai",
+    format: "In person",
+    prize: "Interactive Simulation, Swag & Year-End Mixer",
+    image: "/events/mumbai-community-year-end-meet.jpg",
+    imageFit: "contain",
+    organizer: "Agent Builders Community × UiPath",
+    registrationDeadline: "Dec 5, 2026 · 9:30 AM IST",
+    eligibility: "Developers, automation architects, AI engineers, product leaders & curious builders",
+    teamSize: "Individual registration",
+    fee: "Free",
+    status: "Registration open",
+    registrationUrl: "https://luma.com/8acb6kin",
+    registrationLabel: "Register now",
+    registrationNote: "Welcome! Free registration on Lu.ma. No prep or laptop needed — just bring your curiosity and a fully charged phone for live interactive voting.",
+    relatedLinks: [
+      { label: "Lu.ma Registration Page", url: "https://luma.com/8acb6kin" },
+      { label: "Agent Builders Community", url: "https://luma.com/agentbuilders?k=c" },
+      { label: "Yashwantrao Chavan Centre (Google Maps)", url: "https://www.google.com/maps/search/?api=1&query=18.9249445%2C72.8265239&query_place_id=ChIJd74E9enR5zsRaPX_EAepD3M" },
+    ],
+    perks: [
+      {
+        icon: "laptop",
+        emoji: "🎮",
+        title: "Live Room Interactive Simulation",
+        description: "Vote in real time from your mobile phone as leadership decisions reshape the company trajectory.",
+      },
+      {
+        icon: "brain",
+        emoji: "🤖",
+        title: "AI Agent Orchestration Framework",
+        description: "Gain a practical, battle-tested mental model: 'Should we use an AI agent for this?'",
+      },
+      {
+        icon: "coffee",
+        emoji: "🎉",
+        title: "Year-End Community Celebration",
+        description: "Connect with Mumbai's brightest AI & automation builders at Yashwantrao Chavan Centre, Nariman Point.",
+      },
+    ],
+    overview: `### Mumbaiiiii! Wrap Up The Year With AI & Agents 🎬
+
+**One Company. A Dozen Tough Calls. You Decide.**
+
+2026 has been a big year for UiPath. Autonomous agents, desktop assistants, intelligent task mining, and multi-flavor orchestration… the announcements kept coming. And with every launch, the question got louder in our community:
+> *"Okay, but which one do I actually use, and when?"*
+
+This year-end session, we’re not walking you through a feature list. We’re putting you in charge.
+
+---
+
+### How It Works: The Interactive Simulation
+Meet a fictional company with a very real problem. Its leaders have a bold mandate, a tight deadline, and a growing pile of decisions to make. Over the course of the session, you’ll follow their journey stage by stage, and at every turn **the room decides what happens next**.
+
+You’ll weigh the options. You’ll vote. You’ll defend your choice. Some answers will seem obvious until they aren’t. Some choices will come back to bite. And just when the room thinks it has everything figured out… expect a twist or two! 😉
+
+By the end, you’ll have helped build something together, and you’ll leave with a simple way of thinking you can use the very next time someone at work asks, *"Should we use AI for this?"*
+
+---
+
+### This Session Is For You If You:
+- 🤔 Have lost track of what’s new in the UiPath & AI agent ecosystem this year
+- 🏗️ Design or recommend automation solutions and want a sharper way to choose the right tool
+- 🎯 Prefer interactive gamification to watching passive slides
+- 🙋 Like having an opinion and having it tested by peer architects
+
+**No prep and no laptop needed.** Just bring your curiosity, your instincts, and a fully charged phone. 📱
+
+Can't wait to enjoy the day with you all!`,
+    schedule: [
+      { title: "Doors Open & Morning Coffee", date: "Dec 5, 2026 · 10:00 AM – 10:30 AM", description: "Check-in at Yashwantrao Chavan Centre, Nariman Point and grab welcome refreshments." },
+      { title: "The Mandate & Stage 1 Decisions", date: "Dec 5, 2026 · 10:30 AM – 12:00 PM", description: "Meet the fictional company, analyze technical constraints, and vote on architecture." },
+      { title: "Community Lunch & Networking", date: "Dec 5, 2026 · 12:00 PM – 1:00 PM", description: "Enjoy lunch and debate decisions with fellow architects and builders." },
+      { title: "Stage 2: Twists, Agents & Orchestration", date: "Dec 5, 2026 · 1:00 PM – 2:45 PM", description: "Handling high-concurrency twists, agent guardrails, and room defense." },
+      { title: "Wrap-up, Framework & Group Photos", date: "Dec 5, 2026 · 2:45 PM – 3:30 PM", description: "Final synthesis, key takeaways, and year-end community celebration." },
+    ],
+  },
+  {
+    slug: "paranormal-real-or-not-philosophical-discussion",
+    title: "Paranormal: Real or Not? (A Philosophical Discussion)",
+    type: "Meetup",
+    tag: "Philosophy · Paranormal · Open Debate",
+    description: "An afternoon of honest conversation and critical inquiry into the paranormal at Love & Latte, Versova. Believers, skeptics, and the curious examine true stories, scientific debunking, and psychological experiences.",
+    date: "Nov 29, 2026 · 2:00 PM – 5:00 PM IST",
+    location: "Love & Latte Versova, Andheri West, Mumbai",
+    format: "In person",
+    prize: "Rich Conversations & Diverse Perspectives",
+    image: "/events/paranormal-real-or-not-versova.jpg",
+    imageFit: "contain",
+    organizer: "Philosophy Connect · Hosted by Shravan Vishwakarma",
+    registrationDeadline: "Nov 29, 2026 · 1:30 PM IST",
+    eligibility: "Believers, skeptics, philosophers, storytellers & open-minded thinkers",
+    teamSize: "Individual registration",
+    fee: "Free (RSVP Required · Pay for own refreshments)",
+    status: "Registration open",
+    registrationUrl: "https://luma.com/wd2bwcm5",
+    registrationLabel: "Register now",
+    registrationNote: "Welcome! Free RSVP on Lu.ma. Ghosts are welcome too, but they have to RSVP like everyone else. Please leave the Ouija board at home.",
+    relatedLinks: [
+      { label: "Lu.ma Registration Page", url: "https://luma.com/wd2bwcm5" },
+      { label: "Love & Latte Versova (Google Maps)", url: "https://www.google.com/maps/search/?api=1&query=19.1329998%2C72.81226219999999&query_place_id=ChIJkeAQrjm35zsRpJLAByQUzPQ" },
+    ],
+    perks: [
+      {
+        icon: "coffee",
+        emoji: "☕",
+        title: "Cozy Versova Café Ambience",
+        description: "Intimate and relaxed setting at Love & Latte in Aram Nagar Part 2, Versova.",
+      },
+      {
+        icon: "brain",
+        emoji: "👻",
+        title: "Philosophical & Scientific Inquiry",
+        description: "Examine unexplained phenomena through epistemology, psychology, and evidence.",
+      },
+      {
+        icon: "handshake",
+        emoji: "🤝",
+        title: "Open, Non-Judgmental Debate",
+        description: "A respectful room where skeptics and believers can share raw experiences and analyze them together.",
+      },
+    ],
+    overview: `### You've Heard The Stories.
+
+The house that was never quite empty. The “based on a true story” movie that kept you up all night. The friend of a friend who swears they saw something in the shadows. Everyone has one, and nobody can explain it.
+
+Join us for an afternoon of honest conversation about the paranormal at **Love & Latte, Versova**. Believers, skeptics, and the just plain curious are all warmly welcome. Ghosts are welcome too, but they have to RSVP like everyone else!
+
+---
+
+### What We'll Explore
+- **Does the paranormal actually exist?** Exploring metaphysical concepts, consciousness, and what science can and cannot measure.
+- **Popular horror movies and true claims**: Examining stories claimed to be based on real events, and what holds up when analyzed scientifically.
+- **How people fake it & scams**: The history of spiritualism hoaxes, optical illusions, sleep paralysis, and psychological tricks that prey on believers.
+- **Your own personal encounters**: An open floor to recount unexplained moments without ridicule.
+
+The conversation is open and guided — think real stories, thoughtful debate, and warm coffee, not dry lectures.
+
+**No prep needed.** Just show up with your experiences, your doubts, and an open mind. *(Please leave the Ouija board at home.)*`,
+    schedule: [
+      { title: "Arrival & Coffee Break", date: "Nov 29, 2026 · 2:00 PM – 2:30 PM", description: "Grab your drink, settle into Aram Nagar, and meet fellow attendees." },
+      { title: "Scientific Scrutiny & Famous Cases", date: "Nov 29, 2026 · 2:30 PM – 3:45 PM", description: "Horror media, psychology of fear, and documented historical hoaxes." },
+      { title: "Open Floor: Personal Stories & Skeptic Inquiry", date: "Nov 29, 2026 · 3:45 PM – 4:45 PM", description: "Participants share unexplainable experiences in an open, respectful circle." },
+      { title: "Closing Reflections & Farewell", date: "Nov 29, 2026 · 4:45 PM – 5:00 PM", description: "Wrap-up thoughts and continued conversations over coffee." },
+    ],
+  },
+  {
+    slug: "lovable-builders-in-bangalore-2026",
+    title: "Lovable Builders in Bangalore",
+    type: "Meetup",
+    tag: "AI Builders · Lovable · Bengaluru Tech",
+    description: "A high-energy community meetup at WeWork Koramangala bringing together developers, designers, founders, and creators building next-gen web apps and AI products with Lovable.",
+    date: "Dec 12, 2026 · 11:00 AM – 6:00 PM IST",
+    location: "WeWork Prestige Atlanta, Koramangala, Bengaluru",
+    format: "In person",
+    prize: "Showcases, Feedback & Community Connections",
+    image: "/events/lovable-builders-bangalore.jpg",
+    imageFit: "contain",
+    organizer: "Lovable Community · Hosted by Vinay Singh & Prasoon Nigam",
+    registrationDeadline: "Dec 11, 2026 · 11:59 PM IST",
+    eligibility: "Developers, software engineers, UI/UX designers, founders, creators & technology innovators",
+    teamSize: "Individual registration",
+    fee: "Free (Approval Required)",
+    status: "Approval required",
+    registrationUrl: "https://luma.com/1mjcegf0",
+    registrationLabel: "Request to join",
+    registrationNote: "Your registration is subject to host approval. Please register to request your builder spot.",
+    relatedLinks: [
+      { label: "Lu.ma Registration Page", url: "https://luma.com/1mjcegf0" },
+      { label: "WeWork Koramangala (Google Maps)", url: "https://www.google.com/maps/search/?api=1&query=12.9289492%2C77.6328922&query_place_id=ChIJITev0WAUrjsR1bMfF3B3VAc" },
+    ],
+    perks: [
+      {
+        icon: "rocket",
+        emoji: "🚀",
+        title: "Live Product Demos",
+        description: "Watch live demos of products, SaaS tools, and prototypes built rapidly using Lovable.",
+      },
+      {
+        icon: "laptop",
+        emoji: "💻",
+        title: "Koramangala Startup Heart",
+        description: "Collaborate at WeWork Prestige Atlanta, 80 Feet Road, in the center of Koramangala.",
+      },
+      {
+        icon: "handshake",
+        emoji: "🤝",
+        title: "Co-Founder & Builder Matching",
+        description: "Find technical collaborators, design partners, and fellow indie hackers.",
+      },
+    ],
+    overview: `### Lovable Builders in Bangalore
+
+**Lovable Builders in Bangalore** is a community meetup bringing together builders, developers, designers, founders, creators, and innovators from across Bengaluru.
+
+It's a space to connect, network, exchange ideas, and share perspectives on how we can use technology, modern AI generation tools, and creativity to solve real-world problems across different industries and sectors.
+
+Together, let's explore what we can build today, imagine what's possible tomorrow, and create meaningful solutions that shape a better future for the next generation.
+
+---
+
+### What to Expect
+- **Real-World Builder Demos**: Watch fellow developers demo micro-SaaS, prototypes, and internal tools built at unprecedented speed.
+- **Prompt Architecture & Full-Stack AI**: Learn architectural best practices for connecting AI frontends to real Supabase tables, Edge Functions, and external APIs.
+- **Creator Collisions**: Connect with creators looking for technical co-founders or design partners in Koramangala.
+- **Collaborative Hack & Feedback**: Get instant feedback on your projects from seasoned software engineers and founders.
+
+Come with ideas, curiosity, and a passion to build. Let's connect, collaborate, and create something meaningful!`,
+    schedule: [
+      { title: "Doors Open & Welcome", date: "Dec 12, 2026 · 11:00 AM – 11:45 AM", description: "Check-in at WeWork Prestige Atlanta, Koramangala." },
+      { title: "The New Era of AI Building", date: "Dec 12, 2026 · 11:45 AM – 12:30 PM", description: "Keynote on rapid application generation and full-stack software development." },
+      { title: "Builder Demos & Showcases", date: "Dec 12, 2026 · 12:30 PM – 2:00 PM", description: "Live demos of apps and startup products built with Lovable." },
+      { title: "Lunch & Networking Mixer", date: "Dec 12, 2026 · 2:00 PM – 3:00 PM", description: "Connect with developers, designers, and founders over lunch." },
+      { title: "Collaborative Jam & Teardowns", date: "Dec 12, 2026 · 3:00 PM – 5:00 PM", description: "Hands-on feedback circles and architecture reviews." },
+      { title: "Wrap-up & Community Group Photo", date: "Dec 12, 2026 · 5:00 PM – 6:00 PM", description: "Closing thoughts, community shoutouts, and open networking." },
+    ],
+  },
+  {
+    slug: "the-big-aaaart-club-delhi-2026",
+    title: "The Big Aaaaart Club (South Delhi)",
+    type: "Meetup",
+    tag: "Art & Sketching · Creative Community · Open Air",
+    description: "An open-air evening of painting, sketching, and artistic conversations at Priya Park, Vasant Vihar, South Delhi. No prior art experience needed — just bring your curiosity and creative energy!",
+    date: "Nov 29, 2026 · 2:00 PM – 6:00 PM IST",
+    location: "Priya Park, Vasant Vihar, South Delhi",
+    format: "In person",
+    prize: "Art Community Bond, Showcases & Open Air Vibes",
+    image: "/events/the-big-aaaart-club-delhi.jpg",
+    imageFit: "contain",
+    organizer: "The Art Curry",
+    registrationDeadline: "Nov 29, 2026 · 1:00 PM IST",
+    eligibility: "Everyone welcome! Whether you sketch daily or haven't held a pencil since childhood.",
+    teamSize: "Individual registration",
+    fee: "Free (RSVP Required)",
+    status: "Registration open",
+    registrationUrl: "https://luma.com/vkvi441n",
+    registrationLabel: "Register now",
+    registrationNote: "Welcome! Free RSVP on Lu.ma. Note: If you register & do not show up, you are blacklisted for the next three events. Please attend if you RSVP!",
+    relatedLinks: [
+      { label: "Lu.ma Registration Page", url: "https://luma.com/vkvi441n" },
+      { label: "The Art Curry Calendar", url: "https://luma.com/calendar/cal-dVfxSmkduoss1Fh" },
+    ],
+    perks: [
+      {
+        icon: "gift",
+        emoji: "🎨",
+        title: "Pure Creative Freedom",
+        description: "Zero rules, zero critiques — paint, draw, or doodle whatever brings you peace.",
+      },
+      {
+        icon: "coffee",
+        emoji: "🌳",
+        title: "Priya Park Open Green Lawn",
+        description: "Lush green grass and fresh winter breeze in Vasant Vihar, South Delhi.",
+      },
+      {
+        icon: "handshake",
+        emoji: "💖",
+        title: "Warm Creative Community",
+        description: "Meet artists, designers, and people who simply enjoy slowing down to create.",
+      },
+    ],
+    overview: `### The Big Aaaaart Club is Back Again! 🎨
+
+Join us on **Sunday, 29th November** for an evening of art, conversations, and community as we bring together people who simply love making, discovering, and experiencing art.
+
+Think of it as your excuse to step away from the usual Sunday screen routine and spend a few mindful hours exploring your creative side. Whether you sketch all the time, haven’t picked up a pencil in years, or just want to meet like-minded, warm souls — **there is no right or wrong way to be here.**
+
+Come as you are, bring your curiosity, and be ready to create, explore, and connect.
+
+---
+
+### Important Venue & Timing Details
+- 📍 **Location**: Priya Park, Vasant Vihar, South Delhi
+- 📅 **Date**: Sunday, 29th November 2026
+- ⏰ **Time**: 2:00 PM – 6:00 PM IST
+- 🎨 **Materials**: Bring your favorite sketchbook, paints, pencils, or whatever medium you enjoy!
+
+No prior art experience needed. Just bring yourself and your creative energy <3
+
+*(Notice from organizers: If you register & do not show up, you are blacklisted for the next three events. Please ensure you can make it before RSVPing!)*`,
+    schedule: [
+      { title: "Arrival & Picnic Blanket Setup", date: "Nov 29, 2026 · 2:00 PM – 2:30 PM", description: "Find a cozy spot on the lawn under the trees at Priya Park, Vasant Vihar." },
+      { title: "Open Creative Session", date: "Nov 29, 2026 · 2:30 PM – 4:30 PM", description: "Sketch, paint, doodle, or write at your own relaxed pace." },
+      { title: "Show & Tell and Art Circles", date: "Nov 29, 2026 · 4:30 PM – 5:30 PM", description: "Share your sketches, talk about your process, and learn from each other." },
+      { title: "Sunset Wrap-up & Group Photos", date: "Nov 29, 2026 · 5:30 PM – 6:00 PM", description: "Capture memories, exchange Instagram handles, and wrap up before evening." },
+    ],
+  },
+
+  // UPCOMING HACKATHONS & CONFERENCES (Nov 20 onwards)
+  { slug: "hack-in-hills-2026", title: "Hack in Hills ’26", type: "Hackathon", tag: "PPT → Prototype → Manali", description: "Compete online for one of 40 builder spots at a 24+ hour offline hackathon in the mountains of Manali.", date: "Nov 20, 2026", location: "Manali, Himachal Pradesh", format: "Hybrid", prize: "₹50,000 bounty pool", image: hackInHillsPoster.url, imageFit: "contain", organizer: "Web3 India × Builder Base", registrationDeadline: "Oct 5, 2026", eligibility: "Open registration; only 40 builders advance to the offline finale", teamSize: "See official registration", fee: "Free", status: "Registration open", registrationUrl: "https://unstop.com/o/dRs01iP/?ref=punmZRNS", overview: "Hack in Hills ’26 takes builders from PPT to prototype and then to Manali. From more than 7,000 registrations and 190,000+ reach, only 40 builders will qualify for the 24+ hour offline finale in the mountains, competing for a ₹50,000 bounty pool. Registration is completely free.", schedule: [{ title: "Registration closes", date: "Oct 5, 2026", description: "Submit through the official registration page." }, { title: "PPT and prototype selection", date: "Before Nov 20, 2026", description: "Entries progress from idea presentation to prototype review as 40 finalists are selected." }, { title: "Offline mountain sprint", date: "Nov 20, 2026", description: "The selected 40 builders compete in a 24+ hour offline hackathon in Manali." }] },
+  { slug: "enterprise-ai-summit-mumbai-2026", title: "Enterprise AI Summit Mumbai 2026", type: "Conference", tag: "Enterprise AI / India Stack", description: "A full-day summit on scaling autonomous systems across India’s digital public infrastructure.", date: "Dec 5, 2026 · 9 AM–6 PM", location: "Jio World Convention Centre, BKC, Mumbai", format: "In person", image: enterpriseAiSummitPoster.url, imageFit: "contain", organizer: "Stage-X", registrationDeadline: "Until capacity is reached", eligibility: "Enterprise leaders, technology decision-makers, builders, and AI practitioners", teamSize: "Individual registration", fee: "See official registration", status: "Registration open", registrationUrl: "https://luma.com/y2o1cuts", overview: "Stage-X Enterprise AI Summit Mumbai brings together people, ideas, and real-world impact around India Stack, scale, and digital public infrastructure. The Mumbai gathering focuses on deploying enterprise AI and scaling autonomous systems, as part of the Nine Cities, One Mission global summit network.", schedule: [{ title: "Registration", date: "Open now", description: "Register through the official event page while places remain." }, { title: "Enterprise AI Summit", date: "Dec 5, 2026 · 9 AM–6 PM", description: "A full day at Jio World Convention Centre focused on enterprise AI at scale." }] },
+
+  // PAST COMPLETED EVENTS (Concluded before Nov 18, 2026)
+  { slug: "vecna-verse-2026", title: "VECNA VERSE", type: "Hackathon", tag: "National Level Hackathon", description: "Enter the unknown, build the impossible, and compete for prizes, opportunities, and national recognition.", date: "Oct 24–25, 2026", location: "Online round · Offline finale for qualifiers", format: "Hybrid", prize: "₹3 lakh+", image: vecnaVersePoster.url, imageFit: "contain", organizer: "Vybe Driven · RAAHIWORKS", registrationDeadline: "Concluded", eligibility: "B.Sc, B.Tech, B.E, M.Tech, PhD, and Diploma students from any year; cross-college, cross-branch, and cross-year teams welcome", teamSize: "Up to 4 members", fee: "See official registration", status: "Past event", registrationUrl: "https://forms.gle/cchs5bTCBp5N9g9X9", groupUrl: "https://chat.whatsapp.com/Bq82iqnQZz58uJbRp2k2C9", groupLabel: "Join WhatsApp Group for Details", overview: "VECNA VERSE is a national-level hackathon presented by Vybe Driven and powered by RAAHIWORKS. Participants entered an online first round (Oct 24–25) before qualifying teams advanced to an offline finale. The ₹3 lakh+ prize pool was joined by cash prizes, internship and job opportunities, exclusive goodies, platform credits, and networking with industry experts.", schedule: [{ title: "Registration", date: "Concluded", description: "Team registration concluded." }, { title: "Round 1 · Online", date: "Oct 24–25, 2026", description: "Teams competed online during the first qualifying round." }, { title: "Round 2 · Offline Finale", date: "Concluded", description: "Qualifying teams competed in the offline finale." }] },
   {
     slug: "adappt-5-0",
     title: "ADAPPT 5.0",
@@ -756,7 +1131,7 @@ Bio ke link pe click karo (luminarcreatorsaward.com), form fill karo aur apna sl
     eligibility: "College students, developers, and tech innovators · Teams of 1–4 members across any branch and year",
     teamSize: "1–4 members",
     fee: "₹300 per participant",
-    status: "Registration open",
+    status: "Past event",
     registrationUrl: "https://adappt.ietempstme.com/",
     contacts: [
       { name: "Arnab Mukhopadhyay", phone: "+918104530548" },
@@ -766,24 +1141,22 @@ Bio ke link pe click karo (luminarcreatorsaward.com), form fill karo aur apna sl
       { label: "Official ADAPPT 5.0 Website", url: "https://adappt.ietempstme.com/" },
       { label: "IETE-SF MPSTME Portal", url: "https://ietempstme.com" },
     ],
-    overview: "ADAPPT 5.0 Venture Sprint is an innovation-driven challenge presented by IETE-SF MPSTME in collaboration with Vybe Driven and GeeksforGeeks. Participants select a challenge across three core domains: 1) Cybersecurity in Smart Homes, 2) AI in FoodTech, and 3) Robotics & Automation in Natural Disaster Management. In Round 1, submit your solution deck and video pitch. Shortlisted teams advance to an intense 24-hour overnight development challenge at MPSTME Mumbai, adapting their code to live technical twists. Featuring a ₹50,000 prize pool, staycation for winners, ₹10K hampers, certificates from GfK, Partners & BMW, and internship opportunities.",
+    overview: "ADAPPT 5.0 Venture Sprint is an innovation-driven challenge presented by IETE-SF MPSTME in collaboration with Vybe Driven and GeeksforGeeks. Participants selected a challenge across three core domains: 1) Cybersecurity in Smart Homes, 2) AI in FoodTech, and 3) Robotics & Automation in Natural Disaster Management. In Round 1, submitted their solution deck and video pitch. Shortlisted teams advanced to an intense 24-hour overnight development challenge at MPSTME Mumbai, adapting their code to live technical twists.",
     schedule: [
-      { title: "Round 1 · Online Idea Pitch", date: "Deadline: Oct 19, 2026", description: "Choose a problem statement across the 3 domains, develop your solution, and submit your PPT and video pitch online." },
-      { title: "Shortlist Announcement", date: "Oct 20–21, 2026", description: "Top performing teams are selected and invited to the offline overnight development round." },
-      { title: "Round 2 · Overnight Development Challenge", date: "Oct 23–24, 2026", description: "Tackle unexpected technical twists overnight at MPSTME, Mumbai, adapt your solution live, and pitch to the jury." },
+      { title: "Round 1 · Online Idea Pitch", date: "Deadline: Oct 19, 2026", description: "Problem statement selection and PPT pitch submission." },
+      { title: "Shortlist Announcement", date: "Oct 20–21, 2026", description: "Top performing teams selected for the offline round." },
+      { title: "Round 2 · Overnight Sprint", date: "Oct 23–24, 2026", description: "Overnight technical development at MPSTME, Mumbai." },
     ],
   },
-  { slug: "inspire-colloquium-2026", title: "INSPIRE Colloquium 2026", type: "Hackathon", tag: "Research / Innovation", description: "Present your research or idea at IEEE SLRTCE's research and idea colloquium.", date: "Oct 17, 2026 · 9 AM–5 PM", location: "SLRTCE Campus, Mira Road, Mumbai", format: "In person", image: inspirePoster.url, imagePosition: "center top", imageFit: "contain", organizer: "IEEE SLRTCE · Mumbai Tech Community", registrationDeadline: "Oct 11, 2026", eligibility: "UG & Diploma: teams of 2–4 · PG & PhD: individual · Inter-college participants welcome", teamSize: "2–4 members (UG & Diploma) or individual (PG & PhD)", fee: "₹300 per team for shortlisted teams", status: "Registration open", registrationUrl: "https://inspire-colloquium.vercel.app/", contacts: [{ name: "Krishna Dubey", phone: "+919321599039" }, { name: "Shweta Mishra", phone: "+919768122297" }, { name: "Meet Shah", phone: "+919987594531" }], overview: "INSPIRE 2026 is a research and idea colloquium by IEEE SLRTCE, presented with Mumbai Tech Community as Community Partner. Interdisciplinary next-generation scientific ideas, research, and exploration — aligned with the UN Sustainable Development Goals. Present your idea, explore it, and inspire others; shortlisted teams pay a ₹300 registration fee per team.", schedule: [{ title: "Registration opens", date: "Sep 21, 2026", description: "Register on the official INSPIRE Colloquium website." }, { title: "Submission closes", date: "Oct 11, 2026", description: "Final deadline to submit your research or idea." }, { title: "Shortlist announced", date: "Oct 13, 2026", description: "Shortlisted teams confirm attendance and pay the ₹300 per-team fee." }, { title: "Colloquium day", date: "Oct 17, 2026 · 9 AM–5 PM", description: "Present at SLRTCE Campus, Mira Road, Mumbai." }] },
-  { slug: "ipl-innovation-pitch-league-2026", title: "IPL – Innovation Pitch League", type: "Hackathon", tag: "Innovation / Talent", description: "A two-day IPL-inspired experience combining placements, an auction, team building, and a six-hour innovation hackathon.", date: "Oct 9–10, 2026 · 8 AM", location: "SIES Graduate School of Technology, Nerul", format: "In person", prize: "₹30,000", image: iplPoster.url, imageFit: "contain", organizer: "IET On Campus SIES GST", registrationDeadline: "Before event capacity is filled", eligibility: "Individual participation; shortlisted participants advance from aptitude, GD, and resume review", teamSize: "Individual entry; selected teams have 1 captain, 5 participants, and a mentor", fee: "₹100 per participant", status: "Registration open", registrationUrl: "https://forms.gle/Ku84EXvjiFvU25us9", contacts: [{ name: "Gaurav", phone: "+918850439707" }, { name: "Ovee", phone: "+918850544242" }, { name: "Sudhanshu", phone: "+919325959412" }, { name: "Taazeen", phone: "+918591524096" }], relatedLinks: [{ label: "Event website", url: "https://iet-ipl-2026.vercel.app" }, { label: "Official Event Page", url: "https://unstop.com/competitions/ipl-innovation-pitch-league-iet-on-campus-sies-graduate-school-of-technology-navi-mumbai-maharashtra-1758032" }], overview: "IET On Campus SIES GST presents a two-day, IPL-inspired mega event with a mock placement experience, internship opportunities, talent auction, leadership and team-building activities, food, and a six-hour hackathon. The top eight performers become captains, while the next 40 shortlisted participants enter the auction to form eight teams and solve real-world industry problems.", schedule: [{ title: "Aptitude and group discussion", date: "Oct 9, 2026", description: "Participants are assessed through aptitude, group discussion, and resume review." }, { title: "Captain selection and talent auction", date: "Oct 9, 2026", description: "The top eight become captains and 40 shortlisted participants enter the IPL-style auction." }, { title: "Innovation Challenge", date: "Oct 10, 2026", description: "Eight formed teams compete in a six-hour hackathon on real-world industry problems." }, { title: "Final pitch and awards", date: "Oct 10, 2026", description: "Teams pitch their solutions for ₹15,000, ₹10,000, and ₹5,000 prizes." }] },
-  { slug: "elevate-1-0-2026", title: "ELEVATE 1.0", type: "Hackathon", tag: "National / 24 Hours", description: "A national-level 24-hour hackathon where teams turn real-world challenges into working technology solutions.", date: "Oct 10–11, 2026", location: "Dwarkadas J. Sanghvi College of Engineering, Mumbai", format: "In person", prize: "₹1,00,000+", image: elevatePoster.url, imageFit: "contain", organizer: "DJS NSDC × DJS InfoMatrix", registrationDeadline: "Oct 3, 2026", eligibility: "Builders ready to tackle real-world challenges at a national-level hackathon", teamSize: "Team participation", fee: "See official registration", status: "Registration open", registrationUrl: "https://unstop.com/o/PMU41BH", contacts: [{ name: "Vrindaa Talwar", phone: "+919419253635" }, { name: "Swayam Panchal", phone: "+919833507492" }, { name: "Samarth Bhirud", phone: "+918408917498" }], relatedLinks: [{ label: "Explore ELEVATE 1.0", url: "https://elevate1-0.vercel.app/" }, { label: "Event WhatsApp channel", url: "https://chat.whatsapp.com/IU1yrudPUvg7IBw46i1wkh" }], overview: "ELEVATE 1.0 is a national-level hackathon organised by DJS NSDC and DJS InfoMatrix, with Mumbai Tech Community as Community Partner. Across 24 hours, participants tackle real-world challenges, build working solutions, and compete for a ₹1,00,000+ prize pool along with goodies and surprises.", schedule: [{ title: "Registration deadline", date: "Oct 3, 2026", description: "Complete registration before seats close." }, { title: "Hackathon begins", date: "Oct 10, 2026", description: "Teams start 24 hours of coding, building, and problem-solving." }, { title: "Final demos and awards", date: "Oct 11, 2026", description: "Teams present their solutions and winners are selected." }] },
-  { slug: "hack-in-hills-2026", title: "Hack in Hills ’26", type: "Hackathon", tag: "PPT → Prototype → Manali", description: "Compete online for one of 40 builder spots at a 24+ hour offline hackathon in the mountains of Manali.", date: "Nov 20, 2026", location: "Manali, Himachal Pradesh", format: "Hybrid", prize: "₹50,000 bounty pool", image: hackInHillsPoster.url, imageFit: "contain", organizer: "Web3 India × Builder Base", registrationDeadline: "Oct 5, 2026", eligibility: "Open registration; only 40 builders advance to the offline finale", teamSize: "See official registration", fee: "Free", status: "Registration open", registrationUrl: "https://unstop.com/o/dRs01iP/?ref=punmZRNS", overview: "Hack in Hills ’26 takes builders from PPT to prototype and then to Manali. From more than 7,000 registrations and 190,000+ reach, only 40 builders will qualify for the 24+ hour offline finale in the mountains, competing for a ₹50,000 bounty pool. Registration is completely free.", schedule: [{ title: "Registration closes", date: "Oct 5, 2026", description: "Submit through the official registration page." }, { title: "PPT and prototype selection", date: "Before Nov 20, 2026", description: "Entries progress from idea presentation to prototype review as 40 finalists are selected." }, { title: "Offline mountain sprint", date: "Nov 20, 2026", description: "The selected 40 builders compete in a 24+ hour offline hackathon in Manali." }] },
-  { slug: "unicorn-ai-gpu-pre-summit", title: "UNICORN × AI × GPU Pre Summit", type: "Networking", tag: "GPU / Datacentre", description: "A focused Mumbai connect for GPU and datacentre leaders.", date: "Oct 15, 2026 · 4–6 PM", location: "Earth Cafe @ BKC, Bandra East, Mumbai", format: "In person", image: unicornSummitPoster.url, imageFit: "contain", organizer: "GPU.NET", registrationDeadline: "Until capacity is reached", eligibility: "GPU, AI infrastructure, and datacentre leaders and professionals", teamSize: "Individual registration", fee: "See official registration", status: "Registration open", registrationUrl: "https://luma.com/d1f99fgo", overview: "GPU.NET presents the UNICORN × AI × GPU Pre Summit in Mumbai, bringing GPU and datacentre leaders together for an evening of focused conversation and connections at Earth Cafe in BKC.", schedule: [{ title: "Registration", date: "Open now", description: "Reserve a place through the official event page while capacity remains." }, { title: "Leaders connect", date: "Oct 15, 2026 · 4–6 PM", description: "Meet GPU and datacentre leaders at Earth Cafe @ BKC in Mumbai." }] },
-  { slug: "structuring-the-ai-way", title: "Structuring the AI Way", type: "Meetup", tag: "AI / Financial Workflows", description: "See how AI transforms complex structuring workflows into fast, reliable execution.", date: "Oct 24, 2026 · 10 AM–1 PM", location: "Mumbai, Maharashtra · Exact address after approval", format: "In person", image: structuringAiPoster.url, imageFit: "contain", organizer: "Kannan · OpenArrow", registrationDeadline: "Until limited capacity is reached", eligibility: "Wealth managers, bank relationship managers, structured product issuers, and NBFC and SME treasury desks", teamSize: "Individual registration", fee: "See official registration", status: "Approval required", registrationUrl: "https://luma.com/c6v1qjx0", registrationLabel: "Request to join", registrationNote: "Registration is reviewed by the host. Approved attendees receive the exact Mumbai address.", overview: "Join an exclusive OpenArrow walkthrough showing how intelligent automation can reduce manual term-sheet friction, accelerate pricing workflows, and improve desk efficiency. The session covers automated term-sheet generation, risk modelling, seamless desk execution, a live demonstration, and direct Q&A with the OpenArrow team. Attendees receive two weeks of complimentary trial access after the event.", schedule: [{ title: "Request approval", date: "Open now", description: "Submit your registration for host review; space is intentionally limited." }, { title: "Live walkthrough", date: "Oct 24, 2026 · 10 AM", description: "See AI-driven structuring, term-sheet generation, risk modelling, and desk execution in practice." }, { title: "Q&A session", date: "Oct 24, 2026", description: "Discuss custom integrations and deployment directly with the OpenArrow team." }] },
-  { slug: "ai-at-work-copilot-apps-agents", title: "AI at Work: Copilot, Apps & Agents", type: "Meetup", tag: "AI-Native Work", description: "A closed-door Mumbai session with real demonstrations and candid discussion about AI at work.", date: "Oct 24, 2026 · 11 AM–3 PM", location: "Mumbai, Maharashtra · Address shared with attendees", format: "In person", image: aiAtWorkPoster.url, imageFit: "contain", organizer: "Mumbai Techy", registrationDeadline: "Event full · Waitlist available", eligibility: "Operators, builders, and decision-makers interested in practical AI adoption", teamSize: "Individual registration", fee: "See official registration", status: "Event full", registrationUrl: "https://luma.com/gbzxsgj4", registrationLabel: "Join waitlist", registrationNote: "The event is currently full. Join the waitlist to be notified if a place becomes available.", overview: "AI at Work is an exclusive, limited-seat session for operators, builders, and decision-makers who want practical insight instead of generic keynotes. Expect a focused room, real demonstrations, and candid conversation about how Copilot, Apps, and Agents are already changing day-to-day work.", schedule: [{ title: "Join the waitlist", date: "Available now", description: "Add your name to be notified if more places become available." }, { title: "AI at Work session", date: "Oct 24, 2026 · 11 AM–3 PM", description: "Explore practical uses of Copilot, Apps, and Agents through live demonstrations and discussion." }] },
-  { slug: "enterprise-ai-summit-mumbai-2026", title: "Enterprise AI Summit Mumbai 2026", type: "Conference", tag: "Enterprise AI / India Stack", description: "A full-day summit on scaling autonomous systems across India’s digital public infrastructure.", date: "Dec 5, 2026 · 9 AM–6 PM", location: "Jio World Convention Centre, BKC, Mumbai", format: "In person", image: enterpriseAiSummitPoster.url, imageFit: "contain", organizer: "Stage-X", registrationDeadline: "Until capacity is reached", eligibility: "Enterprise leaders, technology decision-makers, builders, and AI practitioners", teamSize: "Individual registration", fee: "See official registration", status: "Registration open", registrationUrl: "https://luma.com/y2o1cuts", overview: "Stage-X Enterprise AI Summit Mumbai brings together people, ideas, and real-world impact around India Stack, scale, and digital public infrastructure. The Mumbai gathering focuses on deploying enterprise AI and scaling autonomous systems, as part of the Nine Cities, One Mission global summit network.", schedule: [{ title: "Registration", date: "Open now", description: "Register through the official event page while places remain." }, { title: "Enterprise AI Summit", date: "Dec 5, 2026 · 9 AM–6 PM", description: "A full day at Jio World Convention Centre focused on enterprise AI at scale." }] },
-  { slug: "clinical-ai-summit-2026", title: "Clinical AI Summit 2026", type: "Conference", tag: "Healthcare AI / Clinical Practice", description: "A clinician-led summit on practical AI deployment, governance, diagnostics, and patient care.", date: "Oct 11, 2026 · 8:30–9:30 PM", location: "ITC Grand Central, Parel, Mumbai", format: "In person", image: clinicalAiPoster.url, imageFit: "contain", organizer: "TIS-H", registrationDeadline: "Sold out", eligibility: "Healthcare professionals, researchers, clinicians, and technology innovators", teamSize: "Individual registration", fee: "₹4,500", status: "Sold out", registrationUrl: "https://luma.com/3fs83hz8", registrationNote: "This event is sold out and no longer taking registrations.", relatedLinks: [{ label: "Event website", url: "https://tish-summit.com" }], overview: "Clinical AI Summit 2026 is a focused gathering exploring how artificial intelligence is reshaping clinical practice, diagnostics, and patient care. Healthcare professionals, researchers, and technology innovators will discuss real-world applications ranging from early disease detection to personalised treatment planning, alongside responsible deployment, governance, and scale.", schedule: [{ title: "Registration", date: "Sold out", description: "Registration has closed because the summit has reached capacity." }, { title: "Clinical AI Summit", date: "Oct 11, 2026 · 8:30–9:30 PM", description: "Join the clinician-led session at ITC Grand Central in Parel, Mumbai." }] },
-  { slug: "durable-devops-tech-meetup", title: "Durable DevOps Tech Meetup", type: "Meetup", tag: "DevOps / AI / Tech Careers", description: "A practical Mumbai meetup on DevOps, AI, careers, community, and resilient applications.", date: "Oct 17, 2026 · 6–9 PM", location: "Bhim Nagar, Andheri East, Mumbai", format: "In person", image: durableDevOpsPoster.url, imageFit: "contain", organizer: "Merge & Rise × Temporal Community", registrationDeadline: "Until capacity is reached", eligibility: "Beginners, early-career engineers, experienced professionals, and career switchers", teamSize: "Individual registration", fee: "See official registration", status: "Registration open", registrationUrl: "https://luma.com/uvc7v42g", overview: "Merge & Rise and Temporal present a practical tech meetup covering DevOps, AI, careers, and changes across the technology landscape. The programme includes a women’s career panel, a session on building a DevOps career in the AI era, a raffle giveaway, food, and networking.", schedule: [{ title: "Doors open", date: "Oct 17, 2026 · 6 PM", description: "Arrive in Andheri, meet the community, and settle in before the sessions." }, { title: "Career and DevOps sessions", date: "Oct 17, 2026", description: "Hear the women’s career panel and explore DevOps careers in the era of AI." }, { title: "Food and networking", date: "Until 9 PM", description: "Connect with attendees, exchange ideas, and join the raffle giveaway." }] },
-  { slug: "ai-automation-human-touch", title: "AI, Automation & the Human Touch", type: "Meetup", tag: "AI / Customer Relationships", description: "An interactive Thane meetup about balancing intelligent automation with genuine human connection.", date: "Oct 31, 2026 · 1–3 PM", location: "Ricci's caffè, Hiranandani Estate, Thane", format: "In person", image: allInOnePoster.url, imageFit: "contain", organizer: "Allin1Place Mumbai Chapter", registrationDeadline: "Until capacity is reached", eligibility: "Professionals and builders interested in AI, automation, and customer relationships", teamSize: "Individual registration", fee: "Free · Pay only for what you order", status: "Approval required", registrationUrl: "https://luma.com/rt22ydyb", registrationLabel: "Request to join", registrationNote: "Registration is subject to host approval. The meetup is free; attendees pay only for what they order.", overview: "The Allin1Place Mumbai Mini-Meetup explores where AI can help teams work smarter, what should be automated, and where human connection still matters. Expect practical conversations, real-world use cases, shared experiences, and interactive activities designed to create useful new connections.", schedule: [{ title: "Request approval", date: "Open now", description: "Submit your request to join the free Mumbai mini-meetup." }, { title: "Activities and discussion", date: "Oct 31, 2026 · 1 PM", description: "Explore automation, human-centred customer relationships, and real-world AI use cases." }, { title: "Connections", date: "Until 3 PM", description: "Meet the Allin1Place Mumbai community and continue the conversation." }] },
+  { slug: "inspire-colloquium-2026", title: "INSPIRE Colloquium 2026", type: "Hackathon", tag: "Research / Innovation", description: "Present your research or idea at IEEE SLRTCE's research and idea colloquium.", date: "Oct 17, 2026 · 9 AM–5 PM", location: "SLRTCE Campus, Mira Road, Mumbai", format: "In person", image: inspirePoster.url, imagePosition: "center top", imageFit: "contain", organizer: "IEEE SLRTCE · Mumbai Tech Community", registrationDeadline: "Oct 11, 2026", eligibility: "UG & Diploma: teams of 2–4 · PG & PhD: individual · Inter-college participants welcome", teamSize: "2–4 members (UG & Diploma) or individual (PG & PhD)", fee: "₹300 per team for shortlisted teams", status: "Past event", registrationUrl: "https://inspire-colloquium.vercel.app/", contacts: [{ name: "Krishna Dubey", phone: "+919321599039" }, { name: "Shweta Mishra", phone: "+919768122297" }, { name: "Meet Shah", phone: "+919987594531" }], overview: "INSPIRE 2026 is a research and idea colloquium by IEEE SLRTCE, presented with Mumbai Tech Community as Community Partner. Interdisciplinary next-generation scientific ideas, research, and exploration — aligned with the UN Sustainable Development Goals.", schedule: [{ title: "Registration opens", date: "Sep 21, 2026", description: "Register on the official INSPIRE Colloquium website." }, { title: "Colloquium day", date: "Oct 17, 2026 · 9 AM–5 PM", description: "Present at SLRTCE Campus, Mira Road, Mumbai." }] },
+  { slug: "ipl-innovation-pitch-league-2026", title: "IPL – Innovation Pitch League", type: "Hackathon", tag: "Innovation / Talent", description: "A two-day IPL-inspired experience combining placements, an auction, team building, and a six-hour innovation hackathon.", date: "Oct 9–10, 2026 · 8 AM", location: "SIES Graduate School of Technology, Nerul", format: "In person", prize: "₹30,000", image: iplPoster.url, imageFit: "contain", organizer: "IET On Campus SIES GST", registrationDeadline: "Concluded", eligibility: "Individual participation; shortlisted participants advance from aptitude, GD, and resume review", teamSize: "Individual entry; selected teams have 1 captain, 5 participants, and a mentor", fee: "₹100 per participant", status: "Past event", registrationUrl: "https://forms.gle/Ku84EXvjiFvU25us9", contacts: [{ name: "Gaurav", phone: "+918850439707" }, { name: "Ovee", phone: "+918850544242" }, { name: "Sudhanshu", phone: "+919325959412" }, { name: "Taazeen", phone: "+918591524096" }], relatedLinks: [{ label: "Event website", url: "https://iet-ipl-2026.vercel.app" }], overview: "IET On Campus SIES GST presented a two-day, IPL-inspired mega event with a mock placement experience, internship opportunities, talent auction, leadership and team-building activities, food, and a six-hour hackathon.", schedule: [{ title: "Innovation Challenge", date: "Oct 10, 2026", description: "Teams competed in a six-hour hackathon on real-world industry problems." }] },
+  { slug: "elevate-1-0-2026", title: "ELEVATE 1.0", type: "Hackathon", tag: "National / 24 Hours", description: "A national-level 24-hour hackathon where teams turn real-world challenges into working technology solutions.", date: "Oct 10–11, 2026", location: "Dwarkadas J. Sanghvi College of Engineering, Mumbai", format: "In person", prize: "₹1,00,000+", image: elevatePoster.url, imageFit: "contain", organizer: "DJS NSDC × DJS InfoMatrix", registrationDeadline: "Oct 3, 2026", eligibility: "Builders ready to tackle real-world challenges at a national-level hackathon", teamSize: "Team participation", fee: "See official registration", status: "Past event", registrationUrl: "https://unstop.com/o/PMU41BH", contacts: [{ name: "Vrindaa Talwar", phone: "+919419253635" }, { name: "Swayam Panchal", phone: "+919833507492" }, { name: "Samarth Bhirud", phone: "+918408917498" }], relatedLinks: [{ label: "Explore ELEVATE 1.0", url: "https://elevate1-0.vercel.app/" }], overview: "ELEVATE 1.0 was a national-level hackathon organised by DJS NSDC and DJS InfoMatrix, with Mumbai Tech Community as Community Partner. Across 24 hours, participants tackled real-world challenges and built working solutions.", schedule: [{ title: "Hackathon begins", date: "Oct 10, 2026", description: "Teams started 24 hours of coding, building, and problem-solving." }, { title: "Final demos and awards", date: "Oct 11, 2026", description: "Teams presented solutions and winners were awarded." }] },
+  { slug: "unicorn-ai-gpu-pre-summit", title: "UNICORN × AI × GPU Pre Summit", type: "Networking", tag: "GPU / Datacentre", description: "A focused Mumbai connect for GPU and datacentre leaders.", date: "Oct 15, 2026 · 4–6 PM", location: "Earth Cafe @ BKC, Bandra East, Mumbai", format: "In person", image: unicornSummitPoster.url, imageFit: "contain", organizer: "GPU.NET", registrationDeadline: "Concluded", eligibility: "GPU, AI infrastructure, and datacentre leaders and professionals", teamSize: "Individual registration", fee: "See official registration", status: "Past event", registrationUrl: "https://luma.com/d1f99fgo", overview: "GPU.NET presented the UNICORN × AI × GPU Pre Summit in Mumbai, bringing GPU and datacentre leaders together for an evening of focused conversation and connections at Earth Cafe in BKC.", schedule: [{ title: "Leaders connect", date: "Oct 15, 2026 · 4–6 PM", description: "Met GPU and datacentre leaders at Earth Cafe @ BKC in Mumbai." }] },
+  { slug: "structuring-the-ai-way", title: "Structuring the AI Way", type: "Meetup", tag: "AI / Financial Workflows", description: "See how AI transforms complex structuring workflows into fast, reliable execution.", date: "Oct 24, 2026 · 10 AM–1 PM", location: "Mumbai, Maharashtra", format: "In person", image: structuringAiPoster.url, imageFit: "contain", organizer: "Kannan · OpenArrow", registrationDeadline: "Concluded", eligibility: "Wealth managers, bank relationship managers, structured product issuers", teamSize: "Individual registration", fee: "See official registration", status: "Past event", registrationUrl: "https://luma.com/c6v1qjx0", registrationLabel: "Request to join", overview: "An exclusive OpenArrow walkthrough showing how intelligent automation can reduce manual term-sheet friction, accelerate pricing workflows, and improve desk efficiency.", schedule: [{ title: "Live walkthrough", date: "Oct 24, 2026 · 10 AM", description: "AI-driven structuring, term-sheet generation, risk modelling, and desk execution in practice." }] },
+  { slug: "ai-at-work-copilot-apps-agents", title: "AI at Work: Copilot, Apps & Agents", type: "Meetup", tag: "AI-Native Work", description: "A closed-door Mumbai session with real demonstrations and candid discussion about AI at work.", date: "Oct 24, 2026 · 11 AM–3 PM", location: "Mumbai, Maharashtra", format: "In person", image: aiAtWorkPoster.url, imageFit: "contain", organizer: "Mumbai Techy", registrationDeadline: "Concluded", eligibility: "Operators, builders, and decision-makers interested in practical AI adoption", teamSize: "Individual registration", fee: "See official registration", status: "Past event", registrationUrl: "https://luma.com/gbzxsgj4", registrationLabel: "Join waitlist", overview: "AI at Work was an exclusive, limited-seat session for operators, builders, and decision-makers exploring practical AI adoption, live demonstrations, and candid conversation about Copilot, Apps, and Agents.", schedule: [{ title: "AI at Work session", date: "Oct 24, 2026 · 11 AM–3 PM", description: "Explored practical uses of Copilot, Apps, and Agents through live demonstrations." }] },
+  { slug: "clinical-ai-summit-2026", title: "Clinical AI Summit 2026", type: "Conference", tag: "Healthcare AI / Clinical Practice", description: "A clinician-led summit on practical AI deployment, governance, diagnostics, and patient care.", date: "Oct 11, 2026 · 8:30–9:30 PM", location: "ITC Grand Central, Parel, Mumbai", format: "In person", image: clinicalAiPoster.url, imageFit: "contain", organizer: "TIS-H", registrationDeadline: "Concluded", eligibility: "Healthcare professionals, researchers, clinicians, and technology innovators", teamSize: "Individual registration", fee: "₹4,500", status: "Past event", registrationUrl: "https://luma.com/3fs83hz8", registrationNote: "This event has concluded.", relatedLinks: [{ label: "Event website", url: "https://tish-summit.com" }], overview: "Clinical AI Summit 2026 was a focused gathering exploring how artificial intelligence is reshaping clinical practice, diagnostics, and patient care.", schedule: [{ title: "Clinical AI Summit", date: "Oct 11, 2026 · 8:30–9:30 PM", description: "Clinician-led session at ITC Grand Central in Parel, Mumbai." }] },
+  { slug: "durable-devops-tech-meetup", title: "Durable DevOps Tech Meetup", type: "Meetup", tag: "DevOps / AI / Tech Careers", description: "A practical Mumbai meetup on DevOps, AI, careers, community, and resilient applications.", date: "Oct 17, 2026 · 6–9 PM", location: "Bhim Nagar, Andheri East, Mumbai", format: "In person", image: durableDevOpsPoster.url, imageFit: "contain", organizer: "Merge & Rise × Temporal Community", registrationDeadline: "Concluded", eligibility: "Engineers and professionals across DevOps and AI", teamSize: "Individual registration", fee: "See official registration", status: "Past event", registrationUrl: "https://luma.com/uvc7v42g", overview: "Merge & Rise and Temporal presented a practical tech meetup covering DevOps, AI, careers, and resilient applications in Andheri East, Mumbai.", schedule: [{ title: "Career and DevOps sessions", date: "Oct 17, 2026", description: "Women’s career panel and DevOps career discussion in the era of AI." }] },
+  { slug: "ai-automation-human-touch", title: "AI, Automation & the Human Touch", type: "Meetup", tag: "AI / Customer Relationships", description: "An interactive Thane meetup about balancing intelligent automation with genuine human connection.", date: "Oct 31, 2026 · 1–3 PM", location: "Ricci's caffè, Hiranandani Estate, Thane", format: "In person", image: allInOnePoster.url, imageFit: "contain", organizer: "Allin1Place Mumbai Chapter", registrationDeadline: "Concluded", eligibility: "Professionals and builders interested in AI and customer relationships", teamSize: "Individual registration", fee: "Free", status: "Past event", registrationUrl: "https://luma.com/rt22ydyb", registrationLabel: "Request to join", overview: "The Allin1Place Mumbai Mini-Meetup explored where AI can help teams work smarter, what should be automated, and where human connection still matters.", schedule: [{ title: "Activities and discussion", date: "Oct 31, 2026 · 1 PM", description: "Explored automation, human-centred customer relationships, and real-world AI use cases." }] },
 ];
 
 export function getOpportunity(slug: string): Opportunity | undefined {

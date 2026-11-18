@@ -661,8 +661,8 @@ function OpportunityDetails() {
                 <span className="rounded-full border border-border bg-background px-3 py-1 text-xs font-semibold">
                   {item.type}
                 </span>
-                <span className="rounded-full bg-neon px-3 py-1 text-xs font-semibold text-primary-foreground">
-                  {item.status}
+                <span className={`rounded-full px-3 py-1 text-xs font-semibold ${item.status === "Past event" ? "border border-white/10 bg-zinc-800 text-zinc-300" : "bg-neon text-primary-foreground"}`}>
+                  {item.status === "Past event" ? "Past event" : item.status}
                 </span>
                 {(item as any).isHosted && (
                   <span className="inline-flex items-center gap-1 rounded-full border border-neon/50 bg-black/80 px-2.5 py-1 text-xs font-semibold text-neon backdrop-blur">
@@ -1212,7 +1212,9 @@ function OpportunityDetails() {
                 </div>
 
                 <h2 className="mt-2 text-lg sm:text-xl font-bold">
-                  {item.status === "Sold out"
+                  {item.status === "Past event"
+                    ? "Event Concluded"
+                    : item.status === "Sold out"
                     ? "Sold out"
                     : item.status === "Event full"
                     ? "Event full"
@@ -1365,6 +1367,16 @@ function OpportunityDetails() {
                         <ExternalLink className="size-3.5 opacity-80" />
                       </a>
                     )}
+                  </div>
+                ) : item.status === "Past event" ? (
+                  <div className="mt-5 rounded-2xl border border-white/10 bg-card p-4 text-center">
+                    <p className="text-xs text-muted-foreground">This event concluded on {item.date}. Registrations have closed.</p>
+                    <Link
+                      to="/events"
+                      className="mt-3 inline-flex items-center justify-center gap-1.5 rounded-full border border-neon/50 bg-neon/10 px-4 py-2 text-xs font-semibold text-neon hover:bg-neon/20 transition"
+                    >
+                      Browse Upcoming Events →
+                    </Link>
                   </div>
                 ) : (
                   <div className="mt-5 space-y-3">

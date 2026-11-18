@@ -10,14 +10,16 @@ import { useEffect, useState } from "react";
 
 export const PRESET_EVENT_BANNERS = [
   { id: "goa", title: "Goa Buildathon '27", image: "/events/goa-buildathon-2027.jpg" },
+  { id: "beyond-mumbai", title: "Beyond 9to5 Mumbai", image: "/events/beyond-9to5-mumbai.jpg" },
+  { id: "beyond-bengaluru", title: "Beyond 9to5 Bengaluru", image: "/events/beyond-9to5-bengaluru.jpg" },
+  { id: "semiconductor", title: "Semiconductor Deep Dive", image: "/events/semiconductor-deep-dive-hackerfab.jpg" },
+  { id: "mumbai-agents", title: "Mumbai AI & Agents Meet", image: "/events/mumbai-community-year-end-meet.jpg" },
+  { id: "lovable", title: "Lovable Builders Bangalore", image: "/events/lovable-builders-bangalore.jpg" },
+  { id: "art-club", title: "The Big Aaaaart Club Delhi", image: "/events/the-big-aaaart-club-delhi.jpg" },
+  { id: "paranormal", title: "Paranormal Philosophy Meetup", image: "/events/paranormal-real-or-not-versova.jpg" },
   { id: "luminar", title: "Luminar Creators Award Gala", image: "/events/luminar-creators-award-2027.jpg" },
   { id: "cyber", title: "Cyber & Security Matrix", image: evCyber },
   { id: "code", title: "Code & Hack Sprint", image: evCool },
-  { id: "national", title: "National Arena / Web3", image: vecnaVersePoster.url },
-  { id: "pitch", title: "Pitch League & Startup", image: iplPoster.url },
-  { id: "ai", title: "AI & Future of Work", image: aiAtWorkPoster.url },
-  { id: "devops", title: "DevOps & Cloud Tech", image: durableDevOpsPoster.url },
-  { id: "elevate", title: "24h Hackathon Arena", image: elevatePoster.url },
 ];
 
 export type HostedEvent = Opportunity & {

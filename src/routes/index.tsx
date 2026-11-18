@@ -209,7 +209,7 @@ function Events() {
   const featured = opportunities.find((item) => item.slug === "goa-buildathon-2027") ?? opportunities[0];
   const featuredLuminar = opportunities.find((item) => item.slug === "luminar-creators-award-2027");
   const list = opportunities
-    .filter((item) => matchesHomeFilter(item, f))
+    .filter((item) => item.status !== "Past event" && matchesHomeFilter(item, f))
     .slice(0, 12);
 
   return (
