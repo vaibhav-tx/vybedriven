@@ -178,7 +178,10 @@ function ManageEventsPage() {
     }
   };
 
-  // Sync Supabase registrations on mount and listen to store changes
+  // Strictly get only the events hosted by this authenticated user
+  const myEvents = useHostedEvents(user?.id, user?.email);
+
+  // Sync Supabase registrations for managed events on mount and listen to store changes
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -186,12 +189,25 @@ function ManageEventsPage() {
     window.addEventListener(EVENT_CHANGE_SIGNAL, onSync);
     window.addEventListener("storage", onSync);
 
+    const targetSlug = selectedEventSlug || (isGoaOrganizer ? "goa-buildathon-2027" : myEvents[0]?.slug);
+    if (!targetSlug && myEvents.length === 0) {
+      return () => {
+        window.removeEventListener(EVENT_CHANGE_SIGNAL, onSync);
+        window.removeEventListener("storage", onSync);
+      };
+    }
+
     let active = true;
     import("@/integrations/supabase/client")
       .then(({ supabase }) => {
-        supabase
-          .from("registrations" as any)
-          .select("*")
+        let query = supabase.from("registrations" as any).select("*");
+        if (targetSlug) {
+          query = query.eq("opportunity_slug", targetSlug);
+        } else if (myEvents.length > 0) {
+          query = query.in("opportunity_slug", myEvents.map((e) => e.slug));
+        }
+
+        query
           .then(({ data, error }) => {
             if (!active || error || !data || !Array.isArray(data)) return;
             mergeRemoteRegistrations(data);
@@ -206,10 +222,7 @@ function ManageEventsPage() {
       window.removeEventListener(EVENT_CHANGE_SIGNAL, onSync);
       window.removeEventListener("storage", onSync);
     };
-  }, []);
-
-  // Strictly get only the events hosted by this authenticated user
-  const myEvents = useHostedEvents(user?.id, user?.email);
+  }, [selectedEventSlug, isGoaOrganizer, myEvents.length]);
 
   // Selected event for applicants view (must be owned by the current organizer)
   const currentEvent = useMemo(() => {

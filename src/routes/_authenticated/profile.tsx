@@ -94,16 +94,56 @@ function ProfilePage() {
     window.addEventListener(EVENT_CHANGE_SIGNAL, onSync);
     window.addEventListener("storage", onSync);
 
-    // Sync cloud registrations from Supabase
-    supabase
-      .from("registrations" as any)
-      .select("*")
-      .then(({ data, error }) => {
-        if (!error && data && Array.isArray(data)) {
-          mergeRemoteRegistrations(data);
+    // Sync only this user's cloud registrations from Supabase
+    const userEmail = user.email?.trim().toLowerCase();
+    const queries: Promise<any>[] = [];
+
+    if (user.id && userEmail) {
+      queries.push(
+        supabase
+          .from("registrations" as any)
+          .select("*")
+          .or(`user_id.eq.${user.id},email.ilike.${userEmail}`)
+      );
+    } else if (user.id) {
+      queries.push(
+        supabase
+          .from("registrations" as any)
+          .select("*")
+          .eq("user_id", user.id)
+      );
+    } else if (userEmail) {
+      queries.push(
+        supabase
+          .from("registrations" as any)
+          .select("*")
+          .ilike("email", userEmail)
+      );
+    }
+
+    if (userEmail) {
+      queries.push(
+        supabase
+          .from("registrations" as any)
+          .select("*")
+          .contains("teammates", [{ email: userEmail }])
+      );
+    }
+
+    Promise.all(queries)
+      .then((results) => {
+        const rows: any[] = [];
+        for (const res of results) {
+          if (!res.error && Array.isArray(res.data)) {
+            rows.push(...res.data);
+          }
+        }
+        if (rows.length > 0) {
+          mergeRemoteRegistrations(rows);
           setSyncTick((t) => t + 1);
         }
-      });
+      })
+      .catch(() => {});
 
     return () => {
       window.removeEventListener(EVENT_CHANGE_SIGNAL, onSync);

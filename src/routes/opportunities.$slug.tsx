@@ -44,7 +44,7 @@ import { createBuilderAccount, signInBuilderAccount } from "@/lib/builder-auth";
 import { EventRegistrationModal } from "@/components/EventRegistrationModal";
 import { TeamManagementModal } from "@/components/TeamManagementModal";
 import { IdeaSubmissionModal } from "@/components/IdeaSubmissionModal";
-import { isUserRegistered, getRegistrationCount, useEventRegistrations, isEventOrganizer, type EventRegistration } from "@/data/events-store";
+import { isUserRegistered, getRegistrationCount, useEventRegistrations, isEventOrganizer, getUserRegistrations, mergeRemoteRegistrations, type EventRegistration } from "@/data/events-store";
 import { formatExternalUrl, isInvalidPptLink } from "@/lib/utils";
 
 type OpportunitySearch = {
@@ -575,13 +575,72 @@ function OpportunityDetails() {
     }
   }, [search.autoredirect, user, item.registrationUrl]);
 
-  const registrations = useEventRegistrations(item.slug);
+  const isHost = isEventOrganizer(item, user);
+  const registrations = useEventRegistrations(item.slug, { enabled: isHost });
   const regCount = registrations.length;
 
   const userIdentifier = user?.email || user?.id;
 
+  // For non-hosts, load only the current user's registration for this event to avoid downloading full table
+  useEffect(() => {
+    if (!user || isHost) return;
+    const userEmail = user.email?.trim().toLowerCase();
+    if (!user.id && !userEmail) return;
+
+    let active = true;
+    import("@/integrations/supabase/client")
+      .then(({ supabase }) => {
+        const queries: Promise<any>[] = [];
+        let directQuery = supabase
+          .from("registrations" as any)
+          .select("*")
+          .eq("opportunity_slug", item.slug);
+
+        if (user.id && userEmail) {
+          directQuery = directQuery.or(`user_id.eq.${user.id},email.ilike.${userEmail}`);
+        } else if (user.id) {
+          directQuery = directQuery.eq("user_id", user.id);
+        } else if (userEmail) {
+          directQuery = directQuery.ilike("email", userEmail);
+        }
+        queries.push(directQuery);
+
+        if (userEmail) {
+          queries.push(
+            supabase
+              .from("registrations" as any)
+              .select("*")
+              .eq("opportunity_slug", item.slug)
+              .contains("teammates", [{ email: userEmail }])
+          );
+        }
+
+        Promise.all(queries)
+          .then((results) => {
+            if (!active) return;
+            const rows: any[] = [];
+            for (const r of results) {
+              if (!r.error && Array.isArray(r.data)) rows.push(...r.data);
+            }
+            if (rows.length > 0) {
+              mergeRemoteRegistrations(rows);
+            }
+          })
+          .catch(() => {});
+      })
+      .catch(() => {});
+
+    return () => {
+      active = false;
+    };
+  }, [user?.id, user?.email, item.slug, isHost]);
+
   const userRegRecord = useMemo(() => {
     if (!user) return null;
+    const localUserRegs = getUserRegistrations(user.id, user.email);
+    const matched = localUserRegs.find((r) => r.opportunitySlug === item.slug);
+    if (matched) return matched;
+
     return (
       registrations.find(
         (r) =>
@@ -598,10 +657,9 @@ function OpportunityDetails() {
             ))
       ) || null
     );
-  }, [registrations, user]);
+  }, [registrations, user, item.slug]);
 
   const isRegistered = Boolean(userRegRecord) || isUserRegistered(item.slug, userIdentifier);
-  const isHost = isEventOrganizer(item, user);
 
   const externalPlatform = useMemo(() => {
     if (!item.registrationUrl) return null;

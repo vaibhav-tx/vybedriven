@@ -1449,8 +1449,9 @@ export function useHostedEvents(userId?: string, userEmail?: string | null) {
 }
 
 // React Hook: live synced registrations for an event with cloud Supabase polling & realtime focus
-export function useEventRegistrations(slug: string) {
+export function useEventRegistrations(slug: string, options?: { enabled?: boolean }) {
   const [list, setList] = useState<EventRegistration[]>(() => getRegistrationsBySlug(slug));
+  const isEnabled = options?.enabled ?? true;
 
   useEffect(() => {
     let active = true;
@@ -1479,6 +1480,7 @@ export function useEventRegistrations(slug: string) {
 
     let lastFetch = 0;
     const fetchCloud = () => {
+      if (!isEnabled) return;
       const now = Date.now();
       if (now - lastFetch < 30000) return;
       lastFetch = now;
@@ -1498,16 +1500,20 @@ export function useEventRegistrations(slug: string) {
         .catch(() => {});
     };
 
-    fetchCloud();
-    window.addEventListener("focus", fetchCloud);
+    if (isEnabled) {
+      fetchCloud();
+      window.addEventListener("focus", fetchCloud);
+    }
 
     return () => {
       active = false;
-      window.removeEventListener("focus", fetchCloud);
+      if (isEnabled) {
+        window.removeEventListener("focus", fetchCloud);
+      }
       window.removeEventListener(EVENT_CHANGE_SIGNAL, update);
       window.removeEventListener("storage", update);
     };
-  }, [slug]);
+  }, [slug, isEnabled]);
 
   return list;
 }
