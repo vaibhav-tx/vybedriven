@@ -14,3 +14,15 @@ export function formatExternalUrl(url?: string | null): string {
   }
   return `https://${trimmed}`;
 }
+
+export function isInvalidPptLink(url?: string | null): boolean {
+  if (!url) return false;
+  const lower = url.toLowerCase().trim();
+  return (
+    lower.includes("vybedriven.in") ||
+    lower.includes("joincode=") ||
+    lower.includes("jointeam=") ||
+    lower.includes("localhost") ||
+    lower === "#"
+  );
+}

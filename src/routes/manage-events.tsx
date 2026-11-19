@@ -22,6 +22,7 @@ import {
   Building2,
   Ticket,
   X,
+  AlertTriangle,
 } from "lucide-react";
 import { Navbar, Footer } from "@/components/SiteChrome";
 import { Button } from "@/components/ui/button";
@@ -49,10 +50,11 @@ import {
   GOA_BUILDATHON_ORGANIZER_EMAILS,
   ADMIN_EMAILS,
   findOpportunity,
+  saveIdeaSubmission,
   type EventRegistration,
   type HostedEvent,
 } from "@/data/events-store";
-import { formatExternalUrl } from "@/lib/utils";
+import { formatExternalUrl, isInvalidPptLink } from "@/lib/utils";
 import { toast } from "sonner";
 
 type ManageSearch = {
@@ -123,6 +125,58 @@ function ManageEventsPage() {
   const [syncTick, setSyncTick] = useState(0);
   const [inspectingApplicant, setInspectingApplicant] = useState<EventRegistration | null>(null);
   const [managingTeamReg, setManagingTeamReg] = useState<EventRegistration | null>(null);
+  const [editingPptReg, setEditingPptReg] = useState<EventRegistration | null>(null);
+  const [newPptUrl, setNewPptUrl] = useState("");
+  const [savingPpt, setSavingPpt] = useState(false);
+
+  useEffect(() => {
+    if (editingPptReg) {
+      setNewPptUrl(
+        isInvalidPptLink(editingPptReg.submission?.pptUrl)
+          ? ""
+          : editingPptReg.submission?.pptUrl || ""
+      );
+    }
+  }, [editingPptReg]);
+
+  const handleSavePpt = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingPptReg) return;
+    const trimmed = newPptUrl.trim();
+    if (!trimmed) {
+      toast.error("Please enter a valid presentation URL.");
+      return;
+    }
+    if (isInvalidPptLink(trimmed)) {
+      toast.error(
+        "Invalid Link: Please enter a Google Drive, Canva, or Slides link, not a team join code."
+      );
+      return;
+    }
+
+    try {
+      setSavingPpt(true);
+      const finalUrl = formatExternalUrl(trimmed);
+      saveIdeaSubmission(editingPptReg.id, {
+        projectTitle:
+          editingPptReg.submission?.projectTitle ||
+          editingPptReg.projectIdea ||
+          "Project Presentation",
+        track: editingPptReg.submission?.track || "General",
+        summary: editingPptReg.submission?.summary || "",
+        pptUrl: finalUrl,
+        demoUrl: editingPptReg.submission?.demoUrl,
+        submittedBy: user?.email || "Organizer Update",
+      });
+      toast.success("✅ Presentation deck link updated successfully!");
+      setEditingPptReg(null);
+      setSyncTick((t) => t + 1);
+    } catch (err: any) {
+      toast.error(err?.message || "Failed to update presentation link.");
+    } finally {
+      setSavingPpt(false);
+    }
+  };
 
   // Sync Supabase registrations on mount and listen to store changes
   useEffect(() => {
@@ -718,23 +772,70 @@ function ManageEventsPage() {
                           <td className="px-4 py-3.5 text-xs">
                             {applicant.submission?.pptUrl ? (
                               <div className="space-y-1">
-                                <span className="inline-flex items-center gap-1 rounded bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 text-[10px] font-bold text-emerald-400">
-                                  <CheckCircle2 className="size-3" /> Submitted
-                                </span>
-                                <div className="font-semibold text-foreground truncate max-w-[180px]">
-                                  {applicant.submission.projectTitle}
-                                </div>
-                                <div className="text-[10px] text-muted-foreground truncate max-w-[180px]">
-                                  {applicant.submission.track}
-                                </div>
-                                <a
-                                  href={formatExternalUrl(applicant.submission.pptUrl)}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-1 text-[11px] font-bold text-neon hover:underline"
-                                >
-                                  Open Slides ↗
-                                </a>
+                                {isInvalidPptLink(applicant.submission.pptUrl) ? (
+                                  <>
+                                    <span className="inline-flex items-center gap-1 rounded bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 text-[10px] font-bold text-amber-400">
+                                      <AlertTriangle className="size-3" /> Invite Link (No Slides)
+                                    </span>
+                                    <div className="font-semibold text-foreground truncate max-w-[180px]">
+                                      {applicant.submission.projectTitle}
+                                    </div>
+                                    <div className="text-[10px] text-muted-foreground truncate max-w-[180px]">
+                                      {applicant.submission.track}
+                                    </div>
+                                    <div className="flex items-center gap-2 pt-0.5 flex-wrap">
+                                      <button
+                                        type="button"
+                                        onClick={() => setEditingPptReg(applicant)}
+                                        className="text-[11px] font-bold text-amber-400 hover:underline"
+                                      >
+                                        Update Deck ✏️
+                                      </button>
+                                      {applicant.phone && (
+                                        <a
+                                          href={`https://wa.me/91${applicant.phone.replace(/\D/g, "")}?text=${encodeURIComponent(
+                                            `Hi ${applicant.fullName}, regarding your Goa Buildathon submission for "${applicant.submission.projectTitle}": You accidentally submitted your team join code/link instead of your Google Drive/Canva presentation deck. Please send your slide link so we can update it!`
+                                          )}`}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="text-[11px] font-semibold text-emerald-400 hover:underline inline-flex items-center gap-1"
+                                        >
+                                          <MessageCircle className="size-3" /> WhatsApp
+                                        </a>
+                                      )}
+                                    </div>
+                                  </>
+                                ) : (
+                                  <>
+                                    <span className="inline-flex items-center gap-1 rounded bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 text-[10px] font-bold text-emerald-400">
+                                      <CheckCircle2 className="size-3" /> Submitted
+                                    </span>
+                                    <div className="font-semibold text-foreground truncate max-w-[180px]">
+                                      {applicant.submission.projectTitle}
+                                    </div>
+                                    <div className="text-[10px] text-muted-foreground truncate max-w-[180px]">
+                                      {applicant.submission.track}
+                                    </div>
+                                    <div className="flex items-center gap-2 pt-0.5">
+                                      <a
+                                        href={formatExternalUrl(applicant.submission.pptUrl)}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1 text-[11px] font-bold text-neon hover:underline"
+                                      >
+                                        Open Slides ↗
+                                      </a>
+                                      <button
+                                        type="button"
+                                        onClick={() => setEditingPptReg(applicant)}
+                                        className="text-[10px] text-muted-foreground hover:text-foreground"
+                                        title="Edit Slide Link"
+                                      >
+                                        ✏️
+                                      </button>
+                                    </div>
+                                  </>
+                                )}
                               </div>
                             ) : (
                               <span className="rounded bg-surface-2 border border-border px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
@@ -948,6 +1049,83 @@ function ManageEventsPage() {
             setManagingTeamReg(null);
           }}
         />
+
+        {/* Quick Edit Presentation Deck Dialog */}
+        <Dialog open={Boolean(editingPptReg)} onOpenChange={(open) => !open && setEditingPptReg(null)}>
+          <DialogContent className="max-w-md border-border bg-[#070d09] p-5 sm:p-6 text-foreground shadow-2xl">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2 text-base font-extrabold text-foreground">
+                <span className="flex size-7 items-center justify-center rounded-lg bg-neon/15 text-neon">
+                  📑
+                </span>
+                <span>Update Presentation Deck URL</span>
+              </DialogTitle>
+              <DialogDescription className="text-xs text-muted-foreground">
+                Update the Round 1 presentation slide deck for this squad in the official registry.
+              </DialogDescription>
+            </DialogHeader>
+
+            {editingPptReg && (
+              <form onSubmit={handleSavePpt} className="mt-3 space-y-3.5">
+                <div className="rounded-xl border border-border/80 bg-surface-2/60 p-3 text-xs space-y-1">
+                  <div className="flex items-center justify-between font-bold">
+                    <span className="text-foreground">{editingPptReg.teamName || "Solo Squad"}</span>
+                    <span className="text-neon font-mono text-[11px]">{editingPptReg.id}</span>
+                  </div>
+                  <p className="text-muted-foreground text-[11px]">
+                    Leader: {editingPptReg.fullName} ({editingPptReg.email})
+                  </p>
+                  <p className="text-foreground font-semibold text-[11px] pt-1">
+                    Project: {editingPptReg.submission?.projectTitle || "N/A"}
+                  </p>
+                </div>
+
+                {isInvalidPptLink(editingPptReg.submission?.pptUrl) && (
+                  <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 p-2.5 text-xs text-amber-300">
+                    ⚠️ <strong>Notice:</strong> The participant previously pasted their team invite link (<code>{editingPptReg.submission?.pptUrl}</code>) instead of their slides. Enter their actual Google Drive / Canva link below.
+                  </div>
+                )}
+
+                <div>
+                  <label className="block text-xs font-bold text-foreground mb-1">
+                    Presentation Deck (PPT) URL <span className="text-neon">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={newPptUrl}
+                    onChange={(e) => setNewPptUrl(e.target.value)}
+                    placeholder="https://drive.google.com/file/... or https://canva.com/..."
+                    className="w-full rounded-xl border border-border bg-background px-3.5 py-2 text-xs text-foreground placeholder:text-muted-foreground outline-none focus:border-neon focus:ring-1 focus:ring-neon"
+                  />
+                  <p className="mt-1 text-[10px] text-muted-foreground">
+                    Google Drive, Canva, Google Slides, or Pitch presentation link.
+                  </p>
+                </div>
+
+                <div className="flex items-center justify-end gap-2 pt-2 border-t border-border">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setEditingPptReg(null)}
+                    className="rounded-full text-xs"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    size="sm"
+                    disabled={savingPpt}
+                    className="rounded-full bg-neon text-primary-foreground font-bold text-xs shadow-glow hover:brightness-105"
+                  >
+                    {savingPpt ? "Saving..." : "Save Deck URL ✓"}
+                  </Button>
+                </div>
+              </form>
+            )}
+          </DialogContent>
+        </Dialog>
       </main>
 
       <Footer />

@@ -45,7 +45,7 @@ import { EventRegistrationModal } from "@/components/EventRegistrationModal";
 import { TeamManagementModal } from "@/components/TeamManagementModal";
 import { IdeaSubmissionModal } from "@/components/IdeaSubmissionModal";
 import { isUserRegistered, getRegistrationCount, useEventRegistrations, isEventOrganizer, type EventRegistration } from "@/data/events-store";
-import { formatExternalUrl } from "@/lib/utils";
+import { formatExternalUrl, isInvalidPptLink } from "@/lib/utils";
 
 type OpportunitySearch = {
   register?: string;
@@ -1334,14 +1334,20 @@ function OpportunityDetails() {
                               <span className="text-emerald-400 font-bold truncate max-w-[190px]">
                                 ✓ {userRegRecord.submission.projectTitle}
                               </span>
-                              <a
-                                href={formatExternalUrl(userRegRecord.submission.pptUrl)}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-neon hover:underline font-semibold inline-flex items-center gap-1"
-                              >
-                                View Slides ↗
-                              </a>
+                              {!isInvalidPptLink(userRegRecord.submission.pptUrl) ? (
+                                <a
+                                  href={formatExternalUrl(userRegRecord.submission.pptUrl)}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-neon hover:underline font-semibold inline-flex items-center gap-1"
+                                >
+                                  View Slides ↗
+                                </a>
+                              ) : (
+                                <span className="text-amber-400 font-semibold text-[10px]">
+                                  ⚠️ Invalid link (re-submit)
+                                </span>
+                              )}
                             </div>
                           )}
                         </div>

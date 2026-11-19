@@ -25,7 +25,7 @@ import {
   type IdeaSubmission,
 } from "@/data/events-store";
 import { useAuth } from "@/lib/auth";
-import { formatExternalUrl } from "@/lib/utils";
+import { formatExternalUrl, isInvalidPptLink } from "@/lib/utils";
 import { toast } from "sonner";
 
 interface IdeaSubmissionModalProps {
@@ -103,6 +103,10 @@ export function IdeaSubmissionModal({
     }
     if (!trimmedPpt) {
       toast.error("Please provide your Google Drive, Canva, or Slides presentation link.");
+      return;
+    }
+    if (isInvalidPptLink(trimmedPpt)) {
+      toast.error("Invalid Link: You have entered your team join code/link instead of your presentation deck. Please enter your Google Drive, Canva, or Google Slides presentation link.");
       return;
     }
     const finalPptUrl = formatExternalUrl(trimmedPpt);
