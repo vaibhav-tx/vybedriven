@@ -25,6 +25,7 @@ import {
   type IdeaSubmission,
 } from "@/data/events-store";
 import { useAuth } from "@/lib/auth";
+import { formatExternalUrl } from "@/lib/utils";
 import { toast } from "sonner";
 
 interface IdeaSubmissionModalProps {
@@ -104,10 +105,7 @@ export function IdeaSubmissionModal({
       toast.error("Please provide your Google Drive, Canva, or Slides presentation link.");
       return;
     }
-    if (!trimmedPpt.startsWith("http://") && !trimmedPpt.startsWith("https://")) {
-      toast.error("Please enter a valid URL starting with https://");
-      return;
-    }
+    const finalPptUrl = formatExternalUrl(trimmedPpt);
 
     try {
       setSaving(true);
@@ -119,8 +117,8 @@ export function IdeaSubmissionModal({
           projectTitle: trimmedTitle,
           track,
           summary: trimmedSummary,
-          pptUrl: trimmedPpt,
-          demoUrl: demoUrl.trim() || undefined,
+          pptUrl: finalPptUrl,
+          demoUrl: demoUrl.trim() ? formatExternalUrl(demoUrl.trim()) : undefined,
           submittedBy: submitterName,
         }
       );
@@ -217,7 +215,7 @@ export function IdeaSubmissionModal({
             </div>
             {registration.submission?.pptUrl && (
               <a
-                href={registration.submission.pptUrl}
+                href={formatExternalUrl(registration.submission.pptUrl)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 rounded-lg bg-emerald-500/20 px-2.5 py-1 text-[11px] font-bold text-emerald-300 hover:bg-emerald-500/30 transition"

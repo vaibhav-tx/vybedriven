@@ -52,6 +52,7 @@ import {
   type EventRegistration,
   type HostedEvent,
 } from "@/data/events-store";
+import { formatExternalUrl } from "@/lib/utils";
 import { toast } from "sonner";
 
 type ManageSearch = {
@@ -727,7 +728,7 @@ function ManageEventsPage() {
                                   {applicant.submission.track}
                                 </div>
                                 <a
-                                  href={applicant.submission.pptUrl}
+                                  href={formatExternalUrl(applicant.submission.pptUrl)}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="inline-flex items-center gap-1 text-[11px] font-bold text-neon hover:underline"

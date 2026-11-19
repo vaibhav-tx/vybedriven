@@ -45,6 +45,7 @@ import { EventRegistrationModal } from "@/components/EventRegistrationModal";
 import { TeamManagementModal } from "@/components/TeamManagementModal";
 import { IdeaSubmissionModal } from "@/components/IdeaSubmissionModal";
 import { isUserRegistered, getRegistrationCount, useEventRegistrations, isEventOrganizer, type EventRegistration } from "@/data/events-store";
+import { formatExternalUrl } from "@/lib/utils";
 
 type OpportunitySearch = {
   register?: string;
@@ -1334,7 +1335,7 @@ function OpportunityDetails() {
                                 ✓ {userRegRecord.submission.projectTitle}
                               </span>
                               <a
-                                href={userRegRecord.submission.pptUrl}
+                                href={formatExternalUrl(userRegRecord.submission.pptUrl)}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-neon hover:underline font-semibold inline-flex items-center gap-1"
