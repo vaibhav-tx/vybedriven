@@ -1477,7 +1477,11 @@ export function useEventRegistrations(slug: string) {
     window.addEventListener(EVENT_CHANGE_SIGNAL, update);
     window.addEventListener("storage", update);
 
+    let lastFetch = 0;
     const fetchCloud = () => {
+      const now = Date.now();
+      if (now - lastFetch < 30000) return;
+      lastFetch = now;
       import("@/integrations/supabase/client")
         .then(({ supabase }) => {
           supabase
@@ -1495,12 +1499,10 @@ export function useEventRegistrations(slug: string) {
     };
 
     fetchCloud();
-    const interval = setInterval(fetchCloud, 12000);
     window.addEventListener("focus", fetchCloud);
 
     return () => {
       active = false;
-      clearInterval(interval);
       window.removeEventListener("focus", fetchCloud);
       window.removeEventListener(EVENT_CHANGE_SIGNAL, update);
       window.removeEventListener("storage", update);
@@ -1510,14 +1512,17 @@ export function useEventRegistrations(slug: string) {
   return list;
 }
 
-// Global cloud synchronizer for all events & registrations across the platform
+// Global cloud synchronizer for hosted events config
+let cloudSyncDone = false;
 export function syncCloudStore(): void {
-  if (typeof window === "undefined") return;
+  if (typeof window === "undefined" || cloudSyncDone) return;
+  cloudSyncDone = true;
   import("@/integrations/supabase/client")
     .then(({ supabase }) => {
       supabase
         .from("registrations" as any)
         .select("*")
+        .like("id", "EVENT_CONFIG::%")
         .then(({ data, error }) => {
           if (!error && data && Array.isArray(data)) {
             mergeRemoteRegistrations(data);
