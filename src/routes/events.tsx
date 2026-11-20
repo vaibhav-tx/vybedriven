@@ -5,7 +5,7 @@ import { OpportunityBrowser } from "@/components/OpportunityBrowser";
 export const Route = createFileRoute("/events")({
   head: () => ({
     meta: [
-      { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" },
+      { name: "viewport", content: "width=device-width, initial-scale=1.0" },
       { title: "Upcoming Tech Events & Developer Meetups in Mumbai & India — Vybe Driven (Vybe)" },
       { name: "description", content: "Find local technology meetups, developer conferences, and networking events near you on Vybe Driven (Vybe / Vibe Driven). Connect with tech leaders, founders & engineers." },
       { name: "keywords", content: "tech events near me, nearest tech events, developer meetups mumbai, tech conferences india, vybe driven, vybe, vibe driven, vibe, networking events mumbai" },

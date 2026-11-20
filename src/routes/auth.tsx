@@ -19,7 +19,7 @@ export const Route = createFileRoute("/auth")({
   }),
   head: () => ({
     meta: [
-      { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=5" },
+      { name: "viewport", content: "width=device-width, initial-scale=1.0" },
       { title: "Sign In or Join — Vybe Driven" },
       { name: "description", content: "Sign in to Vybe Driven or create your builder account." },
       { property: "og:title", content: "Join Vybe Driven" },

@@ -82,7 +82,7 @@ export const Route = createFileRoute("/opportunities/$slug")({
 
     return {
       meta: [
-        { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" },
+        { name: "viewport", content: "width=device-width, initial-scale=1.0" },
         { title: pageTitle },
         { name: "description", content: loaderData.description },
         { name: "keywords", content: keywords },
@@ -789,7 +789,7 @@ function OpportunityDetails() {
         </div>
       </div>
 
-      <main className="pb-28 lg:pb-0 overflow-x-clip max-w-full">
+      <main className="pb-28 lg:pb-0 overflow-x-hidden w-full max-w-full">
         {/* DESKTOP HERO (Laptop / PC: Identical to original desktop layout) */}
         <section id="overview" className="hidden lg:block border-b border-border bg-surface scroll-mt-28">
           <div className="mx-auto grid max-w-[1200px] gap-7 px-6 pb-10 pt-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
@@ -1241,6 +1241,32 @@ function OpportunityDetails() {
                             <p className="mt-3 text-xs sm:text-sm leading-relaxed text-muted-foreground font-medium break-words">
                               {step.description}
                             </p>
+
+                            {/* Round 0 Problem Statement conditional lock / unlock */}
+                            {item.slug === "quasar-5-international-hackathon-2027" && index === 0 && (
+                              <div className="my-3.5">
+                                {isRegistered ? (
+                                  <a
+                                    href="https://quasar-vppcoe.vercel.app/#tracks"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-2 rounded-xl border border-neon/50 bg-neon/15 px-4 py-2 text-xs sm:text-sm font-bold text-neon hover:bg-neon hover:text-black transition shadow-glow-soft"
+                                  >
+                                    <span>▶ Quasar_Problem Statements ◀</span>
+                                    <ExternalLink className="size-3.5" />
+                                  </a>
+                                ) : (
+                                  <button
+                                    type="button"
+                                    onClick={handleRegisterClick}
+                                    className="inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/10 px-4 py-2 text-xs sm:text-sm font-semibold text-amber-400 hover:bg-amber-500/20 transition cursor-pointer"
+                                  >
+                                    <Lock className="size-3.5 text-amber-400 shrink-0" />
+                                    <span>Problem Statements unlock after Squad Registration</span>
+                                  </button>
+                                )}
+                              </div>
+                            )}
 
                             {step.bullets && step.bullets.length > 0 && (
                               <ul className="mt-3.5 space-y-2 pl-1 border-t border-border/60 pt-3">
@@ -1714,6 +1740,19 @@ function OpportunityDetails() {
                       </div>
                     </div>
 
+                    {/* For Quasar 5.0, Problem Statements link for registered builders */}
+                    {item.slug === "quasar-5-international-hackathon-2027" && (
+                      <a
+                        href="https://quasar-vppcoe.vercel.app/#tracks"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2 rounded-xl border border-neon/50 bg-neon/15 px-3 py-2 text-xs font-bold text-neon hover:bg-neon hover:text-black transition"
+                      >
+                        <span>▶ Quasar_Problem Statements ◀</span>
+                        <ExternalLink className="size-3.5" />
+                      </a>
+                    )}
+
                     {/* Official WhatsApp Community - EXCLUSIVE TO REGISTERED SQUADS & TEAMS */}
                     {item.groupUrl && (
                       <a
@@ -1879,6 +1918,17 @@ function OpportunityDetails() {
                       <Users className="size-3.5 mr-1" /> Team ({1 + (userRegRecord?.teammates?.length || 0)}/4)
                     </Button>
                   </div>
+                  {item.slug === "quasar-5-international-hackathon-2027" && (
+                    <a
+                      href="https://quasar-vppcoe.vercel.app/#tracks"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-1.5 rounded-lg border border-neon/50 bg-neon/15 px-2.5 py-1.5 text-[11px] font-bold text-neon hover:bg-neon hover:text-black transition"
+                    >
+                      <span>▶ Quasar_Problem Statements ◀</span>
+                      <ExternalLink className="size-3" />
+                    </a>
+                  )}
                   {item.groupUrl && (
                     <a
                       href={item.groupUrl}

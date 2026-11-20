@@ -58,7 +58,7 @@ const emptyProfile = {
 export const Route = createFileRoute("/_authenticated/profile")({
   head: () => ({
     meta: [
-      { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" },
+      { name: "viewport", content: "width=device-width, initial-scale=1.0" },
       { title: "Builder Profile — Vybe Driven" },
       { name: "description", content: "Complete and manage your private Vybe Driven builder profile." },
       { property: "og:title", content: "Builder Profile — Vybe Driven" },
