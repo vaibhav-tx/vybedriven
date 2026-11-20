@@ -731,11 +731,63 @@ function OpportunityDetails() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(eventStructuredData) }}
       />
       <Navbar />
-      <main className="pb-12 lg:pb-0">
+
+      {/* Mobile Sticky Tab Navigation (Unstop Mobile Convenience) */}
+      <div className="sticky top-[66px] sm:top-[74px] z-30 border-b border-border/80 bg-background/95 backdrop-blur-xl lg:hidden">
+        <div className="flex items-center gap-2 overflow-x-auto px-3.5 py-2 no-scrollbar scroll-smooth">
+          <a
+            href="#overview"
+            className="shrink-0 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-surface border border-border/80 text-foreground hover:border-neon/60 hover:text-neon transition"
+          >
+            <span>🏠 Overview</span>
+          </a>
+          {item.schedule && item.schedule.length > 0 && (
+            <a
+              href="#timeline"
+              className="shrink-0 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-surface border border-border/80 text-foreground hover:border-neon/60 hover:text-neon transition"
+            >
+              <span>⏳ Stages &amp; Timeline</span>
+            </a>
+          )}
+          <a
+            href="#details"
+            className="shrink-0 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-surface border border-border/80 text-foreground hover:border-neon/60 hover:text-neon transition"
+          >
+            <span>📋 Details</span>
+          </a>
+          {item.importantDates && item.importantDates.length > 0 && (
+            <a
+              href="#dates"
+              className="shrink-0 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-surface border border-border/80 text-foreground hover:border-neon/60 hover:text-neon transition"
+            >
+              <span>📅 Dates</span>
+            </a>
+          )}
+          {(item.rewards || item.prize) && (
+            <a
+              href="#rewards"
+              className="shrink-0 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-surface border border-border/80 text-foreground hover:border-neon/60 hover:text-neon transition"
+            >
+              <span>🏆 Rewards</span>
+            </a>
+          )}
+          {item.contacts && (
+            <a
+              href="#contact"
+              className="shrink-0 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-surface border border-border/80 text-foreground hover:border-neon/60 hover:text-neon transition"
+            >
+              <span>📞 Contact</span>
+            </a>
+          )}
+        </div>
+      </div>
+
+      <main className="pb-24 lg:pb-0">
         {/* Hero Section */}
-        <section className="border-b border-border bg-surface">
-          <div className="mx-auto grid max-w-[1200px] gap-6 sm:gap-7 px-4 sm:px-6 pb-8 pt-8 sm:pb-10 sm:pt-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
-            <div>
+        <section id="overview" className="border-b border-border bg-surface scroll-mt-28">
+          <div className="mx-auto grid max-w-[1200px] gap-6 sm:gap-7 px-4 sm:px-6 pb-8 pt-6 sm:pb-10 sm:pt-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+            {/* Column 1: Details & Title (on phones comes after the banner image) */}
+            <div className="order-2 lg:order-1">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="rounded-full border border-border bg-background px-3 py-1 text-xs font-semibold">
                   {item.type}
@@ -755,7 +807,7 @@ function OpportunityDetails() {
                 )}
               </div>
               <p className="mt-4 sm:mt-6 text-xs sm:text-sm font-semibold text-neon">{item.tag.toUpperCase()}</p>
-              <h1 className="mt-2 text-3xl font-extrabold leading-tight sm:text-5xl lg:text-6xl">{item.title}</h1>
+              <h1 className="mt-2 text-2xl sm:text-5xl lg:text-6xl font-extrabold leading-tight">{item.title}</h1>
               <p className="mt-3 sm:mt-5 max-w-2xl text-base sm:text-lg leading-relaxed text-muted-foreground">
                 {item.description}
               </p>
@@ -774,12 +826,12 @@ function OpportunityDetails() {
                     />
                   </div>
                 ) : item.slug === "quasar-5-international-hackathon-2027" ? (
-                  <div className="mt-5 inline-block">
-                    <div className="relative overflow-hidden rounded-[26px] sm:rounded-[30px] border-2 border-emerald-500/70 bg-[#030904] p-2.5 sm:p-3 pr-4 sm:pr-6 shadow-[0_0_35px_rgba(16,185,129,0.35)] backdrop-blur-xl">
-                      <div className="flex items-center gap-3 sm:gap-5 rounded-[20px] sm:rounded-[24px] border border-emerald-500/40 bg-gradient-to-r from-emerald-950/60 via-[#051307] to-[#040e06] p-2 sm:p-3 pl-3 sm:pl-5">
+                  <div className="mt-5 inline-block max-w-full">
+                    <div className="relative overflow-hidden rounded-[20px] sm:rounded-[30px] border-2 border-emerald-500/70 bg-[#030904] p-2 sm:p-3 pr-3 sm:pr-6 shadow-[0_0_35px_rgba(16,185,129,0.35)] backdrop-blur-xl">
+                      <div className="flex items-center gap-2 sm:gap-5 rounded-[16px] sm:rounded-[24px] border border-emerald-500/40 bg-gradient-to-r from-emerald-950/60 via-[#051307] to-[#040e06] p-1.5 sm:p-3 pl-2.5 sm:pl-5">
                         {/* Laurel Wreath */}
                         <div className="shrink-0 flex items-center justify-center text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.7)]">
-                          <svg className="size-6 sm:size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <svg className="size-5 sm:size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M7 21C5.5 19 4 16.5 4 13.5C4 9.5 6 6 8.5 4" />
                             <path d="M4 11C5.5 11 7 9.5 7 8" />
                             <path d="M4.5 16C6 15.5 7.5 14 7.5 12.5" />
@@ -790,26 +842,26 @@ function OpportunityDetails() {
                         </div>
 
                         {/* Vertical separator */}
-                        <div className="h-9 sm:h-12 w-[1.5px] bg-emerald-500/40 shrink-0" />
+                        <div className="h-8 sm:h-12 w-[1.5px] bg-emerald-500/40 shrink-0" />
 
                         {/* Prize text */}
                         <div className="flex flex-col min-w-0 pr-1 sm:pr-2">
-                          <span className="text-[11px] sm:text-xs font-black italic tracking-wider text-emerald-400 uppercase drop-shadow-[0_0_8px_rgba(52,211,153,0.6)]">
+                          <span className="text-[10px] sm:text-xs font-black italic tracking-wider text-emerald-400 uppercase drop-shadow-[0_0_8px_rgba(52,211,153,0.6)]">
                             PRIZES <span className="text-emerald-300">WORTH</span>
                           </span>
-                          <span className="text-2xl sm:text-3xl md:text-4xl font-black text-white font-mono tracking-tight drop-shadow-[0_2px_14px_rgba(255,255,255,0.45)] leading-tight">
+                          <span className="text-xl min-[360px]:text-2xl sm:text-3xl md:text-4xl font-black text-white font-mono tracking-tight drop-shadow-[0_2px_14px_rgba(255,255,255,0.45)] leading-tight">
                             ₹ 1,50,000
                           </span>
                         </div>
 
                         {/* Trophy with Glowing Green Orbit */}
-                        <div className="relative shrink-0 flex items-center justify-center pl-1 sm:pl-2">
+                        <div className="relative shrink-0 flex items-center justify-center pl-0.5 sm:pl-2">
                           {/* Green Orbit Ring */}
-                          <div className="absolute inset-x-[-8px] sm:inset-x-[-12px] bottom-1.5 sm:bottom-2.5 h-3.5 sm:h-4 rounded-[100%] border-2 border-emerald-400/90 shadow-[0_0_14px_rgba(52,211,153,0.9)] -rotate-12 pointer-events-none" />
+                          <div className="absolute inset-x-[-6px] sm:inset-x-[-12px] bottom-1 sm:bottom-2.5 h-3 sm:h-4 rounded-[100%] border-2 border-emerald-400/90 shadow-[0_0_14px_rgba(52,211,153,0.9)] -rotate-12 pointer-events-none" />
                           <img
                             src="/events/golden-star-trophy.png"
                             alt="Prize Trophy"
-                            className="relative z-10 h-14 sm:h-18 md:h-20 w-auto object-contain drop-shadow-[0_6px_22px_rgba(250,204,21,0.6)]"
+                            className="relative z-10 h-12 min-[360px]:h-14 sm:h-18 md:h-20 w-auto object-contain drop-shadow-[0_6px_22px_rgba(250,204,21,0.6)]"
                           />
                         </div>
                       </div>
@@ -832,12 +884,14 @@ function OpportunityDetails() {
                 )
               )}
             </div>
-            <div className="relative flex items-center justify-center overflow-hidden rounded-2xl sm:rounded-3xl border border-border/80 bg-black/60 p-2 sm:p-4 shadow-inner">
+
+            {/* Column 2: Event Poster (on phones shows at the very top, exactly like Unstop) */}
+            <div className="order-1 lg:order-2 relative flex items-center justify-center overflow-hidden rounded-2xl sm:rounded-3xl border border-border/80 bg-black/60 p-2 sm:p-4 shadow-inner">
               <img
                 src={item.image}
                 alt={item.title}
                 style={item.imagePosition ? { objectPosition: item.imagePosition } : undefined}
-                className="max-h-[460px] w-auto max-w-full rounded-xl sm:rounded-2xl object-contain transition duration-500 hover:scale-[1.01]"
+                className="max-h-[300px] sm:max-h-[460px] w-auto max-w-full rounded-xl sm:rounded-2xl object-contain transition duration-500 hover:scale-[1.01]"
               />
             </div>
           </div>
@@ -847,16 +901,20 @@ function OpportunityDetails() {
         <section className="mx-auto max-w-[1200px] px-4 sm:px-6 py-6 sm:py-8">
           <div className="grid gap-7 lg:grid-cols-[1fr_320px]">
             <div>
-              {/* MOBILE ONLY: Prominent Top Action Box (Zero Scrolling Required on Phones) */}
-              <div className="mb-6 rounded-2xl border-2 border-neon/50 bg-gradient-to-br from-neon/15 via-card to-card p-4 sm:p-5 shadow-glow-soft lg:hidden">
+              {/* MOBILE ONLY: Registration & Team Status Box (Clean & No Duplicate Register Button) */}
+              <div className="mb-6 rounded-2xl border border-neon/40 bg-gradient-to-br from-neon/10 via-card to-card p-4 sm:p-5 shadow-sm lg:hidden">
                 <div className="flex items-center justify-between">
                   <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/50 bg-emerald-500/20 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-emerald-400">
                     <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
                     Registrations Open
                   </span>
-                  {item.slug === "goa-buildathon-2027" && (
+                  {item.slug === "goa-buildathon-2027" ? (
                     <span className="text-xs font-bold text-neon font-mono">
                       2,000+ Registrations
+                    </span>
+                  ) : (
+                    <span className="text-xs font-bold text-neon font-mono">
+                      {item.fee === "Free" ? "100% Free Entry" : item.fee}
                     </span>
                   )}
                 </div>
@@ -897,7 +955,7 @@ function OpportunityDetails() {
                   </div>
                 )}
 
-                {/* Mobile Action Buttons */}
+                {/* Mobile Registered Team Controls */}
                 {isRegistered ? (
                   <div className="mt-3.5 space-y-2.5">
                     {/* PPT Round 1 CTA for Teams with >= 2 members */}
@@ -963,47 +1021,19 @@ function OpportunityDetails() {
                     )}
                   </div>
                 ) : (
-                  <div className="mt-3.5 space-y-2">
-                    {item.registrationUrl ? (
-                      <Button
-                        type="button"
-                        onClick={handleExternalRegisterClick}
-                        className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-brand px-5 py-3.5 text-sm font-bold text-primary-foreground shadow-glow hover:brightness-105 transition"
-                      >
-                        {item.registrationLabel || "Register Now"}
-                        <ArrowRight className="size-4" />
-                      </Button>
-                    ) : (
-                      item.status !== "Sold out" && (
-                        <Button
-                          type="button"
-                          onClick={handleRegisterClick}
-                          className="w-full rounded-xl bg-gradient-brand text-primary-foreground font-black py-3.5 text-sm shadow-glow hover:brightness-105"
-                        >
-                          Register Now
-                          <Sparkles className="ml-2 inline size-4" />
-                        </Button>
-                      )
-                    )}
-
-                    {!user && (
-                      <div className="text-center pt-0.5">
-                        <button
-                          type="button"
-                          onClick={() => setExploreGateOpen(true)}
-                          className="inline-flex items-center gap-1 text-[11px] font-semibold text-muted-foreground hover:text-neon transition cursor-pointer"
-                        >
-                          <LogIn className="size-3" />
-                          <span>Already registered? Sign in to view pass</span>
-                        </button>
-                      </div>
-                    )}
-
-                    {externalPlatform && (
-                      <p className="mt-2.5 rounded-lg border border-border/60 bg-surface-2/60 p-2.5 text-[11px] leading-relaxed text-muted-foreground">
-                        <span className="font-semibold text-foreground">Notice:</span> Hosted on {externalPlatform}. Vybe Driven has listed this event for community discovery. Registration and admissions are handled directly on {externalPlatform}.
-                      </p>
-                    )}
+                  <div className="mt-3 rounded-xl border border-border/80 bg-surface-2/60 p-3 text-xs">
+                    <div className="flex items-center justify-between text-muted-foreground">
+                      <span className="flex items-center gap-1.5 font-bold text-foreground">
+                        <Sparkles className="size-3.5 text-neon" />
+                        <span>Team Size: {item.teamSize || "2 - 4 Members"}</span>
+                      </span>
+                      <span className="font-mono text-[11px] font-bold text-neon">
+                        {item.format || "Offline Hackathon"}
+                      </span>
+                    </div>
+                    <p className="mt-1.5 text-[11px] text-muted-foreground leading-relaxed">
+                      Tap the <strong className="text-foreground">Register button below</strong> to claim your spot and participate in the hackathon.
+                    </p>
                   </div>
                 )}
               </div>
@@ -1011,10 +1041,10 @@ function OpportunityDetails() {
               {/* Quick Facts Grid */}
               <div className="grid overflow-hidden rounded-2xl border border-border bg-card grid-cols-2 lg:grid-cols-3">
                 {facts.map(({ icon: Icon, label, value }) => (
-                  <div key={label} className="border-b border-border p-4 sm:p-5 [&:nth-child(odd)]:border-r sm:[&:nth-child(even)]:border-r">
+                  <div key={label} className="border-b border-border p-3.5 sm:p-5 [&:nth-child(odd)]:border-r sm:[&:nth-child(even)]:border-r">
                     <Icon className="size-4 sm:size-5 text-neon" />
                     <p className="mt-2 sm:mt-3 text-[11px] sm:text-xs font-semibold text-muted-foreground">{label}</p>
-                    <p className="mt-1 text-xs sm:text-sm font-semibold">{value}</p>
+                    <p className="mt-1 text-xs sm:text-sm font-semibold break-words leading-tight">{value}</p>
                   </div>
                 ))}
               </div>
@@ -1030,7 +1060,7 @@ function OpportunityDetails() {
               )}
 
               {/* About Section with Read More */}
-              <section className="py-7 sm:py-9">
+              <section id="details" className="py-7 sm:py-9 scroll-mt-28">
                 <div className="flex items-center gap-2.5 mb-5">
                   <span className="h-6 w-1 rounded-full bg-neon shadow-glow-soft" />
                   <h2 className="text-xl sm:text-2xl font-bold text-foreground">
@@ -1042,36 +1072,36 @@ function OpportunityDetails() {
 
               {/* Stages and Timeline */}
               {item.schedule && item.schedule.length > 0 && (
-                <section className="border-t border-border py-8 sm:py-10">
+                <section id="timeline" className="border-t border-border py-8 sm:py-10 scroll-mt-28">
                   <div className="flex items-center gap-2.5 mb-7">
                     <span className="h-6 w-1 rounded-full bg-neon shadow-glow-soft" />
                     <h2 className="text-xl sm:text-2xl font-bold text-foreground">Stages and Timelines</h2>
                   </div>
 
-                  <div className="relative pl-7 sm:pl-9 before:absolute before:left-3.5 sm:before:left-4 before:top-4 before:bottom-6 before:w-[3px] before:bg-gradient-to-b before:from-neon before:via-emerald-400 before:to-neon/20">
+                  <div className="relative pl-5 sm:pl-9 before:absolute before:left-2.5 sm:before:left-4 before:top-4 before:bottom-6 before:w-[3px] before:bg-gradient-to-b before:from-neon before:via-emerald-400 before:to-neon/20">
                     {item.schedule.map((step, index) => {
                       const dateParts = step.dateBadge?.split(" ") || [];
                       const month = dateParts[0] || `Stage`;
                       const day = dateParts[1] || `${index + 1}`;
                       return (
-                        <div key={step.title} className="relative pb-9 last:pb-2">
+                        <div key={step.title} className="relative pb-8 last:pb-2">
                           {/* Calendar Node directly over the timeline line */}
-                          <div className="flex items-center gap-3.5 sm:gap-4 mb-3.5">
-                            <div className="relative -ml-[25px] sm:-ml-[27px] flex flex-col items-center justify-center rounded-2xl border-2 border-neon bg-[#07130a] px-3 py-1.5 shadow-[0_0_15px_rgba(34,197,94,0.35)] min-w-[56px] text-center shrink-0">
+                          <div className="flex flex-wrap items-center gap-2.5 sm:gap-4 mb-3">
+                            <div className="relative -ml-[23px] sm:-ml-[27px] flex flex-col items-center justify-center rounded-xl sm:rounded-2xl border-2 border-neon bg-[#07130a] px-2.5 py-1 sm:px-3 sm:py-1.5 shadow-[0_0_15px_rgba(34,197,94,0.35)] min-w-[50px] sm:min-w-[56px] text-center shrink-0">
                               <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-neon leading-tight">{month}</span>
-                              <span className="text-base sm:text-lg font-black text-white leading-none font-mono mt-0.5">{day}</span>
+                              <span className="text-sm sm:text-lg font-black text-white leading-none font-mono mt-0.5">{day}</span>
                             </div>
-                            <span className="text-xs sm:text-sm font-bold font-mono text-neon flex items-center gap-1.5">
-                              <Calendar className="size-3.5" />
-                              {step.date}
+                            <span className="text-xs sm:text-sm font-bold font-mono text-neon flex items-center gap-1.5 break-words">
+                              <Calendar className="size-3.5 shrink-0" />
+                              <span className="leading-snug">{step.date}</span>
                             </span>
                           </div>
 
                           {/* Stage Card */}
-                          <div className="rounded-2xl border border-neon/30 bg-surface/90 p-5 sm:p-7 shadow-[0_4px_24px_rgba(34,197,94,0.08)] transition hover:border-neon hover:bg-surface-2/90 hover:shadow-glow-soft">
-                            <div className="flex items-center justify-between gap-2 border-b border-border/80 pb-3">
+                          <div className="rounded-2xl border border-neon/30 bg-surface/90 p-4 sm:p-7 shadow-[0_4px_24px_rgba(34,197,94,0.08)] transition hover:border-neon hover:bg-surface-2/90 hover:shadow-glow-soft">
+                            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/80 pb-3">
                               <h3 className="text-base sm:text-xl font-extrabold text-foreground">{step.title}</h3>
-                              <span className="rounded-full bg-neon/20 border border-neon/50 px-3 py-1 text-xs font-black text-neon font-mono shrink-0 shadow-sm">
+                              <span className="rounded-full bg-neon/20 border border-neon/50 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[11px] sm:text-xs font-black text-neon font-mono shrink-0 shadow-sm">
                                 {step.stageBadge || `Stage ${index + 1}`}
                               </span>
                             </div>
@@ -1086,7 +1116,7 @@ function OpportunityDetails() {
                                   href={step.actionUrl}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-2 rounded-xl border border-neon/60 bg-neon/15 px-4 py-2 text-xs sm:text-sm font-bold text-neon hover:bg-neon hover:text-black transition shadow-glow-soft"
+                                  className="inline-flex items-center gap-2 rounded-xl border border-neon/60 bg-neon/15 px-3.5 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-bold text-neon hover:bg-neon hover:text-black transition shadow-glow-soft"
                                 >
                                   <span>{step.actionLabel || "View Problem Statements"}</span>
                                   <ExternalLink className="size-3.5" />
@@ -1106,9 +1136,9 @@ function OpportunityDetails() {
                             )}
 
                             {step.evaluation && (
-                              <div className="mt-4 rounded-xl border border-neon/30 bg-neon/10 px-4 py-2.5 text-xs text-muted-foreground flex items-center gap-2">
-                                <span className="font-bold text-neon uppercase tracking-wider text-[11px]">Evaluation:</span>
-                                <span className="text-foreground/90 font-medium">{step.evaluation}</span>
+                              <div className="mt-4 rounded-xl border border-neon/30 bg-neon/10 p-3 sm:px-4 sm:py-2.5 text-xs text-muted-foreground flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
+                                <span className="font-bold text-neon uppercase tracking-wider text-[10px] sm:text-[11px] shrink-0">Evaluation:</span>
+                                <span className="text-foreground/90 font-medium leading-relaxed">{step.evaluation}</span>
                               </div>
                             )}
                           </div>
@@ -1121,21 +1151,21 @@ function OpportunityDetails() {
 
               {/* Important dates & deadlines */}
               {item.importantDates && item.importantDates.length > 0 && (
-                <section className="border-t border-border py-8 sm:py-10">
+                <section id="dates" className="border-t border-border py-8 sm:py-10 scroll-mt-28">
                   <div className="flex items-center gap-2.5 mb-6">
                     <span className="h-6 w-1 rounded-full bg-neon shadow-glow-soft" />
                     <h2 className="text-xl sm:text-2xl font-bold text-foreground">
                       Important dates &amp; deadlines?
                     </h2>
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5">
                     {item.importantDates.map((d, idx) => (
                       <div
                         key={idx}
-                        className="flex items-center gap-3.5 sm:gap-4 rounded-2xl border border-border/80 bg-surface/90 p-3.5 sm:p-4 shadow-sm transition hover:border-neon/50 hover:bg-surface-2/80 hover:shadow-glow-soft"
+                        className="flex items-center gap-3 sm:gap-4 rounded-2xl border border-border/80 bg-surface/90 p-3 sm:p-4 shadow-sm transition hover:border-neon/50 hover:bg-surface-2/80 hover:shadow-glow-soft"
                       >
-                        <div className="flex flex-col items-center justify-center rounded-xl bg-neon/15 border border-neon/50 px-3 py-1.5 min-w-[56px] text-center shrink-0 shadow-inner">
-                          <span className="text-base sm:text-lg font-black text-neon leading-none font-mono">
+                        <div className="flex flex-col items-center justify-center rounded-xl bg-neon/15 border border-neon/50 px-2.5 py-1 sm:px-3 sm:py-1.5 min-w-[50px] sm:min-w-[56px] text-center shrink-0 shadow-inner">
+                          <span className="text-sm sm:text-lg font-black text-neon leading-none font-mono">
                             {d.day}
                           </span>
                           <span className="text-[10px] sm:text-xs font-black uppercase tracking-wider text-muted-foreground leading-tight mt-0.5">
@@ -1143,10 +1173,10 @@ function OpportunityDetails() {
                           </span>
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="text-xs sm:text-sm font-bold text-foreground truncate">
+                          <p className="text-xs sm:text-sm font-bold text-foreground">
                             {d.title}
                           </p>
-                          <p className="text-[11px] sm:text-xs text-muted-foreground font-mono mt-0.5">
+                          <p className="text-[11px] sm:text-xs text-muted-foreground font-mono mt-0.5 break-words">
                             {d.fullDate}
                           </p>
                         </div>
@@ -1158,7 +1188,7 @@ function OpportunityDetails() {
 
               {/* Rewards, Perks & Opportunities */}
               {(item.rewards || item.prize || (item.perks && item.perks.length > 0)) && (
-                <section className="border-t border-border py-8 sm:py-10">
+                <section id="rewards" className="border-t border-border py-8 sm:py-10 scroll-mt-28">
                   <div className="flex items-center gap-2.5 mb-2">
                     <span className="h-6 w-1 rounded-full bg-neon shadow-glow-soft" />
                     <h2 className="text-xl sm:text-2xl font-bold text-foreground">Rewards and Prizes</h2>
@@ -1682,8 +1712,8 @@ function OpportunityDetails() {
 
                 {/* Organizer Contacts */}
                 {item.contacts && (
-                  <div className="mt-5 border-t border-border pt-4">
-                    <p className="text-xs font-semibold text-muted-foreground">QUERIES</p>
+                  <div id="contact" className="mt-5 border-t border-border pt-4 scroll-mt-28">
+                    <p className="text-xs font-semibold text-muted-foreground">QUERIES &amp; ORGANIZERS</p>
                     <ul className="mt-2 space-y-1.5">
                       {item.contacts.map((contact) => (
                         <li key={contact.phone} className="text-xs sm:text-sm">
@@ -1711,53 +1741,110 @@ function OpportunityDetails() {
           </div>
         </section>
 
-        {/* MOBILE ONLY: Sticky Floating Bottom Action Bar */}
-        <div className="fixed bottom-0 inset-x-0 z-40 border-t border-border/80 bg-background/95 backdrop-blur-xl px-4 py-3 shadow-[0_-8px_24px_rgba(0,0,0,0.7)] lg:hidden">
-          <div className="mx-auto flex max-w-md items-center justify-between gap-3">
-            <div className="min-w-0">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block">
-                {item.fee === "Free" ? "Free Registration" : item.fee}
-              </span>
-              <span className="text-xs font-black text-neon truncate block">
-                {item.slug === "goa-buildathon-2027" ? "2,000+ Joined" : item.status}
-              </span>
+        {/* MOBILE ONLY: Sticky Floating Bottom Action Bar (Unstop Mobile Experience) */}
+        <div className="fixed bottom-0 inset-x-0 z-40 lg:hidden pointer-events-none">
+          <div className="mx-auto max-w-lg px-3 pb-3 pointer-events-auto">
+            {/* Arched Pill Header above bottom card */}
+            <div className="flex justify-center -mb-[1px]">
+              <div className="inline-flex items-center gap-1.5 rounded-t-xl border-t border-x border-neon/50 bg-[#060e08]/95 px-3.5 py-1 text-[11px] font-bold text-foreground shadow-md backdrop-blur-md">
+                <span className="size-1.5 rounded-full bg-neon animate-pulse" />
+                <span className="text-neon font-black">
+                  {item.slug === "quasar-5-international-hackathon-2027"
+                    ? "1 Month Left"
+                    : item.slug === "goa-buildathon-2027"
+                    ? "2,000+ Joined"
+                    : "Registration Open"}
+                </span>
+                <span className="text-muted-foreground text-[10px]">· Free Entry</span>
+              </div>
             </div>
 
-            <div className="flex items-center gap-2 shrink-0">
+            {/* Main Floating Bottom Card */}
+            <div className="rounded-2xl border border-neon/40 bg-background/95 p-3 shadow-[0_-10px_35px_rgba(0,0,0,0.85)] backdrop-blur-2xl">
               {isRegistered ? (
-                userRegRecord?.teamType === "team" && (1 + (userRegRecord.teammates?.length || 0)) >= 2 ? (
-                  <Button
-                    size="sm"
-                    onClick={() => setIdeaModalOpen(true)}
-                    className="rounded-full bg-neon text-primary-foreground font-black text-xs px-4 py-2.5 shadow-glow"
-                  >
-                    <Sparkles className="size-3.5 mr-1" />
-                    {userRegRecord?.submission?.pptUrl ? "Edit PPT" : "Submit PPT 🚀"}
-                  </Button>
-                ) : (
-                  <Button
-                    size="sm"
-                    onClick={handleRegisterClick}
-                    className="rounded-full bg-neon text-primary-foreground font-black text-xs px-4 py-2.5 shadow-glow"
-                  >
-                    <Ticket className="size-3.5 mr-1" /> View Pass
-                  </Button>
-                )
+                <div className="space-y-2">
+                  <div className="grid grid-cols-2 gap-2">
+                    {userRegRecord?.teamType === "team" && (1 + (userRegRecord.teammates?.length || 0)) >= 2 ? (
+                      <Button
+                        size="sm"
+                        onClick={() => setIdeaModalOpen(true)}
+                        className="rounded-xl bg-neon text-primary-foreground font-black text-xs py-2.5 shadow-glow"
+                      >
+                        <Sparkles className="size-3.5 mr-1" />
+                        {userRegRecord?.submission?.pptUrl ? "Edit PPT" : "Submit PPT 🚀"}
+                      </Button>
+                    ) : (
+                      <Button
+                        size="sm"
+                        onClick={handleRegisterClick}
+                        className="rounded-xl bg-neon text-primary-foreground font-black text-xs py-2.5 shadow-glow"
+                      >
+                        <Ticket className="size-3.5 mr-1" /> View Pass
+                      </Button>
+                    )}
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => setTeamModalOpen(true)}
+                      className="rounded-xl text-xs font-bold py-2.5"
+                    >
+                      <Users className="size-3.5 mr-1" /> Team ({1 + (userRegRecord?.teammates?.length || 0)}/4)
+                    </Button>
+                  </div>
+                  {item.groupUrl && (
+                    <a
+                      href={item.groupUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-1.5 text-[11px] font-semibold text-emerald-400 hover:underline pt-0.5"
+                    >
+                      <MessageCircle className="size-3" />
+                      <span>{item.groupLabel || "Join WhatsApp Group"}</span>
+                    </a>
+                  )}
+                </div>
               ) : item.registrationUrl ? (
-                <Button
-                  size="sm"
-                  onClick={handleExternalRegisterClick}
-                  className="inline-flex items-center gap-1 rounded-full bg-gradient-brand px-5 py-2.5 text-xs font-black text-primary-foreground shadow-glow"
-                >
-                  {item.registrationLabel || "Register Now"} <ArrowRight className="size-3.5" />
-                </Button>
+                <div>
+                  <Button
+                    onClick={handleExternalRegisterClick}
+                    className="w-full rounded-xl bg-gradient-brand text-primary-foreground font-black py-3 text-sm shadow-glow hover:brightness-105"
+                  >
+                    {item.registrationLabel || "Register"}
+                    <ArrowRight className="ml-1.5 size-4 inline" />
+                  </Button>
+                  {!user && (
+                    <div className="mt-1.5 text-center">
+                      <button
+                        type="button"
+                        onClick={() => setExploreGateOpen(true)}
+                        className="text-[11px] font-medium text-muted-foreground hover:text-neon"
+                      >
+                        Already registered? <span className="font-bold text-neon underline">Login</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
               ) : (
-                <Button
-                  onClick={handleRegisterClick}
-                  className="rounded-full bg-gradient-brand text-primary-foreground font-black text-xs px-5 py-2.5 shadow-glow"
-                >
-                  Register Now <Sparkles className="size-3.5 ml-1" />
-                </Button>
+                <div>
+                  <Button
+                    onClick={handleRegisterClick}
+                    className="w-full rounded-xl bg-gradient-brand text-primary-foreground font-black py-3 text-sm shadow-glow hover:brightness-105"
+                  >
+                    Register
+                    <Sparkles className="ml-1.5 size-4 inline" />
+                  </Button>
+                  {!user && (
+                    <div className="mt-1.5 text-center">
+                      <button
+                        type="button"
+                        onClick={() => setExploreGateOpen(true)}
+                        className="text-[11px] font-medium text-muted-foreground hover:text-neon"
+                      >
+                        Already registered? <span className="font-bold text-neon underline">Login</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
               )}
             </div>
           </div>
