@@ -259,13 +259,13 @@ function EventAuthGateDialog({
     setBusy(true);
     setError("");
     try {
-      const targetUrl = `/opportunities/${item.slug}${item.registrationUrl ? "?autoredirect=1" : "?register=1"}`;
+      const targetUrl = `/opportunities/${item.slug}${item.registrationUrl ? "?autoredirect=1" : ""}`;
       try {
         localStorage.setItem("hd-auth-next", targetUrl);
         sessionStorage.setItem("hd-auth-next", targetUrl);
       } catch {}
 
-      const redirectTo = `${window.location.origin}${targetUrl}`;
+      const redirectTo = `${window.location.origin}/auth?next=${encodeURIComponent(targetUrl)}`;
       const { data, error: oauthErr } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
@@ -550,6 +550,15 @@ function OpportunityDetails() {
       setRegModalOpen(true);
     }
   }, [search.register, incomingJoinCode, item.registrationUrl]);
+
+  // Prompt unauthenticated visitors to sign in or create an account
+  useEffect(() => {
+    if (!loading && !user && !getBuilderSession()) {
+      setExploreGateOpen(true);
+    } else {
+      setExploreGateOpen(false);
+    }
+  }, [loading, user]);
 
   const handleRegisterClick = () => {
     setActiveJoinCode(undefined);

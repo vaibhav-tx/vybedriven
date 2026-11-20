@@ -88,7 +88,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" },
+      { name: "viewport", content: "width=device-width, initial-scale=1.0" },
       { name: "google-site-verification", content: "4o5pm1oHZ70Xwkp0j56F3sGtRlWxMMQjlv922S9betY" },
       { title: "Vybe Driven (Vybe) — Discover Nearest Hackathons, Coding Competitions & Tech Events" },
       { name: "description", content: "Vybe Driven (Vybe / Vibe) is India's leading platform discovering nearest hackathons, coding competitions, developer meetups, and creator awards in Mumbai and all-India." },
@@ -172,7 +172,7 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en" className="dark overflow-x-hidden max-w-full" suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <script dangerouslySetInnerHTML={{ __html: `document.documentElement.classList.add('dark');try{localStorage.setItem('hd-theme','dark')}catch(e){}` }} />
         <script
           type="application/ld+json"
