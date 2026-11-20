@@ -31,6 +31,8 @@ import {
 import {
   updateTeamRoster,
   confirmTeammateInvitation,
+  deleteTeamRegistration,
+  leaveTeamRegistration,
   findOpportunity,
   isPlatformAdmin,
   mergeRemoteRegistrations,
@@ -47,6 +49,7 @@ interface TeamManagementModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onUpdated?: (updated: EventRegistration) => void;
+  onDeleted?: () => void;
 }
 
 export function TeamManagementModal({
@@ -54,6 +57,7 @@ export function TeamManagementModal({
   open,
   onOpenChange,
   onUpdated,
+  onDeleted,
 }: TeamManagementModalProps) {
   const { user } = useAuth();
 
@@ -63,6 +67,15 @@ export function TeamManagementModal({
   const [teammates, setTeammates] = useState<TeammateDetail[]>([]);
   const [showAddForm, setShowAddForm] = useState(false);
   const [ideaModalOpen, setIdeaModalOpen] = useState(false);
+
+  // Leader Delete Team State
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteConfirmChecked, setDeleteConfirmChecked] = useState(false);
+  const [deletingTeam, setDeletingTeam] = useState(false);
+
+  // Member Leave Team State
+  const [showLeaveConfirm, setShowLeaveConfirm] = useState(false);
+  const [leavingTeam, setLeavingTeam] = useState(false);
 
   // New member form fields
   const [newName, setNewName] = useState("");
@@ -318,6 +331,44 @@ export function TeamManagementModal({
       toast.error(err.message || "Failed to update team details.");
     } finally {
       setSaving(false);
+    }
+  };
+
+  // Delete Squad (Team Leader only)
+  const handleDeleteTeam = async () => {
+    if (!deleteConfirmChecked) {
+      toast.error("Please tick the confirmation checkbox to delete the team.");
+      return;
+    }
+    setDeletingTeam(true);
+    try {
+      await deleteTeamRegistration(registration.id, user);
+      toast.success("Squad deleted successfully! You can now re-register or join another team.");
+      onDeleted?.();
+      onOpenChange(false);
+    } catch (err: any) {
+      toast.error(err.message || "Failed to delete squad.");
+    } finally {
+      setDeletingTeam(false);
+    }
+  };
+
+  // Leave Squad (Teammate only)
+  const handleLeaveTeam = async () => {
+    if (!user) {
+      toast.error("Please sign in to leave the squad.");
+      return;
+    }
+    setLeavingTeam(true);
+    try {
+      await leaveTeamRegistration(registration.id, user);
+      toast.success(`You have successfully left Team "${teamName}".`);
+      onDeleted?.();
+      onOpenChange(false);
+    } catch (err: any) {
+      toast.error(err.message || "Failed to leave squad.");
+    } finally {
+      setLeavingTeam(false);
     }
   };
 
@@ -692,6 +743,128 @@ export function TeamManagementModal({
                 🎉 Team Roster Full (4/4 Members Verified)
               </div>
             ) : null}
+            {/* Danger Zone: Delete Entire Squad (Team Leader & Platform Admin Only) */}
+            {(isLeader || isAdmin) && !isEventClosed && (
+              <div className="rounded-2xl border border-red-500/30 bg-red-950/20 p-4 space-y-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-red-400">
+                      <Trash2 className="size-3.5" /> Danger Zone · Delete Squad
+                    </div>
+                    <p className="text-[11px] text-muted-foreground mt-0.5">
+                      Galti se ban gaya? Team delete karne se sabhi members ki entry cancel ho jayegi aur sabhi free ho jayenge.
+                    </p>
+                  </div>
+                  {!showDeleteConfirm && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowDeleteConfirm(true)}
+                      className="border-red-500/40 text-red-400 hover:bg-red-500/15 hover:text-red-300 text-xs rounded-xl shrink-0 self-start sm:self-auto"
+                    >
+                      <Trash2 className="size-3.5 mr-1" /> Delete Team
+                    </Button>
+                  )}
+                </div>
+
+                {showDeleteConfirm && (
+                  <div className="rounded-xl border border-red-500/50 bg-red-950/40 p-3.5 space-y-3 text-xs">
+                    <p className="text-red-200 leading-relaxed font-medium">
+                      ⚠️ Are you sure you want to delete <strong>&quot;{teamName}&quot;</strong>? This will permanently delete this squad, invalidate all member entry passes, and cannot be undone.
+                    </p>
+
+                    <label className="flex items-start gap-2.5 cursor-pointer text-foreground select-none bg-red-950/50 p-2.5 rounded-lg border border-red-500/30">
+                      <input
+                        type="checkbox"
+                        checked={deleteConfirmChecked}
+                        onChange={(e) => setDeleteConfirmChecked(e.target.checked)}
+                        className="mt-0.5 size-4 rounded border-red-500/50 accent-red-500 cursor-pointer"
+                      />
+                      <span className="text-[11px] leading-tight font-semibold text-red-100">
+                        I confirm that I want to permanently delete this team and cancel all passes.
+                      </span>
+                    </label>
+
+                    <div className="flex items-center gap-2 pt-1">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          setShowDeleteConfirm(false);
+                          setDeleteConfirmChecked(false);
+                        }}
+                        className="rounded-xl text-xs text-muted-foreground hover:text-foreground"
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        type="button"
+                        disabled={!deleteConfirmChecked || deletingTeam}
+                        onClick={handleDeleteTeam}
+                        className="rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs px-4 shadow-glow disabled:opacity-50"
+                      >
+                        {deletingTeam ? "Deleting Squad..." : "Permanently Delete Team"}
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Member Action: Leave Squad (Teammate only) */}
+            {isTeammate && !isLeader && !isEventClosed && (
+              <div className="rounded-2xl border border-amber-500/30 bg-amber-950/20 p-4 space-y-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <p className="text-xs font-bold text-foreground">Want to leave this squad?</p>
+                    <p className="text-[11px] text-muted-foreground mt-0.5">
+                      You will be removed from &quot;{teamName}&quot; and can join or create another team.
+                    </p>
+                  </div>
+                  {!showLeaveConfirm && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowLeaveConfirm(true)}
+                      className="border-amber-500/40 text-amber-400 hover:bg-amber-500/15 hover:text-amber-300 text-xs rounded-xl shrink-0 self-start sm:self-auto"
+                    >
+                      Leave Squad
+                    </Button>
+                  )}
+                </div>
+
+                {showLeaveConfirm && (
+                  <div className="rounded-xl border border-amber-500/50 bg-amber-950/40 p-3.5 space-y-3 text-xs">
+                    <p className="text-amber-200 leading-relaxed font-medium">
+                      Are you sure you want to leave <strong>&quot;{teamName}&quot;</strong>? Your current entry pass will be cancelled, and you will be free to join or create another squad.
+                    </p>
+
+                    <div className="flex items-center gap-2 pt-1">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setShowLeaveConfirm(false)}
+                        className="rounded-xl text-xs text-muted-foreground hover:text-foreground"
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        type="button"
+                        disabled={leavingTeam}
+                        onClick={handleLeaveTeam}
+                        className="rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-extrabold text-xs px-4 shadow-glow"
+                      >
+                        {leavingTeam ? "Leaving..." : "Yes, Leave Squad"}
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Unstop Legend */}

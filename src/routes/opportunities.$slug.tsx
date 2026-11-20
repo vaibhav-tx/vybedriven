@@ -27,6 +27,7 @@ import {
   LogIn,
   Info,
   Share2,
+  FileText,
 } from "lucide-react";
 import {
   Dialog,
@@ -2007,6 +2008,12 @@ function OpportunityDetails() {
         registration={userRegRecord}
         open={teamModalOpen}
         onOpenChange={setTeamModalOpen}
+        onUpdated={() => {
+          refetchRegistrations();
+        }}
+        onDeleted={() => {
+          refetchRegistrations();
+        }}
       />
 
       {/* Idea Submission (PPT Round) Modal */}

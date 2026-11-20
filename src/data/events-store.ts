@@ -834,6 +834,130 @@ export function updateTeamRoster(
   return updated;
 }
 
+// Delete entire team registration (Team Leader or Platform Admin only)
+export async function deleteTeamRegistration(
+  registrationId: string,
+  user?: { id?: string; email?: string | null } | null
+): Promise<boolean> {
+  const list = getStoredRegistrations();
+  const index = list.findIndex((r) => r.id === registrationId);
+  if (index === -1) {
+    throw new Error("Team registration record not found.");
+  }
+  const current = list[index];
+
+  const uId = user?.id?.trim();
+  const uEmail = user?.email?.trim().toLowerCase();
+  const isLeader =
+    (uId && current.userId && current.userId === uId) ||
+    (uEmail && current.email.toLowerCase() === uEmail) ||
+    isPlatformAdmin(user);
+
+  if (!isLeader) {
+    throw new Error("Unauthorized: Only the Team Leader can delete this squad.");
+  }
+
+  // Remove from localStorage
+  const filtered = list.filter((r) => r.id !== registrationId);
+  if (typeof window !== "undefined") {
+    localStorage.setItem(STORAGE_REGISTRATIONS, JSON.stringify(filtered));
+    notifyStoreChange();
+  }
+
+  // Cloud sync to Supabase: mark as deleted/archived so team is removed
+  try {
+    const { supabase } = await import("@/integrations/supabase/client");
+    await supabase
+      .from("registrations" as any)
+      .update({
+        status: "deleted",
+        opportunity_slug: "deleted",
+        team_name: "[Deleted Squad]",
+      })
+      .eq("id", registrationId);
+  } catch (err) {
+    console.warn("[Cloud Delete Team] Error syncing deletion to Supabase:", err);
+  }
+
+  return true;
+}
+
+// Leave a team (Team Member only)
+export async function leaveTeamRegistration(
+  registrationId: string,
+  user: { id?: string; email?: string | null }
+): Promise<EventRegistration> {
+  if (!user?.email && !user?.id) {
+    throw new Error("Please sign in to leave the squad.");
+  }
+
+  const list = getStoredRegistrations();
+  const index = list.findIndex((r) => r.id === registrationId);
+  if (index === -1) {
+    throw new Error("Team registration record not found.");
+  }
+  const current = list[index];
+
+  const uEmail = user.email?.trim().toLowerCase();
+  const uId = user.id?.trim();
+
+  // If user is the leader, they must delete the team instead of leaving
+  if ((uId && current.userId === uId) || (uEmail && current.email.toLowerCase() === uEmail)) {
+    throw new Error("Team Leaders cannot leave the squad. You can delete the team if you wish to start over.");
+  }
+
+  const existingTeammates = Array.isArray(current.teammates) ? current.teammates : [];
+  const updatedTeammates = existingTeammates.filter(
+    (t) =>
+      typeof t === "object" &&
+      t &&
+      !(
+        (uEmail && typeof t.email === "string" && t.email.trim().toLowerCase() === uEmail) ||
+        (uId && (t as any).userId === uId)
+      )
+  );
+
+  if (updatedTeammates.length === existingTeammates.length) {
+    throw new Error("You are not listed as an active member of this squad.");
+  }
+
+  const teamSummary = updatedTeammates
+    .map((t) => `${(t.name || "Member").trim()} (${(t.email || "").trim()})`)
+    .join(", ");
+
+  const updated: EventRegistration = {
+    ...current,
+    teammates: updatedTeammates,
+    teamMembers: teamSummary || undefined,
+    teamSize: `${1 + updatedTeammates.length} members`,
+    updatedAt: new Date().toISOString(),
+  };
+
+  list[index] = updated;
+
+  if (typeof window !== "undefined") {
+    localStorage.setItem(STORAGE_REGISTRATIONS, JSON.stringify(list));
+    notifyStoreChange();
+  }
+
+  // Cloud sync to Supabase
+  try {
+    const { supabase } = await import("@/integrations/supabase/client");
+    await supabase
+      .from("registrations" as any)
+      .update({
+        team_size: updated.teamSize,
+        team_members: updated.teamMembers,
+        teammates: updated.teammates,
+      })
+      .eq("id", updated.id);
+  } catch (err) {
+    console.warn("[Cloud Leave Team] Error updating team on Supabase:", err);
+  }
+
+  return updated;
+}
+
 // Confirm teammate invitation (called when teammate accepts from mail or banner)
 export function confirmTeammateInvitation(
   registrationId: string,
