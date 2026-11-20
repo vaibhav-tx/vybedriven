@@ -1586,16 +1586,16 @@ function OpportunityDetails() {
                 {/* Already Registered Card */}
                 {isRegistered ? (
                   <div className="mt-5 space-y-4">
-                    {/* Unstop-Style Round 1: Idea Submission (PPT Round) Widget - Only visible when team has at least 2 members */}
-                    {(userRegRecord?.teamType !== "team" || (1 + (userRegRecord.teammates?.length || 0)) >= 2) && (
+                    {/* Unstop-Style Round 1: Idea Submission (PPT Round) Widget - Only active when team has at least 2 members */}
+                    {(userRegRecord?.teamType !== "team" || (1 + (userRegRecord.teammates?.length || 0)) >= 2) ? (
                       <div className="rounded-2xl border-2 border-neon/50 bg-gradient-to-br from-neon/15 via-emerald-950/20 to-black p-4 shadow-glow-soft">
                         <div className="flex items-center justify-between">
                           <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/50 bg-emerald-500/20 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-emerald-400">
                             <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                            Round Live
+                            Round Live · Via Vybe Driven
                           </span>
                           <span className="text-[11px] text-muted-foreground font-mono">
-                            Dec 31, 2026
+                            {item.slug === "quasar-5-international-hackathon-2027" ? "Dec 25, 2026" : "Dec 31, 2026"}
                           </span>
                         </div>
 
@@ -1606,7 +1606,7 @@ function OpportunityDetails() {
                           {item.slug === "goa-buildathon-2027"
                             ? "Submit your team's proposed solution deck to qualify for the Grand Finale in Goa."
                             : item.slug === "quasar-5-international-hackathon-2027"
-                            ? "Submit your team's proposed solution deck to qualify for the 36-Hour Offline Finale at VPPCOE & VA Sion, Mumbai."
+                            ? "Submit your team's proposed solution deck via Vybe Driven to qualify for Round 1 & the 36-Hour Offline Finale at VPPCOE & VA Sion, Mumbai."
                             : "Submit your team's proposed solution deck to qualify for the finale."}
                         </p>
 
@@ -1623,7 +1623,7 @@ function OpportunityDetails() {
                             ) : (
                               <>
                                 <Sparkles className="size-4 mr-1.5" />
-                                Submit Idea / PPT Round 1 🚀
+                                Submit Idea / PPT Round 🚀
                               </>
                             )}
                           </Button>
@@ -1650,6 +1650,24 @@ function OpportunityDetails() {
                             </div>
                           )}
                         </div>
+                      </div>
+                    ) : (
+                      <div className="rounded-2xl border border-amber-500/40 bg-amber-500/10 p-4 text-xs">
+                        <div className="flex items-center gap-2 font-bold text-sm text-amber-300">
+                          <Lock className="size-4 text-amber-400" />
+                          <span>PPT Submission Locked (2+ Members Required)</span>
+                        </div>
+                        <p className="mt-1.5 text-amber-200/90 leading-relaxed">
+                          PPT submission round via Vybe Driven unlocks once your squad has at least <strong>2 members</strong> (currently {1 + (userRegRecord?.teammates?.length || 0)}/4). Invite a teammate using your team code <strong>{userRegRecord?.teamCode || userRegRecord?.id}</strong>.
+                        </p>
+                        <Button
+                          size="sm"
+                          onClick={() => setTeamModalOpen(true)}
+                          className="mt-3 w-full rounded-xl bg-amber-500 text-black font-extrabold text-xs hover:bg-amber-400"
+                        >
+                          <Users className="size-3.5 mr-1.5" />
+                          Invite Teammate to Unlock PPT Round
+                        </Button>
                       </div>
                     )}
 
@@ -1702,15 +1720,25 @@ function OpportunityDetails() {
 
                     {/* For Quasar 5.0, Problem Statements link for registered builders */}
                     {item.slug === "quasar-5-international-hackathon-2027" && (
-                      <a
-                        href="https://quasar-vppcoe.vercel.app/#tracks"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-2 rounded-xl border border-neon/50 bg-neon/15 px-3 py-2 text-xs font-bold text-neon hover:bg-neon hover:text-black transition"
-                      >
-                        <span>▶ Quasar_Problem Statements ◀</span>
-                        <ExternalLink className="size-3.5" />
-                      </a>
+                      <div className="space-y-2">
+                        <a
+                          href="https://quasar-vppcoe.vercel.app/#tracks"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-center gap-2 rounded-xl border border-neon/50 bg-neon/15 px-3 py-2 text-xs font-bold text-neon hover:bg-neon hover:text-black transition"
+                        >
+                          <span>▶ Quasar_Problem Statements &amp; Tracks ◀</span>
+                          <ExternalLink className="size-3.5" />
+                        </a>
+                        <button
+                          type="button"
+                          onClick={() => setIdeaModalOpen(true)}
+                          className="flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-surface px-3 py-2 text-xs font-semibold text-foreground hover:border-neon/50 hover:text-neon transition"
+                        >
+                          <FileText className="size-3.5 text-neon" />
+                          <span>Official PPT Deck Template &amp; Submission</span>
+                        </button>
+                      </div>
                     )}
 
                     {/* Official WhatsApp Community - EXCLUSIVE TO REGISTERED SQUADS & TEAMS */}

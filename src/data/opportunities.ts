@@ -437,7 +437,7 @@ Participation is application-based and limited to 150–200 selected participant
     teamSize: "2–4 Members",
     fee: "Free",
     status: "Registration open",
-    registrationNote: "Round 0 (PPT Submission) is open until 25 Dec 2026. Register on Vybe Driven to secure your team slot and submit your idea deck.",
+    registrationNote: "Round 0 (PPT Submission) is conducted directly via Vybe Driven until 25 Dec 2026. Register your squad (minimum 2 members) to unlock problem statements, download the official PPT template, and submit your deck.",
     groupUrl: "https://chat.whatsapp.com/K3sHKGtXYJ06l02R2eLmVA",
     groupLabel: "Join Quasar WhatsApp Group",
     contacts: [
@@ -466,16 +466,18 @@ Key Highlights:
 • Evaluation: Two-stage review (Online PPT Submission & Shortlist Presentation, followed by 36-hour Offline Finale)`,
     schedule: [
       {
-        title: "Round 0 : PPT Submission Round",
+        title: "Round 0 : PPT Submission Round (Via Vybe Driven)",
         stageBadge: "Round 0",
         dateBadge: "Dec 1",
         date: "01 Dec 26, 12:00 AM IST → 25 Dec 26, 11:59 PM IST",
         description:
-          "In the first round of Quasar 5.0, participants are required to submit a PowerPoint presentation outlining their proposed solutions & approaches to given problem statements.",
+          "In the first round of Quasar 5.0, registered squads submit their PowerPoint presentation deck outlining their proposed solutions & approaches to the selected problem statement directly through Vybe Driven.",
         bullets: [
-          "This submission must outline the identified problem, the innovative solution, and the expected impact.",
-          "It should include a brief introduction of team members, an overview of beneficiaries & a summary of progress.",
-          "This round is crucial for teams to demonstrate their understanding of the problem and showcase creativity and technical skills for advancement.",
+          "Submitted directly via Vybe Driven: The online PPT submission portal activates directly on this website once your squad has at least 2 members registered (teams of 2–4 members).",
+          "Team Submissions: Once a minimum of 2 members join the squad, any team member (or team leader) can submit or update the PowerPoint deck through Vybe Driven.",
+          "Official PPT Template & Problem Statements: The official presentation template & problem statements are made available right here on Vybe Driven once your team registration is completed.",
+          "Deck Requirements: This submission must outline the identified problem statement, your innovative solution, technical feasibility/stack, and expected impact.",
+          "Evaluation: Problem understanding, engineering approach, innovation, feasibility, and impact to shortlist teams for Round 1 & the offline finale.",
         ],
         evaluation: "Problem understanding, engineering approach, innovation, feasibility, and impact.",
       },
@@ -534,7 +536,7 @@ Key Highlights:
         day: "1",
         month: "Dec",
         fullDate: "01 Dec 26, 12:00 AM IST",
-        title: "PPT Submission Round (Via UnStop) Starts",
+        title: "PPT Submission Round (Via Vybe Driven) Starts",
       },
       {
         day: "21",
@@ -546,7 +548,7 @@ Key Highlights:
         day: "25",
         month: "Dec",
         fullDate: "25 Dec 26, 11:59 PM IST",
-        title: "PPT Submission Round End",
+        title: "PPT Submission Round (Via Vybe Driven) Ends",
       },
       {
         day: "2",

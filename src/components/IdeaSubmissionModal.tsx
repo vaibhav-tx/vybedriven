@@ -148,19 +148,19 @@ export function IdeaSubmissionModal({
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-neon/50 bg-neon/15 px-3 py-1 text-[11px] font-bold text-neon uppercase tracking-wider">
               <span className="size-1.5 rounded-full bg-neon animate-pulse" />
-              Round 1 Live · PPT Round
+              Round Live · PPT Round (Via Vybe Driven)
             </span>
             <span className="text-xs text-muted-foreground font-mono">
-              Deadline: Dec 31, 2026
+              Deadline: {registration.eventName?.includes("Quasar") ? "Dec 25, 2026" : "Dec 31, 2026"}
             </span>
           </div>
 
           <DialogTitle className="text-xl sm:text-2xl font-black text-foreground tracking-tight">
-            Idea Submission — Goa Buildathon '27
+            Idea Submission — {registration.eventName || "Quasar 5.0"}
           </DialogTitle>
 
           <DialogDescription className="text-xs sm:text-sm text-muted-foreground">
-            Submit your team's proposed solution deck. Both team leader and verified teammates can submit or update this entry before the deadline.
+            Submit your team's proposed solution deck through Vybe Driven. Both team leader and verified teammates can submit or update this entry before the deadline.
           </DialogDescription>
         </DialogHeader>
 
