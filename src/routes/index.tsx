@@ -205,30 +205,27 @@ function Partners() {
 }
 
 const HOMEPAGE_PRIORITY: Record<string, number> = {
-  // Top Featured Hackathons
-  "quasar-5-international-hackathon-2027": 1,
-  "goa-buildathon-2027": 2,
-  "beyond-9to5-buildathon-bengaluru-2026": 3,
-  "beyond-9to5-buildathon-mumbai-2026": 4,
-  "code-relay-5-iit-bhubaneswar": 5,
-  "apify-ai-tools-that-earn-bangalore-2026": 6,
-  "lighthouse-hackathon-chandigarh-university-2027": 7,
-  "hacksprint-3-kahe-coimbatore": 8,
-  "skysparks-boeing-techkriti-iit-kanpur-2027": 9,
-  "shaastra-ctf-iit-madras-2027": 10,
-  // Competitions & Awards
-  "luminar-creators-award-2027": 11,
-  "idea-competition-2026": 12,
+  // Grid Priority: Start with Luminar Creators Award, followed by Top Hackathons & Challenges
+  "luminar-creators-award-2027": 1,
+  "beyond-9to5-buildathon-bengaluru-2026": 2,
+  "beyond-9to5-buildathon-mumbai-2026": 3,
+  "code-relay-5-iit-bhubaneswar": 4,
+  "apify-ai-tools-that-earn-bangalore-2026": 5,
+  "lighthouse-hackathon-chandigarh-university-2027": 6,
+  "hacksprint-3-kahe-coimbatore": 7,
+  "skysparks-boeing-techkriti-iit-kanpur-2027": 8,
+  "shaastra-ctf-iit-madras-2027": 9,
+  "idea-competition-2026": 10,
   // Top Meetups & Summits
-  "semiconductor-deep-dive-hackerfab-mumbai": 10,
-  "mumbai-community-year-end-meet-ai-agents": 11,
-  "nerds-winter-of-code-paytm-noida-2026": 12,
-  "designmyx-26-myntra-bangalore": 13,
-  "bangalore-product-mixer-product-reactor": 14,
-  "unboxed-reimagining-stem-education-mumbai": 15,
-  "lovable-builders-in-bangalore-2026": 16,
-  "the-big-aaaart-club-delhi-2026": 17,
-  "paranormal-real-or-not-philosophical-discussion": 18,
+  "semiconductor-deep-dive-hackerfab-mumbai": 11,
+  "mumbai-community-year-end-meet-ai-agents": 12,
+  "nerds-winter-of-code-paytm-noida-2026": 13,
+  "designmyx-26-myntra-bangalore": 14,
+  "bangalore-product-mixer-product-reactor": 15,
+  "unboxed-reimagining-stem-education-mumbai": 16,
+  "lovable-builders-in-bangalore-2026": 17,
+  "the-big-aaaart-club-delhi-2026": 18,
+  "paranormal-real-or-not-philosophical-discussion": 19,
 };
 
 function Events() {
@@ -237,7 +234,17 @@ function Events() {
   const featuredGoa = opportunities.find((item) => item.slug === "goa-buildathon-2027");
   const list = useMemo(() => {
     return opportunities
-      .filter((item) => item.status !== "Past event" && matchesHomeFilter(item, f))
+      .filter((item) => {
+        if (item.status === "Past event") return false;
+        // Do not duplicate the top featured hackathons in the home page grid below
+        if (
+          item.slug === "quasar-5-international-hackathon-2027" ||
+          item.slug === "goa-buildathon-2027"
+        ) {
+          return false;
+        }
+        return matchesHomeFilter(item, f);
+      })
       .sort((a, b) => {
         const pA = HOMEPAGE_PRIORITY[a.slug] ?? 99;
         const pB = HOMEPAGE_PRIORITY[b.slug] ?? 99;
