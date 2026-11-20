@@ -82,6 +82,7 @@ export const Route = createFileRoute("/opportunities/$slug")({
 
     return {
       meta: [
+        { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=5" },
         { title: pageTitle },
         { name: "description", content: loaderData.description },
         { name: "keywords", content: keywords },
@@ -527,45 +528,36 @@ function OpportunityDetails() {
   const [ideaModalOpen, setIdeaModalOpen] = useState(false);
 
   const incomingJoinCode = search.joinCode || search.joinTeam;
-
-  // Mandatory Auth Gate: if visitor is not logged in, prompt them to sign in or create account
-  useEffect(() => {
-    if (!loading && !user && !incomingJoinCode) {
-      setExploreGateOpen(true);
-    } else {
-      setExploreGateOpen(false);
-    }
-  }, [user, loading, incomingJoinCode]);
+  const [activeJoinCode, setActiveJoinCode] = useState<string | undefined>(incomingJoinCode);
 
   // Auto-open modal or redirect if requested via ?register=1 or ?joinCode=...
   useEffect(() => {
     if (search.register === "1") {
       if (item.registrationUrl) {
-        if (user) {
-          window.open(item.registrationUrl, "_blank", "noopener,noreferrer");
-        } else if (!loading) {
-          setExploreGateOpen(true);
-        }
+        window.open(item.registrationUrl, "_blank", "noopener,noreferrer");
       } else {
+        setActiveJoinCode(undefined);
         setRegModalOpen(true);
       }
     } else if (incomingJoinCode) {
+      setActiveJoinCode(incomingJoinCode);
       setRegModalOpen(true);
     }
-  }, [search.register, incomingJoinCode, item.registrationUrl, user, loading]);
+  }, [search.register, incomingJoinCode, item.registrationUrl]);
 
   const handleRegisterClick = () => {
+    setActiveJoinCode(undefined);
+    setRegModalOpen(true);
+  };
+
+  const handleJoinClick = () => {
+    setActiveJoinCode("JOIN");
     setRegModalOpen(true);
   };
 
   const handleExternalRegisterClick = () => {
     if (!item.registrationUrl) return;
-    if (!user) {
-      setExploreGateOpen(true);
-      toast.info("Please sign in or create a free builder account to proceed to registration.");
-    } else {
-      window.open(item.registrationUrl, "_blank", "noopener,noreferrer");
-    }
+    window.open(item.registrationUrl, "_blank", "noopener,noreferrer");
   };
 
   // Auto-redirect to external registration if redirected after Google OAuth
@@ -1377,43 +1369,43 @@ function OpportunityDetails() {
                             </div>
                           </div>
                         ) : rew.type === "cash" ? (
-                          /* Horizontal Problem Statement Card (Exact Unstop Image 3 style) */
+                          /* Premium Problem Statement Card with glowing gradient and golden trophy badge */
                           <div
                             key={rew.title}
-                            className="relative overflow-hidden rounded-2xl border border-border/80 bg-surface/90 p-4 sm:p-5 transition hover:border-emerald-500/50 hover:bg-surface-2/90 shadow-sm"
+                            className="relative overflow-hidden rounded-2xl border border-emerald-500/40 bg-gradient-to-r from-emerald-950/40 via-surface to-[#061209] p-4 sm:p-5 transition hover:border-emerald-400 hover:shadow-[0_4px_24px_rgba(16,185,129,0.18)] shadow-sm"
                           >
-                            <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-emerald-400 to-teal-500" />
+                            <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-emerald-400 via-teal-300 to-cyan-400" />
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 pl-2 sm:pl-3">
-                              <div className="flex items-center gap-4 sm:gap-6 min-w-0">
+                              <div className="flex items-center gap-3.5 sm:gap-6 min-w-0">
                                 {/* Cash amount badge */}
-                                <div className="flex flex-col shrink-0 min-w-[95px] sm:min-w-[115px]">
-                                  <span className="text-xl sm:text-2xl font-black text-emerald-400 font-mono leading-none tracking-tight">
+                                <div className="flex flex-col shrink-0 min-w-[100px] sm:min-w-[125px] rounded-xl bg-emerald-500/15 border border-emerald-500/40 p-2 sm:p-2.5 text-center shadow-inner">
+                                  <span className="text-xl sm:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-300 font-mono leading-none tracking-tight">
                                     {rew.amount}
                                   </span>
-                                  <span className="text-xs sm:text-sm font-black text-foreground uppercase tracking-wider mt-1">
+                                  <span className="text-[10px] sm:text-xs font-black text-emerald-300 uppercase tracking-widest mt-1">
                                     {rew.amountSub || "CASH"}
                                   </span>
                                 </div>
 
                                 {/* Divider */}
-                                <div className="h-8 sm:h-10 w-[1px] bg-border/80 shrink-0" />
+                                <div className="h-9 sm:h-11 w-[1px] bg-border/80 shrink-0" />
 
                                 {/* Problem Statement details */}
                                 <div className="min-w-0">
-                                  <h3 className="text-base sm:text-lg font-bold text-foreground">
+                                  <h3 className="text-base sm:text-lg font-black text-foreground tracking-tight">
                                     {rew.title}
                                   </h3>
-                                  <p className="mt-0.5 text-xs sm:text-sm text-muted-foreground truncate sm:whitespace-normal">
+                                  <p className="mt-0.5 text-xs sm:text-sm text-foreground/85 leading-relaxed">
                                     {rew.description}
                                   </p>
                                 </div>
                               </div>
 
-                              {/* Certificate Badge */}
+                              {/* Certificate & Trophy Badge */}
                               <div className="shrink-0 flex items-center self-start sm:self-auto pt-1 sm:pt-0">
-                                <span className="inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-surface-2/80 px-3.5 py-1.5 text-xs font-semibold text-foreground/90 shadow-sm">
-                                  <span>📜</span>
-                                  <span>{rew.badge || "Certificate"}</span>
+                                <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/50 bg-amber-400/15 px-3.5 py-1.5 text-xs font-bold text-amber-300 shadow-[0_0_12px_rgba(251,191,36,0.2)]">
+                                  <Trophy className="size-3.5 text-amber-400 shrink-0" />
+                                  <span>{rew.badge || "Prize Winner + Certificate"}</span>
                                 </span>
                               </div>
                             </div>
@@ -1794,43 +1786,53 @@ function OpportunityDetails() {
                     </Link>
                   </div>
                 ) : (
-                  <div className="mt-5 space-y-3">
-                    {/* Primary Registration Action */}
+                  <div className="mt-5 space-y-2.5">
+                    {/* Primary Registration Action & Join Team Option (3 options) */}
                     {item.registrationUrl ? (
                       <Button
                         type="button"
                         onClick={handleExternalRegisterClick}
-                        className="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-brand px-6 py-6 text-sm font-bold text-primary-foreground shadow-glow hover:brightness-105 transition"
+                        className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-brand px-6 py-5 text-sm font-bold text-primary-foreground shadow-glow hover:brightness-105 transition"
                       >
                         {item.registrationLabel || "Register Now"}
                         <ArrowRight className="size-4" />
                       </Button>
                     ) : (
                       item.status !== "Sold out" && (
-                        <Button
-                          type="button"
-                          onClick={handleRegisterClick}
-                          className="w-full rounded-full bg-gradient-brand text-primary-foreground font-bold py-6 text-sm shadow-glow hover:brightness-105"
-                        >
-                          Register Now
-                          <Sparkles className="ml-2 inline size-4" />
-                        </Button>
+                        <>
+                          <Button
+                            type="button"
+                            onClick={handleRegisterClick}
+                            className="w-full rounded-2xl bg-gradient-brand text-primary-foreground font-bold py-5 text-sm shadow-glow hover:brightness-105 flex items-center justify-center gap-2"
+                          >
+                            <span>Register Squad / Solo</span>
+                            <Sparkles className="size-4" />
+                          </Button>
+
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={handleJoinClick}
+                            className="w-full rounded-2xl border-neon/50 bg-neon/10 text-neon font-bold py-5 text-sm shadow-sm hover:bg-neon hover:text-black transition flex items-center justify-center gap-2"
+                          >
+                            <Users className="size-4" />
+                            <span>Join Team with Code</span>
+                          </Button>
+                        </>
                       )
                     )}
 
-                    {/* Clean Sign In Option for Already Registered Users */}
-                    {!user && (
-                      <div className="text-center pt-1">
-                        <button
-                          type="button"
-                          onClick={() => setExploreGateOpen(true)}
-                          className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-neon transition cursor-pointer"
-                        >
-                          <LogIn className="size-3.5" />
-                          <span>Already registered? Sign in to view pass</span>
-                        </button>
-                      </div>
-                    )}
+                    {/* Clean Sign In / View Pass Option */}
+                    <div className="text-center pt-1">
+                      <Link
+                        to={user ? "/profile" : "/auth"}
+                        search={user ? undefined : { mode: "signin", next: `/opportunities/${item.slug}` }}
+                        className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-neon transition cursor-pointer"
+                      >
+                        <LogIn className="size-3.5" />
+                        <span>Already in a team? {user ? "View in Profile" : "Sign in to view pass"}</span>
+                      </Link>
+                    </div>
                   </div>
                 )}
 
@@ -1941,37 +1943,49 @@ function OpportunityDetails() {
                 </div>
               ) : (
                 <div className="space-y-2">
-                  {item.registrationUrl ? (
-                    <Button
-                      type="button"
-                      onClick={handleExternalRegisterClick}
-                      className="w-full rounded-2xl bg-gradient-brand text-primary-foreground font-black h-11 text-sm shadow-glow hover:brightness-105 active:scale-[0.98] transition flex items-center justify-center gap-2"
-                    >
-                      <span>{item.registrationLabel || "Register"}</span>
-                      <ArrowRight className="size-4" />
-                    </Button>
-                  ) : (
-                    <Button
-                      type="button"
-                      onClick={handleRegisterClick}
-                      className="w-full rounded-2xl bg-gradient-brand text-primary-foreground font-black h-11 text-sm shadow-glow hover:brightness-105 active:scale-[0.98] transition flex items-center justify-center gap-2"
-                    >
-                      <span>Register</span>
-                      <Sparkles className="size-4" />
-                    </Button>
-                  )}
-
-                  {!user && (
-                    <div className="text-center">
-                      <button
+                  <div className="grid grid-cols-2 gap-2">
+                    {item.registrationUrl ? (
+                      <Button
                         type="button"
-                        onClick={() => setExploreGateOpen(true)}
-                        className="text-[11px] text-muted-foreground hover:text-neon transition cursor-pointer"
+                        onClick={handleExternalRegisterClick}
+                        className="col-span-2 w-full rounded-2xl bg-gradient-brand text-primary-foreground font-black h-11 text-sm shadow-glow hover:brightness-105 active:scale-[0.98] transition flex items-center justify-center gap-2"
                       >
-                        Already registered? <span className="font-bold text-neon underline">Login</span>
-                      </button>
-                    </div>
-                  )}
+                        <span>{item.registrationLabel || "Register"}</span>
+                        <ArrowRight className="size-4" />
+                      </Button>
+                    ) : (
+                      <>
+                        <Button
+                          type="button"
+                          onClick={handleRegisterClick}
+                          className="w-full rounded-2xl bg-gradient-brand text-primary-foreground font-black h-11 text-xs min-[360px]:text-sm shadow-glow hover:brightness-105 active:scale-[0.98] transition flex items-center justify-center gap-1.5"
+                        >
+                          <span>Register</span>
+                          <Sparkles className="size-3.5" />
+                        </Button>
+
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={handleJoinClick}
+                          className="w-full rounded-2xl border-neon/50 bg-neon/10 text-neon font-black h-11 text-xs min-[360px]:text-sm shadow-sm hover:bg-neon hover:text-black active:scale-[0.98] transition flex items-center justify-center gap-1.5"
+                        >
+                          <Users className="size-3.5" />
+                          <span>Join Team</span>
+                        </Button>
+                      </>
+                    )}
+                  </div>
+
+                  <div className="text-center pt-0.5">
+                    <Link
+                      to={user ? "/profile" : "/auth"}
+                      search={user ? undefined : { mode: "signin", next: `/opportunities/${item.slug}` }}
+                      className="text-[11px] text-muted-foreground hover:text-neon transition cursor-pointer"
+                    >
+                      Already in a team? <span className="font-bold text-neon underline">{user ? "View in Profile" : "Login"}</span>
+                    </Link>
+                  </div>
                 </div>
               )}
             </div>
@@ -1986,7 +2000,7 @@ function OpportunityDetails() {
         opportunity={item}
         open={regModalOpen}
         onOpenChange={setRegModalOpen}
-        initialJoinCode={incomingJoinCode}
+        initialJoinCode={activeJoinCode}
       />
 
       {/* Team Management Modal */}
