@@ -284,7 +284,7 @@ function Events() {
               <div className="flex flex-wrap items-center gap-2">
                 <span className="text-xs font-semibold tracking-[0.18em] text-neon">{featuredQuasar.tag.toUpperCase()}</span>
                 <span className="rounded-full border border-neon/40 bg-neon/10 px-2.5 py-0.5 text-[11px] font-semibold text-neon">
-                  Official Platform Partner: Vybe Driven
+                  Official Co-Powering Partner: Vybe Driven
                 </span>
               </div>
               <h3 className="mt-2.5 sm:mt-3 text-2xl min-[400px]:text-3xl sm:text-4xl font-extrabold tracking-tight">{featuredQuasar.title}</h3>
@@ -320,7 +320,7 @@ function Events() {
                 </div>
               )}
               <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3">
-                <Link to="/opportunities/$slug" params={{ slug: featuredQuasar.slug }} search={{ register: "1" }} className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-gradient-brand px-6 py-3.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110 hover:shadow-glow">Register Squad Now <ArrowRight className="size-4" /></Link>
+                <Link to="/opportunities/$slug" params={{ slug: featuredQuasar.slug }} search={{ register: "1" }} className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-gradient-brand px-6 py-3.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110 hover:shadow-glow">Register Now <ArrowRight className="size-4" /></Link>
                 <Link to="/opportunities/$slug" params={{ slug: featuredQuasar.slug }} className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-neon/40 bg-surface/80 px-6 py-3.5 text-sm font-semibold text-neon transition hover:border-neon hover:bg-neon/15 hover:shadow-glow-soft">Explore Quasar 5.0</Link>
               </div>
             </div>

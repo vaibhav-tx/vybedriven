@@ -22,11 +22,21 @@ export type OpportunityPerk = {
 
 export type OpportunityScheduleStage = {
   title: string;
+  stageBadge?: string;
   date: string;
   dateBadge?: string;
   description: string;
   bullets?: string[];
   evaluation?: string;
+  actionUrl?: string;
+  actionLabel?: string;
+};
+
+export type OpportunityImportantDate = {
+  day: string;
+  month: string;
+  fullDate: string;
+  title: string;
 };
 
 export type OpportunityReward = {
@@ -66,7 +76,10 @@ export type Opportunity = {
   contacts?: { name: string; phone: string }[];
   relatedLinks?: { label: string; url: string }[];
   overview: string;
-  schedule: { title: string; date: string; description: string }[];
+  schedule?: OpportunityScheduleStage[];
+  importantDates?: OpportunityImportantDate[];
+  rewards?: OpportunityReward[];
+  rewardsFootnote?: string;
 };
 
 export const opportunities: Opportunity[] = [
@@ -403,8 +416,8 @@ Participation is application-based and limited to 150–200 selected participant
       {
         icon: "handshake",
         emoji: "🤝",
-        title: "Platform Partner: Vybe Driven",
-        description: "Official platform and technology partner powering registrations, team rosters & discovery.",
+        title: "Co-Powered by Vybe Driven",
+        description: "Official co-powering partner powering registrations, team rosters & builder discovery.",
       },
       {
         icon: "coffee",
@@ -416,7 +429,7 @@ Participation is application-based and limited to 150–200 selected participant
     image: "/events/quasar-5-banner.jpg",
     imageFit: "contain",
     imagePosition: "center center",
-    organizer: "PVPPCOE Mumbai · Powered by ATS & Unstop · Vybe Driven (Platform Partner)",
+    organizer: "PVPPCOE Mumbai · Powered by ATS & Unstop · Co-Powered by Vybe Driven",
     organizerEmail: "quasar@pvppcoe.ac.in",
     registrationDeadline: "Dec 21, 2026 · 11:59 PM IST",
     eligibility: "Inter-college and inter-organization teams across undergraduate, postgraduate, engineering & tech students nationwide",
@@ -424,6 +437,8 @@ Participation is application-based and limited to 150–200 selected participant
     fee: "Free",
     status: "Registration open",
     registrationNote: "Round 0 (PPT Submission) is open until 25 Dec 2026. Register on Vybe Driven to secure your team slot and submit your idea deck.",
+    groupUrl: "https://chat.whatsapp.com/K3sHKGtXYJ06l02R2eLmVA",
+    groupLabel: "Join Quasar WhatsApp Group",
     contacts: [
       { name: "Saish Gosavi (Organizer)", phone: "+91 91374 55278" },
       { name: "Shanmukh Tawde (Organizer)", phone: "+91 98201 12919" },
@@ -445,95 +460,165 @@ Key Highlights:
 • Dates: 23–24 January 2027
 • Venue: Vasantdada Patil Pratishthan's College of Engineering and Visual Arts, Sion, Mumbai
 • Registration Fee: Completely free
-• Prize Pool: ₹1,50,000 Cash (₹30,000 Cash x 5 Problem Statements)
+• Prize Pool: ₹1,50,000 Cash (₹30,000 Cash x 5 Problem Statements via Cheque)
 • Eligibility: Inter-college and inter-organization teams (2–4 members)
 • Evaluation: Two-stage review (Online PPT Submission & Shortlist Presentation, followed by 36-hour Offline Finale)`,
     schedule: [
       {
-        title: "Revealing the Problem Statements",
-        dateBadge: "01 Nov",
-        date: "01 Nov 26 · 12:00 AM IST",
-        description: "Official release of the problem statements across technical tracks on the Quasar portal.",
+        title: "Round 0 : PPT Submission Round",
+        stageBadge: "Round 0",
+        dateBadge: "Dec 1",
+        date: "01 Dec 26, 12:00 AM IST → 25 Dec 26, 11:59 PM IST",
+        description:
+          "In the first round of Quasar 5.0, participants are required to submit a PowerPoint presentation outlining their proposed solutions & approaches to given problem statements.",
+        actionUrl: "https://quasar-vppcoe.vercel.app/#tracks",
+        actionLabel: "▶︎ Quasar_Problem Statements ◀︎",
+        bullets: [
+          "This submission must outline the identified problem, the innovative solution, and the expected impact.",
+          "It should include a brief introduction of team members, an overview of beneficiaries & a summary of progress.",
+          "This round is crucial for teams to demonstrate their understanding of the problem and showcase creativity and technical skills for advancement.",
+        ],
+        evaluation: "Problem understanding, engineering approach, innovation, feasibility, and impact.",
       },
       {
-        title: "Round 0: PPT Submission Round (Online)",
-        dateBadge: "01-25 Dec",
-        date: "01 Dec 26, 12:00 AM – 25 Dec 26, 11:59 PM IST",
-        description: "Submit a PowerPoint presentation outlining the proposed solution, technical feasibility, engineering approach, team intro, and expected impact.",
+        title: "Round 1: Online PPT Presentation",
+        stageBadge: "Round 1",
+        dateBadge: "Dec 21",
+        date: "21 Dec 26, 12:00 AM IST → 30 Dec 26, 11:59 PM IST",
+        description:
+          "Round 1 of Quasar 5.0 involves an online PowerPoint presentation in which participating teams must showcase their proposed solutions to the selected problem statements.",
+        bullets: [
+          "Presentations should highlight the relevance and impact of the proposed solution, along with its engineering approach, technical feasibility, and technologies involved.",
+          "Following submission, shortlisted teams will present their PPTs during live online evaluation sessions (5 minutes allocated per presentation).",
+          "Teams must effectively communicate their problem understanding, innovative approach, implementation strategy, and expected outcomes.",
+          "Crucial round for selecting teams to advance to the offline hackathon scheduled for 23–24 January 2027.",
+          "Invitations and instructions regarding PPT submissions and online evaluation will be communicated to participants via email.",
+        ],
+        evaluation: "5-minute live technical pitch, architecture feasibility, implementation roadmap, and jury Q&A.",
       },
       {
-        title: "Registration Closes",
-        dateBadge: "21 Dec",
-        date: "21 Dec 26 · 11:59 PM IST",
-        description: "Final deadline to complete squad registration on Vybe Driven and lock team members.",
+        title: "Final Offline Round : 36 Hour Hackathon",
+        stageBadge: "Final Round",
+        dateBadge: "Jan 23",
+        date: "23 Jan 27, 08:00 AM IST → 24 Jan 27, 11:59 PM IST",
+        description:
+          "During this round, participating teams present solutions to judges for evaluation and receive valuable feedback for improvement, refining outcomes during the non-stop 36-hour hackathon.",
+        bullets: [
+          "Teams will have the opportunity to refine and enhance their solutions during the 36-hour hackathon, incorporating jury feedback to develop more effective, innovative, and practical outcomes.",
+          "Emphasizes adaptability, creativity, technical expertise, and real-time problem-solving.",
+          "Teams will be evaluated on their ability to implement improvements, strengthen their solutions, and demonstrate innovation in addressing the given problem statements.",
+          "The final evaluation will play a crucial role in determining the winners of Quasar 5.0.",
+        ],
+        evaluation: "Working prototype, code quality, technical execution, user experience, and final presentation.",
+      },
+    ],
+    importantDates: [
+      {
+        day: "21",
+        month: "Dec",
+        fullDate: "21 Dec 26, 11:59 PM IST",
+        title: "Registration Deadline",
       },
       {
-        title: "Round 1: Online PPT Presentations",
-        dateBadge: "21-30 Dec",
-        date: "21 Dec 26 – 30 Dec 26 · Online Evaluation",
-        description: "Shortlisted teams deliver a 5-minute live online presentation to the evaluation panel covering problem understanding, technical architecture, and implementation strategy.",
+        day: "23",
+        month: "Oct",
+        fullDate: "23 Oct 26, 12:00 AM IST",
+        title: "Registrations Start",
       },
       {
+        day: "1",
+        month: "Nov",
+        fullDate: "01 Nov 26, 12:00 AM IST",
+        title: "Revealing the Problem Statement",
+      },
+      {
+        day: "1",
+        month: "Dec",
+        fullDate: "01 Dec 26, 12:00 AM IST",
+        title: "PPT Submission Round (Via UnStop) Starts",
+      },
+      {
+        day: "21",
+        month: "Dec",
+        fullDate: "21 Dec 26, 12:00 AM IST",
+        title: "Round 1: PPT Presentations Start",
+      },
+      {
+        day: "25",
+        month: "Dec",
+        fullDate: "25 Dec 26, 11:59 PM IST",
+        title: "PPT Submission Round End",
+      },
+      {
+        day: "2",
+        month: "Jan",
+        fullDate: "02 Jan 27, 12:00 AM IST",
         title: "Round 1 Result Declaration",
-        dateBadge: "02 Jan",
-        date: "02 Jan 27 · 12:00 AM IST",
-        description: "Official announcement of finalist teams qualifying for the on-site 36-hour hackathon in Mumbai.",
       },
       {
-        title: "Final Offline Round: 36-Hour Hackathon",
-        dateBadge: "23-24 Jan",
-        date: "23 Jan 27, 08:00 AM – 24 Jan 27, 11:59 PM IST",
-        description: "On-site 36-hour intense hackathon at PVPPCOE Sion Mumbai campus. Refine prototypes, incorporate mentor feedback, and pitch to jury for ₹1,50,000 cash prizes.",
+        day: "23",
+        month: "Jan",
+        fullDate: "23 Jan 27, 08:00 AM IST",
+        title: "Final Round : 36 Hour Hackathon",
       },
     ],
     rewards: [
       {
+        amount: "₹1,50,000",
+        amountSub: "CASH PRIZE POOL",
+        title: "Quasar 5.0 Flagship Prize Pool",
+        description: "Quasar 5.0 features a ₹1,50,000 prize pool, awarded to winning teams via cheque.",
+        badge: "Cheque & Trophy",
+        type: "cash",
+      },
+      {
         amount: "₹30,000",
         amountSub: "Cash Prize via Cheque",
         title: "Winner: Problem Statement 1",
-        description: "Awarded to the top scoring prototype solving Problem Statement 1, plus official Certificate of Excellence.",
-        badge: "Track 1 Winner",
+        description: "₹30,000 Cash awarded via cheque + Certificate of Excellence for the top solution in Problem Statement 1.",
+        badge: "Winner PS-1",
         type: "cash",
       },
       {
         amount: "₹30,000",
         amountSub: "Cash Prize via Cheque",
         title: "Winner: Problem Statement 2",
-        description: "Awarded to the top scoring prototype solving Problem Statement 2, plus official Certificate of Excellence.",
-        badge: "Track 2 Winner",
+        description: "₹30,000 Cash awarded via cheque + Certificate of Excellence for the top solution in Problem Statement 2.",
+        badge: "Winner PS-2",
         type: "cash",
       },
       {
         amount: "₹30,000",
         amountSub: "Cash Prize via Cheque",
         title: "Winner: Problem Statement 3",
-        description: "Awarded to the top scoring prototype solving Problem Statement 3, plus official Certificate of Excellence.",
-        badge: "Track 3 Winner",
+        description: "₹30,000 Cash awarded via cheque + Certificate of Excellence for the top solution in Problem Statement 3.",
+        badge: "Winner PS-3",
         type: "cash",
       },
       {
         amount: "₹30,000",
         amountSub: "Cash Prize via Cheque",
         title: "Winner: Problem Statement 4",
-        description: "Awarded to the top scoring prototype solving Problem Statement 4, plus official Certificate of Excellence.",
-        badge: "Track 4 Winner",
+        description: "₹30,000 Cash awarded via cheque + Certificate of Excellence for the top solution in Problem Statement 4.",
+        badge: "Winner PS-4",
         type: "cash",
       },
       {
         amount: "₹30,000",
         amountSub: "Cash Prize via Cheque",
         title: "Winner: Problem Statement 5",
-        description: "Awarded to the top scoring prototype solving Problem Statement 5, plus official Certificate of Excellence.",
-        badge: "Track 5 Winner",
+        description: "₹30,000 Cash awarded via cheque + Certificate of Excellence for the top solution in Problem Statement 5.",
+        badge: "Winner PS-5",
         type: "cash",
       },
       {
-        title: "Participation Certificate",
-        description: "Official verified certificate of participation issued to all attending builders within 1 day post event.",
-        badge: "All Builders",
+        title: "Verified Merit & Participation Certificates",
+        description: "Verified certificates of merit for winners and official participation certificates released for all attending builders within 1 day.",
+        badge: "Certificate",
         type: "certificate",
       },
     ],
+    rewardsFootnote: "* All the prizes and certificate will be released within 1 days after the event is over",
   },
 
   {

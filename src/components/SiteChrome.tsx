@@ -486,43 +486,53 @@ export function Navbar() {
             );
           })}
         </ul>
-        <div className="lg:absolute lg:left-1/2 lg:-translate-x-1/2">
+        <div className="lg:absolute lg:left-1/2 lg:-translate-x-1/2 pointer-events-auto">
           <Logo className="h-8.5 sm:h-11" />
         </div>
-        <div className="hidden items-center gap-2 lg:flex">
-          {isQuasarOrganizer && (
+        <div className="hidden items-center gap-2 lg:flex max-w-[calc(50%-100px)] justify-end shrink-0">
+          {isAdmin ? (
             <Button
               asChild
               size="sm"
-              className="rounded-full border border-neon/50 bg-neon/15 text-neon hover:bg-neon hover:text-primary-foreground font-bold text-xs shadow-glow-soft"
+              className="rounded-full border border-neon/50 bg-neon/15 text-neon hover:bg-neon hover:text-primary-foreground font-bold text-xs shadow-glow-soft shrink-0"
+            >
+              <Link to="/manage-events" search={{ tab: "registrations" }}>
+                <Crown className="size-3.5 mr-1 text-amber-400" />
+                Host Hub
+              </Link>
+            </Button>
+          ) : isQuasarOrganizer ? (
+            <Button
+              asChild
+              size="sm"
+              className="rounded-full border border-neon/50 bg-neon/15 text-neon hover:bg-neon hover:text-primary-foreground font-bold text-xs shadow-glow-soft shrink-0"
             >
               <Link to="/manage-events" search={{ tab: "registrations", slug: "quasar-5-international-hackathon-2027" }}>
                 <Crown className="size-3.5 mr-1 text-amber-400" />
                 Quasar 5.0
               </Link>
             </Button>
-          )}
-          {isGoaOrganizer && (
+          ) : isGoaOrganizer ? (
             <Button
               asChild
               size="sm"
-              className="rounded-full border border-neon/50 bg-neon/15 text-neon hover:bg-neon hover:text-primary-foreground font-bold text-xs shadow-glow-soft"
+              className="rounded-full border border-neon/50 bg-neon/15 text-neon hover:bg-neon hover:text-primary-foreground font-bold text-xs shadow-glow-soft shrink-0"
             >
               <Link to="/manage-events" search={{ tab: "registrations", slug: "goa-buildathon-2027" }}>
                 <Crown className="size-3.5 mr-1 text-amber-400" />
                 Goa Dashboard
               </Link>
             </Button>
-          )}
+          ) : null}
           <Link
             to="/about"
-            className="rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition hover:text-neon"
+            className="rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition hover:text-neon shrink-0"
           >
             About Us
           </Link>
           <Link
             to="/contact"
-            className="rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition hover:text-neon"
+            className="rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition hover:text-neon shrink-0"
           >
             Contact Us
           </Link>

@@ -773,6 +773,24 @@ function OpportunityDetails() {
                       className="h-auto max-w-full sm:max-w-md md:max-w-lg rounded-2xl border border-neon/40 shadow-glow-soft hover:shadow-glow transition"
                     />
                   </div>
+                ) : item.slug === "quasar-5-international-hackathon-2027" ? (
+                  <div className="mt-5 inline-flex items-center gap-3.5 sm:gap-5 rounded-2xl sm:rounded-3xl border-2 border-amber-500/50 bg-gradient-to-r from-amber-500/20 via-yellow-500/10 to-surface/80 p-3 sm:p-4 pr-5 sm:pr-7 shadow-[0_0_30px_rgba(245,158,11,0.22)] backdrop-blur-md">
+                    <div className="relative shrink-0">
+                      <img
+                        src="/events/golden-star-trophy.png"
+                        alt="Prize Trophy"
+                        className="h-12 min-[400px]:h-14 sm:h-16 w-auto object-contain drop-shadow-[0_4px_16px_rgba(250,204,21,0.5)]"
+                      />
+                    </div>
+                    <div>
+                      <p className="text-[11px] sm:text-xs font-black uppercase tracking-widest text-amber-300">
+                        CASH PRIZES WORTH
+                      </p>
+                      <p className="text-xl min-[400px]:text-2xl sm:text-3xl font-black text-amber-400 font-mono tracking-tight drop-shadow-[0_2px_10px_rgba(245,158,11,0.35)]">
+                        {item.prize}
+                      </p>
+                    </div>
+                  </div>
                 ) : (
                   <div className="mt-5 inline-flex items-center gap-3 sm:gap-4 rounded-2xl border border-neon/35 bg-gradient-to-r from-neon/15 via-emerald-500/10 to-transparent p-2.5 sm:p-3 pr-4 sm:pr-5 shadow-glow-soft">
                     <div className="pl-1">
@@ -1006,7 +1024,7 @@ function OpportunityDetails() {
                     <h2 className="text-xl sm:text-2xl font-bold text-foreground">Stages and Timelines</h2>
                   </div>
 
-                  <div className="relative pl-6 sm:pl-8 before:absolute before:left-3 sm:before:left-3.5 before:top-4 before:bottom-6 before:w-[2px] before:border-l-2 before:border-dashed before:border-neon/50">
+                  <div className="relative pl-7 sm:pl-9 before:absolute before:left-3.5 sm:before:left-4 before:top-4 before:bottom-6 before:w-[3px] before:bg-gradient-to-b before:from-neon before:via-emerald-400 before:to-neon/20">
                     {item.schedule.map((step, index) => {
                       const dateParts = step.dateBadge?.split(" ") || [];
                       const month = dateParts[0] || `Stage`;
@@ -1015,33 +1033,48 @@ function OpportunityDetails() {
                         <div key={step.title} className="relative pb-9 last:pb-2">
                           {/* Calendar Node directly over the timeline line */}
                           <div className="flex items-center gap-3.5 sm:gap-4 mb-3.5">
-                            <div className="relative -ml-[23px] sm:-ml-[25px] flex flex-col items-center justify-center rounded-xl border border-neon/70 bg-surface-2 px-2.5 py-1 shadow-glow-soft min-w-[46px] text-center shrink-0">
-                              <span className="text-[10px] font-bold uppercase tracking-wider text-neon leading-tight">{month}</span>
-                              <span className="text-base font-extrabold text-foreground leading-none">{day}</span>
+                            <div className="relative -ml-[25px] sm:-ml-[27px] flex flex-col items-center justify-center rounded-2xl border-2 border-neon bg-[#07130a] px-3 py-1.5 shadow-[0_0_15px_rgba(34,197,94,0.35)] min-w-[56px] text-center shrink-0">
+                              <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-neon leading-tight">{month}</span>
+                              <span className="text-base sm:text-lg font-black text-white leading-none font-mono mt-0.5">{day}</span>
                             </div>
-                            <span className="text-xs sm:text-sm font-semibold font-mono text-neon">
+                            <span className="text-xs sm:text-sm font-bold font-mono text-neon flex items-center gap-1.5">
+                              <Calendar className="size-3.5" />
                               {step.date}
                             </span>
                           </div>
 
                           {/* Stage Card */}
-                          <div className="rounded-2xl border border-border bg-card p-5 sm:p-6 shadow-sm transition hover:border-neon/50 hover:bg-surface-2/60 hover:shadow-glow-soft">
-                            <div className="flex items-center justify-between gap-2 border-b border-border/60 pb-3">
-                              <h3 className="text-base sm:text-lg font-bold text-foreground">{step.title}</h3>
-                              <span className="rounded-full bg-neon/15 border border-neon/40 px-3 py-0.5 text-xs font-semibold text-neon font-mono shrink-0">
-                                Stage {index + 1}
+                          <div className="rounded-2xl border border-neon/30 bg-surface/90 p-5 sm:p-7 shadow-[0_4px_24px_rgba(34,197,94,0.08)] transition hover:border-neon hover:bg-surface-2/90 hover:shadow-glow-soft">
+                            <div className="flex items-center justify-between gap-2 border-b border-border/80 pb-3">
+                              <h3 className="text-base sm:text-xl font-extrabold text-foreground">{step.title}</h3>
+                              <span className="rounded-full bg-neon/20 border border-neon/50 px-3 py-1 text-xs font-black text-neon font-mono shrink-0 shadow-sm">
+                                {step.stageBadge || `Stage ${index + 1}`}
                               </span>
                             </div>
 
-                            <p className="mt-3 text-xs sm:text-sm leading-relaxed text-muted-foreground">
+                            <p className="mt-3.5 text-xs sm:text-sm leading-relaxed text-foreground/90 font-medium">
                               {step.description}
                             </p>
 
+                            {step.actionUrl && (
+                              <div className="my-3.5">
+                                <a
+                                  href={step.actionUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-2 rounded-xl border border-neon/60 bg-neon/15 px-4 py-2 text-xs sm:text-sm font-bold text-neon hover:bg-neon hover:text-black transition shadow-glow-soft"
+                                >
+                                  <span>{step.actionLabel || "View Problem Statements"}</span>
+                                  <ExternalLink className="size-3.5" />
+                                </a>
+                              </div>
+                            )}
+
                             {step.bullets && step.bullets.length > 0 && (
-                              <ul className="mt-3.5 space-y-2 pl-1">
+                              <ul className="mt-4 space-y-2.5 pl-1 border-t border-border/60 pt-3.5">
                                 {step.bullets.map((b) => (
-                                  <li key={b} className="flex items-start gap-2.5 text-xs sm:text-sm text-foreground/90">
-                                    <span className="mt-1.5 size-1.5 rounded-full bg-neon shrink-0 shadow-glow-soft" />
+                                  <li key={b} className="flex items-start gap-2.5 text-xs sm:text-sm text-foreground/90 leading-relaxed">
+                                    <span className="mt-1.5 size-2 rounded-full bg-neon shrink-0 shadow-glow" />
                                     <span>{b}</span>
                                   </li>
                                 ))}
@@ -1049,15 +1082,52 @@ function OpportunityDetails() {
                             )}
 
                             {step.evaluation && (
-                              <div className="mt-4 rounded-xl border border-neon/20 bg-neon/5 px-4 py-2.5 text-xs text-muted-foreground">
-                                <span className="font-bold text-neon">Evaluation: </span>
-                                <span className="text-foreground/90">{step.evaluation}</span>
+                              <div className="mt-4 rounded-xl border border-neon/30 bg-neon/10 px-4 py-2.5 text-xs text-muted-foreground flex items-center gap-2">
+                                <span className="font-bold text-neon uppercase tracking-wider text-[11px]">Evaluation:</span>
+                                <span className="text-foreground/90 font-medium">{step.evaluation}</span>
                               </div>
                             )}
                           </div>
                         </div>
                       );
                     })}
+                  </div>
+                </section>
+              )}
+
+              {/* Important dates & deadlines */}
+              {item.importantDates && item.importantDates.length > 0 && (
+                <section className="border-t border-border py-8 sm:py-10">
+                  <div className="flex items-center gap-2.5 mb-6">
+                    <span className="h-6 w-1 rounded-full bg-neon shadow-glow-soft" />
+                    <h2 className="text-xl sm:text-2xl font-bold text-foreground">
+                      Important dates &amp; deadlines?
+                    </h2>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    {item.importantDates.map((d, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center gap-3.5 sm:gap-4 rounded-2xl border border-border/80 bg-surface/90 p-3.5 sm:p-4 shadow-sm transition hover:border-neon/50 hover:bg-surface-2/80 hover:shadow-glow-soft"
+                      >
+                        <div className="flex flex-col items-center justify-center rounded-xl bg-neon/15 border border-neon/50 px-3 py-1.5 min-w-[56px] text-center shrink-0 shadow-inner">
+                          <span className="text-base sm:text-lg font-black text-neon leading-none font-mono">
+                            {d.day}
+                          </span>
+                          <span className="text-[10px] sm:text-xs font-black uppercase tracking-wider text-muted-foreground leading-tight mt-0.5">
+                            {d.month}
+                          </span>
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-xs sm:text-sm font-bold text-foreground truncate">
+                            {d.title}
+                          </p>
+                          <p className="text-[11px] sm:text-xs text-muted-foreground font-mono mt-0.5">
+                            {d.fullDate}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </section>
               )}
@@ -1072,75 +1142,108 @@ function OpportunityDetails() {
 
                   {item.rewards && item.rewards.length > 0 ? (
                     <div className="space-y-4">
-                      {item.rewards.map((rew) => (
-                        rew.type === "cash" ? (
-                          <div
-                            key={rew.title}
-                            className="relative overflow-hidden rounded-2xl sm:rounded-3xl border-2 border-amber-500/40 bg-gradient-to-br from-amber-500/15 via-surface to-surface p-4 sm:p-7 shadow-[0_0_30px_rgba(245,158,11,0.15)] transition hover:border-amber-400"
-                          >
-                            <div className="absolute left-0 top-0 bottom-0 w-1.5 sm:w-2 bg-gradient-to-b from-amber-400 via-yellow-300 to-amber-500" />
-                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
-                              <div className="flex items-center gap-3 sm:gap-6 min-w-0">
-                                <div className="relative shrink-0">
-                                  <img
-                                    src="/events/golden-star-trophy.png"
-                                    alt="Grand Prize Trophy"
-                                    className="h-14 sm:h-20 md:h-24 w-auto object-contain drop-shadow-[0_8px_20px_rgba(245,158,11,0.5)]"
-                                  />
+                      {/* Primary Cash Reward Banner */}
+                      {item.rewards.slice(0, 1).map((rew) => (
+                        <div
+                          key={rew.title}
+                          className="relative overflow-hidden rounded-2xl sm:rounded-3xl border-2 border-amber-500/40 bg-gradient-to-br from-amber-500/15 via-surface to-surface p-4 sm:p-7 shadow-[0_0_30px_rgba(245,158,11,0.15)] transition hover:border-amber-400"
+                        >
+                          <div className="absolute left-0 top-0 bottom-0 w-1.5 sm:w-2 bg-gradient-to-b from-amber-400 via-yellow-300 to-amber-500" />
+                          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
+                            <div className="flex items-center gap-3 sm:gap-6 min-w-0">
+                              <div className="relative shrink-0">
+                                <img
+                                  src="/events/golden-star-trophy.png"
+                                  alt="Grand Prize Trophy"
+                                  className="h-14 sm:h-20 md:h-24 w-auto object-contain drop-shadow-[0_8px_20px_rgba(245,158,11,0.5)]"
+                                />
+                              </div>
+                              <div className="flex flex-col min-w-0">
+                                <div className="flex flex-wrap items-baseline gap-1.5 sm:gap-2">
+                                  <span className="text-2xl min-[400px]:text-3xl sm:text-4xl lg:text-5xl font-black text-amber-400 font-mono tracking-tight drop-shadow-[0_2px_10px_rgba(245,158,11,0.3)]">
+                                    {rew.amount}
+                                  </span>
+                                  <span className="text-[11px] sm:text-sm font-extrabold tracking-widest text-amber-300 uppercase shrink-0">
+                                    {rew.amountSub || "WORTH"}
+                                  </span>
                                 </div>
-                                <div className="flex flex-col min-w-0">
-                                  <div className="flex flex-wrap items-baseline gap-1.5 sm:gap-2">
-                                    <span className="text-2xl min-[400px]:text-3xl sm:text-4xl lg:text-5xl font-black text-amber-400 font-mono tracking-tight drop-shadow-[0_2px_10px_rgba(245,158,11,0.3)]">
-                                      {rew.amount}
-                                    </span>
-                                    <span className="text-[11px] sm:text-sm font-extrabold tracking-widest text-amber-300 uppercase shrink-0">
-                                      {rew.amountSub || "WORTH"}
-                                    </span>
-                                  </div>
-                                  <h3 className="mt-1 text-sm sm:text-lg font-bold text-foreground">
-                                    {rew.title}
-                                  </h3>
+                                <h3 className="mt-1 text-sm sm:text-lg font-bold text-foreground">
+                                  {rew.title}
+                                </h3>
+                                <p className="mt-1 text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-xl">
+                                  {rew.description}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="shrink-0 flex items-center">
+                              <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/50 bg-amber-400/15 px-3.5 py-1.5 sm:px-4 sm:py-2 text-xs font-bold text-amber-300 shadow-glow-soft">
+                                <Trophy className="size-3.5 sm:size-4 text-amber-400" />
+                                {rew.badge || "Certificate"}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+
+                      {/* Sub-track cash awards grid (e.g. Quasar's 5 Problem Statements) */}
+                      {item.rewards.slice(1).some((r) => r.type === "cash") && (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 pt-2">
+                          {item.rewards.slice(1).filter((r) => r.type === "cash").map((rew) => (
+                            <div
+                              key={rew.title}
+                              className="flex flex-col justify-between rounded-2xl border border-amber-500/35 bg-gradient-to-br from-amber-500/10 via-surface to-surface p-4 shadow-sm transition hover:border-amber-400/60"
+                            >
+                              <div>
+                                <div className="flex items-center justify-between gap-2">
+                                  <span className="text-xl sm:text-2xl font-black text-amber-400 font-mono">
+                                    {rew.amount}
+                                  </span>
+                                  <span className="rounded-full bg-amber-400/15 border border-amber-400/40 px-2.5 py-0.5 text-[10px] font-bold text-amber-300 uppercase">
+                                    {rew.badge || "Cash"}
+                                  </span>
+                                </div>
+                                <h4 className="mt-2 text-xs sm:text-sm font-bold text-foreground">
+                                  {rew.title}
+                                </h4>
+                                {rew.description && (
+                                  <p className="mt-1 text-[11px] sm:text-xs text-muted-foreground leading-relaxed">
+                                    {rew.description}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Certificate and non-cash items */}
+                      {item.rewards.slice(1).filter((r) => r.type !== "cash").map((rew) => (
+                        <div
+                          key={rew.title}
+                          className="rounded-2xl sm:rounded-3xl border border-blue-500/35 bg-gradient-to-br from-blue-500/10 via-surface to-surface p-5 sm:p-6 transition hover:border-blue-400/60 shadow-sm"
+                        >
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div className="flex items-center gap-4 sm:gap-5">
+                              <div className="size-14 sm:size-16 rounded-2xl bg-gradient-to-br from-blue-500/25 to-indigo-600/20 border border-blue-400/40 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(59,130,246,0.25)]">
+                                <Award className="size-7 sm:size-8 text-blue-400" />
+                              </div>
+                              <div>
+                                <h3 className="text-base sm:text-lg font-bold text-foreground">{rew.title}</h3>
+                                {rew.description && (
                                   <p className="mt-1 text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-xl">
                                     {rew.description}
                                   </p>
-                                </div>
-                              </div>
-                              <div className="shrink-0 flex items-center">
-                                <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/50 bg-amber-400/15 px-3.5 py-1.5 sm:px-4 sm:py-2 text-xs font-bold text-amber-300 shadow-glow-soft">
-                                  <Trophy className="size-3.5 sm:size-4 text-amber-400" />
-                                  {rew.badge || "Certificate"}
-                                </span>
+                                )}
                               </div>
                             </div>
-                          </div>
-                        ) : (
-                          <div
-                            key={rew.title}
-                            className="rounded-2xl sm:rounded-3xl border border-blue-500/35 bg-gradient-to-br from-blue-500/10 via-surface to-surface p-5 sm:p-6 transition hover:border-blue-400/60 shadow-sm"
-                          >
-                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                              <div className="flex items-center gap-4 sm:gap-5">
-                                <div className="size-14 sm:size-16 rounded-2xl bg-gradient-to-br from-blue-500/25 to-indigo-600/20 border border-blue-400/40 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(59,130,246,0.25)]">
-                                  <Award className="size-7 sm:size-8 text-blue-400" />
-                                </div>
-                                <div>
-                                  <h3 className="text-base sm:text-lg font-bold text-foreground">{rew.title}</h3>
-                                  {rew.description && (
-                                    <p className="mt-1 text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-xl">
-                                      {rew.description}
-                                    </p>
-                                  )}
-                                </div>
-                              </div>
-                              <div className="shrink-0 flex items-center">
-                                <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-400/40 bg-blue-400/10 px-3.5 py-1.5 text-xs font-bold text-blue-300">
-                                  <CheckCircle2 className="size-3.5 text-blue-400" />
-                                  {rew.badge || "Certificate"}
-                                </span>
-                              </div>
+                            <div className="shrink-0 flex items-center">
+                              <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-400/40 bg-blue-400/10 px-3.5 py-1.5 text-xs font-bold text-blue-300">
+                                <CheckCircle2 className="size-3.5 text-blue-400" />
+                                {rew.badge || "Certificate"}
+                              </span>
                             </div>
                           </div>
-                        )
+                        </div>
                       ))}
 
                       {item.rewardsFootnote && (

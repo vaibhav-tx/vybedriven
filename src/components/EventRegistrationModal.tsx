@@ -1945,12 +1945,14 @@ Platform Support: vybedriven@gmail.com
                 <Calendar className="size-3.5 text-neon" /> Add to Calendar
               </a>
 
-              {/* WhatsApp Community Link - Goa Buildathon dedicated link */}
-              {((opportunity.slug === "goa-buildathon-2027") || opportunity.groupUrl) && (
+              {/* WhatsApp Community Link - Dedicated event links */}
+              {((opportunity.slug === "goa-buildathon-2027") || (opportunity.slug === "quasar-5-international-hackathon-2027") || opportunity.groupUrl) && (
                 <a
                   href={
                     opportunity.slug === "goa-buildathon-2027"
                       ? "https://chat.whatsapp.com/HXLGLzUJ6G2Hr1FL8RE7yW"
+                      : opportunity.slug === "quasar-5-international-hackathon-2027"
+                      ? "https://chat.whatsapp.com/K3sHKGtXYJ06l02R2eLmVA"
                       : (opportunity.groupUrl || "https://chat.whatsapp.com/FTO9jg5AgW3CSZuA3PZVIU?s=cl&p=a&iam=2")
                   }
                   target="_blank"

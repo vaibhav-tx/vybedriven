@@ -474,6 +474,8 @@ export function TeamManagementModal({
               href={
                 registration.opportunitySlug === "goa-buildathon-2027"
                   ? "https://chat.whatsapp.com/HXLGLzUJ6G2Hr1FL8RE7yW"
+                  : registration.opportunitySlug === "quasar-5-international-hackathon-2027"
+                  ? "https://chat.whatsapp.com/K3sHKGtXYJ06l02R2eLmVA"
                   : findOpportunity(registration.opportunitySlug)?.groupUrl ||
                     "https://chat.whatsapp.com/FTO9jg5AgW3CSZuA3PZVIU?s=cl&p=a&iam=2"
               }
