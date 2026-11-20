@@ -95,29 +95,39 @@ function ProfilePage() {
     window.addEventListener(EVENT_CHANGE_SIGNAL, onSync);
     window.addEventListener("storage", onSync);
 
+    // Egress optimization: Sync only once per user session
+    const syncCacheKey = `sb_regs_synced_${user.id}`;
+    if (typeof window !== "undefined" && sessionStorage.getItem(syncCacheKey)) {
+      return () => {
+        window.removeEventListener(EVENT_CHANGE_SIGNAL, onSync);
+        window.removeEventListener("storage", onSync);
+      };
+    }
+
     // Sync only this user's cloud registrations from Supabase
     const userEmail = user.email?.trim().toLowerCase();
     const queries: Promise<any>[] = [];
+    const fields = "id, opportunity_slug, opportunity_title, user_id, full_name, email, phone, college_or_company, team_type, team_name, team_size, teammates, submission, status, created_at";
 
     if (user.id && userEmail) {
       queries.push(
         supabase
           .from("registrations" as any)
-          .select("*")
+          .select(fields)
           .or(`user_id.eq.${user.id},email.ilike.${userEmail}`)
       );
     } else if (user.id) {
       queries.push(
         supabase
           .from("registrations" as any)
-          .select("*")
+          .select(fields)
           .eq("user_id", user.id)
       );
     } else if (userEmail) {
       queries.push(
         supabase
           .from("registrations" as any)
-          .select("*")
+          .select(fields)
           .ilike("email", userEmail)
       );
     }
@@ -126,7 +136,8 @@ function ProfilePage() {
       queries.push(
         supabase
           .from("registrations" as any)
-          .select("*")
+          .select(fields)
+          .eq("opportunity_slug", "quasar-5-international-hackathon-2027")
           .contains("teammates", [{ email: userEmail }])
       );
     }
@@ -143,6 +154,9 @@ function ProfilePage() {
           mergeRemoteRegistrations(rows);
           setSyncTick((t) => t + 1);
         }
+        try {
+          if (typeof window !== "undefined") sessionStorage.setItem(syncCacheKey, "1");
+        } catch {}
       })
       .catch(() => {});
 

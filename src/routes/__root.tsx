@@ -197,8 +197,24 @@ function RootComponent() {
 
   const fetchProfile = async (userId: string, currentUser?: User | null) => {
     try {
-      const { data } = await supabase.from("profiles").select("*").eq("id", userId).maybeSingle();
-      const p = (data as any) ?? {};
+      const cacheKey = `sb_profile_cache_${userId}`;
+      let p: any = null;
+      try {
+        const cached = typeof window !== "undefined" ? sessionStorage.getItem(cacheKey) : null;
+        if (cached) p = JSON.parse(cached);
+      } catch {}
+
+      if (!p) {
+        const { data } = await supabase
+          .from("profiles")
+          .select("id, display_name, avatar_url, bio, college_or_company, headline, location, github_url, linkedin_url, website_url, skills, interests, username, email")
+          .eq("id", userId)
+          .maybeSingle();
+        p = (data as any) ?? {};
+        try {
+          if (typeof window !== "undefined") sessionStorage.setItem(cacheKey, JSON.stringify(p));
+        } catch {}
+      }
 
       let localMeta: any = {};
       try {

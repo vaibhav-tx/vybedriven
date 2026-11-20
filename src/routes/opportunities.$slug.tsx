@@ -593,13 +593,17 @@ function OpportunityDetails() {
     const userEmail = user.email?.trim().toLowerCase();
     if (!user.id && !userEmail) return;
 
+    // Egress optimization: If user's registration is already present in local state, skip network query
+    const existing = getUserRegistrations(user.id, user.email).find((r) => r.opportunitySlug === item.slug);
+    if (existing) return;
+
     let active = true;
     import("@/integrations/supabase/client")
       .then(({ supabase }) => {
         const queries: Promise<any>[] = [];
         let directQuery = supabase
           .from("registrations" as any)
-          .select("*")
+          .select("id, opportunity_slug, user_id, full_name, email, phone, college_or_company, team_type, team_name, team_size, teammates, submission, status, created_at")
           .eq("opportunity_slug", item.slug);
 
         if (user.id && userEmail) {
@@ -615,7 +619,7 @@ function OpportunityDetails() {
           queries.push(
             supabase
               .from("registrations" as any)
-              .select("*")
+              .select("id, opportunity_slug, user_id, full_name, email, phone, college_or_company, team_type, team_name, team_size, teammates, submission, status, created_at")
               .eq("opportunity_slug", item.slug)
               .contains("teammates", [{ email: userEmail }])
           );

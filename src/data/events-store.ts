@@ -1534,13 +1534,14 @@ export function useEventRegistrations(slug: string, options?: { enabled?: boolea
     const fetchCloud = () => {
       if (!isEnabled) return;
       const now = Date.now();
-      if (now - lastFetch < 30000) return;
+      // Throttle cloud refetch to 5 minutes to protect Supabase egress quota
+      if (now - lastFetch < 300000) return;
       lastFetch = now;
       import("@/integrations/supabase/client")
         .then(({ supabase }) => {
           supabase
             .from("registrations" as any)
-            .select("*")
+            .select("id, opportunity_slug, user_id, full_name, email, phone, college_or_company, team_type, team_name, team_size, teammates, submission, status, created_at")
             .eq("opportunity_slug", slug)
             .then(({ data, error }) => {
               if (!active || error || !data || !Array.isArray(data)) return;
@@ -1554,14 +1555,10 @@ export function useEventRegistrations(slug: string, options?: { enabled?: boolea
 
     if (isEnabled) {
       fetchCloud();
-      window.addEventListener("focus", fetchCloud);
     }
 
     return () => {
       active = false;
-      if (isEnabled) {
-        window.removeEventListener("focus", fetchCloud);
-      }
       window.removeEventListener(EVENT_CHANGE_SIGNAL, update);
       window.removeEventListener("storage", update);
     };
