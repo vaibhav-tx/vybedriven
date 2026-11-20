@@ -1241,32 +1241,6 @@ function OpportunityDetails() {
                               {step.description}
                             </p>
 
-                            {/* Round 0 Problem Statement conditional lock / unlock */}
-                            {item.slug === "quasar-5-international-hackathon-2027" && index === 0 && (
-                              <div className="my-3.5">
-                                {isRegistered ? (
-                                  <a
-                                    href="https://quasar-vppcoe.vercel.app/#tracks"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-2 rounded-xl border border-neon/50 bg-neon/15 px-4 py-2 text-xs sm:text-sm font-bold text-neon hover:bg-neon hover:text-black transition shadow-glow-soft"
-                                  >
-                                    <span>▶ Quasar_Problem Statements ◀</span>
-                                    <ExternalLink className="size-3.5" />
-                                  </a>
-                                ) : (
-                                  <button
-                                    type="button"
-                                    onClick={handleRegisterClick}
-                                    className="inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/10 px-4 py-2 text-xs sm:text-sm font-semibold text-amber-400 hover:bg-amber-500/20 transition cursor-pointer"
-                                  >
-                                    <Lock className="size-3.5 text-amber-400 shrink-0" />
-                                    <span>Problem Statements unlock after Squad Registration</span>
-                                  </button>
-                                )}
-                              </div>
-                            )}
-
                             {step.bullets && step.bullets.length > 0 && (
                               <ul className="mt-3.5 space-y-2 pl-1 border-t border-border/60 pt-3">
                                 {step.bullets.map((b) => (
@@ -1608,47 +1582,30 @@ function OpportunityDetails() {
                 {/* Already Registered Card */}
                 {isRegistered ? (
                   <div className="mt-5 space-y-4">
-                    {/* Unstop-Style Round 1: Idea Submission (PPT Round) Widget */}
-                    <div className="rounded-2xl border-2 border-neon/50 bg-gradient-to-br from-neon/15 via-emerald-950/20 to-black p-4 shadow-glow-soft">
-                      <div className="flex items-center justify-between">
-                        <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/50 bg-emerald-500/20 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-emerald-400">
-                          <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                          Round Live
-                        </span>
-                        <span className="text-[11px] text-muted-foreground font-mono">
-                          Dec 31, 2026
-                        </span>
-                      </div>
-
-                      <h3 className="mt-2 text-base font-black text-foreground tracking-tight">
-                        Idea Submission — PPT Round
-                      </h3>
-                      <p className="mt-0.5 text-xs text-muted-foreground leading-relaxed">
-                        {item.slug === "goa-buildathon-2027"
-                          ? "Submit your team's proposed solution deck to qualify for the Grand Finale in Goa."
-                          : item.slug === "quasar-5-international-hackathon-2027"
-                          ? "Submit your team's proposed solution deck to qualify for the 36-Hour Offline Finale at PVPPCOE Sion, Mumbai."
-                          : "Submit your team's proposed solution deck to qualify for the finale."}
-                      </p>
-
-                      {userRegRecord?.teamType === "team" && (1 + (userRegRecord.teammates?.length || 0)) < 2 ? (
-                        <div className="mt-3 rounded-xl border border-amber-500/40 bg-amber-500/10 p-3 text-xs text-amber-300">
-                          <div className="flex items-center gap-1.5 font-bold">
-                            <Lock className="size-3.5 text-amber-400 shrink-0" />
-                            <span>Round 1 Locked (1/4 Members)</span>
-                          </div>
-                          <p className="mt-1 text-[11px] text-amber-200/90 leading-tight">
-                            At least 2 verified squad members are required to submit the PPT.
-                          </p>
-                          <Button
-                            size="sm"
-                            onClick={() => setTeamModalOpen(true)}
-                            className="mt-2.5 w-full rounded-lg bg-amber-500/25 text-amber-300 border border-amber-500/40 text-xs font-bold hover:bg-amber-500/40"
-                          >
-                            Share Team Code ({userRegRecord.teamCode || userRegRecord.id})
-                          </Button>
+                    {/* Unstop-Style Round 1: Idea Submission (PPT Round) Widget - Only visible when team has at least 2 members */}
+                    {(userRegRecord?.teamType !== "team" || (1 + (userRegRecord.teammates?.length || 0)) >= 2) && (
+                      <div className="rounded-2xl border-2 border-neon/50 bg-gradient-to-br from-neon/15 via-emerald-950/20 to-black p-4 shadow-glow-soft">
+                        <div className="flex items-center justify-between">
+                          <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/50 bg-emerald-500/20 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-emerald-400">
+                            <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                            Round Live
+                          </span>
+                          <span className="text-[11px] text-muted-foreground font-mono">
+                            Dec 31, 2026
+                          </span>
                         </div>
-                      ) : (
+
+                        <h3 className="mt-2 text-base font-black text-foreground tracking-tight">
+                          Idea Submission — PPT Round
+                        </h3>
+                        <p className="mt-0.5 text-xs text-muted-foreground leading-relaxed">
+                          {item.slug === "goa-buildathon-2027"
+                            ? "Submit your team's proposed solution deck to qualify for the Grand Finale in Goa."
+                            : item.slug === "quasar-5-international-hackathon-2027"
+                            ? "Submit your team's proposed solution deck to qualify for the 36-Hour Offline Finale at PVPPCOE Sion, Mumbai."
+                            : "Submit your team's proposed solution deck to qualify for the finale."}
+                        </p>
+
                         <div className="mt-3 space-y-2">
                           <Button
                             onClick={() => setIdeaModalOpen(true)}
@@ -1689,8 +1646,8 @@ function OpportunityDetails() {
                             </div>
                           )}
                         </div>
-                      )}
-                    </div>
+                      </div>
+                    )}
 
                     {/* Registration & Team Status Box */}
                     <div className="rounded-2xl border border-border bg-card p-4">

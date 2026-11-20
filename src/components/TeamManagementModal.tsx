@@ -677,53 +677,15 @@ export function TeamManagementModal({
               );
             })}
 
-            {/* Invite Teammates via Team Code notice */}
+            {/* Teammate slots available notice */}
             {canManageTeam && remainingSlots > 0 ? (
-              <div className="rounded-2xl border border-neon/40 bg-gradient-to-br from-neon/10 via-surface-2 to-surface p-4 sm:p-5 space-y-3 shadow-glow-soft">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="size-4 text-neon" />
-                    <span className="text-xs sm:text-sm font-bold text-foreground">
-                      {remainingSlots} Teammate Slot{remainingSlots > 1 ? "s" : ""} Available
-                    </span>
-                  </div>
-                  <span className="rounded-full bg-neon/15 px-2.5 py-0.5 text-[10px] font-bold text-neon">
-                    Team Code Instant Joining
-                  </span>
-                </div>
-
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  Share your <strong>Team Code</strong> or <strong>Invite Link</strong> with your teammates. They will open Vybe Driven, click &quot;Join Team with Code&quot;, and enter your code to join your squad with zero email hassles!
+              <div className="rounded-2xl border border-border/80 bg-surface/60 p-3.5 sm:p-4 text-center">
+                <p className="text-xs text-muted-foreground">
+                  <span className="font-bold text-foreground">
+                    {remainingSlots} teammate slot{remainingSlots > 1 ? "s" : ""} available.
+                  </span>{" "}
+                  Share your Official Team Code from above with your friends to join.
                 </p>
-
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 rounded-xl border border-neon/30 bg-black/60 p-3">
-                  <div>
-                    <span className="text-[10px] uppercase font-bold text-muted-foreground block">
-                      Official Team Code
-                    </span>
-                    <span className="font-mono text-lg sm:text-xl font-black text-neon select-all">
-                      {registration.teamCode || registration.id}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      type="button"
-                      size="sm"
-                      onClick={handleCopyTeamCode}
-                      className="rounded-lg bg-neon/15 text-neon border border-neon/30 hover:bg-neon/25 text-xs font-bold"
-                    >
-                      <Copy className="size-3.5 mr-1" /> Copy Code
-                    </Button>
-                    <Button
-                      type="button"
-                      size="sm"
-                      onClick={handleShareTeamOnWhatsApp}
-                      className="rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 hover:bg-emerald-500/30 text-xs font-bold"
-                    >
-                      <MessageCircle className="size-3.5 mr-1" /> WhatsApp Invite
-                    </Button>
-                  </div>
-                </div>
               </div>
             ) : canManageTeam && remainingSlots === 0 ? (
               <div className="rounded-xl border border-emerald-500/40 bg-emerald-500/10 p-3 text-center text-xs font-bold text-emerald-400">
