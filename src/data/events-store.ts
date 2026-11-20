@@ -174,6 +174,10 @@ export function getStoredRegistrations(): EventRegistration[] {
         r &&
         r.status !== "deleted" &&
         r.status !== "event_config" &&
+        r.status !== "Archived" &&
+        r.opportunitySlug !== "archived" &&
+        !r.id?.startsWith("JOINQSR5-") &&
+        !r.id?.startsWith("JOINGB27-") &&
         !r.id?.startsWith("EVENT_CONFIG::") &&
         !r.id?.startsWith("SYSTEM_") &&
         !EXCLUDED_TEST_IDS.includes(r.id) &&
@@ -633,6 +637,10 @@ export function mergeRemoteRegistrations(remoteRows: any[]): void {
     if (
       row.status === "deleted" ||
       row.status === "event_config" ||
+      row.status === "Archived" ||
+      row.opportunity_slug === "archived" ||
+      row.id?.startsWith("JOINQSR5-") ||
+      row.id?.startsWith("JOINGB27-") ||
       row.id?.startsWith("SYSTEM_") ||
       EXCLUDED_TEST_IDS.includes(row.id) ||
       row.email?.toLowerCase().includes("leader-gb27-43750") ||
@@ -885,22 +893,34 @@ export function confirmTeammateInvitation(
   return true;
 }
 
-// Normalize possible team code variations (e.g. GB27-43750, 43750, GB2743750, GB-43750)
+// Normalize possible team code variations (e.g. QSR5-46634, GB27-43750, 46634)
 export function normalizeTeamCodeCandidates(raw: string): string[] {
   if (!raw || typeof raw !== "string") return [];
   const trimmed = raw.trim();
-  const stripped = trimmed.replace(/\s+/g, "").toUpperCase();
+  // Strip accidental "JOIN" prefix if user entered or copied e.g. "JOINQSR5-46634" or "JOIN-QSR5-46634"
+  const clean = trimmed.replace(/^JOIN[\s\-_:]*/i, "").trim();
+  if (!clean || clean.toUpperCase() === "JOIN") return [];
+
+  const stripped = clean.replace(/\s+/g, "").toUpperCase();
   const candidates = new Set<string>();
 
-  candidates.add(trimmed);
+  candidates.add(clean);
   candidates.add(stripped);
-  candidates.add(trimmed.toLowerCase());
+  candidates.add(clean.toLowerCase());
   candidates.add(stripped.toLowerCase());
 
-  // 4 to 6 digit standalone number e.g. "43750"
+  // 4 to 6 digit standalone number e.g. "46634" or "43750"
   if (/^\d{4,6}$/.test(stripped)) {
+    candidates.add(`QSR5-${stripped}`);
     candidates.add(`GB27-${stripped}`);
+    candidates.add(`qsr5-${stripped.toLowerCase()}`);
     candidates.add(`gb27-${stripped.toLowerCase()}`);
+  }
+  // "QSR5" missing hyphen e.g. "QSR546634"
+  if (/^QSR5\d{4,6}$/i.test(stripped)) {
+    const num = stripped.slice(4);
+    candidates.add(`QSR5-${num}`);
+    candidates.add(`qsr5-${num.toLowerCase()}`);
   }
   // "GB27" missing hyphen e.g. "GB2743750"
   if (/^GB27\d{4,6}$/i.test(stripped)) {
@@ -922,33 +942,36 @@ export function normalizeTeamCodeCandidates(raw: string): string[] {
 export async function findTeamByCode(code: string): Promise<EventRegistration | null> {
   if (!code || typeof code !== "string") return null;
   const candidates = normalizeTeamCodeCandidates(code);
+  if (candidates.length === 0) return null;
+
   const list = getStoredRegistrations();
 
-  // 1. Check local storage
+  // 1. Check local storage - EXACT match only
   const localMatch = list.find((r) => {
-    if (!r || r.teamType !== "team") return false;
-    const rId = (r.id || "").trim().toLowerCase();
-    const rCode = (r.teamCode || "").trim().toLowerCase();
-    const rTeam = (r.teamName || "").trim().toLowerCase();
+    if (!r || r.teamType !== "team" || r.status === "Archived") return false;
+    const rId = (r.id || "").trim().toUpperCase();
+    const rCode = (r.teamCode || "").trim().toUpperCase();
+    const rTeam = (r.teamName || "").trim().toUpperCase();
     return candidates.some((c) => {
-      const cLow = c.toLowerCase();
-      return rId === cLow || rCode === cLow || (cLow.length >= 3 && rTeam === cLow);
+      const cUpper = c.toUpperCase();
+      return rId === cUpper || rCode === cUpper || (cUpper.length >= 4 && rTeam === cUpper);
     });
   });
   if (localMatch) return localMatch;
 
-  // 2. Cloud check on Supabase
+  // 2. Cloud check on Supabase - EXACT match on id or team_name
   try {
     const { supabase } = await import("@/integrations/supabase/client");
     const upperCandidates = candidates.map((c) => c.toUpperCase());
     const lowerCandidates = candidates.map((c) => c.toLowerCase());
-    const allMatches = Array.from(new Set([...upperCandidates, ...lowerCandidates]));
+    const allMatches = Array.from(new Set([...upperCandidates, ...lowerCandidates, ...candidates]));
 
-    // Query 1: by ID in candidates
+    // Query 1: exact match by id
     const { data: idRows } = await supabase
       .from("registrations" as any)
       .select("*")
       .in("id", allMatches)
+      .neq("status", "Archived")
       .limit(1);
 
     if (idRows && idRows.length > 0) {
@@ -957,12 +980,12 @@ export async function findTeamByCode(code: string): Promise<EventRegistration | 
       return freshList.find((r) => r.id === idRows[0].id) || null;
     }
 
-    // Query 2: team_name match or partial match
-    const primaryCode = candidates.find((c) => c.includes("-")) || candidates[0];
+    // Query 2: exact match by team_name
     const { data: nameRows } = await supabase
       .from("registrations" as any)
       .select("*")
-      .or(`id.ilike.%${primaryCode}%,team_name.ilike.%${primaryCode}%`)
+      .in("team_name", allMatches)
+      .neq("status", "Archived")
       .limit(1);
 
     if (nameRows && nameRows.length > 0) {
@@ -981,16 +1004,18 @@ export async function findTeamByCode(code: string): Promise<EventRegistration | 
 export function findLocalTeamByCode(code: string): EventRegistration | null {
   if (!code || typeof code !== "string") return null;
   const candidates = normalizeTeamCodeCandidates(code);
+  if (candidates.length === 0) return null;
+
   const list = getStoredRegistrations();
   return (
     list.find((r) => {
-      if (!r || r.teamType !== "team") return false;
-      const rId = (r.id || "").trim().toLowerCase();
-      const rCode = (r.teamCode || "").trim().toLowerCase();
-      const rTeam = (r.teamName || "").trim().toLowerCase();
+      if (!r || r.teamType !== "team" || r.status === "Archived") return false;
+      const rId = (r.id || "").trim().toUpperCase();
+      const rCode = (r.teamCode || "").trim().toUpperCase();
+      const rTeam = (r.teamName || "").trim().toUpperCase();
       return candidates.some((c) => {
-        const cLow = c.toLowerCase();
-        return rId === cLow || rCode === cLow || (cLow.length >= 3 && rTeam === cLow);
+        const cUpper = c.toUpperCase();
+        return rId === cUpper || rCode === cUpper || (cUpper.length >= 4 && rTeam === cUpper);
       });
     }) || null
   );
@@ -1013,96 +1038,21 @@ export async function joinTeamWithCode(
   if (!teamCode || typeof teamCode !== "string") {
     throw new Error("Please enter a valid Team Code.");
   }
-  const candidates = normalizeTeamCodeCandidates(teamCode);
-  const normalizedCode = candidates.find((c) => c.startsWith("GB27-")) || candidates[0].toUpperCase();
+  const cleanCode = teamCode.trim().replace(/^JOIN[\s\-_:]*/i, "").trim();
+  if (!cleanCode || cleanCode.toUpperCase() === "JOIN") {
+    throw new Error("Please enter a valid Team Code provided by your Team Leader (e.g. QSR5-XXXXX).");
+  }
+
   const memberEmail = memberData.email.trim().toLowerCase();
 
   // 1. Fetch current team from local/cloud
-  let current = await findTeamByCode(teamCode);
-  let list = getStoredRegistrations();
+  let current = await findTeamByCode(cleanCode);
 
-  // 2. If team record is not yet found in cloud (e.g. leader created on mobile before switching apps),
-  // DO NOT BLOCK the user! Auto-provision the verified team roster with this code so the member gets their pass!
+  // 2. If team record is NOT found, reject immediately! Never create a new team!
   if (!current) {
-    const oppSlug = memberData.opportunitySlug || (normalizedCode.startsWith("QSR5-") ? "quasar-5-international-hackathon-2027" : "goa-buildathon-2027");
-    const oppTitle =
-      oppSlug === "goa-buildathon-2027"
-        ? "Goa Buildathon '27"
-        : oppSlug === "quasar-5-international-hackathon-2027"
-        ? "Quasar 5.0: 36-Hour International Hackathon"
-        : "Hackathon";
-    const newMember: TeammateDetail = {
-      name: memberData.fullName.trim(),
-      email: memberEmail,
-      phone: memberData.phone.trim(),
-      collegeOrCompany: memberData.collegeOrCompany.trim(),
-      department: memberData.department?.trim() || undefined,
-      graduationYear: memberData.graduationYear?.trim() || undefined,
-      status: "verified",
-      role: "member",
-      confirmedAt: new Date().toISOString(),
-    };
-
-    const provisionedTeam: EventRegistration = {
-      id: normalizedCode,
-      opportunitySlug: oppSlug,
-      opportunityTitle: oppTitle,
-      userId: memberData.userId,
-      fullName: memberData.fullName.trim(),
-      email: memberEmail,
-      phone: memberData.phone.trim(),
-      collegeOrCompany: memberData.collegeOrCompany.trim(),
-      teamType: "team",
-      teamName: `Team ${normalizedCode.replace("GB27-", "")}`,
-      teamCode: normalizedCode,
-      teamSize: "2 members",
-      teamMembers: `${memberData.fullName.trim()} (${memberEmail})`,
-      teammates: [newMember],
-      lookingForTeammates: true,
-      termsAccepted: true,
-      status: "Registered",
-      createdAt: new Date().toISOString(),
-    };
-
-    const existingIdx = list.findIndex((r) => r.id === normalizedCode);
-    if (existingIdx !== -1) {
-      list[existingIdx] = provisionedTeam;
-    } else {
-      list.unshift(provisionedTeam);
-    }
-    if (typeof window !== "undefined") {
-      localStorage.setItem(STORAGE_REGISTRATIONS, JSON.stringify(list));
-      notifyStoreChange();
-    }
-
-    try {
-      const { supabase } = await import("@/integrations/supabase/client");
-      await supabase.from("registrations" as any).upsert([
-        {
-          id: provisionedTeam.id,
-          opportunity_slug: provisionedTeam.opportunitySlug,
-          opportunity_title: provisionedTeam.opportunityTitle,
-          user_id: provisionedTeam.userId || null,
-          full_name: provisionedTeam.fullName,
-          email: provisionedTeam.email,
-          phone: provisionedTeam.phone,
-          college_or_company: provisionedTeam.collegeOrCompany,
-          team_type: "team",
-          team_name: provisionedTeam.teamName,
-          team_size: provisionedTeam.teamSize,
-          team_members: provisionedTeam.teamMembers,
-          teammates: provisionedTeam.teammates,
-          looking_for_teammates: true,
-          terms_accepted: true,
-          status: "Registered",
-          created_at: provisionedTeam.createdAt,
-        },
-      ]);
-    } catch (err) {
-      console.warn("[Cloud Team Auto-Provision] Error saving to Supabase:", err);
-    }
-
-    return provisionedTeam;
+    throw new Error(
+      `Team code "${cleanCode}" not found! Please ask your Team Leader for the exact Team Code (e.g. QSR5-XXXXX).`
+    );
   }
 
   // 3. If team IS found, validate capacity & leader

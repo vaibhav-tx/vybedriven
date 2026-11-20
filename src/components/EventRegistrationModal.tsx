@@ -52,6 +52,7 @@ interface EventRegistrationModalProps {
   onOpenChange: (open: boolean) => void;
   onSuccess?: () => void;
   initialJoinCode?: string;
+  initialMode?: "create" | "join";
 }
 
 const GENDERS = [
@@ -77,12 +78,20 @@ export function EventRegistrationModal({
   onOpenChange,
   onSuccess,
   initialJoinCode,
+  initialMode,
 }: EventRegistrationModalProps) {
   const { user, profile } = useAuth();
 
+  const cleanInitialCode =
+    initialJoinCode && initialJoinCode.toUpperCase() !== "JOIN"
+      ? initialJoinCode.trim().replace(/^JOIN[\s\-_:]*/i, "").trim()
+      : "";
+
   // Mode: "create" (Leader creates team / solo) or "join" (Teammate joins with code)
-  const [regFlow, setRegFlow] = useState<"create" | "join">(() => (initialJoinCode ? "join" : "create"));
-  const [teamCodeInput, setTeamCodeInput] = useState(initialJoinCode || "");
+  const [regFlow, setRegFlow] = useState<"create" | "join">(() =>
+    cleanInitialCode ? "join" : initialMode || "create"
+  );
+  const [teamCodeInput, setTeamCodeInput] = useState(cleanInitialCode);
   const [matchedTeam, setMatchedTeam] = useState<EventRegistration | null>(null);
   const [isSearchingTeam, setIsSearchingTeam] = useState(false);
   const [searchDone, setSearchDone] = useState(false);
@@ -259,27 +268,39 @@ export function EventRegistrationModal({
 
   useEffect(() => {
     let active = true;
-    if (initialJoinCode) {
+    const cleanCode =
+      initialJoinCode && initialJoinCode.toUpperCase() !== "JOIN"
+        ? initialJoinCode.trim().replace(/^JOIN[\s\-_:]*/i, "").trim()
+        : "";
+    if (cleanCode) {
       setRegFlow("join");
-      setTeamCodeInput(initialJoinCode);
+      setTeamCodeInput(cleanCode);
       setIsSearchingTeam(true);
-      findTeamByCode(initialJoinCode).then((found) => {
+      findTeamByCode(cleanCode).then((found) => {
         if (active) {
           setMatchedTeam(found);
           setIsSearchingTeam(false);
           setSearchDone(true);
         }
       });
+    } else if (initialMode === "join") {
+      setRegFlow("join");
+      setTeamCodeInput("");
+      setMatchedTeam(null);
+      setIsSearchingTeam(false);
+      setSearchDone(false);
+    } else if (initialMode === "create") {
+      setRegFlow("create");
     }
     return () => {
       active = false;
     };
-  }, [initialJoinCode, open]);
+  }, [initialJoinCode, initialMode, open]);
 
   useEffect(() => {
     let active = true;
-    const clean = teamCodeInput.trim();
-    if (clean.length >= 3) {
+    const clean = teamCodeInput.trim().replace(/^JOIN[\s\-_:]*/i, "").trim();
+    if (clean.length >= 4 && clean.toUpperCase() !== "JOIN") {
       setIsSearchingTeam(true);
       const timer = setTimeout(() => {
         findTeamByCode(clean).then((found) => {
@@ -289,7 +310,7 @@ export function EventRegistrationModal({
             setSearchDone(true);
           }
         });
-      }, 200);
+      }, 250);
       return () => {
         active = false;
         clearTimeout(timer);
@@ -338,8 +359,13 @@ export function EventRegistrationModal({
       toast.error("Please sign in or create an account first.");
       return;
     }
-    if (!teamCodeInput.trim()) {
-      toast.error("Please enter a valid Team Code.");
+    const cleanCode = teamCodeInput.trim().replace(/^JOIN[\s\-_:]*/i, "").trim();
+    if (!cleanCode || cleanCode.toUpperCase() === "JOIN") {
+      toast.error("Please enter a valid Team Code (e.g. QSR5-XXXXX).");
+      return;
+    }
+    if (!matchedTeam) {
+      toast.error("Team not found! Please check with your Team Leader for the correct Team Code.");
       return;
     }
     if (!firstName.trim()) {
@@ -358,7 +384,7 @@ export function EventRegistrationModal({
     setSubmitting(true);
     try {
       const fullParticipantName = `${firstName.trim()} ${lastName.trim()}`.trim();
-      const updated = await joinTeamWithCode(teamCodeInput.trim(), {
+      const updated = await joinTeamWithCode(cleanCode, {
         userId: user.id,
         fullName: fullParticipantName,
         email: user.email || email.trim().toLowerCase(),
@@ -524,15 +550,20 @@ export function EventRegistrationModal({
       }
     } else {
       // JOIN EXISTING TEAM WITH CODE
-      if (!teamCodeInput.trim()) {
-        toast.error("Please enter your Team Leader's Team Code.");
+      const cleanCode = teamCodeInput.trim().replace(/^JOIN[\s\-_:]*/i, "").trim();
+      if (!cleanCode || cleanCode.toUpperCase() === "JOIN") {
+        toast.error("Please enter your Team Leader's Team Code (e.g. QSR5-XXXXX).");
+        return;
+      }
+      if (!matchedTeam) {
+        toast.error("Team not found! Please check your Team Leader's exact Team Code.");
         return;
       }
 
       setSubmitting(true);
       try {
         const fullParticipantName = `${firstName.trim()} ${lastName.trim()}`.trim();
-        const updated = await joinTeamWithCode(teamCodeInput.trim(), {
+        const updated = await joinTeamWithCode(cleanCode, {
           userId: user?.id,
           fullName: fullParticipantName,
           email: user?.email || email.trim().toLowerCase(),
@@ -1194,14 +1225,14 @@ Platform Support: vybedriven@gmail.com
                         Leader: {matchedTeam.fullName} · {matchedTeam.collegeOrCompany}
                       </p>
                     </div>
-                  ) : teamCodeInput.trim().length >= 3 ? (
-                    <div className="rounded-xl border border-blue-500/40 bg-blue-950/30 p-2.5 text-xs text-blue-200 space-y-1">
-                      <div className="flex items-center gap-1.5 font-bold text-blue-300">
-                        <CheckCircle2 className="size-3.5 text-blue-400 shrink-0" />
-                        <span>Ready to join Team Code: {teamCodeInput.trim().toUpperCase()}</span>
+                  ) : searchDone && teamCodeInput.trim().replace(/^JOIN[\s\-_:]*/i, "").length >= 4 ? (
+                    <div className="rounded-xl border border-red-500/40 bg-red-950/20 p-2.5 text-xs text-red-300 space-y-1">
+                      <div className="flex items-center gap-1.5 font-bold text-red-400">
+                        <AlertCircle className="size-3.5 text-red-400 shrink-0" />
+                        <span>Team Not Found</span>
                       </div>
                       <p className="text-[11px] text-muted-foreground">
-                        Fill your details below to confirm and receive your verified entry pass.
+                        No team found matching code &quot;{teamCodeInput.trim().replace(/^JOIN[\s\-_:]*/i, "").toUpperCase()}&quot;. Please ask your Team Leader for the exact code (e.g. QSR5-XXXXX).
                       </p>
                     </div>
                   ) : null}
@@ -1308,10 +1339,10 @@ Platform Support: vybedriven@gmail.com
                   </Button>
                   <Button
                     type="submit"
-                    disabled={submitting || teamCodeInput.trim().length < 3}
-                    className="rounded-full bg-gradient-brand text-primary-foreground font-bold px-7 shadow-glow hover:brightness-110"
+                    disabled={submitting || !matchedTeam}
+                    className="rounded-full bg-gradient-brand text-primary-foreground font-bold px-7 shadow-glow hover:brightness-110 disabled:opacity-50"
                   >
-                    {submitting ? "Joining..." : matchedTeam ? "Join Team & Get Pass 🚀" : "Confirm & Join Team 🚀"}
+                    {submitting ? "Joining..." : matchedTeam ? "Join Team & Get Pass 🚀" : "Enter Valid Code to Join"}
                   </Button>
                 </div>
               </form>
@@ -1696,14 +1727,14 @@ Platform Support: vybedriven@gmail.com
                         Leader: {matchedTeam.fullName} · {matchedTeam.collegeOrCompany}
                       </p>
                     </div>
-                  ) : teamCodeInput.trim().length >= 3 ? (
-                    <div className="rounded-xl border border-blue-500/40 bg-blue-950/30 p-2.5 text-xs text-blue-200 space-y-1">
-                      <div className="flex items-center gap-1.5 font-bold text-blue-300">
-                        <CheckCircle2 className="size-3.5 text-blue-400 shrink-0" />
-                        <span>Ready to join Team Code: {teamCodeInput.trim().toUpperCase()}</span>
+                  ) : searchDone && teamCodeInput.trim().replace(/^JOIN[\s\-_:]*/i, "").length >= 4 ? (
+                    <div className="rounded-xl border border-red-500/40 bg-red-950/20 p-2.5 text-xs text-red-300 space-y-1">
+                      <div className="flex items-center gap-1.5 font-bold text-red-400">
+                        <AlertCircle className="size-3.5 text-red-400 shrink-0" />
+                        <span>Team Not Found</span>
                       </div>
                       <p className="text-[11px] text-muted-foreground">
-                        Click Complete Registration below to confirm and receive your verified entry pass.
+                        No team found matching code &quot;{teamCodeInput.trim().replace(/^JOIN[\s\-_:]*/i, "").toUpperCase()}&quot;. Please ask your Team Leader for the exact code (e.g. QSR5-XXXXX).
                       </p>
                     </div>
                   ) : null}
@@ -1744,14 +1775,16 @@ Platform Support: vybedriven@gmail.com
 
               <Button
                 type="submit"
-                disabled={submitting}
-                className="rounded-full bg-gradient-brand text-primary-foreground font-bold px-7 shadow-glow hover:brightness-110"
+                disabled={submitting || (teamMode === "join_team" && !matchedTeam)}
+                className="rounded-full bg-gradient-brand text-primary-foreground font-bold px-7 shadow-glow hover:brightness-110 disabled:opacity-50"
               >
                 {submitting
                   ? "Processing..."
                   : teamMode === "create_team"
                   ? "Create Team & Get Pass 🚀"
-                  : "Join Team & Get Pass 🤝"}
+                  : matchedTeam
+                  ? "Join Team & Get Pass 🤝"
+                  : "Enter Valid Code to Join"}
               </Button>
             </div>
           </form>

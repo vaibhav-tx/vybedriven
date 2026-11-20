@@ -534,6 +534,7 @@ function OpportunityDetails() {
 
   const incomingJoinCode = search.joinCode || search.joinTeam;
   const [activeJoinCode, setActiveJoinCode] = useState<string | undefined>(incomingJoinCode);
+  const [modalMode, setModalMode] = useState<"create" | "join">("create");
 
   // Auto-open modal or redirect if requested via ?register=1 or ?joinCode=...
   useEffect(() => {
@@ -542,10 +543,12 @@ function OpportunityDetails() {
         window.open(item.registrationUrl, "_blank", "noopener,noreferrer");
       } else {
         setActiveJoinCode(undefined);
+        setModalMode("create");
         setRegModalOpen(true);
       }
-    } else if (incomingJoinCode) {
+    } else if (incomingJoinCode && incomingJoinCode.toUpperCase() !== "JOIN") {
       setActiveJoinCode(incomingJoinCode);
+      setModalMode("join");
       setRegModalOpen(true);
     }
   }, [search.register, incomingJoinCode, item.registrationUrl]);
@@ -561,11 +564,13 @@ function OpportunityDetails() {
 
   const handleRegisterClick = () => {
     setActiveJoinCode(undefined);
+    setModalMode("create");
     setRegModalOpen(true);
   };
 
   const handleJoinClick = () => {
-    setActiveJoinCode("JOIN");
+    setActiveJoinCode(undefined);
+    setModalMode("join");
     setRegModalOpen(true);
   };
 
@@ -1993,7 +1998,8 @@ function OpportunityDetails() {
         opportunity={item}
         open={regModalOpen}
         onOpenChange={setRegModalOpen}
-        initialJoinCode={activeJoinCode}
+        initialJoinCode={activeJoinCode && activeJoinCode.toUpperCase() !== "JOIN" ? activeJoinCode : undefined}
+        initialMode={modalMode}
       />
 
       {/* Team Management Modal */}
