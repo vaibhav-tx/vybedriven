@@ -1128,37 +1128,36 @@ function OpportunityDetails() {
                       ) : null}
 
                       <div className="grid grid-cols-2 gap-2">
+                        <Button
+                          size="sm"
+                          onClick={() => setTeamModalOpen(true)}
+                          className="h-10 sm:h-11 w-full rounded-xl bg-neon text-black font-extrabold text-xs px-2 shadow-glow-soft hover:brightness-105 flex items-center justify-center gap-1.5"
+                        >
+                          <Users className="size-3.5 shrink-0 text-black" />
+                          <span className="truncate">Manage Team</span>
+                        </Button>
+
                         {userRegRecord?.teamType === "team" && (1 + (userRegRecord.teammates?.length || 0)) < 2 ? (
                           <Button
                             variant="outline"
                             size="sm"
                             onClick={handleRegisterClick}
-                            className="w-full rounded-xl border-amber-500/50 text-[11px] font-bold text-amber-400 hover:bg-amber-500/15"
+                            className="h-10 sm:h-11 w-full rounded-xl border-amber-500/50 text-xs font-bold text-amber-400 hover:bg-amber-500/15 px-2 flex items-center justify-center gap-1.5"
                           >
-                            <Lock className="size-3 mr-1 text-amber-400" />
-                            Pass Locked (1/4)
+                            <Lock className="size-3.5 text-amber-400 shrink-0" />
+                            <span className="truncate">Pass Locked</span>
                           </Button>
                         ) : (
                           <Button
                             variant="outline"
                             size="sm"
                             onClick={handleRegisterClick}
-                            className="w-full rounded-xl border-neon/50 text-[11px] font-bold text-neon hover:bg-neon hover:text-primary-foreground"
+                            className="h-10 sm:h-11 w-full rounded-xl border-neon/50 text-xs font-bold text-neon hover:bg-neon hover:text-black px-2 flex items-center justify-center gap-1.5"
                           >
-                            <Ticket className="size-3 mr-1" />
-                            View Entry Pass
+                            <Ticket className="size-3.5 shrink-0" />
+                            <span className="truncate">Entry Pass</span>
                           </Button>
                         )}
-
-                        <Button
-                          size="sm"
-                          variant="secondary"
-                          onClick={() => setTeamModalOpen(true)}
-                          className="w-full rounded-xl text-[11px] font-bold"
-                        >
-                          <Users className="size-3 mr-1" />
-                          Manage Team ({1 + (userRegRecord?.teammates?.length || 0)}/4)
-                        </Button>
                       </div>
 
                       {/* WhatsApp Community - EXCLUSIVE TO REGISTERED TEAMS & MEMBERS */}
@@ -1693,10 +1692,10 @@ function OpportunityDetails() {
                         <Button
                           size="sm"
                           onClick={() => setTeamModalOpen(true)}
-                          className="h-11 w-full rounded-xl bg-neon text-primary-foreground font-black text-xs sm:text-sm shadow-glow hover:brightness-105"
+                          className="h-10 sm:h-11 w-full rounded-xl bg-neon text-black font-extrabold text-xs px-2 shadow-glow-soft hover:brightness-105 flex items-center justify-center gap-1.5"
                         >
-                          <Users className="size-4 mr-1.5" />
-                          Manage Team
+                          <Users className="size-3.5 shrink-0 text-black" />
+                          <span className="truncate">Manage Team</span>
                         </Button>
 
                         {userRegRecord?.teamType === "team" && (1 + (userRegRecord.teammates?.length || 0)) < 2 ? (
@@ -1704,20 +1703,20 @@ function OpportunityDetails() {
                             variant="outline"
                             size="sm"
                             onClick={handleRegisterClick}
-                            className="h-11 w-full rounded-xl border-amber-500/50 text-xs sm:text-sm font-bold text-amber-400 hover:bg-amber-500/15"
+                            className="h-10 sm:h-11 w-full rounded-xl border-amber-500/50 text-xs font-bold text-amber-400 hover:bg-amber-500/15 px-2 flex items-center justify-center gap-1.5"
                           >
-                            <Lock className="size-3.5 mr-1.5 text-amber-400" />
-                            Pass Locked
+                            <Lock className="size-3.5 text-amber-400 shrink-0" />
+                            <span className="truncate">Pass Locked</span>
                           </Button>
                         ) : (
                           <Button
                             variant="outline"
                             size="sm"
                             onClick={handleRegisterClick}
-                            className="h-11 w-full rounded-xl border-neon/50 text-xs sm:text-sm font-bold text-neon hover:bg-neon hover:text-primary-foreground"
+                            className="h-10 sm:h-11 w-full rounded-xl border-neon/50 text-xs font-bold text-neon hover:bg-neon hover:text-black px-2 flex items-center justify-center gap-1.5"
                           >
-                            <Ticket className="size-3.5 mr-1.5" />
-                            Entry Pass
+                            <Ticket className="size-3.5 shrink-0" />
+                            <span className="truncate">Entry Pass</span>
                           </Button>
                         )}
                       </div>
@@ -1876,32 +1875,36 @@ function OpportunityDetails() {
               {isRegistered ? (
                 <div className="space-y-1.5">
                   <div className="grid grid-cols-2 gap-2">
+                    <Button
+                      size="sm"
+                      onClick={() => setTeamModalOpen(true)}
+                      className="rounded-xl bg-neon text-black font-extrabold text-xs h-10 px-2 shadow-glow-soft hover:brightness-105 flex items-center justify-center gap-1.5"
+                    >
+                      <Users className="size-3.5 shrink-0 text-black" />
+                      <span className="truncate">Manage Team</span>
+                    </Button>
+
                     {userRegRecord?.teamType === "team" && (1 + (userRegRecord.teammates?.length || 0)) >= 2 ? (
                       <Button
                         size="sm"
+                        variant="outline"
                         onClick={() => setIdeaModalOpen(true)}
-                        className="rounded-xl bg-neon text-primary-foreground font-black text-xs h-10 shadow-glow"
+                        className="rounded-xl border-neon/50 text-neon font-bold text-xs h-10 px-2 hover:bg-neon hover:text-black flex items-center justify-center gap-1.5"
                       >
-                        <Sparkles className="size-3.5 mr-1" />
-                        {userRegRecord?.submission?.pptUrl ? "Edit PPT" : "Submit PPT 🚀"}
+                        <Sparkles className="size-3.5 shrink-0" />
+                        <span className="truncate">{userRegRecord?.submission?.pptUrl ? "Edit PPT" : "Submit PPT 🚀"}</span>
                       </Button>
                     ) : (
                       <Button
                         size="sm"
+                        variant="outline"
                         onClick={handleRegisterClick}
-                        className="rounded-xl bg-neon text-primary-foreground font-black text-xs h-10 shadow-glow"
+                        className="rounded-xl border-neon/50 text-neon font-bold text-xs h-10 px-2 hover:bg-neon hover:text-black flex items-center justify-center gap-1.5"
                       >
-                        <Ticket className="size-3.5 mr-1" /> View Pass
+                        <Ticket className="size-3.5 shrink-0" />
+                        <span className="truncate">View Pass</span>
                       </Button>
                     )}
-                    <Button
-                      size="sm"
-                      variant="secondary"
-                      onClick={() => setTeamModalOpen(true)}
-                      className="rounded-xl text-xs font-bold h-10"
-                    >
-                      <Users className="size-3.5 mr-1" /> Team ({1 + (userRegRecord?.teammates?.length || 0)}/4)
-                    </Button>
                   </div>
                   {item.slug === "quasar-5-international-hackathon-2027" && (
                     <a
