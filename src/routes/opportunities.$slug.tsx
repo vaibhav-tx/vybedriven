@@ -364,16 +364,16 @@ function EventAuthGateDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="w-[92vw] max-w-sm sm:max-w-md border-border bg-[#070d09] p-4 sm:p-6 text-foreground shadow-2xl rounded-2xl sm:rounded-3xl max-h-[88vh] overflow-y-auto no-scrollbar"
+        className="w-[calc(100vw-32px)] max-w-sm sm:max-w-md border-border bg-[#070d09] p-4 sm:p-6 text-foreground shadow-2xl rounded-2xl sm:rounded-3xl max-h-[90vh] overflow-y-auto overflow-x-hidden no-scrollbar"
         onPointerDownOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => e.preventDefault()}
       >
-        <DialogHeader className="border-b border-border/70 pb-3 text-left">
-          <div className="flex items-center gap-2.5 sm:gap-3">
-            <div className="size-9 sm:size-11 rounded-xl border border-neon/30 bg-surface flex items-center justify-center overflow-hidden shrink-0 shadow-glow-soft">
+        <DialogHeader className="border-b border-border/70 pb-3 text-left pr-8">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+            <div className="size-9 sm:size-10 rounded-xl border border-neon/30 bg-surface flex items-center justify-center overflow-hidden shrink-0 shadow-glow-soft">
               <img src={item.image} alt={item.title} className="h-full w-full object-cover" />
             </div>
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <DialogTitle className="text-sm sm:text-base font-bold text-foreground truncate">
                 {item.title}
               </DialogTitle>
@@ -453,7 +453,7 @@ function EventAuthGateDialog({
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="e.g. Alex Johnson"
-                  className="w-full rounded-xl border border-border bg-surface px-3 py-1.5 text-xs text-foreground outline-none focus:border-neon"
+                  className="w-full rounded-xl border border-border bg-surface px-3 py-2 text-xs text-foreground outline-none focus:border-neon"
                 />
               </div>
             )}
@@ -468,50 +468,49 @@ function EventAuthGateDialog({
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="yourname@gmail.com"
-                className="w-full rounded-xl border border-border bg-surface px-3 py-1.5 text-xs text-foreground outline-none focus:border-neon"
+                className="w-full rounded-xl border border-border bg-surface px-3 py-2 text-xs text-foreground outline-none focus:border-neon"
               />
             </div>
 
             <div>
-              <label className="block text-[11px] font-semibold text-foreground/90 mb-1">
-                Password <span className="text-neon">*</span>
-              </label>
+              <div className="flex items-center justify-between mb-1">
+                <label className="text-[11px] font-semibold text-foreground/90">
+                  Password <span className="text-neon">*</span>
+                </label>
+                {authMode === "signin" && (
+                  <a
+                    href="/forgot-password"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[11px] font-semibold text-neon hover:underline"
+                  >
+                    Forgot password?
+                  </a>
+                )}
+              </div>
               <input
                 required
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="At least 6 characters"
-                className="w-full rounded-xl border border-border bg-surface px-3 py-1.5 text-xs text-foreground outline-none focus:border-neon"
+                className="w-full rounded-xl border border-border bg-surface px-3 py-2 text-xs text-foreground outline-none focus:border-neon"
               />
             </div>
 
-            {authMode === "signin" && (
-              <div className="text-right">
-                <a
-                  href="/forgot-password"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[11px] font-semibold text-neon hover:underline"
-                >
-                  Forgot password?
-                </a>
-              </div>
-            )}
-
-            <div className="pt-1.5 flex items-center justify-between gap-2.5">
+            <div className="pt-2 flex items-center justify-between gap-2.5">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => navigate({ to: "/" })}
-                className="rounded-full border-border text-xs h-9 px-3"
+                className="rounded-full border-border text-xs h-9 px-3 shrink-0"
               >
                 Back to Home
               </Button>
               <Button
                 type="submit"
                 disabled={busy}
-                className="rounded-full bg-neon text-primary-foreground font-bold shadow-glow-soft hover:brightness-105 text-xs flex-1 sm:flex-initial h-9 px-5"
+                className="rounded-full bg-neon text-primary-foreground font-bold shadow-glow-soft hover:brightness-105 text-xs flex-1 h-9 px-4 truncate"
               >
                 {busy ? "Please wait..." : authMode === "signin" ? "Sign In & Unlock" : "Create Account & Unlock"}
               </Button>

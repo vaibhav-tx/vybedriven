@@ -290,34 +290,40 @@ function Events() {
                 FEATURED
               </span>
             </div>
-            <div className="flex flex-col justify-center p-3.5 sm:p-8 md:p-10">
+            <div className="flex flex-col justify-center p-3.5 sm:p-8 md:p-10 min-w-0 w-full overflow-hidden">
               <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                <span className="text-[10px] sm:text-xs font-semibold tracking-[0.18em] text-neon">{featuredQuasar.tag.toUpperCase()}</span>
-                <span className="rounded-full border border-neon/40 bg-neon/10 px-2 py-0.5 text-[10px] sm:text-[11px] font-semibold text-neon">
+                <span className="text-[10px] sm:text-xs font-semibold tracking-wider text-neon shrink-0">
+                  36H OFFLINE HACKATHON · SION, MUMBAI
+                </span>
+                <span className="rounded-full border border-neon/40 bg-neon/10 px-2 py-0.5 text-[10px] sm:text-[11px] font-semibold text-neon shrink-0">
                   Co-Powered: Vybe Driven
                 </span>
               </div>
-              <h3 className="mt-1.5 sm:mt-3 text-lg min-[400px]:text-xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-snug">
+              <h3 className="mt-1.5 sm:mt-3 text-lg min-[400px]:text-xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-snug break-words">
                 {featuredQuasar.title}
               </h3>
               {/* Description: Hidden on mobile to keep card compact */}
               <p className="mt-2.5 sm:mt-3 text-xs sm:text-sm text-muted-foreground leading-relaxed hidden md:block">
                 {featuredQuasar.description}
               </p>
-              <div className="mt-2.5 sm:mt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4 rounded-xl sm:rounded-2xl border border-neon/30 bg-surface-2/60 p-2.5 sm:p-4">
-                <div className="space-y-1 sm:space-y-1.5 text-xs sm:text-sm">
-                  <p className="flex items-center gap-1.5 sm:gap-2 text-muted-foreground text-[11px] sm:text-xs">
-                    <Globe className="size-3.5 sm:size-4 text-neon shrink-0" />
-                    <span>{featuredQuasar.format} · Sion, Mumbai</span>
-                    <span className="text-border">·</span>
-                    <Calendar className="size-3.5 sm:size-4 text-neon shrink-0" />
-                    <span className="truncate">{featuredQuasar.date.split(" · ")[0]}</span>
-                  </p>
-                  <p className="flex items-center gap-1.5 sm:gap-2 font-bold text-foreground text-xs sm:text-sm">
+              <div className="mt-2.5 sm:mt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4 rounded-xl sm:rounded-2xl border border-neon/30 bg-surface-2/60 p-2.5 sm:p-4 min-w-0">
+                <div className="space-y-1 sm:space-y-1.5 text-xs sm:text-sm min-w-0">
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-muted-foreground text-[11px] sm:text-xs">
+                    <span className="inline-flex items-center gap-1 shrink-0">
+                      <Globe className="size-3.5 text-neon shrink-0" />
+                      <span>{featuredQuasar.format} · Sion, Mumbai</span>
+                    </span>
+                    <span className="text-border shrink-0">·</span>
+                    <span className="inline-flex items-center gap-1 shrink-0">
+                      <Calendar className="size-3.5 text-neon shrink-0" />
+                      <span>23–24 Jan 2027</span>
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1.5 sm:gap-2 font-bold text-foreground text-xs sm:text-sm pt-0.5">
                     <Trophy className="size-3.5 sm:size-4 text-amber-400 shrink-0" />
-                    <span className="text-neon font-mono font-black">{featuredQuasar.prize}</span>
-                    <span className="text-muted-foreground font-normal">Cash Prize Pool</span>
-                  </p>
+                    <span className="text-amber-400 font-mono font-black text-sm sm:text-base">{featuredQuasar.prize}</span>
+                    <span className="text-amber-300/80 font-normal text-[11px] sm:text-xs">Cash Prize Pool</span>
+                  </div>
                 </div>
                 <div className="relative shrink-0 hidden md:flex items-center justify-center">
                   <img
@@ -341,22 +347,22 @@ function Events() {
                   </div>
                 </div>
               )}
-              <div className="mt-3.5 sm:mt-8 flex flex-row gap-2 sm:gap-3">
+              <div className="mt-3.5 sm:mt-8 flex flex-row gap-2 sm:gap-3 w-full">
                 <Link
                   to="/opportunities/$slug"
                   params={{ slug: featuredQuasar.slug }}
                   search={{ register: "1" }}
-                  className="inline-flex flex-1 sm:flex-initial items-center justify-center gap-1.5 sm:gap-2 rounded-xl sm:rounded-full bg-gradient-brand px-4 py-2.5 sm:px-6 sm:py-3.5 text-xs sm:text-sm font-bold text-primary-foreground transition hover:brightness-110 hover:shadow-glow"
+                  className="inline-flex flex-1 sm:flex-initial items-center justify-center gap-1.5 sm:gap-2 rounded-xl sm:rounded-full bg-gradient-brand px-3 sm:px-6 py-2.5 sm:py-3.5 text-xs sm:text-sm font-bold text-primary-foreground transition hover:brightness-110 hover:shadow-glow min-w-0"
                 >
-                  <span>Register Now</span>
-                  <ArrowRight className="size-3.5 sm:size-4" />
+                  <span className="truncate">Register Now</span>
+                  <ArrowRight className="size-3.5 sm:size-4 shrink-0" />
                 </Link>
                 <Link
                   to="/opportunities/$slug"
                   params={{ slug: featuredQuasar.slug }}
-                  className="inline-flex flex-1 sm:flex-initial items-center justify-center gap-1.5 sm:gap-2 rounded-xl sm:rounded-full border border-neon/40 bg-surface/80 px-4 py-2.5 sm:px-6 sm:py-3.5 text-xs sm:text-sm font-semibold text-neon transition hover:border-neon hover:bg-neon/15"
+                  className="inline-flex flex-1 sm:flex-initial items-center justify-center gap-1.5 sm:gap-2 rounded-xl sm:rounded-full border border-neon/40 bg-surface/80 px-3 sm:px-6 py-2.5 sm:py-3.5 text-xs sm:text-sm font-semibold text-neon transition hover:border-neon hover:bg-neon/15 min-w-0"
                 >
-                  <span>Details →</span>
+                  <span className="truncate">Details →</span>
                 </Link>
               </div>
             </div>
@@ -382,34 +388,40 @@ function Events() {
                 FEATURED
               </span>
             </div>
-            <div className="flex flex-col justify-center p-3.5 sm:p-8 md:p-10">
+            <div className="flex flex-col justify-center p-3.5 sm:p-8 md:p-10 min-w-0 w-full overflow-hidden">
               <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                <span className="text-[10px] sm:text-xs font-semibold tracking-[0.18em] text-neon">{featuredGoa.tag.toUpperCase()}</span>
-                <span className="rounded-full border border-neon/40 bg-neon/10 px-2 py-0.5 text-[10px] sm:text-[11px] font-semibold text-neon">
+                <span className="text-[10px] sm:text-xs font-semibold tracking-wider text-neon shrink-0">
+                  NATIONAL BUILD SPRINT · GOA
+                </span>
+                <span className="rounded-full border border-neon/40 bg-neon/10 px-2 py-0.5 text-[10px] sm:text-[11px] font-semibold text-neon shrink-0">
                   Platform: Vybe Driven
                 </span>
               </div>
-              <h3 className="mt-1.5 sm:mt-3 text-lg min-[400px]:text-xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-snug">
+              <h3 className="mt-1.5 sm:mt-3 text-lg min-[400px]:text-xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-snug break-words">
                 {featuredGoa.title}
               </h3>
               {/* Description: Hidden on mobile to keep card compact */}
               <p className="mt-2.5 sm:mt-3 text-xs sm:text-sm text-muted-foreground leading-relaxed hidden md:block">
                 {featuredGoa.description}
               </p>
-              <div className="mt-2.5 sm:mt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4 rounded-xl sm:rounded-2xl border border-neon/30 bg-surface-2/60 p-2.5 sm:p-4">
-                <div className="space-y-1 sm:space-y-1.5 text-xs sm:text-sm">
-                  <p className="flex items-center gap-1.5 sm:gap-2 text-muted-foreground text-[11px] sm:text-xs">
-                    <Globe className="size-3.5 sm:size-4 text-neon shrink-0" />
-                    <span>{featuredGoa.format} · Goa, India</span>
-                    <span className="text-border">·</span>
-                    <Calendar className="size-3.5 sm:size-4 text-neon shrink-0" />
-                    <span className="truncate">TBA 2027</span>
-                  </p>
-                  <p className="flex items-center gap-1.5 sm:gap-2 font-bold text-foreground text-xs sm:text-sm">
+              <div className="mt-2.5 sm:mt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4 rounded-xl sm:rounded-2xl border border-neon/30 bg-surface-2/60 p-2.5 sm:p-4 min-w-0">
+                <div className="space-y-1 sm:space-y-1.5 text-xs sm:text-sm min-w-0">
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-muted-foreground text-[11px] sm:text-xs">
+                    <span className="inline-flex items-center gap-1 shrink-0">
+                      <Globe className="size-3.5 text-neon shrink-0" />
+                      <span>{featuredGoa.format} · Goa, India</span>
+                    </span>
+                    <span className="text-border shrink-0">·</span>
+                    <span className="inline-flex items-center gap-1 shrink-0">
+                      <Calendar className="size-3.5 text-neon shrink-0" />
+                      <span>TBA 2027</span>
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1.5 sm:gap-2 font-bold text-foreground text-xs sm:text-sm pt-0.5">
                     <Trophy className="size-3.5 sm:size-4 text-amber-400 shrink-0" />
-                    <span className="text-neon font-mono font-black">{featuredGoa.prize}</span>
-                    <span className="text-muted-foreground font-normal">Prize Pool</span>
-                  </p>
+                    <span className="text-amber-400 font-mono font-black text-sm sm:text-base">{featuredGoa.prize}</span>
+                    <span className="text-amber-300/80 font-normal text-[11px] sm:text-xs">Prize Pool</span>
+                  </div>
                 </div>
                 <div className="relative shrink-0 hidden md:flex items-center justify-center">
                   <img
@@ -433,22 +445,22 @@ function Events() {
                   </div>
                 </div>
               )}
-              <div className="mt-3.5 sm:mt-8 flex flex-row gap-2 sm:gap-3">
+              <div className="mt-3.5 sm:mt-8 flex flex-row gap-2 sm:gap-3 w-full">
                 <Link
                   to="/opportunities/$slug"
                   params={{ slug: featuredGoa.slug }}
                   search={{ register: "1" }}
-                  className="inline-flex flex-1 sm:flex-initial items-center justify-center gap-1.5 sm:gap-2 rounded-xl sm:rounded-full bg-gradient-brand px-4 py-2.5 sm:px-6 sm:py-3.5 text-xs sm:text-sm font-bold text-primary-foreground transition hover:brightness-110 hover:shadow-glow"
+                  className="inline-flex flex-1 sm:flex-initial items-center justify-center gap-1.5 sm:gap-2 rounded-xl sm:rounded-full bg-gradient-brand px-3 sm:px-6 py-2.5 sm:py-3.5 text-xs sm:text-sm font-bold text-primary-foreground transition hover:brightness-110 hover:shadow-glow min-w-0"
                 >
-                  <span>Register Now</span>
-                  <ArrowRight className="size-3.5 sm:size-4" />
+                  <span className="truncate">Register Now</span>
+                  <ArrowRight className="size-3.5 sm:size-4 shrink-0" />
                 </Link>
                 <Link
                   to="/opportunities/$slug"
                   params={{ slug: featuredGoa.slug }}
-                  className="inline-flex flex-1 sm:flex-initial items-center justify-center gap-1.5 sm:gap-2 rounded-xl sm:rounded-full border border-neon/40 bg-surface/80 px-4 py-2.5 sm:px-6 sm:py-3.5 text-xs sm:text-sm font-semibold text-neon transition hover:border-neon hover:bg-neon/15"
+                  className="inline-flex flex-1 sm:flex-initial items-center justify-center gap-1.5 sm:gap-2 rounded-xl sm:rounded-full border border-neon/40 bg-surface/80 px-3 sm:px-6 py-2.5 sm:py-3.5 text-xs sm:text-sm font-semibold text-neon transition hover:border-neon hover:bg-neon/15 min-w-0"
                 >
-                  <span>Details →</span>
+                  <span className="truncate">Details →</span>
                 </Link>
               </div>
             </div>
