@@ -506,73 +506,6 @@ export function TeamManagementModal({
             </div>
           </div>
 
-          {/* Official WhatsApp Community Access for Confirmed Squad Members */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl border border-emerald-500/40 bg-emerald-950/20 p-3.5 shadow-sm">
-            <div className="flex items-center gap-2.5">
-              <span className="flex size-8 shrink-0 items-center justify-center rounded-xl bg-emerald-500/20 text-emerald-400">
-                <MessageCircle className="size-4" />
-              </span>
-              <div>
-                <p className="text-xs font-bold text-foreground">
-                  Official WhatsApp Community
-                </p>
-                <p className="text-[11px] text-muted-foreground">
-                  Exclusive channel for registered participants and squad mates.
-                </p>
-              </div>
-            </div>
-            <a
-              href={
-                registration.opportunitySlug === "goa-buildathon-2027"
-                  ? "https://chat.whatsapp.com/HXLGLzUJ6G2Hr1FL8RE7yW"
-                  : registration.opportunitySlug === "quasar-5-international-hackathon-2027"
-                  ? "https://chat.whatsapp.com/K3sHKGtXYJ06l02R2eLmVA"
-                  : findOpportunity(registration.opportunitySlug)?.groupUrl ||
-                    "https://chat.whatsapp.com/FTO9jg5AgW3CSZuA3PZVIU?s=cl&p=a&iam=2"
-              }
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-1.5 rounded-full bg-[#25D366] text-white font-extrabold text-xs px-4 py-2 hover:brightness-110 shadow-sm transition shrink-0"
-            >
-              <MessageCircle className="size-3.5" />
-              <span>Join WhatsApp Group</span>
-              <ExternalLink className="size-3 opacity-80" />
-            </a>
-          </div>
-
-          {/* Round 1 PPT Submission Quick Access */}
-          {totalMembers >= 2 ? (
-            <div className="rounded-2xl border-2 border-emerald-500/40 bg-emerald-950/20 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-glow-soft">
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-xs font-black uppercase tracking-wider text-emerald-400">
-                    Round 1 Live: Idea Submission (PPT Round)
-                  </span>
-                </div>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {registration.submission?.pptUrl
-                    ? `✓ Submitted: "${registration.submission.projectTitle}" (${registration.submission.track})`
-                    : "Squad size is 2+! Any verified squad member can submit the PPT deck."}
-                </p>
-              </div>
-              <Button
-                type="button"
-                onClick={() => setIdeaModalOpen(true)}
-                className="rounded-xl bg-neon text-primary-foreground font-black text-xs px-4 py-2.5 shadow-glow hover:brightness-105 shrink-0"
-              >
-                {registration.submission?.pptUrl ? "Edit PPT Deck ✓" : "Submit Round 1 PPT 🚀"}
-              </Button>
-            </div>
-          ) : (
-            <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 p-3 text-xs text-amber-300 flex items-center gap-2">
-              <AlertCircle className="size-4 text-amber-400 shrink-0" />
-              <span>
-                <strong>Round 1 PPT Locked:</strong> Share your team code above with at least 1 friend to unlock PPT submission.
-              </span>
-            </div>
-          )}
-
           {/* Members Roster List */}
           <div className="space-y-3">
             <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground">
@@ -712,14 +645,16 @@ export function TeamManagementModal({
                               </button>
                             </>
                           )}
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveMember(index)}
-                            className="rounded-lg border border-border bg-surface p-1.5 text-muted-foreground hover:border-red-500 hover:text-red-400 transition"
-                            title="Remove Member"
-                          >
-                            <Trash2 className="size-3.5" />
-                          </button>
+                          {isLeader && !isEventClosed && (
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveMember(index)}
+                              className="rounded-lg border border-border bg-surface p-1.5 text-muted-foreground hover:border-red-500 hover:text-red-400 transition"
+                              title="Remove Member (Leader Only)"
+                            >
+                              <Trash2 className="size-3.5" />
+                            </button>
+                          )}
                         </div>
                       )}
                     </div>
@@ -743,16 +678,16 @@ export function TeamManagementModal({
                 🎉 Team Roster Full (4/4 Members Verified)
               </div>
             ) : null}
-            {/* Danger Zone: Delete Entire Squad (Team Leader & Platform Admin Only) */}
-            {(isLeader || isAdmin) && !isEventClosed && (
+            {/* Danger Zone: Disband Entire Squad (Team Leader Only) */}
+            {isLeader && !isEventClosed && (
               <div className="rounded-2xl border border-red-500/30 bg-red-950/20 p-4 space-y-3">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div>
                     <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-red-400">
-                      <Trash2 className="size-3.5" /> Danger Zone · Delete Squad
+                      <Trash2 className="size-3.5" /> Danger Zone · Disband Squad
                     </div>
                     <p className="text-[11px] text-muted-foreground mt-0.5">
-                      Galti se ban gaya? Team delete karne se sabhi members ki entry cancel ho jayegi aur sabhi free ho jayenge.
+                      Need to disband this squad? Disbanding will permanently cancel all member passes and free everyone to join or create another team.
                     </p>
                   </div>
                   {!showDeleteConfirm && (
@@ -763,7 +698,7 @@ export function TeamManagementModal({
                       onClick={() => setShowDeleteConfirm(true)}
                       className="border-red-500/40 text-red-400 hover:bg-red-500/15 hover:text-red-300 text-xs rounded-xl shrink-0 self-start sm:self-auto"
                     >
-                      <Trash2 className="size-3.5 mr-1" /> Delete Team
+                      <Trash2 className="size-3.5 mr-1" /> Disband Squad
                     </Button>
                   )}
                 </div>
@@ -771,7 +706,7 @@ export function TeamManagementModal({
                 {showDeleteConfirm && (
                   <div className="rounded-xl border border-red-500/50 bg-red-950/40 p-3.5 space-y-3 text-xs">
                     <p className="text-red-200 leading-relaxed font-medium">
-                      ⚠️ Are you sure you want to delete <strong>&quot;{teamName}&quot;</strong>? This will permanently delete this squad, invalidate all member entry passes, and cannot be undone.
+                      ⚠️ Are you sure you want to disband <strong>&quot;{teamName}&quot;</strong>? This will permanently disband this squad, invalidate all member entry passes, and cannot be undone.
                     </p>
 
                     <label className="flex items-start gap-2.5 cursor-pointer text-foreground select-none bg-red-950/50 p-2.5 rounded-lg border border-red-500/30">
@@ -782,7 +717,7 @@ export function TeamManagementModal({
                         className="mt-0.5 size-4 rounded border-red-500/50 accent-red-500 cursor-pointer"
                       />
                       <span className="text-[11px] leading-tight font-semibold text-red-100">
-                        I confirm that I want to permanently delete this team and cancel all passes.
+                        I confirm that I want to permanently disband this squad and cancel all member passes.
                       </span>
                     </label>
 
@@ -805,7 +740,7 @@ export function TeamManagementModal({
                         onClick={handleDeleteTeam}
                         className="rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs px-4 shadow-glow disabled:opacity-50"
                       >
-                        {deletingTeam ? "Deleting Squad..." : "Permanently Delete Team"}
+                        {deletingTeam ? "Disbanding Squad..." : "Permanently Disband Squad"}
                       </Button>
                     </div>
                   </div>

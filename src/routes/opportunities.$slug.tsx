@@ -1690,14 +1690,23 @@ function OpportunityDetails() {
                       </div>
 
                       <div className="mt-3 grid grid-cols-2 gap-2">
+                        <Button
+                          size="sm"
+                          onClick={() => setTeamModalOpen(true)}
+                          className="h-11 w-full rounded-xl bg-neon text-primary-foreground font-black text-xs sm:text-sm shadow-glow hover:brightness-105"
+                        >
+                          <Users className="size-4 mr-1.5" />
+                          Manage Team
+                        </Button>
+
                         {userRegRecord?.teamType === "team" && (1 + (userRegRecord.teammates?.length || 0)) < 2 ? (
                           <Button
                             variant="outline"
                             size="sm"
                             onClick={handleRegisterClick}
-                            className="w-full rounded-lg border-amber-500/50 text-[11px] font-bold text-amber-400 hover:bg-amber-500/15"
+                            className="h-11 w-full rounded-xl border-amber-500/50 text-xs sm:text-sm font-bold text-amber-400 hover:bg-amber-500/15"
                           >
-                            <Lock className="size-3 mr-1 text-amber-400" />
+                            <Lock className="size-3.5 mr-1.5 text-amber-400" />
                             Pass Locked
                           </Button>
                         ) : (
@@ -1705,22 +1714,12 @@ function OpportunityDetails() {
                             variant="outline"
                             size="sm"
                             onClick={handleRegisterClick}
-                            className="w-full rounded-lg border-neon/50 text-[11px] font-bold text-neon hover:bg-neon hover:text-primary-foreground"
+                            className="h-11 w-full rounded-xl border-neon/50 text-xs sm:text-sm font-bold text-neon hover:bg-neon hover:text-primary-foreground"
                           >
-                            <Ticket className="size-3 mr-1" />
+                            <Ticket className="size-3.5 mr-1.5" />
                             Entry Pass
                           </Button>
                         )}
-
-                        <Button
-                          size="sm"
-                          variant="secondary"
-                          onClick={() => setTeamModalOpen(true)}
-                          className="w-full rounded-lg text-[11px] font-bold"
-                        >
-                          <Users className="size-3 mr-1" />
-                          Manage Team
-                        </Button>
                       </div>
                     </div>
 
@@ -1731,19 +1730,11 @@ function OpportunityDetails() {
                           href="https://quasar-vppcoe.vercel.app/#tracks"
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center justify-center gap-2 rounded-xl border border-neon/50 bg-neon/15 px-3 py-2 text-xs font-bold text-neon hover:bg-neon hover:text-black transition"
+                          className="flex items-center justify-center gap-2 rounded-xl border border-neon/50 bg-neon/15 px-3 py-2.5 text-xs font-bold text-neon hover:bg-neon hover:text-black transition"
                         >
                           <span>▶ Quasar_Problem Statements &amp; Tracks ◀</span>
                           <ExternalLink className="size-3.5" />
                         </a>
-                        <button
-                          type="button"
-                          onClick={() => setIdeaModalOpen(true)}
-                          className="flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-surface px-3 py-2 text-xs font-semibold text-foreground hover:border-neon/50 hover:text-neon transition"
-                        >
-                          <FileText className="size-3.5 text-neon" />
-                          <span>Official PPT Deck Template &amp; Submission</span>
-                        </button>
                       </div>
                     )}
 
