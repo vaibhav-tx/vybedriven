@@ -366,6 +366,177 @@ Participation is application-based and limited to 150–200 selected participant
   },
 
   {
+    slug: "quasar-5-international-hackathon-2027",
+    title: "Quasar 5.0: 36-Hour International Hackathon",
+    type: "Hackathon",
+    tag: "36-Hour Offline International Hackathon · Sion, Mumbai",
+    description: "Flagship 36-hour offline hackathon by Vasantdada Patil Pratishthan's College of Engineering and Visual Arts (PVPPCOE), Sion Mumbai. Turn bold ideas into prototypes and compete for ₹1,50,000 cash prizes.",
+    date: "Jan 23, 2027, 8:00 AM – Jan 24, 2027, 11:59 PM IST",
+    location: "Vasantdada Patil Pratishthan's College of Engineering, Sion, Mumbai, Maharashtra 400022",
+    format: "In person",
+    prize: "₹1,50,000 Cash",
+    perks: [
+      {
+        icon: "gift",
+        emoji: "💰",
+        title: "₹1,50,000 Cash Prize Pool",
+        description: "5 dedicated Problem Statement tracks with ₹30,000 cash prize per track awarded via cheque within 1 day.",
+      },
+      {
+        icon: "award",
+        emoji: "📜",
+        title: "Official Certificates",
+        description: "Verified certificates of merit for winners and official participation certificates for all attending teams.",
+      },
+      {
+        icon: "rocket",
+        emoji: "⚡",
+        title: "36-Hour Offline Sprint",
+        description: "Intense 36 hours of non-stop offline building, technical mentorship, food, and high-energy developer environment.",
+      },
+      {
+        icon: "brain",
+        emoji: "🎯",
+        title: "5 Challenging Problem Statements",
+        description: "Work on real-world engineering challenges across software, systems, automation, and emerging tech.",
+      },
+      {
+        icon: "handshake",
+        emoji: "🤝",
+        title: "Platform Partner: Vybe Driven",
+        description: "Official platform and technology partner powering registrations, team rosters & discovery.",
+      },
+      {
+        icon: "coffee",
+        emoji: "🏛️",
+        title: "PVPPCOE Sion Mumbai Campus",
+        description: "Experience the vibrant campus of Vasantdada Patil Pratishthan's College of Engineering in central Mumbai.",
+      },
+    ],
+    image: "/events/quasar-5-banner.jpg",
+    imageFit: "contain",
+    imagePosition: "center center",
+    organizer: "PVPPCOE Mumbai · Powered by ATS & Unstop · Vybe Driven (Platform Partner)",
+    organizerEmail: "quasar@pvppcoe.ac.in",
+    registrationDeadline: "Dec 21, 2026 · 11:59 PM IST",
+    eligibility: "Inter-college and inter-organization teams across undergraduate, postgraduate, engineering & tech students nationwide",
+    teamSize: "2–4 Members",
+    fee: "Free",
+    status: "Registration open",
+    registrationNote: "Round 0 (PPT Submission) is open until 25 Dec 2026. Register on Vybe Driven to secure your team slot and submit your idea deck.",
+    contacts: [
+      { name: "Saish Gosavi (Organizer)", phone: "+91 91374 55278" },
+      { name: "Shanmukh Tawde (Organizer)", phone: "+91 98201 12919" },
+      { name: "Quasar Support Desk", phone: "quasar@pvppcoe.ac.in" },
+    ],
+    relatedLinks: [
+      { label: "Official Quasar Portal", url: "https://quasar-vppcoe.vercel.app" },
+      { label: "Problem Statements & Tracks", url: "https://quasar-vppcoe.vercel.app/#tracks" },
+      { label: "Instagram @quasar_vppcoe", url: "https://www.instagram.com/quasar_vppcoe" },
+    ],
+    overview: `Quasar 5.0 is the flagship 36-hour offline international hackathon organized by Vasantdada Patil Pratishthan’s College of Engineering and Visual Arts (PVPPCOE), Sion Mumbai, scheduled for 23–24 January 2027.
+
+This 36-hour hackathon provides a dynamic platform for students, developers, designers, and innovators to collaborate, think creatively, and develop technology-driven solutions to real-world challenges.
+
+The event encourages innovation, teamwork, technical excellence, and entrepreneurial thinking while enabling participants to showcase their skills and compete for a prize pool of ₹1,50,000.
+
+Key Highlights:
+• Duration: 36 hours offline hackathon
+• Dates: 23–24 January 2027
+• Venue: Vasantdada Patil Pratishthan's College of Engineering and Visual Arts, Sion, Mumbai
+• Registration Fee: Completely free
+• Prize Pool: ₹1,50,000 Cash (₹30,000 Cash x 5 Problem Statements)
+• Eligibility: Inter-college and inter-organization teams (2–4 members)
+• Evaluation: Two-stage review (Online PPT Submission & Shortlist Presentation, followed by 36-hour Offline Finale)`,
+    schedule: [
+      {
+        title: "Revealing the Problem Statements",
+        dateBadge: "01 Nov",
+        date: "01 Nov 26 · 12:00 AM IST",
+        description: "Official release of the problem statements across technical tracks on the Quasar portal.",
+      },
+      {
+        title: "Round 0: PPT Submission Round (Online)",
+        dateBadge: "01-25 Dec",
+        date: "01 Dec 26, 12:00 AM – 25 Dec 26, 11:59 PM IST",
+        description: "Submit a PowerPoint presentation outlining the proposed solution, technical feasibility, engineering approach, team intro, and expected impact.",
+      },
+      {
+        title: "Registration Closes",
+        dateBadge: "21 Dec",
+        date: "21 Dec 26 · 11:59 PM IST",
+        description: "Final deadline to complete squad registration on Vybe Driven and lock team members.",
+      },
+      {
+        title: "Round 1: Online PPT Presentations",
+        dateBadge: "21-30 Dec",
+        date: "21 Dec 26 – 30 Dec 26 · Online Evaluation",
+        description: "Shortlisted teams deliver a 5-minute live online presentation to the evaluation panel covering problem understanding, technical architecture, and implementation strategy.",
+      },
+      {
+        title: "Round 1 Result Declaration",
+        dateBadge: "02 Jan",
+        date: "02 Jan 27 · 12:00 AM IST",
+        description: "Official announcement of finalist teams qualifying for the on-site 36-hour hackathon in Mumbai.",
+      },
+      {
+        title: "Final Offline Round: 36-Hour Hackathon",
+        dateBadge: "23-24 Jan",
+        date: "23 Jan 27, 08:00 AM – 24 Jan 27, 11:59 PM IST",
+        description: "On-site 36-hour intense hackathon at PVPPCOE Sion Mumbai campus. Refine prototypes, incorporate mentor feedback, and pitch to jury for ₹1,50,000 cash prizes.",
+      },
+    ],
+    rewards: [
+      {
+        amount: "₹30,000",
+        amountSub: "Cash Prize via Cheque",
+        title: "Winner: Problem Statement 1",
+        description: "Awarded to the top scoring prototype solving Problem Statement 1, plus official Certificate of Excellence.",
+        badge: "Track 1 Winner",
+        type: "cash",
+      },
+      {
+        amount: "₹30,000",
+        amountSub: "Cash Prize via Cheque",
+        title: "Winner: Problem Statement 2",
+        description: "Awarded to the top scoring prototype solving Problem Statement 2, plus official Certificate of Excellence.",
+        badge: "Track 2 Winner",
+        type: "cash",
+      },
+      {
+        amount: "₹30,000",
+        amountSub: "Cash Prize via Cheque",
+        title: "Winner: Problem Statement 3",
+        description: "Awarded to the top scoring prototype solving Problem Statement 3, plus official Certificate of Excellence.",
+        badge: "Track 3 Winner",
+        type: "cash",
+      },
+      {
+        amount: "₹30,000",
+        amountSub: "Cash Prize via Cheque",
+        title: "Winner: Problem Statement 4",
+        description: "Awarded to the top scoring prototype solving Problem Statement 4, plus official Certificate of Excellence.",
+        badge: "Track 4 Winner",
+        type: "cash",
+      },
+      {
+        amount: "₹30,000",
+        amountSub: "Cash Prize via Cheque",
+        title: "Winner: Problem Statement 5",
+        description: "Awarded to the top scoring prototype solving Problem Statement 5, plus official Certificate of Excellence.",
+        badge: "Track 5 Winner",
+        type: "cash",
+      },
+      {
+        title: "Participation Certificate",
+        description: "Official verified certificate of participation issued to all attending builders within 1 day post event.",
+        badge: "All Builders",
+        type: "certificate",
+      },
+    ],
+  },
+
+  {
     slug: "goa-buildathon-2027",
     title: "Goa Buildathon '27",
     type: "Hackathon",

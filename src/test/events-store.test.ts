@@ -105,6 +105,14 @@ describe("Events Store & Vybe Driven Host Hub", () => {
     const goa = findOpportunity("goa-buildathon-2027");
     expect(isEventOrganizer(goa, { email: "hello@goabuilds.com" })).toBe(true);
     expect(isEventOrganizer(goa, { email: "guest@test.com" })).toBe(false);
+
+    // Quasar 5.0 grants organizer access ONLY to its own authorized emails
+    const quasar = findOpportunity("quasar-5-international-hackathon-2027");
+    expect(quasar).toBeDefined();
+    expect(isEventOrganizer(quasar, { email: "quasar@pvppcoe.ac.in" })).toBe(true);
+    expect(isEventOrganizer(quasar, { email: "35shanmukhtawde@gmail.com" })).toBe(true);
+    expect(isEventOrganizer(quasar, { email: "hello@goabuilds.com" })).toBe(false);
+    expect(isEventOrganizer(quasar, { email: "guest@test.com" })).toBe(false);
   });
 
   it("handles event registration and isolates participant records", () => {
@@ -123,6 +131,19 @@ describe("Events Store & Vybe Driven Host Hub", () => {
 
     expect(reg.id).toMatch(/^REG-2026-/);
     expect(reg.status).toBe("Registered");
+
+    const quasarReg = submitRegistration({
+      opportunitySlug: "quasar-5-international-hackathon-2027",
+      opportunityTitle: "Quasar 5.0: 36-Hour International Hackathon",
+      fullName: "Quasar Builder",
+      email: "quasarbuilder@test.com",
+      phone: "+91 91234 56789",
+      collegeOrCompany: "PVPPCOE Mumbai",
+      teamType: "team",
+      teamName: "Galactic Coders",
+    });
+    expect(quasarReg.id).toMatch(/^QSR5-\d{5}$/);
+    expect(quasarReg.teamCode).toMatch(/^QSR5-\d{5}$/);
 
     // Guest can see their own registration
     const guestRegs = getUserRegistrations("guest-user-id", "guest@test.com");

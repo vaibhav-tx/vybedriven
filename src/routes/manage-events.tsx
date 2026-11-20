@@ -48,6 +48,7 @@ import {
   mergeRemoteRegistrations,
   EVENT_CHANGE_SIGNAL,
   GOA_BUILDATHON_ORGANIZER_EMAILS,
+  QUASAR_ORGANIZER_EMAILS,
   ADMIN_EMAILS,
   findOpportunity,
   saveIdeaSubmission,
@@ -99,26 +100,36 @@ function ManageEventsPage() {
   }, [user, loading, navigate, location.href]);
 
   const userEmail = user?.email?.toLowerCase().trim();
+  const isAdmin = Boolean(userEmail && ADMIN_EMAILS.includes(userEmail));
   const isGoaOrganizer = Boolean(
     userEmail &&
       (GOA_BUILDATHON_ORGANIZER_EMAILS.includes(userEmail) ||
-        ADMIN_EMAILS.includes(userEmail) ||
         userEmail.includes("goabuilds"))
+  );
+  const isQuasarOrganizer = Boolean(
+    userEmail && QUASAR_ORGANIZER_EMAILS.includes(userEmail)
+  );
+  const isDedicatedOrganizer = isGoaOrganizer || isQuasarOrganizer || isAdmin;
+
+  const defaultSlug = search.slug || (
+    isQuasarOrganizer
+      ? "quasar-5-international-hackathon-2027"
+      : isGoaOrganizer
+      ? "goa-buildathon-2027"
+      : ""
   );
 
   const [activeTab, setActiveTab] = useState<"events" | "registrations" | "my-registrations">(
-    search.tab || (isGoaOrganizer ? "registrations" : "events")
+    search.tab || (isDedicatedOrganizer ? "registrations" : "events")
   );
-  const [selectedEventSlug, setSelectedEventSlug] = useState<string>(
-    search.slug || (isGoaOrganizer ? "goa-buildathon-2027" : "")
-  );
+  const [selectedEventSlug, setSelectedEventSlug] = useState<string>(defaultSlug);
 
   useEffect(() => {
-    if (isGoaOrganizer && !search.tab) {
+    if (isDedicatedOrganizer && !search.tab) {
       setActiveTab("registrations");
-      if (!selectedEventSlug) setSelectedEventSlug("goa-buildathon-2027");
+      if (!selectedEventSlug && defaultSlug) setSelectedEventSlug(defaultSlug);
     }
-  }, [isGoaOrganizer, search.tab, selectedEventSlug]);
+  }, [isDedicatedOrganizer, search.tab, selectedEventSlug, defaultSlug]);
 
   const [applicantQuery, setApplicantQuery] = useState("");
   const [applicantStatusFilter, setApplicantStatusFilter] = useState<string>("All");
@@ -189,7 +200,13 @@ function ManageEventsPage() {
     window.addEventListener(EVENT_CHANGE_SIGNAL, onSync);
     window.addEventListener("storage", onSync);
 
-    const targetSlug = selectedEventSlug || (isGoaOrganizer ? "goa-buildathon-2027" : myEvents[0]?.slug);
+    const targetSlug =
+      selectedEventSlug ||
+      (isQuasarOrganizer
+        ? "quasar-5-international-hackathon-2027"
+        : isGoaOrganizer
+        ? "goa-buildathon-2027"
+        : myEvents[0]?.slug);
     if (!targetSlug && myEvents.length === 0) {
       return () => {
         window.removeEventListener(EVENT_CHANGE_SIGNAL, onSync);
@@ -222,16 +239,31 @@ function ManageEventsPage() {
       window.removeEventListener(EVENT_CHANGE_SIGNAL, onSync);
       window.removeEventListener("storage", onSync);
     };
-  }, [selectedEventSlug, isGoaOrganizer, myEvents.length]);
+  }, [selectedEventSlug, isGoaOrganizer, isQuasarOrganizer, myEvents.length]);
 
   // Selected event for applicants view (must be owned by the current organizer)
   const currentEvent = useMemo(() => {
     if (selectedEventSlug) {
       const matched = myEvents.find((e) => e.slug === selectedEventSlug);
       if (matched) return matched;
+
+      if (selectedEventSlug === "quasar-5-international-hackathon-2027") {
+        const quasar = findOpportunity("quasar-5-international-hackathon-2027");
+        if (quasar && isEventOrganizer(quasar, user)) {
+          return {
+            ...quasar,
+            organizerId: user?.id || "quasar-organizer",
+            organizerEmail: user?.email || "quasar@pvppcoe.ac.in",
+            isHosted: true,
+            createdAt: "2026-11-20T00:00:00.000Z",
+            registrationType: "direct" as const,
+          };
+        }
+      }
+
       if (selectedEventSlug === "goa-buildathon-2027") {
         const goa = findOpportunity("goa-buildathon-2027");
-        if (goa) {
+        if (goa && isEventOrganizer(goa, user)) {
           return {
             ...goa,
             organizerId: user?.id || "goa-organizer",
@@ -244,6 +276,19 @@ function ManageEventsPage() {
       }
     }
     if (myEvents.length) return myEvents[0];
+    if (isQuasarOrganizer) {
+      const quasar = findOpportunity("quasar-5-international-hackathon-2027");
+      if (quasar) {
+        return {
+          ...quasar,
+          organizerId: user?.id || "quasar-organizer",
+          organizerEmail: user?.email || "quasar@pvppcoe.ac.in",
+          isHosted: true,
+          createdAt: "2026-11-20T00:00:00.000Z",
+          registrationType: "direct" as const,
+        };
+      }
+    }
     if (isGoaOrganizer) {
       const goa = findOpportunity("goa-buildathon-2027");
       if (goa) {
@@ -258,7 +303,7 @@ function ManageEventsPage() {
       }
     }
     return null;
-  }, [myEvents, selectedEventSlug, isGoaOrganizer, user]);
+  }, [myEvents, selectedEventSlug, isGoaOrganizer, isQuasarOrganizer, user]);
 
   // Registrations strictly for this organizer's selected event
   const eventRegistrations = useMemo(() => {

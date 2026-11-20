@@ -1348,7 +1348,11 @@ function OpportunityDetails() {
                         Idea Submission — PPT Round
                       </h3>
                       <p className="mt-0.5 text-xs text-muted-foreground leading-relaxed">
-                        Submit your team's proposed solution deck to qualify for the Grand Finale in Goa.
+                        {item.slug === "goa-buildathon-2027"
+                          ? "Submit your team's proposed solution deck to qualify for the Grand Finale in Goa."
+                          : item.slug === "quasar-5-international-hackathon-2027"
+                          ? "Submit your team's proposed solution deck to qualify for the 36-Hour Offline Finale at PVPPCOE Sion, Mumbai."
+                          : "Submit your team's proposed solution deck to qualify for the finale."}
                       </p>
 
                       {userRegRecord?.teamType === "team" && (1 + (userRegRecord.teammates?.length || 0)) < 2 ? (

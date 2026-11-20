@@ -48,10 +48,11 @@ function OpportunityCard({ item }: { item: Opportunity }) {
 }
 
 const HACKATHON_PAGE_ORDER: Record<string, number> = {
-  "goa-buildathon-2027": 1,
-  "beyond-9to5-buildathon-bengaluru-2026": 2,
-  "beyond-9to5-buildathon-mumbai-2026": 3,
-  "code-relay-5-iit-bhubaneswar": 4,
+  "quasar-5-international-hackathon-2027": 1,
+  "goa-buildathon-2027": 2,
+  "beyond-9to5-buildathon-bengaluru-2026": 3,
+  "beyond-9to5-buildathon-mumbai-2026": 4,
+  "code-relay-5-iit-bhubaneswar": 5,
   "apify-ai-tools-that-earn-bangalore-2026": 5,
   "lighthouse-hackathon-chandigarh-university-2027": 6,
   "hacksprint-3-kahe-coimbatore": 7,

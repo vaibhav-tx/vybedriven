@@ -28,7 +28,7 @@ import discoverIcon from "@/assets/nav/discover.png.asset.json";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth, type Profile } from "@/lib/auth";
 import { signOutBuilderAccount } from "@/lib/builder-auth";
-import { GOA_BUILDATHON_ORGANIZER_EMAILS, ADMIN_EMAILS } from "@/data/events-store";
+import { GOA_BUILDATHON_ORGANIZER_EMAILS, QUASAR_ORGANIZER_EMAILS, ADMIN_EMAILS } from "@/data/events-store";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
 
@@ -131,11 +131,16 @@ function ProfileMenu() {
   const email = user.email || "";
   const completion = getProfileCompletion(profile);
   const uEmail = email.toLowerCase().trim();
+  const isAdmin = Boolean(uEmail && ADMIN_EMAILS.includes(uEmail));
   const isGoaOrganizer = Boolean(
     uEmail &&
       (GOA_BUILDATHON_ORGANIZER_EMAILS.includes(uEmail) ||
-        ADMIN_EMAILS.includes(uEmail) ||
+        isAdmin ||
         uEmail.includes("goabuilds"))
+  );
+  const isQuasarOrganizer = Boolean(
+    uEmail &&
+      (QUASAR_ORGANIZER_EMAILS.includes(uEmail) || isAdmin)
   );
 
   // Circular progress math (radius 22, circumference 138.2)
@@ -240,6 +245,18 @@ function ProfileMenu() {
 
           {/* Menu Navigation Items */}
           <div className="mt-4 space-y-1 text-xs sm:text-sm">
+            {isQuasarOrganizer && (
+              <Link
+                to="/manage-events"
+                search={{ tab: "registrations", slug: "quasar-5-international-hackathon-2027" }}
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-2.5 rounded-xl border border-neon/50 bg-neon/15 px-3 py-2 text-neon font-bold transition hover:bg-neon/25 shadow-glow-soft mb-1"
+              >
+                <Crown className="size-4 text-amber-400" />
+                <span>🚀 Quasar 5.0 Dashboard</span>
+              </Link>
+            )}
+
             {isGoaOrganizer && (
               <Link
                 to="/manage-events"
@@ -468,6 +485,18 @@ export function Navbar() {
           <Logo className="h-8.5 sm:h-11" />
         </div>
         <div className="hidden items-center gap-2 lg:flex">
+          {isQuasarOrganizer && (
+            <Button
+              asChild
+              size="sm"
+              className="rounded-full border border-neon/50 bg-neon/15 text-neon hover:bg-neon hover:text-primary-foreground font-bold text-xs shadow-glow-soft"
+            >
+              <Link to="/manage-events" search={{ tab: "registrations", slug: "quasar-5-international-hackathon-2027" }}>
+                <Crown className="size-3.5 mr-1 text-amber-400" />
+                Quasar 5.0
+              </Link>
+            </Button>
+          )}
           {isGoaOrganizer && (
             <Button
               asChild
@@ -536,6 +565,17 @@ export function Navbar() {
           )}
 
           <div className="space-y-1">
+            {isQuasarOrganizer && (
+              <Link
+                to="/manage-events"
+                search={{ tab: "registrations", slug: "quasar-5-international-hackathon-2027" }}
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-3 rounded-xl border border-neon/50 bg-neon/15 px-3.5 py-3 text-sm font-bold text-neon shadow-glow-soft mb-2"
+              >
+                <Crown className="size-5 text-amber-400" />
+                <span>🚀 Quasar 5.0 Dashboard</span>
+              </Link>
+            )}
             {isGoaOrganizer && (
               <Link
                 to="/manage-events"

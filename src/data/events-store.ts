@@ -9,6 +9,7 @@ import elevatePoster from "@/assets/events/elevate-1-0-2026.png.asset.json";
 import { useEffect, useState } from "react";
 
 export const PRESET_EVENT_BANNERS = [
+  { id: "quasar", title: "Quasar 5.0 (PVPPCOE)", image: "/events/quasar-5-banner.jpg" },
   { id: "goa", title: "Goa Buildathon '27", image: "/events/goa-buildathon-2027.jpg" },
   { id: "beyond-mumbai", title: "Beyond 9to5 Mumbai", image: "/events/beyond-9to5-mumbai.jpg" },
   { id: "beyond-bengaluru", title: "Beyond 9to5 Bengaluru", image: "/events/beyond-9to5-bengaluru.jpg" },
@@ -148,6 +149,14 @@ export const GOA_BUILDATHON_ORGANIZER_EMAILS = [
   "goabuildathon@gmail.com",
   "harshhdhankhar@gmail.com",
   "hello@goabuilds.com",
+  "pandeysatyam2030@gmail.com",
+  "vybedriven@gmail.com",
+];
+
+export const QUASAR_ORGANIZER_EMAILS = [
+  "quasar@pvppcoe.ac.in",
+  "35shanmukhtawde@gmail.com",
+  "saishgosavi@gmail.com",
   "pandeysatyam2030@gmail.com",
   "vybedriven@gmail.com",
 ];
@@ -350,6 +359,18 @@ export function isEventOrganizer(
     return false;
   }
 
+  // Specific check for Quasar 5.0 (Authorized organizer emails)
+  if (event.slug === "quasar-5-international-hackathon-2027") {
+    if (
+      uEmail &&
+      (ADMIN_EMAILS.includes(uEmail) ||
+        QUASAR_ORGANIZER_EMAILS.includes(uEmail))
+    ) {
+      return true;
+    }
+    return false;
+  }
+
   // Built-in directory opportunities (HackSprint, Code Relay, Lu.ma/Unstop listings, etc.)
   // are NOT user-hosted events and should never show organizer controls.
   if (!hosted.isHosted) {
@@ -498,7 +519,8 @@ export function submitRegistration(data: {
 
   // Generate branded confirmation ID
   const isGoa = data.opportunitySlug === "goa-buildathon-2027";
-  const idPrefix = isGoa ? "GB27" : "REG-2026";
+  const isQuasar = data.opportunitySlug === "quasar-5-international-hackathon-2027";
+  const idPrefix = isGoa ? "GB27" : isQuasar ? "QSR5" : "REG-2026";
   const idNumber = Math.floor(10000 + Math.random() * 90000);
   const newId = `${idPrefix}-${idNumber}`;
 
@@ -1005,8 +1027,13 @@ export async function joinTeamWithCode(
   // 2. If team record is not yet found in cloud (e.g. leader created on mobile before switching apps),
   // DO NOT BLOCK the user! Auto-provision the verified team roster with this code so the member gets their pass!
   if (!current) {
-    const oppSlug = memberData.opportunitySlug || "goa-buildathon-2027";
-    const oppTitle = oppSlug === "goa-buildathon-2027" ? "Goa Buildathon '27" : "Hackathon";
+    const oppSlug = memberData.opportunitySlug || (normalizedCode.startsWith("QSR5-") ? "quasar-5-international-hackathon-2027" : "goa-buildathon-2027");
+    const oppTitle =
+      oppSlug === "goa-buildathon-2027"
+        ? "Goa Buildathon '27"
+        : oppSlug === "quasar-5-international-hackathon-2027"
+        ? "Quasar 5.0: 36-Hour International Hackathon"
+        : "Hackathon";
     const newMember: TeammateDetail = {
       name: memberData.fullName.trim(),
       email: memberEmail,
@@ -1397,7 +1424,11 @@ export function useOpportunities() {
 function getOrganizerEvents(userId?: string, userEmail?: string | null): HostedEvent[] {
   if (!userId && !userEmail) return [];
   const uEmail = userEmail?.toLowerCase().trim();
-  const isGoaOrganizer = Boolean(uEmail && GOA_BUILDATHON_ORGANIZER_EMAILS.includes(uEmail));
+  const isGoaOrganizer = Boolean(
+    uEmail &&
+      (GOA_BUILDATHON_ORGANIZER_EMAILS.includes(uEmail) || uEmail.includes("goabuilds"))
+  );
+  const isQuasarOrganizer = Boolean(uEmail && QUASAR_ORGANIZER_EMAILS.includes(uEmail));
   const isAdmin = isPlatformAdmin({ id: userId, email: userEmail });
 
   const goa = findOpportunity("goa-buildathon-2027");
@@ -1412,18 +1443,42 @@ function getOrganizerEvents(userId?: string, userEmail?: string | null): HostedE
       }
     : null;
 
+  const quasar = findOpportunity("quasar-5-international-hackathon-2027");
+  const hostedQuasar: HostedEvent | null = quasar
+    ? {
+        ...quasar,
+        organizerId: userId || "quasar-organizer",
+        organizerEmail: userEmail || "quasar@pvppcoe.ac.in",
+        isHosted: true,
+        createdAt: "2026-11-20T00:00:00.000Z",
+        registrationType: "direct",
+      }
+    : null;
+
   // Specific restriction: Goa Buildathon organizers who are not platform admins get ONLY Goa Buildathon
   if (isGoaOrganizer && !isAdmin) {
     return hostedGoa ? [hostedGoa] : [];
+  }
+
+  // Specific restriction: Quasar organizers who are not platform admins get ONLY Quasar
+  if (isQuasarOrganizer && !isAdmin) {
+    return hostedQuasar ? [hostedQuasar] : [];
   }
 
   const stored = getStoredHostedEvents().filter((e) =>
     isEventOrganizer(e, { id: userId, email: userEmail })
   );
 
-  // Platform admins get Goa Buildathon prepended if not already stored
-  if (isAdmin && hostedGoa && !stored.some((e) => e.slug === "goa-buildathon-2027")) {
-    return [hostedGoa, ...stored];
+  // Platform admins get Quasar and Goa prepended if not already stored
+  if (isAdmin) {
+    const list: HostedEvent[] = [];
+    if (hostedQuasar && !stored.some((e) => e.slug === "quasar-5-international-hackathon-2027")) {
+      list.push(hostedQuasar);
+    }
+    if (hostedGoa && !stored.some((e) => e.slug === "goa-buildathon-2027")) {
+      list.push(hostedGoa);
+    }
+    return [...list, ...stored];
   }
   return stored;
 }
