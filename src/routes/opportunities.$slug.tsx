@@ -782,12 +782,12 @@ function OpportunityDetails() {
         </div>
       </div>
 
-      <main className="pb-32 lg:pb-0 overflow-x-clip max-w-full">
+      <main className="pb-28 lg:pb-0 overflow-x-clip max-w-full">
         {/* Hero Section */}
-        <section id="overview" className="border-b border-border bg-surface scroll-mt-28 max-w-full overflow-hidden">
-          <div className="mx-auto grid max-w-[1200px] gap-5 sm:gap-7 px-4 sm:px-6 pb-8 pt-5 sm:pb-10 sm:pt-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:items-center max-w-full">
+        <section id="overview" className="border-b border-border bg-surface scroll-mt-28">
+          <div className="mx-auto grid max-w-[1200px] gap-6 sm:gap-7 px-4 sm:px-6 pb-8 pt-6 sm:pb-10 sm:pt-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
             {/* Column 1: Details & Title (on phones comes after the banner image) */}
-            <div className="order-2 lg:order-1 min-w-0 max-w-full">
+            <div className="order-2 lg:order-1 min-w-0">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="rounded-full border border-border bg-background px-3 py-1 text-xs font-semibold">
                   {item.type}
@@ -806,19 +806,19 @@ function OpportunityDetails() {
                   </span>
                 )}
               </div>
-              <p className="mt-3 sm:mt-6 text-xs sm:text-sm font-semibold text-neon">{item.tag.toUpperCase()}</p>
+              <p className="mt-4 sm:mt-6 text-xs sm:text-sm font-semibold text-neon">{item.tag.toUpperCase()}</p>
               <h1 className="mt-2 text-2xl sm:text-5xl lg:text-6xl font-extrabold leading-tight break-words">{item.title}</h1>
               <p className="mt-3 sm:mt-5 max-w-2xl text-base sm:text-lg leading-relaxed text-muted-foreground break-words">
                 {item.description}
               </p>
-              <p className="mt-3 sm:mt-5 text-xs sm:text-sm text-muted-foreground break-words">
+              <p className="mt-4 sm:mt-5 text-xs sm:text-sm text-muted-foreground break-words">
                 Hosted by <span className="font-semibold text-foreground">{item.organizer}</span>
               </p>
 
               {/* Top Prize & Trophy Banner */}
               {item.prize && (
                 item.slug === "goa-buildathon-2027" ? (
-                  <div className="mt-5 inline-block max-w-full">
+                  <div className="mt-5 inline-block">
                     <img
                       src="/events/prizes-worth-banner.jpg"
                       alt="Prizes Worth ₹ 10,00,000"
@@ -826,12 +826,12 @@ function OpportunityDetails() {
                     />
                   </div>
                 ) : item.slug === "quasar-5-international-hackathon-2027" ? (
-                  <div className="mt-5 w-full max-w-full overflow-hidden">
-                    <div className="relative overflow-hidden rounded-[20px] sm:rounded-[30px] border-2 border-emerald-500/70 bg-[#030904] p-2 sm:p-3 pr-2.5 sm:pr-6 shadow-[0_0_35px_rgba(16,185,129,0.35)] backdrop-blur-xl max-w-full">
-                      <div className="flex items-center gap-2 sm:gap-5 rounded-[16px] sm:rounded-[24px] border border-emerald-500/40 bg-gradient-to-r from-emerald-950/60 via-[#051307] to-[#040e06] p-1.5 sm:p-3 pl-2 sm:pl-5 max-w-full min-w-0">
+                  <div className="mt-5 inline-block max-w-full">
+                    <div className="relative overflow-hidden rounded-[24px] sm:rounded-[30px] border-2 border-emerald-500/70 bg-[#030904] p-2 sm:p-3 pr-3.5 sm:pr-6 shadow-[0_0_35px_rgba(16,185,129,0.35)] backdrop-blur-xl">
+                      <div className="flex items-center gap-2.5 sm:gap-5 rounded-[18px] sm:rounded-[24px] border border-emerald-500/40 bg-gradient-to-r from-emerald-950/60 via-[#051307] to-[#040e06] p-2 sm:p-3 pl-3 sm:pl-5">
                         {/* Laurel Wreath */}
                         <div className="shrink-0 flex items-center justify-center text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.7)]">
-                          <svg className="size-5 sm:size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <svg className="size-6 sm:size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M7 21C5.5 19 4 16.5 4 13.5C4 9.5 6 6 8.5 4" />
                             <path d="M4 11C5.5 11 7 9.5 7 8" />
                             <path d="M4.5 16C6 15.5 7.5 14 7.5 12.5" />
@@ -842,7 +842,7 @@ function OpportunityDetails() {
                         </div>
 
                         {/* Vertical separator */}
-                        <div className="h-8 sm:h-12 w-[1.5px] bg-emerald-500/40 shrink-0" />
+                        <div className="h-9 sm:h-12 w-[1.5px] bg-emerald-500/40 shrink-0" />
 
                         {/* Prize text */}
                         <div className="flex flex-col min-w-0 pr-1 sm:pr-2">
@@ -855,21 +855,21 @@ function OpportunityDetails() {
                         </div>
 
                         {/* Trophy with Glowing Green Orbit */}
-                        <div className="relative shrink-0 flex items-center justify-center pl-0.5 sm:pl-2">
+                        <div className="relative shrink-0 flex items-center justify-center pl-1 sm:pl-2">
                           {/* Green Orbit Ring */}
-                          <div className="absolute inset-x-[-6px] sm:inset-x-[-12px] bottom-1 sm:bottom-2.5 h-3 sm:h-4 rounded-[100%] border-2 border-emerald-400/90 shadow-[0_0_14px_rgba(52,211,153,0.9)] -rotate-12 pointer-events-none" />
+                          <div className="absolute inset-x-[-8px] sm:inset-x-[-12px] bottom-1.5 sm:bottom-2.5 h-3.5 sm:h-4 rounded-[100%] border-2 border-emerald-400/90 shadow-[0_0_14px_rgba(52,211,153,0.9)] -rotate-12 pointer-events-none" />
                           <img
                             src="/events/golden-star-trophy.png"
                             alt="Prize Trophy"
-                            className="relative z-10 h-12 min-[360px]:h-14 sm:h-18 md:h-20 w-auto object-contain drop-shadow-[0_6px_22px_rgba(250,204,21,0.6)]"
+                            className="relative z-10 h-13 sm:h-18 md:h-20 w-auto object-contain drop-shadow-[0_6px_22px_rgba(250,204,21,0.6)]"
                           />
                         </div>
                       </div>
                     </div>
                   </div>
                 ) : (
-                  <div className="mt-5 inline-flex items-center gap-3 sm:gap-4 rounded-2xl border border-neon/35 bg-gradient-to-r from-neon/15 via-emerald-500/10 to-transparent p-2.5 sm:p-3 pr-4 sm:pr-5 shadow-glow-soft max-w-full">
-                    <div className="pl-1 min-w-0">
+                  <div className="mt-5 inline-flex items-center gap-3 sm:gap-4 rounded-2xl border border-neon/35 bg-gradient-to-r from-neon/15 via-emerald-500/10 to-transparent p-2.5 sm:p-3 pr-4 sm:pr-5 shadow-glow-soft">
+                    <div className="pl-1">
                       <p className="text-[11px] font-bold uppercase tracking-wider text-neon">Prizes worth</p>
                       <p className="text-xl min-[400px]:text-2xl sm:text-3xl font-extrabold text-foreground font-mono tracking-tight">
                         {item.prize}
@@ -885,21 +885,22 @@ function OpportunityDetails() {
               )}
             </div>
 
-            {/* Column 2: Event Poster (on phones shows at the very top, exactly like Unstop) */}
-            <div className="order-1 lg:order-2 relative flex items-center justify-center overflow-hidden rounded-2xl sm:rounded-3xl border border-border/80 bg-black/60 p-1 sm:p-4 shadow-inner max-w-full">
+            {/* Column 2: Event Poster (on phones shows at the very top, on laptop identical to original) */}
+            <div className="order-1 lg:order-2 relative flex items-center justify-center overflow-hidden rounded-2xl sm:rounded-3xl border border-border/80 bg-black/60 p-2 sm:p-4 shadow-inner">
               <img
                 src={item.image}
                 alt={item.title}
-                className="w-full h-auto max-h-[240px] sm:max-h-[460px] rounded-xl sm:rounded-2xl object-cover sm:object-contain transition duration-500 hover:scale-[1.01]"
+                style={item.imagePosition ? { objectPosition: item.imagePosition } : undefined}
+                className="max-h-[300px] lg:max-h-[460px] w-auto max-w-full rounded-xl sm:rounded-2xl object-contain transition duration-500 hover:scale-[1.01]"
               />
             </div>
           </div>
         </section>
 
         {/* Content & Sidebar */}
-        <section className="mx-auto max-w-[1200px] px-4 sm:px-6 py-6 sm:py-8 max-w-full overflow-hidden">
-          <div className="grid gap-7 lg:grid-cols-[minmax(0,1fr)_320px] max-w-full">
-            <div className="min-w-0 max-w-full">
+        <section className="mx-auto max-w-[1200px] px-4 sm:px-6 py-6 sm:py-8">
+          <div className="grid gap-7 lg:grid-cols-[1fr_320px]">
+            <div className="min-w-0">
               {/* MOBILE ONLY: Registration & Team Status Box (Clean & No Duplicate Register Button) */}
               <div className="mb-6 rounded-2xl border border-neon/40 bg-gradient-to-br from-neon/10 via-card to-card p-4 sm:p-5 shadow-sm lg:hidden">
                 <div className="flex items-center justify-between">
@@ -1040,7 +1041,7 @@ function OpportunityDetails() {
               {/* Quick Facts Grid */}
               <div className="grid overflow-hidden rounded-2xl border border-border bg-card grid-cols-2 lg:grid-cols-3">
                 {facts.map(({ icon: Icon, label, value }) => (
-                  <div key={label} className="border-b border-border p-3.5 sm:p-5 [&:nth-child(odd)]:border-r sm:[&:nth-child(even)]:border-r">
+                  <div key={label} className="border-b border-border p-4 sm:p-5 [&:nth-child(odd)]:border-r sm:[&:nth-child(even)]:border-r">
                     <Icon className="size-4 sm:size-5 text-neon" />
                     <p className="mt-2 sm:mt-3 text-[11px] sm:text-xs font-semibold text-muted-foreground">{label}</p>
                     <p className="mt-1 text-xs sm:text-sm font-semibold break-words leading-tight">{value}</p>
@@ -1071,58 +1072,51 @@ function OpportunityDetails() {
 
               {/* Stages and Timeline */}
               {item.schedule && item.schedule.length > 0 && (
-                <section id="timeline" className="border-t border-border py-8 sm:py-10 scroll-mt-28 max-w-full overflow-hidden">
+                <section id="timeline" className="border-t border-border py-8 sm:py-10 scroll-mt-28">
                   <div className="flex items-center gap-2.5 mb-7">
                     <span className="h-6 w-1 rounded-full bg-neon shadow-glow-soft" />
                     <h2 className="text-xl sm:text-2xl font-bold text-foreground">Stages and Timelines</h2>
                   </div>
 
-                  <div className="relative pl-5 sm:pl-9 before:absolute before:left-2.5 sm:before:left-4 before:top-4 before:bottom-6 before:w-[3px] before:bg-gradient-to-b before:from-neon before:via-emerald-400 before:to-neon/20 max-w-full overflow-hidden">
+                  <div className="relative pl-7 sm:pl-9 before:absolute before:left-3.5 sm:before:left-4 before:top-4 before:bottom-6 before:w-[3px] before:bg-gradient-to-b before:from-neon before:via-emerald-400 before:to-neon/20">
                     {item.schedule.map((step, index) => {
                       const dateParts = step.dateBadge?.split(" ") || [];
                       const month = dateParts[0] || `Stage`;
                       const day = dateParts[1] || `${index + 1}`;
                       return (
-                        <div key={step.title} className="relative pb-8 last:pb-2 min-w-0 max-w-full">
-                          {/* Calendar Node & Date Display */}
-                          <div className="mb-3 min-w-0 max-w-full">
-                            <div className="flex items-center gap-2.5 min-w-0">
-                              <div className="relative -ml-[23px] sm:-ml-[27px] flex flex-col items-center justify-center rounded-xl sm:rounded-2xl border-2 border-neon bg-[#07130a] px-2 py-0.5 sm:px-3 sm:py-1.5 shadow-[0_0_15px_rgba(34,197,94,0.35)] min-w-[46px] sm:min-w-[56px] text-center shrink-0">
-                                <span className="text-[9px] sm:text-[11px] font-black uppercase tracking-wider text-neon leading-tight">{month}</span>
-                                <span className="text-sm sm:text-lg font-black text-white leading-none font-mono mt-0.5">{day}</span>
-                              </div>
-                              <div className="min-w-0 flex-1">
-                                <span className="text-xs font-black text-neon sm:hidden block font-mono">
-                                  {step.stageBadge || `Stage ${index + 1}`}
-                                </span>
-                                <p className="text-[11px] sm:text-sm font-bold font-mono text-neon/90 flex items-start sm:items-center gap-1.5 break-words leading-tight mt-0.5">
-                                  <Calendar className="size-3.5 shrink-0 mt-0.5 sm:mt-0 text-neon" />
-                                  <span className="break-words min-w-0">{step.date}</span>
-                                </p>
-                              </div>
+                        <div key={step.title} className="relative pb-9 last:pb-2">
+                          {/* Calendar Node directly over the timeline line */}
+                          <div className="flex items-center gap-3 sm:gap-4 mb-3.5 min-w-0">
+                            <div className="relative -ml-[25px] sm:-ml-[27px] flex flex-col items-center justify-center rounded-2xl border-2 border-neon bg-[#07130a] px-3 py-1.5 shadow-[0_0_15px_rgba(34,197,94,0.35)] min-w-[56px] text-center shrink-0">
+                              <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-neon leading-tight">{month}</span>
+                              <span className="text-base sm:text-lg font-black text-white leading-none font-mono mt-0.5">{day}</span>
                             </div>
+                            <span className="text-xs sm:text-sm font-bold font-mono text-neon flex items-center gap-1.5 break-words min-w-0">
+                              <Calendar className="size-3.5 shrink-0" />
+                              <span className="break-words leading-snug">{step.date}</span>
+                            </span>
                           </div>
 
                           {/* Stage Card */}
-                          <div className="rounded-2xl border border-neon/30 bg-surface/90 p-3.5 sm:p-7 shadow-[0_4px_24px_rgba(34,197,94,0.08)] transition hover:border-neon hover:bg-surface-2/90 min-w-0 max-w-full overflow-hidden">
-                            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/80 pb-3 min-w-0">
-                              <h3 className="text-sm sm:text-xl font-extrabold text-foreground break-words min-w-0 max-w-full">{step.title}</h3>
-                              <span className="hidden sm:inline-flex rounded-full bg-neon/20 border border-neon/50 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[11px] sm:text-xs font-black text-neon font-mono shrink-0 shadow-sm">
+                          <div className="rounded-2xl border border-neon/30 bg-surface/90 p-5 sm:p-7 shadow-[0_4px_24px_rgba(34,197,94,0.08)] transition hover:border-neon hover:bg-surface-2/90 hover:shadow-glow-soft">
+                            <div className="flex items-center justify-between gap-2 border-b border-border/80 pb-3">
+                              <h3 className="text-base sm:text-xl font-extrabold text-foreground">{step.title}</h3>
+                              <span className="rounded-full bg-neon/20 border border-neon/50 px-3 py-1 text-xs font-black text-neon font-mono shrink-0 shadow-sm">
                                 {step.stageBadge || `Stage ${index + 1}`}
                               </span>
                             </div>
 
-                            <p className="mt-3 text-xs sm:text-sm leading-relaxed text-foreground/90 font-medium break-words">
+                            <p className="mt-3.5 text-xs sm:text-sm leading-relaxed text-foreground/90 font-medium break-words">
                               {step.description}
                             </p>
 
                             {step.actionUrl && (
-                              <div className="my-3">
+                              <div className="my-3.5">
                                 <a
                                   href={step.actionUrl}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-2 rounded-xl border border-neon/60 bg-neon/15 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-bold text-neon hover:bg-neon hover:text-black transition shadow-glow-soft"
+                                  className="inline-flex items-center gap-2 rounded-xl border border-neon/60 bg-neon/15 px-4 py-2 text-xs sm:text-sm font-bold text-neon hover:bg-neon hover:text-black transition shadow-glow-soft"
                                 >
                                   <span>{step.actionLabel || "View Problem Statements"}</span>
                                   <ExternalLink className="size-3.5" />
@@ -1131,10 +1125,10 @@ function OpportunityDetails() {
                             )}
 
                             {step.bullets && step.bullets.length > 0 && (
-                              <ul className="mt-3.5 space-y-2 pl-1 border-t border-border/60 pt-3">
+                              <ul className="mt-4 space-y-2.5 pl-1 border-t border-border/60 pt-3.5">
                                 {step.bullets.map((b) => (
-                                  <li key={b} className="flex items-start gap-2 text-xs sm:text-sm text-foreground/90 leading-relaxed break-words">
-                                    <span className="mt-1.5 size-1.5 sm:size-2 rounded-full bg-neon shrink-0 shadow-glow" />
+                                  <li key={b} className="flex items-start gap-2.5 text-xs sm:text-sm text-foreground/90 leading-relaxed break-words">
+                                    <span className="mt-1.5 size-2 rounded-full bg-neon shrink-0 shadow-glow" />
                                     <span>{b}</span>
                                   </li>
                                 ))}
@@ -1142,9 +1136,9 @@ function OpportunityDetails() {
                             )}
 
                             {step.evaluation && (
-                              <div className="mt-3.5 rounded-xl border border-neon/30 bg-neon/10 p-2.5 sm:px-4 sm:py-2.5 text-xs text-muted-foreground flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2 min-w-0">
-                                <span className="font-bold text-neon uppercase tracking-wider text-[10px] sm:text-[11px] shrink-0">Evaluation:</span>
-                                <span className="text-foreground/90 font-medium leading-relaxed break-words">{step.evaluation}</span>
+                              <div className="mt-4 rounded-xl border border-neon/30 bg-neon/10 px-4 py-2.5 text-xs text-muted-foreground flex flex-wrap items-center gap-2">
+                                <span className="font-bold text-neon uppercase tracking-wider text-[11px] shrink-0">Evaluation:</span>
+                                <span className="text-foreground/90 font-medium break-words">{step.evaluation}</span>
                               </div>
                             )}
                           </div>
