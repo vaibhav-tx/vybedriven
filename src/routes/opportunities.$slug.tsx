@@ -357,35 +357,34 @@ function EventAuthGateDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="max-w-md border-border bg-[#070d09] p-5 sm:p-7 text-foreground shadow-2xl"
+        className="w-[92vw] max-w-sm sm:max-w-md border-border bg-[#070d09] p-4 sm:p-6 text-foreground shadow-2xl rounded-2xl sm:rounded-3xl max-h-[88vh] overflow-y-auto no-scrollbar"
         onPointerDownOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => e.preventDefault()}
       >
-        <DialogHeader className="border-b border-border/70 pb-4 text-left">
-          <div className="flex items-center gap-3">
-            <div className="size-11 rounded-xl border border-neon/30 bg-surface flex items-center justify-center overflow-hidden shrink-0 shadow-glow-soft">
+        <DialogHeader className="border-b border-border/70 pb-3 text-left">
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="size-9 sm:size-11 rounded-xl border border-neon/30 bg-surface flex items-center justify-center overflow-hidden shrink-0 shadow-glow-soft">
               <img src={item.image} alt={item.title} className="h-full w-full object-cover" />
             </div>
-            <div>
-              <DialogTitle className="text-base font-bold text-foreground">
+            <div className="min-w-0">
+              <DialogTitle className="text-sm sm:text-base font-bold text-foreground truncate">
                 {item.title}
               </DialogTitle>
-              <DialogDescription className="text-xs text-muted-foreground">
-                Hosted by {item.organizer}
+              <DialogDescription className="text-[11px] sm:text-xs text-muted-foreground truncate">
+                {item.slug === "quasar-5-international-hackathon-2027"
+                  ? "PVPPCOE Mumbai"
+                  : item.organizer}
               </DialogDescription>
             </div>
           </div>
         </DialogHeader>
 
-        <div className="mt-4 space-y-4 text-xs sm:text-sm">
-          <div className="rounded-2xl border border-neon/40 bg-neon/5 p-4">
-            <div className="flex items-center gap-2 text-neon font-bold text-sm">
-              <Lock className="size-4 shrink-0" />
-              <span>Login or Sign Up Required to Explore</span>
-            </div>
-            <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
-              Please sign in or create your builder account to unlock complete event stages, timelines, problem statements, and submit your registration.
-            </p>
+        <div className="mt-3 space-y-2.5 sm:space-y-3.5 text-xs sm:text-sm">
+          <div className="rounded-xl border border-neon/40 bg-neon/5 px-3 py-2 text-xs flex items-center gap-2">
+            <Lock className="size-3.5 shrink-0 text-neon" />
+            <span className="text-muted-foreground leading-tight text-[11px] sm:text-xs">
+              Sign in or create account to unlock event stages, problem statements &amp; register.
+            </span>
           </div>
 
           {/* 1-Click Google Sign In */}
@@ -394,7 +393,7 @@ function EventAuthGateDialog({
             variant="outline"
             onClick={handleGoogleAuth}
             disabled={busy}
-            className="h-11 sm:h-12 w-full rounded-2xl border-border bg-surface hover:border-neon hover:bg-neon/10 transition flex items-center justify-center gap-2.5 font-bold text-foreground text-xs sm:text-sm shadow-sm"
+            className="h-10 sm:h-11 w-full rounded-xl sm:rounded-2xl border-border bg-surface hover:border-neon hover:bg-neon/10 transition flex items-center justify-center gap-2 font-bold text-foreground text-xs sm:text-sm shadow-sm"
           >
             <svg className="size-4 shrink-0" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -405,7 +404,7 @@ function EventAuthGateDialog({
             <span>Continue with Google</span>
           </Button>
 
-          <div className="flex items-center gap-3 text-[10px] sm:text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
+          <div className="flex items-center gap-2 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
             <span className="h-px flex-1 bg-border" />
             OR WITH EMAIL &amp; PASSWORD
             <span className="h-px flex-1 bg-border" />
@@ -416,29 +415,29 @@ function EventAuthGateDialog({
             <button
               type="button"
               onClick={() => { setAuthMode("signin"); setError(""); }}
-              className={`flex-1 rounded-lg py-2 text-center text-xs font-bold transition ${authMode === "signin" ? "bg-neon/15 text-neon border border-neon/30 shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+              className={`flex-1 rounded-lg py-1.5 text-center text-xs font-bold transition ${authMode === "signin" ? "bg-neon/15 text-neon border border-neon/30 shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
             >
               Sign In
             </button>
             <button
               type="button"
               onClick={() => { setAuthMode("signup"); setError(""); }}
-              className={`flex-1 rounded-lg py-2 text-center text-xs font-bold transition ${authMode === "signup" ? "bg-neon/15 text-neon border border-neon/30 shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+              className={`flex-1 rounded-lg py-1.5 text-center text-xs font-bold transition ${authMode === "signup" ? "bg-neon/15 text-neon border border-neon/30 shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
             >
               Create Account
             </button>
           </div>
 
           {error && (
-            <div className="rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-xs text-destructive">
+            <div className="rounded-xl border border-destructive/40 bg-destructive/10 p-2.5 text-xs text-destructive">
               {error}
             </div>
           )}
 
-          <form onSubmit={handleEmailAuth} className="space-y-3.5">
+          <form onSubmit={handleEmailAuth} className="space-y-2.5">
             {authMode === "signup" && (
               <div>
-                <label className="block text-xs font-semibold text-foreground/90 mb-1">
+                <label className="block text-[11px] font-semibold text-foreground/90 mb-1">
                   Full Name <span className="text-neon">*</span>
                 </label>
                 <input
@@ -447,13 +446,13 @@ function EventAuthGateDialog({
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="e.g. Alex Johnson"
-                  className="w-full rounded-xl border border-border bg-surface px-3 py-2 text-xs sm:text-sm text-foreground outline-none focus:border-neon"
+                  className="w-full rounded-xl border border-border bg-surface px-3 py-1.5 text-xs text-foreground outline-none focus:border-neon"
                 />
               </div>
             )}
 
             <div>
-              <label className="block text-xs font-semibold text-foreground/90 mb-1">
+              <label className="block text-[11px] font-semibold text-foreground/90 mb-1">
                 Email Address <span className="text-neon">*</span>
               </label>
               <input
@@ -462,12 +461,12 @@ function EventAuthGateDialog({
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="yourname@gmail.com"
-                className="w-full rounded-xl border border-border bg-surface px-3 py-2 text-xs sm:text-sm text-foreground outline-none focus:border-neon"
+                className="w-full rounded-xl border border-border bg-surface px-3 py-1.5 text-xs text-foreground outline-none focus:border-neon"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-foreground/90 mb-1">
+              <label className="block text-[11px] font-semibold text-foreground/90 mb-1">
                 Password <span className="text-neon">*</span>
               </label>
               <input
@@ -476,7 +475,7 @@ function EventAuthGateDialog({
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="At least 6 characters"
-                className="w-full rounded-xl border border-border bg-surface px-3 py-2 text-xs sm:text-sm text-foreground outline-none focus:border-neon"
+                className="w-full rounded-xl border border-border bg-surface px-3 py-1.5 text-xs text-foreground outline-none focus:border-neon"
               />
             </div>
 
@@ -493,19 +492,19 @@ function EventAuthGateDialog({
               </div>
             )}
 
-            <div className="pt-2 flex items-center justify-between gap-3">
+            <div className="pt-1.5 flex items-center justify-between gap-2.5">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => navigate({ to: "/" })}
-                className="rounded-full border-border text-xs"
+                className="rounded-full border-border text-xs h-9 px-3"
               >
                 Back to Home
               </Button>
               <Button
                 type="submit"
                 disabled={busy}
-                className="rounded-full bg-neon text-primary-foreground font-bold shadow-glow-soft hover:brightness-105 text-xs sm:text-sm flex-1 sm:flex-initial px-6"
+                className="rounded-full bg-neon text-primary-foreground font-bold shadow-glow-soft hover:brightness-105 text-xs flex-1 sm:flex-initial h-9 px-5"
               >
                 {busy ? "Please wait..." : authMode === "signin" ? "Sign In & Unlock" : "Create Account & Unlock"}
               </Button>
@@ -899,14 +898,13 @@ function OpportunityDetails() {
 
         {/* MOBILE HERO (Unstop Native Experience: Clean Banner + Clean Card + 3 Metadata Rows) */}
         <section id="mobile-overview" className="block lg:hidden bg-surface pb-3">
-          {/* 1. Full-width top landscape banner */}
+          {/* 1. Full-width top landscape banner (Full uncropped poster) */}
           <div className="px-3 pt-3">
-            <div className="relative overflow-hidden rounded-2xl border border-border/80 bg-black/90 shadow-md">
+            <div className="relative overflow-hidden rounded-2xl border border-border/80 bg-black shadow-md flex items-center justify-center">
               <img
-                src={item.image}
+                src={item.slug === "quasar-5-international-hackathon-2027" ? "/events/quasar-5-poster-full.jpg" : item.image}
                 alt={item.title}
-                style={item.imagePosition ? { objectPosition: item.imagePosition } : undefined}
-                className="w-full h-auto max-h-[220px] object-cover sm:object-contain"
+                className="w-full h-auto max-h-[380px] object-contain rounded-2xl"
               />
             </div>
           </div>
@@ -918,7 +916,7 @@ function OpportunityDetails() {
               <div className="flex items-center justify-between">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-red-500/15 border border-red-500/30 px-3 py-1 text-xs font-semibold text-red-400">
                   <MapPin className="size-3 text-red-400" />
-                  {item.format || "Offline"}
+                  Offline
                 </span>
 
                 <div className="flex items-center gap-1.5 text-muted-foreground">
@@ -941,95 +939,112 @@ function OpportunityDetails() {
                 </div>
               </div>
 
-              {/* Row 2: Title and Square Event Logo Badge */}
+              {/* Row 2: Title and Square Event Logo Badge (Matching Unstop Actual Logo) */}
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">
                   <h1 className="text-base sm:text-lg font-black text-foreground leading-snug break-words">
                     {item.title}
                   </h1>
                   <p className="mt-1 text-xs text-muted-foreground leading-relaxed break-words">
-                    {item.organizer}
+                    {item.slug === "quasar-5-international-hackathon-2027"
+                      ? "Vasantdada Patil Pratishthan's College of Engineering and Visual Arts, Mumbai, Maharashtra"
+                      : item.organizer}
                   </p>
                 </div>
 
-                {/* Square Event Logo Badge (Matching Unstop Image 6) */}
-                <div className="shrink-0 size-14 rounded-xl border border-border/80 bg-black/90 p-1 flex flex-col items-center justify-center text-center shadow-inner">
-                  {item.slug === "quasar-5-international-hackathon-2027" ? (
-                    <div className="flex flex-col items-center justify-center">
-                      <Rocket className="size-5 text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)]" />
-                      <span className="text-[8px] font-black tracking-tight text-white font-mono mt-0.5">QUASAR 5.0</span>
-                    </div>
-                  ) : item.slug === "goa-buildathon-2027" ? (
-                    <div className="flex flex-col items-center justify-center">
-                      <Sparkles className="size-5 text-neon" />
-                      <span className="text-[8px] font-black tracking-tight text-white font-mono mt-0.5">GOA '27</span>
-                    </div>
-                  ) : (
-                    <div className="flex flex-col items-center justify-center">
-                      <Sparkles className="size-5 text-neon" />
-                      <span className="text-[8px] font-black tracking-tight text-white font-mono mt-0.5 truncate max-w-[46px]">{item.title.split(" ")[0]}</span>
-                    </div>
-                  )}
-                </div>
+                {/* Square Event Logo Badge */}
+                {item.slug === "quasar-5-international-hackathon-2027" ? (
+                  <img
+                    src="/events/quasar-5-logo.webp"
+                    alt="Quasar 5.0"
+                    className="shrink-0 size-14 sm:size-16 rounded-xl object-contain border border-border/80 bg-black shadow-inner"
+                  />
+                ) : (
+                  <div className="shrink-0 size-14 rounded-xl border border-border/80 bg-black/90 p-1 flex flex-col items-center justify-center text-center shadow-inner">
+                    <Sparkles className="size-5 text-neon" />
+                    <span className="text-[8px] font-black tracking-tight text-white font-mono mt-0.5 truncate max-w-[46px]">{item.title.split(" ")[0]}</span>
+                  </div>
+                )}
               </div>
 
               <div className="border-t border-border/60" />
 
               {/* Row 3: 3 Clean Metadata Bullet Rows (Exact Unstop format) */}
               <div className="space-y-2.5">
-                <div className="flex items-center justify-between text-xs gap-3">
-                  <span className="flex items-center gap-2 text-muted-foreground font-medium shrink-0">
-                    <MapPin className="size-3.5 text-neon shrink-0" />
+                <div className="flex items-start justify-between text-xs gap-3">
+                  <span className="flex items-center gap-2 text-muted-foreground font-medium shrink-0 pt-0.5">
+                    <MapPin className="size-3.5 text-muted-foreground shrink-0" />
                     Location
                   </span>
-                  <span className="font-semibold text-foreground truncate text-right max-w-[210px]">
-                    {item.location}
+                  <span className="font-semibold text-foreground text-right leading-tight max-w-[240px]">
+                    {item.slug === "quasar-5-international-hackathon-2027"
+                      ? "Vasantdada Patil Pratishthan's College of Engineering and Visual Arts, Mumbai, Maharashtra"
+                      : item.location}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between text-xs gap-3">
                   <span className="flex items-center gap-2 text-muted-foreground font-medium shrink-0">
-                    <Users className="size-3.5 text-neon shrink-0" />
+                    <Users className="size-3.5 text-muted-foreground shrink-0" />
                     Team Size
                   </span>
                   <span className="font-semibold text-foreground text-right">
-                    {item.teamSize}
+                    {item.teamSize || "2 - 4 Members"}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between text-xs gap-3">
                   <span className="flex items-center gap-2 text-muted-foreground font-medium shrink-0">
-                    <Sparkles className="size-3.5 text-neon shrink-0" />
+                    <ExternalLink className="size-3.5 text-muted-foreground shrink-0" />
                     Registered
                   </span>
                   <span className="font-semibold text-foreground text-right font-mono">
-                    {regCount > 0
+                    {item.slug === "quasar-5-international-hackathon-2027"
+                      ? "1000+"
+                      : regCount > 0
                       ? `${regCount} registered`
-                      : item.slug === "goa-buildathon-2027"
-                      ? "2,000+ registered"
-                      : item.slug === "quasar-5-international-hackathon-2027"
-                      ? "1,243 registered"
-                      : "Registration Open"}
+                      : "1000+"}
                   </span>
                 </div>
               </div>
 
-              {/* Clean Prize Strip & Category Tags */}
-              <div className="pt-2 border-t border-border/60 flex flex-wrap items-center justify-between gap-2">
-                {item.prize && (
-                  <div className="flex items-center gap-1.5 rounded-xl bg-neon/10 border border-neon/30 px-2.5 py-1 text-xs font-bold text-neon">
-                    <Trophy className="size-3.5 text-amber-400 shrink-0" />
-                    <span>Prizes worth: {item.prize}</span>
+              {/* Unstop Native Trophy Banner: Left Trophy + Center Prize + Right Trophy */}
+              {item.prize && (
+                <div className="relative overflow-hidden rounded-2xl border border-sky-400/30 bg-gradient-to-r from-sky-500/10 via-cyan-500/15 to-sky-500/10 p-2.5 sm:p-3 shadow-sm">
+                  <div className="flex items-center justify-between gap-3 px-2">
+                    <img
+                      src="/events/golden-star-trophy.png"
+                      alt="Trophy"
+                      className="h-9 sm:h-11 w-auto object-contain shrink-0 drop-shadow-[0_2px_8px_rgba(250,204,21,0.5)]"
+                    />
+                    <div className="flex flex-col items-center justify-center text-center">
+                      <span className="text-[10px] sm:text-[11px] font-bold text-sky-300 uppercase tracking-wider">Prizes worth</span>
+                      <span className="text-xl sm:text-2xl font-black text-white font-mono tracking-tight drop-shadow-sm leading-tight">
+                        {item.prize}
+                      </span>
+                    </div>
+                    <img
+                      src="/events/golden-star-trophy.png"
+                      alt="Trophy"
+                      className="h-9 sm:h-11 w-auto object-contain shrink-0 drop-shadow-[0_2px_8px_rgba(250,204,21,0.5)]"
+                    />
                   </div>
-                )}
-                <div className="flex items-center gap-1.5">
-                  <span className="rounded-full bg-surface-2 border border-border/80 px-2.5 py-0.5 text-[10px] font-semibold text-muted-foreground">
-                    {item.type}
-                  </span>
-                  <span className="rounded-full bg-surface-2 border border-border/80 px-2.5 py-0.5 text-[10px] font-semibold text-muted-foreground">
-                    {item.fee === "Free" ? "Free Entry" : item.fee}
-                  </span>
                 </div>
+              )}
+
+              {/* Clean Category Tags */}
+              <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+                <span className="rounded-full bg-surface-2 border border-border/80 px-2.5 py-0.5 text-[10px] font-semibold text-muted-foreground">
+                  {item.type}
+                </span>
+                <span className="rounded-full bg-surface-2 border border-border/80 px-2.5 py-0.5 text-[10px] font-semibold text-muted-foreground">
+                  {item.fee === "Free" ? "Free Entry" : item.fee}
+                </span>
+                {item.slug === "quasar-5-international-hackathon-2027" && (
+                  <span className="rounded-full bg-surface-2 border border-border/80 px-2.5 py-0.5 text-[10px] font-semibold text-muted-foreground">
+                    36-Hour Hackathon
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -1188,7 +1203,7 @@ function OpportunityDetails() {
                     <h2 className="text-xl sm:text-2xl font-bold text-foreground">Stages and Timelines</h2>
                   </div>
 
-                  <div className="relative pl-7 sm:pl-9 before:absolute before:left-3.5 sm:before:left-4 before:top-4 before:bottom-6 before:w-[3px] before:bg-gradient-to-b before:from-neon before:via-emerald-400 before:to-neon/20">
+                  <div className="relative pl-7 sm:pl-9 before:absolute before:left-3.5 sm:before:left-4 before:top-4 before:bottom-6 before:w-[2px] before:border-l-2 before:border-dashed before:border-border/80 before:bg-transparent">
                     {item.schedule.map((step, index) => {
                       const dateParts = step.dateBadge?.split(" ") || [];
                       const month = dateParts[0] || `Stage`;
@@ -1197,48 +1212,56 @@ function OpportunityDetails() {
                         <div key={step.title} className="relative pb-9 last:pb-2">
                           {/* Calendar Node directly over the timeline line */}
                           <div className="flex items-center gap-3 sm:gap-4 mb-3.5 min-w-0">
-                            <div className="relative -ml-[25px] sm:-ml-[27px] flex flex-col items-center justify-center rounded-2xl border-2 border-neon bg-[#07130a] px-3 py-1.5 shadow-[0_0_15px_rgba(34,197,94,0.35)] min-w-[56px] text-center shrink-0">
-                              <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-neon leading-tight">{month}</span>
-                              <span className="text-base sm:text-lg font-black text-white leading-none font-mono mt-0.5">{day}</span>
+                            <div className="relative -ml-[25px] sm:-ml-[27px] flex flex-col items-center justify-center rounded-2xl border border-border/80 bg-card px-2.5 py-1.5 shadow-sm min-w-[54px] text-center shrink-0">
+                              <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-muted-foreground leading-tight">{month}</span>
+                              <span className="text-base sm:text-lg font-black text-foreground leading-none font-mono mt-0.5">{day}</span>
                             </div>
-                            <span className="text-xs sm:text-sm font-bold font-mono text-neon flex items-center gap-1.5 break-words min-w-0">
-                              <Calendar className="size-3.5 shrink-0" />
+                            <span className="text-xs sm:text-sm font-semibold text-muted-foreground flex items-center gap-1.5 break-words min-w-0">
+                              <Calendar className="size-3.5 shrink-0 text-muted-foreground" />
                               <span className="break-words leading-snug">{step.date}</span>
                             </span>
                           </div>
 
                           {/* Stage Card */}
-                          <div className="rounded-2xl border border-neon/30 bg-surface/90 p-5 sm:p-7 shadow-[0_4px_24px_rgba(34,197,94,0.08)] transition hover:border-neon hover:bg-surface-2/90 hover:shadow-glow-soft">
-                            <div className="flex items-center justify-between gap-2 border-b border-border/80 pb-3">
-                              <h3 className="text-base sm:text-xl font-extrabold text-foreground">{step.title}</h3>
-                              <span className="rounded-full bg-neon/20 border border-neon/50 px-3 py-1 text-xs font-black text-neon font-mono shrink-0 shadow-sm">
+                          <div className="rounded-2xl border border-border/80 bg-card p-4 sm:p-6 shadow-sm hover:border-border/90 transition">
+                            <div className="flex items-center justify-between gap-2 border-b border-border/70 pb-3">
+                              <h3 className="text-base sm:text-lg font-extrabold text-foreground">{step.title}</h3>
+                              <span className="rounded-full bg-surface-2 border border-border/80 px-2.5 py-0.5 text-xs font-bold text-muted-foreground font-mono shrink-0">
                                 {step.stageBadge || `Stage ${index + 1}`}
                               </span>
                             </div>
 
-                            <p className="mt-3.5 text-xs sm:text-sm leading-relaxed text-foreground/90 font-medium break-words">
+                            <p className="mt-3 text-xs sm:text-sm leading-relaxed text-muted-foreground font-medium break-words">
                               {step.description}
                             </p>
 
+                            {/* Problem Statements: Unlock ONLY for registered builders */}
                             {step.actionUrl && (
                               <div className="my-3.5">
-                                <a
-                                  href={step.actionUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-2 rounded-xl border border-neon/60 bg-neon/15 px-4 py-2 text-xs sm:text-sm font-bold text-neon hover:bg-neon hover:text-black transition shadow-glow-soft"
-                                >
-                                  <span>{step.actionLabel || "View Problem Statements"}</span>
-                                  <ExternalLink className="size-3.5" />
-                                </a>
+                                {isRegistered ? (
+                                  <a
+                                    href={step.actionUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-2 rounded-xl border border-neon/50 bg-neon/15 px-4 py-2 text-xs sm:text-sm font-bold text-neon hover:bg-neon hover:text-black transition shadow-glow-soft"
+                                  >
+                                    <span>{step.actionLabel || "View Problem Statements"}</span>
+                                    <ExternalLink className="size-3.5" />
+                                  </a>
+                                ) : (
+                                  <div className="inline-flex items-center gap-2 rounded-xl border border-border/80 bg-surface/80 px-3.5 py-2 text-xs text-muted-foreground">
+                                    <Lock className="size-3.5 text-amber-400 shrink-0" />
+                                    <span>Problem Statements unlock after Squad Registration</span>
+                                  </div>
+                                )}
                               </div>
                             )}
 
                             {step.bullets && step.bullets.length > 0 && (
-                              <ul className="mt-4 space-y-2.5 pl-1 border-t border-border/60 pt-3.5">
+                              <ul className="mt-3.5 space-y-2 pl-1 border-t border-border/60 pt-3">
                                 {step.bullets.map((b) => (
-                                  <li key={b} className="flex items-start gap-2.5 text-xs sm:text-sm text-foreground/90 leading-relaxed break-words">
-                                    <span className="mt-1.5 size-2 rounded-full bg-neon shrink-0 shadow-glow" />
+                                  <li key={b} className="flex items-start gap-2.5 text-xs sm:text-sm text-muted-foreground leading-relaxed break-words">
+                                    <span className="mt-2 size-1.5 rounded-full bg-muted-foreground/60 shrink-0" />
                                     <span>{b}</span>
                                   </li>
                                 ))}
@@ -1246,9 +1269,9 @@ function OpportunityDetails() {
                             )}
 
                             {step.evaluation && (
-                              <div className="mt-4 hidden sm:flex rounded-xl border border-neon/30 bg-neon/10 px-4 py-2.5 text-xs text-muted-foreground flex-wrap items-center gap-2">
-                                <span className="font-bold text-neon uppercase tracking-wider text-[11px] shrink-0">Evaluation:</span>
-                                <span className="text-foreground/90 font-medium break-words">{step.evaluation}</span>
+                              <div className="mt-4 hidden sm:flex rounded-xl border border-border/80 bg-surface px-4 py-2 text-xs text-muted-foreground flex-wrap items-center gap-2">
+                                <span className="font-bold text-foreground uppercase tracking-wider text-[11px] shrink-0">Evaluation:</span>
+                                <span className="text-muted-foreground font-medium break-words">{step.evaluation}</span>
                               </div>
                             )}
                           </div>
