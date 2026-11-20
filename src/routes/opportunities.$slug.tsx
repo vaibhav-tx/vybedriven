@@ -26,6 +26,7 @@ import {
   Lock,
   LogIn,
   Info,
+  Share2,
 } from "lucide-react";
 import {
   Dialog,
@@ -783,11 +784,11 @@ function OpportunityDetails() {
       </div>
 
       <main className="pb-28 lg:pb-0 overflow-x-clip max-w-full">
-        {/* Hero Section */}
-        <section id="overview" className="border-b border-border bg-surface scroll-mt-28">
-          <div className="mx-auto grid max-w-[1200px] gap-6 sm:gap-7 px-4 sm:px-6 pb-8 pt-6 sm:pb-10 sm:pt-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
-            {/* Column 1: Details & Title (on phones comes after the banner image) */}
-            <div className="order-2 lg:order-1 min-w-0">
+        {/* DESKTOP HERO (Laptop / PC: Identical to original desktop layout) */}
+        <section id="overview" className="hidden lg:block border-b border-border bg-surface scroll-mt-28">
+          <div className="mx-auto grid max-w-[1200px] gap-7 px-6 pb-10 pt-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+            {/* Column 1: Details & Title */}
+            <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="rounded-full border border-border bg-background px-3 py-1 text-xs font-semibold">
                   {item.type}
@@ -806,12 +807,12 @@ function OpportunityDetails() {
                   </span>
                 )}
               </div>
-              <p className="mt-4 sm:mt-6 text-xs sm:text-sm font-semibold text-neon">{item.tag.toUpperCase()}</p>
-              <h1 className="mt-2 text-2xl sm:text-5xl lg:text-6xl font-extrabold leading-tight break-words">{item.title}</h1>
-              <p className="mt-3 sm:mt-5 max-w-2xl text-base sm:text-lg leading-relaxed text-muted-foreground break-words">
+              <p className="mt-6 text-sm font-semibold text-neon">{item.tag.toUpperCase()}</p>
+              <h1 className="mt-2 text-5xl lg:text-6xl font-extrabold leading-tight break-words">{item.title}</h1>
+              <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground break-words">
                 {item.description}
               </p>
-              <p className="mt-4 sm:mt-5 text-xs sm:text-sm text-muted-foreground break-words">
+              <p className="mt-5 text-sm text-muted-foreground break-words">
                 Hosted by <span className="font-semibold text-foreground">{item.organizer}</span>
               </p>
 
@@ -822,16 +823,16 @@ function OpportunityDetails() {
                     <img
                       src="/events/prizes-worth-banner.jpg"
                       alt="Prizes Worth ₹ 10,00,000"
-                      className="h-auto max-w-full sm:max-w-md md:max-w-lg rounded-2xl border border-neon/40 shadow-glow-soft hover:shadow-glow transition"
+                      className="h-auto max-w-md md:max-w-lg rounded-2xl border border-neon/40 shadow-glow-soft hover:shadow-glow transition"
                     />
                   </div>
                 ) : item.slug === "quasar-5-international-hackathon-2027" ? (
                   <div className="mt-5 inline-block max-w-full">
-                    <div className="relative overflow-hidden rounded-[24px] sm:rounded-[30px] border-2 border-emerald-500/70 bg-[#030904] p-2 sm:p-3 pr-3.5 sm:pr-6 shadow-[0_0_35px_rgba(16,185,129,0.35)] backdrop-blur-xl">
-                      <div className="flex items-center gap-2.5 sm:gap-5 rounded-[18px] sm:rounded-[24px] border border-emerald-500/40 bg-gradient-to-r from-emerald-950/60 via-[#051307] to-[#040e06] p-2 sm:p-3 pl-3 sm:pl-5">
+                    <div className="relative overflow-hidden rounded-[30px] border-2 border-emerald-500/70 bg-[#030904] p-3 pr-6 shadow-[0_0_35px_rgba(16,185,129,0.35)] backdrop-blur-xl">
+                      <div className="flex items-center gap-5 rounded-[24px] border border-emerald-500/40 bg-gradient-to-r from-emerald-950/60 via-[#051307] to-[#040e06] p-3 pl-5">
                         {/* Laurel Wreath */}
                         <div className="shrink-0 flex items-center justify-center text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.7)]">
-                          <svg className="size-6 sm:size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <svg className="size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M7 21C5.5 19 4 16.5 4 13.5C4 9.5 6 6 8.5 4" />
                             <path d="M4 11C5.5 11 7 9.5 7 8" />
                             <path d="M4.5 16C6 15.5 7.5 14 7.5 12.5" />
@@ -842,57 +843,194 @@ function OpportunityDetails() {
                         </div>
 
                         {/* Vertical separator */}
-                        <div className="h-9 sm:h-12 w-[1.5px] bg-emerald-500/40 shrink-0" />
+                        <div className="h-12 w-[1.5px] bg-emerald-500/40 shrink-0" />
 
                         {/* Prize text */}
-                        <div className="flex flex-col min-w-0 pr-1 sm:pr-2">
-                          <span className="text-[10px] sm:text-xs font-black italic tracking-wider text-emerald-400 uppercase drop-shadow-[0_0_8px_rgba(52,211,153,0.6)]">
+                        <div className="flex flex-col min-w-0 pr-2">
+                          <span className="text-xs font-black italic tracking-wider text-emerald-400 uppercase drop-shadow-[0_0_8px_rgba(52,211,153,0.6)]">
                             PRIZES <span className="text-emerald-300">WORTH</span>
                           </span>
-                          <span className="text-xl min-[360px]:text-2xl sm:text-3xl md:text-4xl font-black text-white font-mono tracking-tight drop-shadow-[0_2px_14px_rgba(255,255,255,0.45)] leading-tight">
+                          <span className="text-3xl md:text-4xl font-black text-white font-mono tracking-tight drop-shadow-[0_2px_14px_rgba(255,255,255,0.45)] leading-tight">
                             ₹ 1,50,000
                           </span>
                         </div>
 
                         {/* Trophy with Glowing Green Orbit */}
-                        <div className="relative shrink-0 flex items-center justify-center pl-1 sm:pl-2">
-                          {/* Green Orbit Ring */}
-                          <div className="absolute inset-x-[-8px] sm:inset-x-[-12px] bottom-1.5 sm:bottom-2.5 h-3.5 sm:h-4 rounded-[100%] border-2 border-emerald-400/90 shadow-[0_0_14px_rgba(52,211,153,0.9)] -rotate-12 pointer-events-none" />
+                        <div className="relative shrink-0 flex items-center justify-center pl-2">
+                          <div className="absolute inset-x-[-12px] bottom-2.5 h-4 rounded-[100%] border-2 border-emerald-400/90 shadow-[0_0_14px_rgba(52,211,153,0.9)] -rotate-12 pointer-events-none" />
                           <img
                             src="/events/golden-star-trophy.png"
                             alt="Prize Trophy"
-                            className="relative z-10 h-13 sm:h-18 md:h-20 w-auto object-contain drop-shadow-[0_6px_22px_rgba(250,204,21,0.6)]"
+                            className="relative z-10 h-18 md:h-20 w-auto object-contain drop-shadow-[0_6px_22px_rgba(250,204,21,0.6)]"
                           />
                         </div>
                       </div>
                     </div>
                   </div>
                 ) : (
-                  <div className="mt-5 inline-flex items-center gap-3 sm:gap-4 rounded-2xl border border-neon/35 bg-gradient-to-r from-neon/15 via-emerald-500/10 to-transparent p-2.5 sm:p-3 pr-4 sm:pr-5 shadow-glow-soft">
+                  <div className="mt-5 inline-flex items-center gap-4 rounded-2xl border border-neon/35 bg-gradient-to-r from-neon/15 via-emerald-500/10 to-transparent p-3 pr-5 shadow-glow-soft">
                     <div className="pl-1">
                       <p className="text-[11px] font-bold uppercase tracking-wider text-neon">Prizes worth</p>
-                      <p className="text-xl min-[400px]:text-2xl sm:text-3xl font-extrabold text-foreground font-mono tracking-tight">
+                      <p className="text-2xl sm:text-3xl font-extrabold text-foreground font-mono tracking-tight">
                         {item.prize}
                       </p>
                     </div>
                     <img
                       src="/events/golden-star-trophy.png"
                       alt="Prize Trophy"
-                      className="h-12 min-[400px]:h-14 sm:h-16 w-auto object-contain shrink-0 drop-shadow-[0_4px_14px_rgba(250,204,21,0.45)]"
+                      className="h-14 sm:h-16 w-auto object-contain shrink-0 drop-shadow-[0_4px_14px_rgba(250,204,21,0.45)]"
                     />
                   </div>
                 )
               )}
             </div>
 
-            {/* Column 2: Event Poster (on phones shows at the very top, on laptop identical to original) */}
-            <div className="order-1 lg:order-2 relative flex items-center justify-center overflow-hidden rounded-2xl sm:rounded-3xl border border-border/80 bg-black/60 p-2 sm:p-4 shadow-inner">
+            {/* Column 2: Event Poster */}
+            <div className="relative flex items-center justify-center overflow-hidden rounded-3xl border border-border/80 bg-black/60 p-4 shadow-inner">
               <img
                 src={item.image}
                 alt={item.title}
                 style={item.imagePosition ? { objectPosition: item.imagePosition } : undefined}
-                className="max-h-[300px] lg:max-h-[460px] w-auto max-w-full rounded-xl sm:rounded-2xl object-contain transition duration-500 hover:scale-[1.01]"
+                className="max-h-[460px] w-auto max-w-full rounded-2xl object-contain transition duration-500 hover:scale-[1.01]"
               />
+            </div>
+          </div>
+        </section>
+
+        {/* MOBILE HERO (Unstop Native Experience: Clean Banner + Clean Card + 3 Metadata Rows) */}
+        <section id="mobile-overview" className="block lg:hidden bg-surface pb-3">
+          {/* 1. Full-width top landscape banner */}
+          <div className="px-3 pt-3">
+            <div className="relative overflow-hidden rounded-2xl border border-border/80 bg-black/90 shadow-md">
+              <img
+                src={item.image}
+                alt={item.title}
+                style={item.imagePosition ? { objectPosition: item.imagePosition } : undefined}
+                className="w-full h-auto max-h-[220px] object-cover sm:object-contain"
+              />
+            </div>
+          </div>
+
+          {/* 2. Unstop Mobile Hero Info Card */}
+          <div className="px-3 pt-3">
+            <div className="rounded-2xl border border-border/80 bg-card p-4 shadow-sm space-y-3.5">
+              {/* Row 1: Offline / Mode Badge + Action Icons (Unstop Header) */}
+              <div className="flex items-center justify-between">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-red-500/15 border border-red-500/30 px-3 py-1 text-xs font-semibold text-red-400">
+                  <MapPin className="size-3 text-red-400" />
+                  {item.format || "Offline"}
+                </span>
+
+                <div className="flex items-center gap-1.5 text-muted-foreground">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (navigator.share) {
+                        navigator.share({ title: item.title, url: window.location.href }).catch(() => {});
+                      } else {
+                        navigator.clipboard.writeText(window.location.href);
+                        toast.success("Event link copied to clipboard!");
+                      }
+                    }}
+                    className="p-1.5 rounded-full hover:bg-surface-2 transition text-muted-foreground hover:text-foreground active:scale-95"
+                    title="Share Event"
+                    aria-label="Share Event"
+                  >
+                    <Share2 className="size-4" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Row 2: Title and Square Event Logo Badge */}
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0 flex-1">
+                  <h1 className="text-base sm:text-lg font-black text-foreground leading-snug break-words">
+                    {item.title}
+                  </h1>
+                  <p className="mt-1 text-xs text-muted-foreground leading-relaxed break-words">
+                    {item.organizer}
+                  </p>
+                </div>
+
+                {/* Square Event Logo Badge (Matching Unstop Image 6) */}
+                <div className="shrink-0 size-14 rounded-xl border border-border/80 bg-black/90 p-1 flex flex-col items-center justify-center text-center shadow-inner">
+                  {item.slug === "quasar-5-international-hackathon-2027" ? (
+                    <div className="flex flex-col items-center justify-center">
+                      <Rocket className="size-5 text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)]" />
+                      <span className="text-[8px] font-black tracking-tight text-white font-mono mt-0.5">QUASAR 5.0</span>
+                    </div>
+                  ) : item.slug === "goa-buildathon-2027" ? (
+                    <div className="flex flex-col items-center justify-center">
+                      <Sparkles className="size-5 text-neon" />
+                      <span className="text-[8px] font-black tracking-tight text-white font-mono mt-0.5">GOA '27</span>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center">
+                      <Sparkles className="size-5 text-neon" />
+                      <span className="text-[8px] font-black tracking-tight text-white font-mono mt-0.5 truncate max-w-[46px]">{item.title.split(" ")[0]}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="border-t border-border/60" />
+
+              {/* Row 3: 3 Clean Metadata Bullet Rows (Exact Unstop format) */}
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between text-xs gap-3">
+                  <span className="flex items-center gap-2 text-muted-foreground font-medium shrink-0">
+                    <MapPin className="size-3.5 text-neon shrink-0" />
+                    Location
+                  </span>
+                  <span className="font-semibold text-foreground truncate text-right max-w-[210px]">
+                    {item.location}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between text-xs gap-3">
+                  <span className="flex items-center gap-2 text-muted-foreground font-medium shrink-0">
+                    <Users className="size-3.5 text-neon shrink-0" />
+                    Team Size
+                  </span>
+                  <span className="font-semibold text-foreground text-right">
+                    {item.teamSize}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between text-xs gap-3">
+                  <span className="flex items-center gap-2 text-muted-foreground font-medium shrink-0">
+                    <Sparkles className="size-3.5 text-neon shrink-0" />
+                    Registered
+                  </span>
+                  <span className="font-semibold text-foreground text-right font-mono">
+                    {regCount > 0
+                      ? `${regCount} registered`
+                      : item.slug === "goa-buildathon-2027"
+                      ? "2,000+ registered"
+                      : item.slug === "quasar-5-international-hackathon-2027"
+                      ? "1,243 registered"
+                      : "Registration Open"}
+                  </span>
+                </div>
+              </div>
+
+              {/* Clean Prize Strip & Category Tags */}
+              <div className="pt-2 border-t border-border/60 flex flex-wrap items-center justify-between gap-2">
+                {item.prize && (
+                  <div className="flex items-center gap-1.5 rounded-xl bg-neon/10 border border-neon/30 px-2.5 py-1 text-xs font-bold text-neon">
+                    <Trophy className="size-3.5 text-amber-400 shrink-0" />
+                    <span>Prizes worth: {item.prize}</span>
+                  </div>
+                )}
+                <div className="flex items-center gap-1.5">
+                  <span className="rounded-full bg-surface-2 border border-border/80 px-2.5 py-0.5 text-[10px] font-semibold text-muted-foreground">
+                    {item.type}
+                  </span>
+                  <span className="rounded-full bg-surface-2 border border-border/80 px-2.5 py-0.5 text-[10px] font-semibold text-muted-foreground">
+                    {item.fee === "Free" ? "Free Entry" : item.fee}
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -901,150 +1039,122 @@ function OpportunityDetails() {
         <section className="mx-auto max-w-[1200px] px-4 sm:px-6 py-6 sm:py-8">
           <div className="grid gap-7 lg:grid-cols-[1fr_320px]">
             <div className="min-w-0">
-              {/* MOBILE ONLY: Registration & Team Status Box (Clean & No Duplicate Register Button) */}
-              <div className="mb-6 rounded-2xl border border-neon/40 bg-gradient-to-br from-neon/10 via-card to-card p-4 sm:p-5 shadow-sm lg:hidden">
-                <div className="flex items-center justify-between">
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/50 bg-emerald-500/20 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-emerald-400">
-                    <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    Registrations Open
-                  </span>
-                  {item.slug === "goa-buildathon-2027" ? (
-                    <span className="text-xs font-bold text-neon font-mono">
-                      2,000+ Registrations
+              {/* MOBILE ONLY: Registered Squad Tools (ONLY shown when user is already registered or host) */}
+              {(isRegistered || isHost) && (
+                <div className="mb-6 rounded-2xl border border-neon/40 bg-gradient-to-br from-neon/10 via-card to-card p-4 sm:p-5 shadow-sm lg:hidden">
+                  <div className="flex items-center justify-between">
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/50 bg-emerald-500/20 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-emerald-400">
+                      <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      Squad Registered
                     </span>
-                  ) : (
                     <span className="text-xs font-bold text-neon font-mono">
-                      {item.fee === "Free" ? "100% Free Entry" : item.fee}
+                      {userRegRecord?.teamName || "Squad Pass"}
                     </span>
+                  </div>
+
+                  {/* Mobile Organizer Banner if Organizer */}
+                  {isHost && (
+                    <div className="mt-3 rounded-xl border border-neon/50 bg-neon/10 p-3 text-xs">
+                      <div className="flex items-center justify-between font-bold text-neon">
+                        <span className="flex items-center gap-1.5">
+                          <Crown className="size-4 text-amber-400" />
+                          Organizer Control
+                        </span>
+                        <span className="text-[10px] font-mono text-neon bg-neon/20 px-2 py-0.5 rounded-full">
+                          {regCount} registrations
+                        </span>
+                      </div>
+                      <p className="mt-1 text-[11px] text-muted-foreground">
+                        Access live attendee registrations, team rosters, and download CSV.
+                      </p>
+                      <Button
+                        asChild
+                        size="sm"
+                        className="mt-2.5 w-full rounded-lg bg-neon text-primary-foreground font-black text-xs hover:brightness-105 shadow-glow-soft"
+                      >
+                        <Link to="/manage-events" search={{ tab: "registrations", slug: item.slug }}>
+                          Open Registrations & CSV Dashboard →
+                        </Link>
+                      </Button>
+                    </div>
+                  )}
+
+                  {/* Mobile Registered Team Controls */}
+                  {isRegistered && (
+                    <div className="mt-3.5 space-y-2.5">
+                      {/* PPT Round 1 CTA for Teams with >= 2 members */}
+                      {userRegRecord?.teamType === "team" && (1 + (userRegRecord.teammates?.length || 0)) >= 2 ? (
+                        <Button
+                          type="button"
+                          onClick={() => setIdeaModalOpen(true)}
+                          className="w-full rounded-xl bg-neon text-primary-foreground font-black text-xs py-3 shadow-glow hover:brightness-105"
+                        >
+                          <Sparkles className="size-3.5 mr-1.5" />
+                          {userRegRecord?.submission?.pptUrl
+                            ? "View / Edit Round 1 PPT Deck ✓"
+                            : "Submit Round 1 Idea (PPT) 🚀"}
+                        </Button>
+                      ) : null}
+
+                      <div className="grid grid-cols-2 gap-2">
+                        {userRegRecord?.teamType === "team" && (1 + (userRegRecord.teammates?.length || 0)) < 2 ? (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={handleRegisterClick}
+                            className="w-full rounded-xl border-amber-500/50 text-[11px] font-bold text-amber-400 hover:bg-amber-500/15"
+                          >
+                            <Lock className="size-3 mr-1 text-amber-400" />
+                            Pass Locked (1/4)
+                          </Button>
+                        ) : (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={handleRegisterClick}
+                            className="w-full rounded-xl border-neon/50 text-[11px] font-bold text-neon hover:bg-neon hover:text-primary-foreground"
+                          >
+                            <Ticket className="size-3 mr-1" />
+                            View Entry Pass
+                          </Button>
+                        )}
+
+                        <Button
+                          size="sm"
+                          variant="secondary"
+                          onClick={() => setTeamModalOpen(true)}
+                          className="w-full rounded-xl text-[11px] font-bold"
+                        >
+                          <Users className="size-3 mr-1" />
+                          Manage Team ({1 + (userRegRecord?.teammates?.length || 0)}/4)
+                        </Button>
+                      </div>
+
+                      {/* WhatsApp Community - EXCLUSIVE TO REGISTERED TEAMS & MEMBERS */}
+                      {item.groupUrl && (
+                        <a
+                          href={item.groupUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-3 py-2 text-xs font-semibold text-emerald-400 transition hover:bg-emerald-500/20"
+                        >
+                          <MessageCircle className="size-3.5 text-emerald-400" />
+                          <span>{item.groupLabel ?? "Join WhatsApp Community"}</span>
+                          <ExternalLink className="size-3 opacity-80" />
+                        </a>
+                      )}
+                    </div>
                   )}
                 </div>
+              )}
 
-                <h3 className="mt-2 text-base font-black text-foreground">
-                  {item.title}
-                </h3>
-                <p className="mt-0.5 text-xs text-muted-foreground">
-                  {item.registrationDeadline === "To be announced"
-                    ? "Register now to secure your participation spot."
-                    : `Apply before ${item.registrationDeadline}.`}
-                </p>
-
-                {/* Mobile Organizer Banner if Organizer */}
-                {isHost && (
-                  <div className="mt-3 rounded-xl border border-neon/50 bg-neon/10 p-3 text-xs">
-                    <div className="flex items-center justify-between font-bold text-neon">
-                      <span className="flex items-center gap-1.5">
-                        <Crown className="size-4 text-amber-400" />
-                        Organizer Control
-                      </span>
-                      <span className="text-[10px] font-mono text-neon bg-neon/20 px-2 py-0.5 rounded-full">
-                        {regCount} registrations
-                      </span>
-                    </div>
-                    <p className="mt-1 text-[11px] text-muted-foreground">
-                      Access live attendee registrations, team rosters, and download CSV.
-                    </p>
-                    <Button
-                      asChild
-                      size="sm"
-                      className="mt-2.5 w-full rounded-lg bg-neon text-primary-foreground font-black text-xs hover:brightness-105 shadow-glow-soft"
-                    >
-                      <Link to="/manage-events" search={{ tab: "registrations", slug: item.slug }}>
-                        Open Registrations & CSV Dashboard →
-                      </Link>
-                    </Button>
-                  </div>
-                )}
-
-                {/* Mobile Registered Team Controls */}
-                {isRegistered ? (
-                  <div className="mt-3.5 space-y-2.5">
-                    {/* PPT Round 1 CTA for Teams with >= 2 members */}
-                    {userRegRecord?.teamType === "team" && (1 + (userRegRecord.teammates?.length || 0)) >= 2 ? (
-                      <Button
-                        type="button"
-                        onClick={() => setIdeaModalOpen(true)}
-                        className="w-full rounded-xl bg-neon text-primary-foreground font-black text-xs py-3 shadow-glow hover:brightness-105"
-                      >
-                        <Sparkles className="size-3.5 mr-1.5" />
-                        {userRegRecord?.submission?.pptUrl
-                          ? "View / Edit Round 1 PPT Deck ✓"
-                          : "Submit Round 1 Idea (PPT) 🚀"}
-                      </Button>
-                    ) : null}
-
-                    <div className="grid grid-cols-2 gap-2">
-                      {userRegRecord?.teamType === "team" && (1 + (userRegRecord.teammates?.length || 0)) < 2 ? (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={handleRegisterClick}
-                          className="w-full rounded-xl border-amber-500/50 text-[11px] font-bold text-amber-400 hover:bg-amber-500/15"
-                        >
-                          <Lock className="size-3 mr-1 text-amber-400" />
-                          Pass Locked (1/4)
-                        </Button>
-                      ) : (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={handleRegisterClick}
-                          className="w-full rounded-xl border-neon/50 text-[11px] font-bold text-neon hover:bg-neon hover:text-primary-foreground"
-                        >
-                          <Ticket className="size-3 mr-1" />
-                          View Entry Pass
-                        </Button>
-                      )}
-
-                      <Button
-                        size="sm"
-                        variant="secondary"
-                        onClick={() => setTeamModalOpen(true)}
-                        className="w-full rounded-xl text-[11px] font-bold"
-                      >
-                        <Users className="size-3 mr-1" />
-                        Manage Team ({1 + (userRegRecord?.teammates?.length || 0)}/4)
-                      </Button>
-                    </div>
-
-                    {/* WhatsApp Community - EXCLUSIVE TO REGISTERED TEAMS & MEMBERS */}
-                    {item.groupUrl && (
-                      <a
-                        href={item.groupUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-3 py-2 text-xs font-semibold text-emerald-400 transition hover:bg-emerald-500/20"
-                      >
-                        <MessageCircle className="size-3.5 text-emerald-400" />
-                        <span>{item.groupLabel ?? "Join WhatsApp Community"}</span>
-                        <ExternalLink className="size-3 opacity-80" />
-                      </a>
-                    )}
-                  </div>
-                ) : (
-                  <div className="mt-3 rounded-xl border border-border/80 bg-surface-2/60 p-3 text-xs">
-                    <div className="flex items-center justify-between text-muted-foreground">
-                      <span className="flex items-center gap-1.5 font-bold text-foreground">
-                        <Sparkles className="size-3.5 text-neon" />
-                        <span>Team Size: {item.teamSize || "2 - 4 Members"}</span>
-                      </span>
-                      <span className="font-mono text-[11px] font-bold text-neon">
-                        {item.format || "Offline Hackathon"}
-                      </span>
-                    </div>
-                    <p className="mt-1.5 text-[11px] text-muted-foreground leading-relaxed">
-                      Tap the <strong className="text-foreground">Register button below</strong> to claim your spot and participate in the hackathon.
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              {/* Quick Facts Grid */}
-              <div className="grid overflow-hidden rounded-2xl border border-border bg-card grid-cols-2 lg:grid-cols-3">
+              {/* Desktop Quick Facts Grid (6-cell grid rendered only on laptop / PC) */}
+              <div className="hidden lg:grid overflow-hidden rounded-2xl border border-border bg-card grid-cols-3">
                 {facts.map(({ icon: Icon, label, value }) => (
-                  <div key={label} className="border-b border-border p-4 sm:p-5 [&:nth-child(odd)]:border-r sm:[&:nth-child(even)]:border-r">
-                    <Icon className="size-4 sm:size-5 text-neon" />
-                    <p className="mt-2 sm:mt-3 text-[11px] sm:text-xs font-semibold text-muted-foreground">{label}</p>
-                    <p className="mt-1 text-xs sm:text-sm font-semibold break-words leading-tight">{value}</p>
+                  <div key={label} className="border-b border-border p-5 [&:nth-child(3n)]:border-r-0 border-r">
+                    <Icon className="size-5 text-neon" />
+                    <p className="mt-3 text-xs font-semibold text-muted-foreground">{label}</p>
+                    <p className="mt-1 text-sm font-semibold break-words leading-tight">{value}</p>
                   </div>
                 ))}
               </div>
@@ -1136,7 +1246,7 @@ function OpportunityDetails() {
                             )}
 
                             {step.evaluation && (
-                              <div className="mt-4 rounded-xl border border-neon/30 bg-neon/10 px-4 py-2.5 text-xs text-muted-foreground flex flex-wrap items-center gap-2">
+                              <div className="mt-4 hidden sm:flex rounded-xl border border-neon/30 bg-neon/10 px-4 py-2.5 text-xs text-muted-foreground flex-wrap items-center gap-2">
                                 <span className="font-bold text-neon uppercase tracking-wider text-[11px] shrink-0">Evaluation:</span>
                                 <span className="text-foreground/90 font-medium break-words">{step.evaluation}</span>
                               </div>
@@ -1742,109 +1852,106 @@ function OpportunityDetails() {
         </section>
 
         {/* MOBILE ONLY: Fixed Docked Bottom Action Bar (Unstop Native Experience) */}
-        <div className="fixed bottom-0 inset-x-0 z-40 lg:hidden border-t border-border/80 bg-[#030704]/98 backdrop-blur-2xl px-4 pt-2.5 pb-3 shadow-[0_-8px_30px_rgba(0,0,0,0.9)] max-w-full">
-          <div className="mx-auto max-w-md">
-            <div className="flex items-center justify-between gap-3 mb-1.5">
-              <div className="flex items-center gap-1.5 min-w-0">
-                <span className="size-2 rounded-full bg-neon animate-pulse shrink-0" />
-                <span className="text-[11px] font-black text-neon truncate">
+        <div className="fixed bottom-0 inset-x-0 z-40 lg:hidden px-3.5 pb-3 pointer-events-none max-w-full">
+          <div className="mx-auto max-w-md pointer-events-auto">
+            {/* Centered Curved Dome Tab Resting on the Card (Matching Unstop Image 6 & 8) */}
+            <div className="flex justify-center -mb-2 relative z-10">
+              <div className="inline-flex items-center gap-1.5 rounded-t-2xl border-t border-x border-neon/40 bg-[#030804] px-4 py-1 text-[11px] font-bold text-neon shadow-[0_-4px_12px_rgba(0,0,0,0.6)]">
+                <span className="size-1.5 rounded-full bg-neon animate-pulse" />
+                <span>
                   {item.slug === "quasar-5-international-hackathon-2027"
-                    ? "1 Month Left · Free Entry"
+                    ? "1 Month Left"
                     : item.slug === "goa-buildathon-2027"
-                    ? "2,000+ Joined · Free Entry"
-                    : "Registration Open · Free Entry"}
+                    ? "2,000+ Joined"
+                    : "Registration Open"}
                 </span>
               </div>
-              <span className="text-[10px] font-mono text-muted-foreground shrink-0 font-bold">
-                {item.teamSize || "2–4 Members"}
-              </span>
             </div>
 
-            {isRegistered ? (
-              <div className="space-y-1.5">
-                <div className="grid grid-cols-2 gap-2">
-                  {userRegRecord?.teamType === "team" && (1 + (userRegRecord.teammates?.length || 0)) >= 2 ? (
+            {/* Rounded Floating Action Card */}
+            <div className="rounded-2xl border border-border/90 bg-[#040a05]/98 backdrop-blur-2xl p-3 shadow-[0_-8px_30px_rgba(0,0,0,0.9)]">
+              {isRegistered ? (
+                <div className="space-y-1.5">
+                  <div className="grid grid-cols-2 gap-2">
+                    {userRegRecord?.teamType === "team" && (1 + (userRegRecord.teammates?.length || 0)) >= 2 ? (
+                      <Button
+                        size="sm"
+                        onClick={() => setIdeaModalOpen(true)}
+                        className="rounded-xl bg-neon text-primary-foreground font-black text-xs h-10 shadow-glow"
+                      >
+                        <Sparkles className="size-3.5 mr-1" />
+                        {userRegRecord?.submission?.pptUrl ? "Edit PPT" : "Submit PPT 🚀"}
+                      </Button>
+                    ) : (
+                      <Button
+                        size="sm"
+                        onClick={handleRegisterClick}
+                        className="rounded-xl bg-neon text-primary-foreground font-black text-xs h-10 shadow-glow"
+                      >
+                        <Ticket className="size-3.5 mr-1" /> View Pass
+                      </Button>
+                    )}
                     <Button
                       size="sm"
-                      onClick={() => setIdeaModalOpen(true)}
-                      className="rounded-xl bg-neon text-primary-foreground font-black text-xs h-10 shadow-glow"
+                      variant="secondary"
+                      onClick={() => setTeamModalOpen(true)}
+                      className="rounded-xl text-xs font-bold h-10"
                     >
-                      <Sparkles className="size-3.5 mr-1" />
-                      {userRegRecord?.submission?.pptUrl ? "Edit PPT" : "Submit PPT 🚀"}
+                      <Users className="size-3.5 mr-1" /> Team ({1 + (userRegRecord?.teammates?.length || 0)}/4)
+                    </Button>
+                  </div>
+                  {item.groupUrl && (
+                    <a
+                      href={item.groupUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-1 text-[11px] font-semibold text-emerald-400 hover:underline pt-0.5"
+                    >
+                      <MessageCircle className="size-3" />
+                      <span>{item.groupLabel || "Join WhatsApp Community"}</span>
+                    </a>
+                  )}
+                </div>
+              ) : item.status === "Past event" ? (
+                <div className="text-center py-1">
+                  <p className="text-xs text-muted-foreground">This event has concluded. Registrations closed.</p>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {item.registrationUrl ? (
+                    <Button
+                      type="button"
+                      onClick={handleExternalRegisterClick}
+                      className="w-full rounded-2xl bg-gradient-brand text-primary-foreground font-black h-11 text-sm shadow-glow hover:brightness-105 active:scale-[0.98] transition flex items-center justify-center gap-2"
+                    >
+                      <span>{item.registrationLabel || "Register"}</span>
+                      <ArrowRight className="size-4" />
                     </Button>
                   ) : (
                     <Button
-                      size="sm"
+                      type="button"
                       onClick={handleRegisterClick}
-                      className="rounded-xl bg-neon text-primary-foreground font-black text-xs h-10 shadow-glow"
+                      className="w-full rounded-2xl bg-gradient-brand text-primary-foreground font-black h-11 text-sm shadow-glow hover:brightness-105 active:scale-[0.98] transition flex items-center justify-center gap-2"
                     >
-                      <Ticket className="size-3.5 mr-1" /> View Pass
+                      <span>Register</span>
+                      <Sparkles className="size-4" />
                     </Button>
                   )}
-                  <Button
-                    size="sm"
-                    variant="secondary"
-                    onClick={() => setTeamModalOpen(true)}
-                    className="rounded-xl text-xs font-bold h-10"
-                  >
-                    <Users className="size-3.5 mr-1" /> Team ({1 + (userRegRecord?.teammates?.length || 0)}/4)
-                  </Button>
+
+                  {!user && (
+                    <div className="text-center">
+                      <button
+                        type="button"
+                        onClick={() => setExploreGateOpen(true)}
+                        className="text-[11px] text-muted-foreground hover:text-neon transition cursor-pointer"
+                      >
+                        Already registered? <span className="font-bold text-neon underline">Login</span>
+                      </button>
+                    </div>
+                  )}
                 </div>
-                {item.groupUrl && (
-                  <a
-                    href={item.groupUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-1 text-[11px] font-semibold text-emerald-400 hover:underline pt-0.5"
-                  >
-                    <MessageCircle className="size-3" />
-                    <span>{item.groupLabel || "Join WhatsApp Group"}</span>
-                  </a>
-                )}
-              </div>
-            ) : item.registrationUrl ? (
-              <div>
-                <Button
-                  onClick={handleExternalRegisterClick}
-                  className="w-full rounded-xl bg-gradient-brand text-primary-foreground font-black h-11 text-sm shadow-glow hover:brightness-105"
-                >
-                  {item.registrationLabel || "Register"}
-                  <ArrowRight className="ml-1.5 size-4 inline" />
-                </Button>
-                {!user && (
-                  <div className="mt-1 text-center">
-                    <button
-                      type="button"
-                      onClick={() => setExploreGateOpen(true)}
-                      className="text-[11px] font-medium text-muted-foreground hover:text-neon"
-                    >
-                      Already registered? <span className="font-bold text-neon underline">Login</span>
-                    </button>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div>
-                <Button
-                  onClick={handleRegisterClick}
-                  className="w-full rounded-xl bg-gradient-brand text-primary-foreground font-black h-11 text-sm shadow-glow hover:brightness-105"
-                >
-                  Register
-                  <Sparkles className="ml-1.5 size-4 inline" />
-                </Button>
-                {!user && (
-                  <div className="mt-1 text-center">
-                    <button
-                      type="button"
-                      onClick={() => setExploreGateOpen(true)}
-                      className="text-[11px] font-medium text-muted-foreground hover:text-neon"
-                    >
-                      Already registered? <span className="font-bold text-neon underline">Login</span>
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </main>

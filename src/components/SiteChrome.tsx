@@ -490,6 +490,18 @@ export function Navbar() {
           <Logo className="h-8.5 sm:h-11" />
         </div>
         <div className="hidden items-center gap-2 lg:flex max-w-[calc(50%-100px)] justify-end shrink-0">
+          <Link
+            to="/about"
+            className="rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition hover:text-neon shrink-0"
+          >
+            About Us
+          </Link>
+          <Link
+            to="/contact"
+            className="rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition hover:text-neon shrink-0"
+          >
+            Contact Us
+          </Link>
           {isAdmin ? (
             <Button
               asChild
@@ -524,18 +536,6 @@ export function Navbar() {
               </Link>
             </Button>
           ) : null}
-          <Link
-            to="/about"
-            className="rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition hover:text-neon shrink-0"
-          >
-            About Us
-          </Link>
-          <Link
-            to="/contact"
-            className="rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition hover:text-neon shrink-0"
-          >
-            Contact Us
-          </Link>
           {!loading &&
             (user ? (
               <ProfileMenu />
