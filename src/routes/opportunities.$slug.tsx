@@ -774,21 +774,45 @@ function OpportunityDetails() {
                     />
                   </div>
                 ) : item.slug === "quasar-5-international-hackathon-2027" ? (
-                  <div className="mt-5 inline-flex items-center gap-3.5 sm:gap-5 rounded-2xl sm:rounded-3xl border-2 border-amber-500/50 bg-gradient-to-r from-amber-500/20 via-yellow-500/10 to-surface/80 p-3 sm:p-4 pr-5 sm:pr-7 shadow-[0_0_30px_rgba(245,158,11,0.22)] backdrop-blur-md">
-                    <div className="relative shrink-0">
-                      <img
-                        src="/events/golden-star-trophy.png"
-                        alt="Prize Trophy"
-                        className="h-12 min-[400px]:h-14 sm:h-16 w-auto object-contain drop-shadow-[0_4px_16px_rgba(250,204,21,0.5)]"
-                      />
-                    </div>
-                    <div>
-                      <p className="text-[11px] sm:text-xs font-black uppercase tracking-widest text-amber-300">
-                        CASH PRIZES WORTH
-                      </p>
-                      <p className="text-xl min-[400px]:text-2xl sm:text-3xl font-black text-amber-400 font-mono tracking-tight drop-shadow-[0_2px_10px_rgba(245,158,11,0.35)]">
-                        {item.prize}
-                      </p>
+                  <div className="mt-5 inline-block">
+                    <div className="relative overflow-hidden rounded-[26px] sm:rounded-[30px] border-2 border-emerald-500/70 bg-[#030904] p-2.5 sm:p-3 pr-4 sm:pr-6 shadow-[0_0_35px_rgba(16,185,129,0.35)] backdrop-blur-xl">
+                      <div className="flex items-center gap-3 sm:gap-5 rounded-[20px] sm:rounded-[24px] border border-emerald-500/40 bg-gradient-to-r from-emerald-950/60 via-[#051307] to-[#040e06] p-2 sm:p-3 pl-3 sm:pl-5">
+                        {/* Laurel Wreath */}
+                        <div className="shrink-0 flex items-center justify-center text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.7)]">
+                          <svg className="size-6 sm:size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M7 21C5.5 19 4 16.5 4 13.5C4 9.5 6 6 8.5 4" />
+                            <path d="M4 11C5.5 11 7 9.5 7 8" />
+                            <path d="M4.5 16C6 15.5 7.5 14 7.5 12.5" />
+                            <path d="M17 21C18.5 19 20 16.5 20 13.5C20 9.5 18 6 15.5 4" />
+                            <path d="M20 11C18.5 11 17 9.5 17 8" />
+                            <path d="M19.5 16C18 15.5 16.5 14 16.5 12.5" />
+                          </svg>
+                        </div>
+
+                        {/* Vertical separator */}
+                        <div className="h-9 sm:h-12 w-[1.5px] bg-emerald-500/40 shrink-0" />
+
+                        {/* Prize text */}
+                        <div className="flex flex-col min-w-0 pr-1 sm:pr-2">
+                          <span className="text-[11px] sm:text-xs font-black italic tracking-wider text-emerald-400 uppercase drop-shadow-[0_0_8px_rgba(52,211,153,0.6)]">
+                            PRIZES <span className="text-emerald-300">WORTH</span>
+                          </span>
+                          <span className="text-2xl sm:text-3xl md:text-4xl font-black text-white font-mono tracking-tight drop-shadow-[0_2px_14px_rgba(255,255,255,0.45)] leading-tight">
+                            ₹ 1,50,000
+                          </span>
+                        </div>
+
+                        {/* Trophy with Glowing Green Orbit */}
+                        <div className="relative shrink-0 flex items-center justify-center pl-1 sm:pl-2">
+                          {/* Green Orbit Ring */}
+                          <div className="absolute inset-x-[-8px] sm:inset-x-[-12px] bottom-1.5 sm:bottom-2.5 h-3.5 sm:h-4 rounded-[100%] border-2 border-emerald-400/90 shadow-[0_0_14px_rgba(52,211,153,0.9)] -rotate-12 pointer-events-none" />
+                          <img
+                            src="/events/golden-star-trophy.png"
+                            alt="Prize Trophy"
+                            className="relative z-10 h-14 sm:h-18 md:h-20 w-auto object-contain drop-shadow-[0_6px_22px_rgba(250,204,21,0.6)]"
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ) : (
@@ -808,14 +832,14 @@ function OpportunityDetails() {
                 )
               )}
             </div>
-            <img
-              src={item.image}
-              alt={item.title}
-              style={item.imagePosition ? { objectPosition: item.imagePosition } : undefined}
-              className={`aspect-[16/10] w-full rounded-2xl bg-background ${
-                item.imageFit === "contain" ? "object-contain" : "object-cover"
-              }`}
-            />
+            <div className="relative flex items-center justify-center overflow-hidden rounded-2xl sm:rounded-3xl border border-border/80 bg-black/60 p-2 sm:p-4 shadow-inner">
+              <img
+                src={item.image}
+                alt={item.title}
+                style={item.imagePosition ? { objectPosition: item.imagePosition } : undefined}
+                className="max-h-[460px] w-auto max-w-full rounded-xl sm:rounded-2xl object-contain transition duration-500 hover:scale-[1.01]"
+              />
+            </div>
           </div>
         </section>
 
@@ -1135,115 +1159,131 @@ function OpportunityDetails() {
               {/* Rewards, Perks & Opportunities */}
               {(item.rewards || item.prize || (item.perks && item.perks.length > 0)) && (
                 <section className="border-t border-border py-8 sm:py-10">
-                  <div className="flex items-center gap-2.5 mb-6">
+                  <div className="flex items-center gap-2.5 mb-2">
                     <span className="h-6 w-1 rounded-full bg-neon shadow-glow-soft" />
                     <h2 className="text-xl sm:text-2xl font-bold text-foreground">Rewards and Prizes</h2>
                   </div>
+                  {item.rewardsSubtitle && (
+                    <p className="text-xs sm:text-sm text-muted-foreground mb-6">
+                      {item.rewardsSubtitle}
+                    </p>
+                  )}
 
                   {item.rewards && item.rewards.length > 0 ? (
-                    <div className="space-y-4">
-                      {/* Primary Cash Reward Banner */}
-                      {item.rewards.slice(0, 1).map((rew) => (
-                        <div
-                          key={rew.title}
-                          className="relative overflow-hidden rounded-2xl sm:rounded-3xl border-2 border-amber-500/40 bg-gradient-to-br from-amber-500/15 via-surface to-surface p-4 sm:p-7 shadow-[0_0_30px_rgba(245,158,11,0.15)] transition hover:border-amber-400"
-                        >
-                          <div className="absolute left-0 top-0 bottom-0 w-1.5 sm:w-2 bg-gradient-to-b from-amber-400 via-yellow-300 to-amber-500" />
-                          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
-                            <div className="flex items-center gap-3 sm:gap-6 min-w-0">
-                              <div className="relative shrink-0">
-                                <img
-                                  src="/events/golden-star-trophy.png"
-                                  alt="Grand Prize Trophy"
-                                  className="h-14 sm:h-20 md:h-24 w-auto object-contain drop-shadow-[0_8px_20px_rgba(245,158,11,0.5)]"
-                                />
-                              </div>
-                              <div className="flex flex-col min-w-0">
-                                <div className="flex flex-wrap items-baseline gap-1.5 sm:gap-2">
-                                  <span className="text-2xl min-[400px]:text-3xl sm:text-4xl lg:text-5xl font-black text-amber-400 font-mono tracking-tight drop-shadow-[0_2px_10px_rgba(245,158,11,0.3)]">
-                                    {rew.amount}
-                                  </span>
-                                  <span className="text-[11px] sm:text-sm font-extrabold tracking-widest text-amber-300 uppercase shrink-0">
-                                    {rew.amountSub || "WORTH"}
-                                  </span>
+                    <div className="space-y-3.5">
+                      {item.rewards.map((rew) => (
+                        rew.amountSub === "WORTH" ? (
+                          /* Grand Trophy Card (for Goa Buildathon) */
+                          <div
+                            key={rew.title}
+                            className="relative overflow-hidden rounded-2xl sm:rounded-3xl border-2 border-amber-500/40 bg-gradient-to-br from-amber-500/15 via-surface to-surface p-4 sm:p-7 shadow-[0_0_30px_rgba(245,158,11,0.15)] transition hover:border-amber-400"
+                          >
+                            <div className="absolute left-0 top-0 bottom-0 w-1.5 sm:w-2 bg-gradient-to-b from-amber-400 via-yellow-300 to-amber-500" />
+                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
+                              <div className="flex items-center gap-3 sm:gap-6 min-w-0">
+                                <div className="relative shrink-0">
+                                  <img
+                                    src="/events/golden-star-trophy.png"
+                                    alt="Grand Prize Trophy"
+                                    className="h-14 sm:h-20 md:h-24 w-auto object-contain drop-shadow-[0_8px_20px_rgba(245,158,11,0.5)]"
+                                  />
                                 </div>
-                                <h3 className="mt-1 text-sm sm:text-lg font-bold text-foreground">
-                                  {rew.title}
-                                </h3>
-                                <p className="mt-1 text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-xl">
-                                  {rew.description}
-                                </p>
-                              </div>
-                            </div>
-                            <div className="shrink-0 flex items-center">
-                              <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/50 bg-amber-400/15 px-3.5 py-1.5 sm:px-4 sm:py-2 text-xs font-bold text-amber-300 shadow-glow-soft">
-                                <Trophy className="size-3.5 sm:size-4 text-amber-400" />
-                                {rew.badge || "Certificate"}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-
-                      {/* Sub-track cash awards grid (e.g. Quasar's 5 Problem Statements) */}
-                      {item.rewards.slice(1).some((r) => r.type === "cash") && (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 pt-2">
-                          {item.rewards.slice(1).filter((r) => r.type === "cash").map((rew) => (
-                            <div
-                              key={rew.title}
-                              className="flex flex-col justify-between rounded-2xl border border-amber-500/35 bg-gradient-to-br from-amber-500/10 via-surface to-surface p-4 shadow-sm transition hover:border-amber-400/60"
-                            >
-                              <div>
-                                <div className="flex items-center justify-between gap-2">
-                                  <span className="text-xl sm:text-2xl font-black text-amber-400 font-mono">
-                                    {rew.amount}
-                                  </span>
-                                  <span className="rounded-full bg-amber-400/15 border border-amber-400/40 px-2.5 py-0.5 text-[10px] font-bold text-amber-300 uppercase">
-                                    {rew.badge || "Cash"}
-                                  </span>
-                                </div>
-                                <h4 className="mt-2 text-xs sm:text-sm font-bold text-foreground">
-                                  {rew.title}
-                                </h4>
-                                {rew.description && (
-                                  <p className="mt-1 text-[11px] sm:text-xs text-muted-foreground leading-relaxed">
-                                    {rew.description}
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-
-                      {/* Certificate and non-cash items */}
-                      {item.rewards.slice(1).filter((r) => r.type !== "cash").map((rew) => (
-                        <div
-                          key={rew.title}
-                          className="rounded-2xl sm:rounded-3xl border border-blue-500/35 bg-gradient-to-br from-blue-500/10 via-surface to-surface p-5 sm:p-6 transition hover:border-blue-400/60 shadow-sm"
-                        >
-                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                            <div className="flex items-center gap-4 sm:gap-5">
-                              <div className="size-14 sm:size-16 rounded-2xl bg-gradient-to-br from-blue-500/25 to-indigo-600/20 border border-blue-400/40 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(59,130,246,0.25)]">
-                                <Award className="size-7 sm:size-8 text-blue-400" />
-                              </div>
-                              <div>
-                                <h3 className="text-base sm:text-lg font-bold text-foreground">{rew.title}</h3>
-                                {rew.description && (
+                                <div className="flex flex-col min-w-0">
+                                  <div className="flex flex-wrap items-baseline gap-1.5 sm:gap-2">
+                                    <span className="text-2xl min-[400px]:text-3xl sm:text-4xl lg:text-5xl font-black text-amber-400 font-mono tracking-tight drop-shadow-[0_2px_10px_rgba(245,158,11,0.3)]">
+                                      {rew.amount}
+                                    </span>
+                                    <span className="text-[11px] sm:text-sm font-extrabold tracking-widest text-amber-300 uppercase shrink-0">
+                                      {rew.amountSub}
+                                    </span>
+                                  </div>
+                                  <h3 className="mt-1 text-sm sm:text-lg font-bold text-foreground">
+                                    {rew.title}
+                                  </h3>
                                   <p className="mt-1 text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-xl">
                                     {rew.description}
                                   </p>
-                                )}
+                                </div>
+                              </div>
+                              <div className="shrink-0 flex items-center">
+                                <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/50 bg-amber-400/15 px-3.5 py-1.5 sm:px-4 sm:py-2 text-xs font-bold text-amber-300 shadow-glow-soft">
+                                  <Trophy className="size-3.5 sm:size-4 text-amber-400" />
+                                  {rew.badge || "Certificate"}
+                                </span>
                               </div>
                             </div>
-                            <div className="shrink-0 flex items-center">
-                              <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-400/40 bg-blue-400/10 px-3.5 py-1.5 text-xs font-bold text-blue-300">
-                                <CheckCircle2 className="size-3.5 text-blue-400" />
-                                {rew.badge || "Certificate"}
-                              </span>
+                          </div>
+                        ) : rew.type === "cash" ? (
+                          /* Horizontal Problem Statement Card (Exact Unstop Image 3 style) */
+                          <div
+                            key={rew.title}
+                            className="relative overflow-hidden rounded-2xl border border-border/80 bg-surface/90 p-4 sm:p-5 transition hover:border-emerald-500/50 hover:bg-surface-2/90 shadow-sm"
+                          >
+                            <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-emerald-400 to-teal-500" />
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 pl-2 sm:pl-3">
+                              <div className="flex items-center gap-4 sm:gap-6 min-w-0">
+                                {/* Cash amount badge */}
+                                <div className="flex flex-col shrink-0 min-w-[95px] sm:min-w-[115px]">
+                                  <span className="text-xl sm:text-2xl font-black text-emerald-400 font-mono leading-none tracking-tight">
+                                    {rew.amount}
+                                  </span>
+                                  <span className="text-xs sm:text-sm font-black text-foreground uppercase tracking-wider mt-1">
+                                    {rew.amountSub || "CASH"}
+                                  </span>
+                                </div>
+
+                                {/* Divider */}
+                                <div className="h-8 sm:h-10 w-[1px] bg-border/80 shrink-0" />
+
+                                {/* Problem Statement details */}
+                                <div className="min-w-0">
+                                  <h3 className="text-base sm:text-lg font-bold text-foreground">
+                                    {rew.title}
+                                  </h3>
+                                  <p className="mt-0.5 text-xs sm:text-sm text-muted-foreground truncate sm:whitespace-normal">
+                                    {rew.description}
+                                  </p>
+                                </div>
+                              </div>
+
+                              {/* Certificate Badge */}
+                              <div className="shrink-0 flex items-center self-start sm:self-auto pt-1 sm:pt-0">
+                                <span className="inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-surface-2/80 px-3.5 py-1.5 text-xs font-semibold text-foreground/90 shadow-sm">
+                                  <span>📜</span>
+                                  <span>{rew.badge || "Certificate"}</span>
+                                </span>
+                              </div>
                             </div>
                           </div>
-                        </div>
+                        ) : (
+                          /* Certificate Card */
+                          <div
+                            key={rew.title}
+                            className="rounded-2xl border border-blue-500/35 bg-gradient-to-br from-blue-500/10 via-surface to-surface p-4 sm:p-5 transition hover:border-blue-400/60 shadow-sm"
+                          >
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                              <div className="flex items-center gap-4 sm:gap-5">
+                                <div className="size-12 sm:size-14 rounded-2xl bg-gradient-to-br from-blue-500/25 to-indigo-600/20 border border-blue-400/40 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(59,130,246,0.25)]">
+                                  <Award className="size-6 sm:size-7 text-blue-400" />
+                                </div>
+                                <div>
+                                  <h3 className="text-base sm:text-lg font-bold text-foreground">{rew.title}</h3>
+                                  {rew.description && (
+                                    <p className="mt-1 text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-xl">
+                                      {rew.description}
+                                    </p>
+                                  )}
+                                </div>
+                              </div>
+                              <div className="shrink-0 flex items-center">
+                                <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-400/40 bg-blue-400/10 px-3.5 py-1.5 text-xs font-bold text-blue-300">
+                                  <CheckCircle2 className="size-3.5 text-blue-400" />
+                                  {rew.badge || "Certificate"}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        )
                       ))}
 
                       {item.rewardsFootnote && (

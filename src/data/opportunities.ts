@@ -78,6 +78,7 @@ export type Opportunity = {
   overview: string;
   schedule?: OpportunityScheduleStage[];
   importantDates?: OpportunityImportantDate[];
+  rewardsSubtitle?: string;
   rewards?: OpportunityReward[];
   rewardsFootnote?: string;
 };
@@ -562,60 +563,47 @@ Key Highlights:
         title: "Final Round : 36 Hour Hackathon",
       },
     ],
+    rewardsSubtitle: "Quasar 5.0 features a ₹1,50,000 prize pool, awarded to winning teams via cheque.",
     rewards: [
       {
-        amount: "₹1,50,000",
-        amountSub: "CASH PRIZE POOL",
-        title: "Quasar 5.0 Flagship Prize Pool",
-        description: "Quasar 5.0 features a ₹1,50,000 prize pool, awarded to winning teams via cheque.",
-        badge: "Cheque & Trophy",
-        type: "cash",
-      },
-      {
         amount: "₹30,000",
-        amountSub: "Cash Prize via Cheque",
-        title: "Winner: Problem Statement 1",
-        description: "₹30,000 Cash awarded via cheque + Certificate of Excellence for the top solution in Problem Statement 1.",
-        badge: "Winner PS-1",
-        type: "cash",
-      },
-      {
-        amount: "₹30,000",
-        amountSub: "Cash Prize via Cheque",
-        title: "Winner: Problem Statement 2",
-        description: "₹30,000 Cash awarded via cheque + Certificate of Excellence for the top solution in Problem Statement 2.",
-        badge: "Winner PS-2",
-        type: "cash",
-      },
-      {
-        amount: "₹30,000",
-        amountSub: "Cash Prize via Cheque",
-        title: "Winner: Problem Statement 3",
-        description: "₹30,000 Cash awarded via cheque + Certificate of Excellence for the top solution in Problem Statement 3.",
-        badge: "Winner PS-3",
-        type: "cash",
-      },
-      {
-        amount: "₹30,000",
-        amountSub: "Cash Prize via Cheque",
-        title: "Winner: Problem Statement 4",
-        description: "₹30,000 Cash awarded via cheque + Certificate of Excellence for the top solution in Problem Statement 4.",
-        badge: "Winner PS-4",
-        type: "cash",
-      },
-      {
-        amount: "₹30,000",
-        amountSub: "Cash Prize via Cheque",
-        title: "Winner: Problem Statement 5",
-        description: "₹30,000 Cash awarded via cheque + Certificate of Excellence for the top solution in Problem Statement 5.",
-        badge: "Winner PS-5",
-        type: "cash",
-      },
-      {
-        title: "Verified Merit & Participation Certificates",
-        description: "Verified certificates of merit for winners and official participation certificates released for all attending builders within 1 day.",
+        amountSub: "CASH",
+        title: "Problem Statement 1",
+        description: "Winner of Problem Statement 1 – Quasar 5.0",
         badge: "Certificate",
-        type: "certificate",
+        type: "cash",
+      },
+      {
+        amount: "₹30,000",
+        amountSub: "CASH",
+        title: "Problem Statement 2",
+        description: "Winner of Problem Statement 2 – Quasar 5.0",
+        badge: "Certificate",
+        type: "cash",
+      },
+      {
+        amount: "₹30,000",
+        amountSub: "CASH",
+        title: "Problem Statement 3",
+        description: "Winner of Problem Statement 3 – Quasar 5.0",
+        badge: "Certificate",
+        type: "cash",
+      },
+      {
+        amount: "₹30,000",
+        amountSub: "CASH",
+        title: "Problem Statement 4",
+        description: "Winner of Problem Statement 4 – Quasar 5.0",
+        badge: "Certificate",
+        type: "cash",
+      },
+      {
+        amount: "₹30,000",
+        amountSub: "CASH",
+        title: "Problem Statement 5",
+        description: "Winner of Problem Statement 5 – Quasar 5.0",
+        badge: "Certificate",
+        type: "cash",
       },
     ],
     rewardsFootnote: "* All the prizes and certificate will be released within 1 days after the event is over",
