@@ -446,11 +446,16 @@ export function Navbar() {
   const avatar = profile?.avatar_url?.trim() || "👨‍💻";
   const completion = getProfileCompletion(profile);
   const uEmail = (user?.email || "").toLowerCase().trim();
+  const isAdmin = Boolean(uEmail && ADMIN_EMAILS.includes(uEmail));
   const isGoaOrganizer = Boolean(
     uEmail &&
       (GOA_BUILDATHON_ORGANIZER_EMAILS.includes(uEmail) ||
-        ADMIN_EMAILS.includes(uEmail) ||
+        isAdmin ||
         uEmail.includes("goabuilds"))
+  );
+  const isQuasarOrganizer = Boolean(
+    uEmail &&
+      (QUASAR_ORGANIZER_EMAILS.includes(uEmail) || isAdmin)
   );
 
   return (

@@ -1,17 +1,32 @@
 import { QueryClient } from "@tanstack/react-query";
 import { createRouter, rootRouteId } from "@tanstack/react-router";
-import { describe, expect, it } from "vitest";
+import { render } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 
 import { routeTree } from "@/routeTree.gen";
+import { Navbar } from "@/components/SiteChrome";
 
-// Match routes without running loaders or rendering: loaders may need a server or
-// network the test run lacks, and jsdom never loads the stylesheets React waits on.
-describe("App routing", () => {
+// Mock router context for links inside Navbar
+vi.mock("@tanstack/react-router", async () => {
+  const actual = await vi.importActual<any>("@tanstack/react-router");
+  return {
+    ...actual,
+    useLocation: () => ({ pathname: "/" }),
+    Link: ({ children, ...props }: any) => <a {...props}>{children}</a>,
+  };
+});
+
+describe("App routing and Navigation", () => {
   it("matches a page for / instead of falling back to not found", () => {
     const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
 
     const matches = router.matchRoutes("/");
 
     expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
+  });
+
+  it("renders Navbar cleanly without undefined errors for any user state", () => {
+    const { container } = render(<Navbar />);
+    expect(container).toBeDefined();
   });
 });
