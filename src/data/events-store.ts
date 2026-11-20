@@ -1232,6 +1232,7 @@ export async function joinTeamWithCode(
     updatedAt: new Date().toISOString(),
   };
 
+  const list = getStoredRegistrations();
   const index = list.findIndex((r) => r.id === current.id);
   if (index !== -1) {
     list[index] = updatedTeam;
@@ -1241,6 +1242,7 @@ export async function joinTeamWithCode(
 
   if (typeof window !== "undefined") {
     localStorage.setItem(STORAGE_REGISTRATIONS, JSON.stringify(list));
+    localStorage.setItem("hd_guest_email", memberEmail);
     notifyStoreChange();
   }
 

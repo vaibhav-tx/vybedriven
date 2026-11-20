@@ -9,6 +9,7 @@ import {
   isEventOrganizer,
   updateHostedOpportunity,
   getUserRegistrations,
+  joinTeamWithCode,
 } from "@/data/events-store";
 
 describe("Events Store & Vybe Driven Host Hub", () => {
@@ -179,6 +180,45 @@ describe("Events Store & Vybe Driven Host Hub", () => {
     const list = getRegistrationsBySlug("fintech-innovation-sprint-2026");
     const target = list.find((r) => r.id === reg.id);
     expect(target?.status).toBe("Shortlisted");
+  });
+
+  it("allows joining team with code and updates roster properly", async () => {
+    const leaderReg = submitRegistration({
+      opportunitySlug: "goa-buildathon-2027",
+      opportunityTitle: "Goa Buildathon 2027",
+      fullName: "Lavitra Satam",
+      email: "lavitra@example.com",
+      phone: "+91 99999 11111",
+      collegeOrCompany: "Thakur College",
+      teamType: "team",
+      teamName: "ABSOLUT",
+    });
+
+    const code = leaderReg.teamCode || leaderReg.id;
+    expect(code).toBeTruthy();
+
+    const joined = await joinTeamWithCode(code, {
+      fullName: "Shubham Sahu",
+      email: "shubham@example.com",
+      phone: "+91 93725 80326",
+      collegeOrCompany: "Thakur engineering college",
+      department: "Electronics and computer engineering",
+      opportunitySlug: "goa-buildathon-2027",
+    });
+
+    expect(joined.teammates?.length).toBe(1);
+    expect(joined.teammates?.[0].name).toBe("Shubham Sahu");
+    expect(joined.teammates?.[0].email).toBe("shubham@example.com");
+    expect(joined.teammates?.[0].status).toBe("verified");
+
+    // Idempotent join check
+    const joinedAgain = await joinTeamWithCode(code, {
+      fullName: "Shubham Sahu",
+      email: "shubham@example.com",
+      phone: "+91 93725 80326",
+      collegeOrCompany: "Thakur engineering college",
+    });
+    expect(joinedAgain.teammates?.length).toBe(1);
   });
 });
 

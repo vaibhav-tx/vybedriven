@@ -591,7 +591,8 @@ function OpportunityDetails() {
   const registrations = useEventRegistrations(item.slug, { enabled: isHost });
   const regCount = registrations.length;
 
-  const userIdentifier = user?.email || user?.id;
+  const guestStoredEmail = typeof window !== "undefined" ? localStorage.getItem("hd_guest_email") || undefined : undefined;
+  const userIdentifier = user?.email || user?.id || guestStoredEmail;
 
   // For non-hosts, load only the current user's registration for this event to avoid downloading full table
   useEffect(() => {
@@ -652,28 +653,31 @@ function OpportunityDetails() {
   }, [user?.id, user?.email, item.slug, isHost]);
 
   const userRegRecord = useMemo(() => {
-    if (!user) return null;
-    const localUserRegs = getUserRegistrations(user.id, user.email);
+    const effectiveEmail = user?.email || guestStoredEmail;
+    const effectiveId = user?.id;
+    if (!effectiveId && !effectiveEmail) return null;
+
+    const localUserRegs = getUserRegistrations(effectiveId, effectiveEmail);
     const matched = localUserRegs.find((r) => r.opportunitySlug === item.slug);
     if (matched) return matched;
 
     return (
       registrations.find(
         (r) =>
-          (user.id && r.userId === user.id) ||
-          (user.email && typeof r.email === "string" && r.email.toLowerCase() === user.email.toLowerCase()) ||
-          (user.email &&
+          (effectiveId && r.userId === effectiveId) ||
+          (effectiveEmail && typeof r.email === "string" && r.email.toLowerCase() === effectiveEmail.toLowerCase()) ||
+          (effectiveEmail &&
             Array.isArray(r.teammates) &&
             r.teammates.some(
               (t) =>
                 typeof t === "object" &&
                 t &&
                 typeof t.email === "string" &&
-                t.email.toLowerCase() === user.email!.toLowerCase()
+                t.email.toLowerCase() === effectiveEmail.toLowerCase()
             ))
       ) || null
     );
-  }, [registrations, user, item.slug]);
+  }, [registrations, user, guestStoredEmail, item.slug]);
 
   const isRegistered = Boolean(userRegRecord) || isUserRegistered(item.slug, userIdentifier);
 

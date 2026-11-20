@@ -355,13 +355,9 @@ export function EventRegistrationModal({
   // Handle Join Team with Code
   const handleJoinTeamSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!user) {
-      toast.error("Please sign in or create an account first.");
-      return;
-    }
     const cleanCode = teamCodeInput.trim().replace(/^JOIN[\s\-_:]*/i, "").trim();
     if (!cleanCode || cleanCode.toUpperCase() === "JOIN") {
-      toast.error("Please enter a valid Team Code (e.g. QSR5-XXXXX).");
+      toast.error("Please enter a valid Team Code (e.g. QSR5-XXXXX or GB27-XXXXX).");
       return;
     }
     if (!matchedTeam) {
@@ -370,6 +366,11 @@ export function EventRegistrationModal({
     }
     if (!firstName.trim()) {
       toast.error("Please enter your First Name.");
+      return;
+    }
+    const attendeeEmail = (user?.email || email).trim().toLowerCase();
+    if (!attendeeEmail || !attendeeEmail.includes("@")) {
+      toast.error("Please enter a valid email address.");
       return;
     }
     if (!phone.trim() || phone.replace(/[^\d]/g, "").length < 10) {
@@ -385,15 +386,19 @@ export function EventRegistrationModal({
     try {
       const fullParticipantName = `${firstName.trim()} ${lastName.trim()}`.trim();
       const updated = await joinTeamWithCode(cleanCode, {
-        userId: user.id,
+        userId: user?.id,
         fullName: fullParticipantName,
-        email: user.email || email.trim().toLowerCase(),
+        email: attendeeEmail,
         phone: phone.trim(),
         collegeOrCompany: organization.trim(),
         department: joinDept.trim() || undefined,
         graduationYear: joinYear.trim() || undefined,
         opportunitySlug: opportunity.slug,
       });
+
+      if (typeof window !== "undefined") {
+        localStorage.setItem("hd_guest_email", attendeeEmail);
+      }
 
       setConfirmedReg(updated);
       setStep(3);
