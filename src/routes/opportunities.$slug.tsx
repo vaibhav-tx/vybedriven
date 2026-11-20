@@ -41,7 +41,7 @@ import { Navbar, Footer } from "@/components/SiteChrome";
 import { Button } from "@/components/ui/button";
 import { getOpportunity, type Opportunity } from "@/data/opportunities";
 import { useAuth } from "@/lib/auth";
-import { createBuilderAccount, signInBuilderAccount } from "@/lib/builder-auth";
+import { createBuilderAccount, signInBuilderAccount, getBuilderSession } from "@/lib/builder-auth";
 import { EventRegistrationModal } from "@/components/EventRegistrationModal";
 import { TeamManagementModal } from "@/components/TeamManagementModal";
 import { IdeaSubmissionModal } from "@/components/IdeaSubmissionModal";
