@@ -9,7 +9,7 @@ import elevatePoster from "@/assets/events/elevate-1-0-2026.png.asset.json";
 import { useEffect, useState } from "react";
 
 export const PRESET_EVENT_BANNERS = [
-  { id: "quasar", title: "Quasar 5.0 (PVPPCOE)", image: "/events/quasar-5-banner.jpg" },
+  { id: "quasar", title: "Quasar 5.0 (VPPCOE & VA)", image: "/events/quasar-5-banner.jpg" },
   { id: "goa", title: "Goa Buildathon '27", image: "/events/goa-buildathon-2027.jpg" },
   { id: "beyond-mumbai", title: "Beyond 9to5 Mumbai", image: "/events/beyond-9to5-mumbai.jpg" },
   { id: "beyond-bengaluru", title: "Beyond 9to5 Bengaluru", image: "/events/beyond-9to5-bengaluru.jpg" },

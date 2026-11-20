@@ -384,7 +384,7 @@ Participation is application-based and limited to 150–200 selected participant
     title: "Quasar 5.0: 36-Hour International Hackathon",
     type: "Hackathon",
     tag: "36-Hour Offline International Hackathon · Sion, Mumbai",
-    description: "Flagship 36-hour offline hackathon by Vasantdada Patil Pratishthan's College of Engineering and Visual Arts (PVPPCOE), Sion Mumbai. Turn bold ideas into prototypes and compete for ₹1,50,000 cash prizes.",
+    description: "Flagship 36-hour offline hackathon by Vasantdada Patil Pratishthan's College of Engineering and Visual Arts (VPPCOE & VA), Sion Mumbai. Turn bold ideas into prototypes and compete for ₹1,50,000 cash prizes.",
     date: "Jan 23, 2027, 8:00 AM – Jan 24, 2027, 11:59 PM IST",
     location: "Vasantdada Patil Pratishthan's College of Engineering, Sion, Mumbai, Maharashtra 400022",
     format: "In person",
@@ -423,14 +423,14 @@ Participation is application-based and limited to 150–200 selected participant
       {
         icon: "coffee",
         emoji: "🏛️",
-        title: "PVPPCOE Sion Mumbai Campus",
-        description: "Experience the vibrant campus of Vasantdada Patil Pratishthan's College of Engineering in central Mumbai.",
+        title: "VPPCOE & VA Sion Mumbai Campus",
+        description: "Experience the vibrant campus of Vasantdada Patil Pratishthan's College of Engineering and Visual Arts in central Mumbai.",
       },
     ],
     image: "/events/quasar-5-banner.jpg",
     imageFit: "contain",
     imagePosition: "center center",
-    organizer: "PVPPCOE Mumbai · Powered by ATS & Unstop · Co-Powered by Vybe Driven",
+    organizer: "VPPCOE & VA Mumbai · Powered by ATS & Unstop · Co-Powered by Vybe Driven",
     organizerEmail: "quasar@pvppcoe.ac.in",
     registrationDeadline: "Dec 21, 2026 · 11:59 PM IST",
     eligibility: "Inter-college and inter-organization teams across undergraduate, postgraduate, engineering & tech students nationwide",
@@ -450,7 +450,7 @@ Participation is application-based and limited to 150–200 selected participant
       { label: "Problem Statements & Tracks", url: "https://quasar-vppcoe.vercel.app/#tracks" },
       { label: "Instagram @quasar_vppcoe", url: "https://www.instagram.com/quasar_vppcoe" },
     ],
-    overview: `Quasar 5.0 is the flagship 36-hour offline international hackathon organized by Vasantdada Patil Pratishthan’s College of Engineering and Visual Arts (PVPPCOE), Sion Mumbai, scheduled for 23–24 January 2027.
+    overview: `Quasar 5.0 is the flagship 36-hour offline international hackathon organized by Vasantdada Patil Pratishthan’s College of Engineering and Visual Arts (VPPCOE & VA), Sion Mumbai, scheduled for 23–24 January 2027.
 
 This 36-hour hackathon provides a dynamic platform for students, developers, designers, and innovators to collaborate, think creatively, and develop technology-driven solutions to real-world challenges.
 
@@ -459,7 +459,7 @@ The event encourages innovation, teamwork, technical excellence, and entrepreneu
 Key Highlights:
 • Duration: 36 hours offline hackathon
 • Dates: 23–24 January 2027
-• Venue: Vasantdada Patil Pratishthan's College of Engineering and Visual Arts, Sion, Mumbai
+• Venue: Vasantdada Patil Pratishthan's College of Engineering and Visual Arts (VPPCOE & VA), Sion, Mumbai
 • Registration Fee: Completely free
 • Prize Pool: ₹1,50,000 Cash (₹30,000 Cash x 5 Problem Statements via Cheque)
 • Eligibility: Inter-college and inter-organization teams (2–4 members)

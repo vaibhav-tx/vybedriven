@@ -379,7 +379,7 @@ function EventAuthGateDialog({
               </DialogTitle>
               <DialogDescription className="text-[11px] sm:text-xs text-muted-foreground truncate">
                 {item.slug === "quasar-5-international-hackathon-2027"
-                  ? "PVPPCOE Mumbai"
+                  ? "VPPCOE & VA Mumbai"
                   : item.organizer}
               </DialogDescription>
             </div>
@@ -1606,7 +1606,7 @@ function OpportunityDetails() {
                           {item.slug === "goa-buildathon-2027"
                             ? "Submit your team's proposed solution deck to qualify for the Grand Finale in Goa."
                             : item.slug === "quasar-5-international-hackathon-2027"
-                            ? "Submit your team's proposed solution deck to qualify for the 36-Hour Offline Finale at PVPPCOE Sion, Mumbai."
+                            ? "Submit your team's proposed solution deck to qualify for the 36-Hour Offline Finale at VPPCOE & VA Sion, Mumbai."
                             : "Submit your team's proposed solution deck to qualify for the finale."}
                         </p>
 

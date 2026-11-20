@@ -272,7 +272,7 @@ function Events() {
         </div>
       </Reveal>
 
-      {/* Primary Featured Hackathon: Quasar 5.0 (PVPPCOE Sion, Mumbai) */}
+      {/* Primary Featured Hackathon: Quasar 5.0 (VPPCOE & VA Sion, Mumbai) */}
       {featuredQuasar && (f === "All" || f === "Hackathons") && (
         <Reveal className="mt-6 sm:mt-10">
           <article className="group grid overflow-hidden rounded-2xl sm:rounded-3xl border border-neon/40 bg-surface shadow-glow md:grid-cols-[0.95fr_1.05fr]">
