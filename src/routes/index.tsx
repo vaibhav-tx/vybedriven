@@ -216,8 +216,9 @@ const HOMEPAGE_PRIORITY: Record<string, number> = {
   "hacksprint-3-kahe-coimbatore": 8,
   "skysparks-boeing-techkriti-iit-kanpur-2027": 9,
   "shaastra-ctf-iit-madras-2027": 10,
-  // Competitions
-  "idea-competition-2026": 11,
+  // Competitions & Awards
+  "luminar-creators-award-2027": 11,
+  "idea-competition-2026": 12,
   // Top Meetups & Summits
   "semiconductor-deep-dive-hackerfab-mumbai": 10,
   "mumbai-community-year-end-meet-ai-agents": 11,
@@ -234,7 +235,6 @@ function Events() {
   const [f, setF] = useState<HomeFilter>("All");
   const featuredQuasar = opportunities.find((item) => item.slug === "quasar-5-international-hackathon-2027");
   const featuredGoa = opportunities.find((item) => item.slug === "goa-buildathon-2027");
-  const featuredLuminar = opportunities.find((item) => item.slug === "luminar-creators-award-2027");
   const list = useMemo(() => {
     return opportunities
       .filter((item) => item.status !== "Past event" && matchesHomeFilter(item, f))
@@ -372,89 +372,6 @@ function Events() {
               <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3">
                 <Link to="/opportunities/$slug" params={{ slug: featuredGoa.slug }} search={{ register: "1" }} className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-gradient-brand px-6 py-3.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110 hover:shadow-glow">Register Now <ArrowRight className="size-4" /></Link>
                 <Link to="/opportunities/$slug" params={{ slug: featuredGoa.slug }} className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-neon/40 bg-surface/80 px-6 py-3.5 text-sm font-semibold text-neon transition hover:border-neon hover:bg-neon/15 hover:shadow-glow-soft">Explore Goa Buildathon</Link>
-              </div>
-            </div>
-          </article>
-        </Reveal>
-      )}
-
-      {featuredLuminar && (f === "All" || f === "Competitions") && (
-        <Reveal className="mt-6 sm:mt-8">
-          <article className="group grid overflow-hidden rounded-2xl sm:rounded-3xl border border-amber-500/35 bg-surface shadow-glow-soft md:grid-cols-[0.95fr_1.05fr]">
-            <div className="relative flex items-center justify-center overflow-hidden bg-black/60 p-4 sm:p-6 min-h-[300px] sm:min-h-[380px] md:min-h-[460px]">
-              <img
-                src={featuredLuminar.image}
-                alt={featuredLuminar.title}
-                loading="eager"
-                width={815}
-                height={1024}
-                className="h-full max-h-[460px] w-auto max-w-full object-contain transition duration-700 group-hover:scale-[1.02]"
-              />
-              <div className="pointer-events-none absolute inset-0 hidden md:block bg-gradient-to-r from-transparent via-transparent to-surface/80" />
-              <span className="absolute left-4 top-4 sm:left-5 sm:top-5 rounded-full bg-gradient-to-r from-amber-400 to-yellow-500 px-3 py-1 text-xs font-bold text-black shadow-glow-soft">
-                FEATURED AWARD
-              </span>
-            </div>
-            <div className="flex flex-col justify-center p-5 sm:p-8 md:p-10">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="text-xs font-semibold tracking-[0.18em] text-amber-400">
-                  {featuredLuminar.tag.toUpperCase()}
-                </span>
-                <span className="rounded-full border border-amber-500/40 bg-amber-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-amber-300">
-                  Official Platform Partner: Vybe Driven
-                </span>
-              </div>
-              <h3 className="mt-2.5 sm:mt-3 text-2xl min-[400px]:text-3xl sm:text-4xl font-extrabold tracking-tight">
-                {featuredLuminar.title}
-              </h3>
-              <p className="mt-2.5 sm:mt-3 text-sm text-muted-foreground leading-relaxed">
-                {featuredLuminar.description}
-              </p>
-              <div className="mt-5 sm:mt-6 space-y-2 text-xs sm:text-sm">
-                <p className="flex items-center gap-2">
-                  <Globe className="size-4 text-amber-400" /> {featuredLuminar.format} · {featuredLuminar.location}
-                </p>
-                <p className="flex items-center gap-2">
-                  <Calendar className="size-4 text-amber-400" /> {featuredLuminar.date}
-                </p>
-                <p className="flex items-center gap-2">
-                  <Trophy className="size-4 text-amber-400" /> {featuredLuminar.prize}
-                </p>
-              </div>
-              {featuredLuminar.perks && featuredLuminar.perks.length > 0 && (
-                <div className="mt-5 pt-4 border-t border-border/70">
-                  <p className="text-[11px] font-semibold tracking-wider uppercase text-amber-400 mb-2.5">
-                    Exclusive Creator Perks & Rewards:
-                  </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {featuredLuminar.perks.slice(0, 4).map((p) => (
-                      <div
-                        key={p.title}
-                        className="flex items-center gap-2 rounded-xl border border-amber-500/20 bg-surface-2/70 px-2.5 py-1.5 text-xs text-foreground"
-                      >
-                        <span className="text-base shrink-0 select-none">{p.emoji}</span>
-                        <span className="font-semibold truncate">{p.title}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-              <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3">
-                <Link
-                  to="/opportunities/$slug"
-                  params={{ slug: featuredLuminar.slug }}
-                  search={{ register: "1" }}
-                  className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 px-6 py-3.5 text-sm font-bold text-black transition hover:brightness-110 hover:shadow-glow"
-                >
-                  Register Now <ArrowRight className="size-4" />
-                </Link>
-                <Link
-                  to="/opportunities/$slug"
-                  params={{ slug: featuredLuminar.slug }}
-                  className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-amber-400/50 bg-surface/80 px-6 py-3.5 text-sm font-semibold text-amber-400 transition hover:border-amber-400 hover:bg-amber-400/10 hover:shadow-glow-soft"
-                >
-                  Explore Event Details
-                </Link>
               </div>
             </div>
           </article>
