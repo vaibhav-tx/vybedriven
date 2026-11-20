@@ -17,6 +17,7 @@ import projectPitchDemo from "@/assets/community-real/PXL_20261003_132342890.MP.
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
+      { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" },
       { title: "About Us — Vybe Driven (Vybe) | India's Largest Hackathon & Event Ecosystem" },
       {
         name: "description",

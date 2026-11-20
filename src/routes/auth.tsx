@@ -82,16 +82,23 @@ function AuthPage() {
   // Redirect if already authenticated
   useEffect(() => {
     if (user) {
-      const savedNext =
-        typeof window !== "undefined"
-          ? sessionStorage.getItem("hd-auth-next")
-          : null;
-      if (savedNext) {
-        sessionStorage.removeItem("hd-auth-next");
-        navigate({ to: savedNext, replace: true });
-      } else {
-        navigate({ to: search.next, replace: true });
-      }
+      let savedNext: string | null = null;
+      try {
+        savedNext = localStorage.getItem("hd-auth-next") || sessionStorage.getItem("hd-auth-next");
+        if (savedNext) {
+          localStorage.removeItem("hd-auth-next");
+          sessionStorage.removeItem("hd-auth-next");
+        }
+      } catch {}
+
+      const dest =
+        savedNext && savedNext !== "/auth" && savedNext.startsWith("/")
+          ? savedNext
+          : search.next && search.next !== "/auth" && search.next.startsWith("/")
+          ? search.next
+          : "/";
+
+      navigate({ to: cleanNext(dest), replace: true });
     }
   }, [navigate, search.next, user]);
 
@@ -187,7 +194,11 @@ function AuthPage() {
     setBusy(true);
     setError("");
     setMessage("");
-    sessionStorage.setItem("hd-auth-next", search.next);
+    const targetNext = cleanNext(search.next) || "/";
+    try {
+      localStorage.setItem("hd-auth-next", targetNext);
+      sessionStorage.setItem("hd-auth-next", targetNext);
+    } catch {}
 
     try {
       // Check if Google OAuth provider is enabled in this Supabase project
@@ -216,7 +227,7 @@ function AuthPage() {
         // Fallback to normal flow
       }
 
-      const redirectTo = `${window.location.origin}/auth`;
+      const redirectTo = `${window.location.origin}/auth?next=${encodeURIComponent(targetNext)}`;
       const { data, error: oauthError } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
@@ -245,15 +256,6 @@ function AuthPage() {
       setError(errMsg);
     }
   };
-
-
-  useEffect(() => {
-    const stored = sessionStorage.getItem("hd-auth-next");
-    if (user && stored) {
-      sessionStorage.removeItem("hd-auth-next");
-      navigate({ to: cleanNext(stored), replace: true });
-    }
-  }, [navigate, user]);
 
   return (
     <div className="min-h-screen bg-background">

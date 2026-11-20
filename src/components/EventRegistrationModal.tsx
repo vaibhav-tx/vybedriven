@@ -128,6 +128,12 @@ export function EventRegistrationModal({
     setAuthBusy(true);
     setAuthError("");
     try {
+      const targetUrl = `/opportunities/${opportunity.slug}?register=1`;
+      try {
+        localStorage.setItem("hd-auth-next", targetUrl);
+        sessionStorage.setItem("hd-auth-next", targetUrl);
+      } catch {}
+
       const redirectTo = `${window.location.origin}/opportunities/${opportunity.slug}?register=1`;
       const { data, error: oauthError } = await supabase.auth.signInWithOAuth({
         provider: "google",

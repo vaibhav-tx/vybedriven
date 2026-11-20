@@ -21,6 +21,7 @@ import { opportunities, type Opportunity } from "@/data/opportunities";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
+      { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" },
       { title: "Vybe Driven (Vybe) — Discover Nearest Hackathons, Coding Competitions & Tech Events in India" },
       { name: "description", content: "Discover nearest hackathons, coding competitions and technology summits in Mumbai and across India on Vybe Driven (Vybe / Vibe Driven). Connect with ambitious builders, win cash prizes, and build what's next." },
       { name: "keywords", content: "vybe driven, vybe, vibe driven, vibe, vybedriven, goa buildathon 2027, goa buildathon, nearest hackathon, hackathons near me, hackathons in mumbai, hackathons in india, student hackathons, coding competitions, upcoming hackathons 2026, upcoming hackathons 2027, tech events mumbai, luminar creators award, idea competition" },

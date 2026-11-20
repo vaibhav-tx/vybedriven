@@ -5,6 +5,7 @@ import { OpportunityBrowser } from "@/components/OpportunityBrowser";
 export const Route = createFileRoute("/discover")({
   head: () => ({
     meta: [
+      { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" },
       { title: "Discover All Hackathons, Competitions & Tech Summits in India — Vybe Driven" },
       { name: "description", content: "Search and filter every national hackathon, college coding contest, AI summit, and creator award across Mumbai, Pune, Delhi, Bangalore and online on Vybe Driven." },
       { name: "keywords", content: "discover hackathons, search hackathons india, all hackathons 2026, college competitions, vybe driven, vybe, vibe, coding challenges, nearest hackathon" },

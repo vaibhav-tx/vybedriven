@@ -74,6 +74,7 @@ export const Route = createFileRoute("/manage-events")({
   }),
   head: () => ({
     meta: [
+      { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" },
       { title: "Organizer Dashboard & Registrations — Vybe Driven" },
       { name: "description", content: "Manage your hosted hackathons and attendee registrations." },
     ],

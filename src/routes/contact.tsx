@@ -8,6 +8,7 @@ import { Reveal, Eyebrow } from "@/components/ui-hd";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
+      { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" },
       { title: "Contact Vybe Driven (Vybe) — Partnerships, Event Hosting & Support" },
       { name: "description", content: "Get in touch with the Vybe Driven team for college hackathon partnerships, event sponsorship, platform queries, or builder support." },
       { name: "keywords", content: "contact vybe driven, vybe contact, vibe driven, partnership vybe driven, event hosting queries" },

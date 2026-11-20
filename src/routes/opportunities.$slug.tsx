@@ -82,7 +82,7 @@ export const Route = createFileRoute("/opportunities/$slug")({
 
     return {
       meta: [
-        { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=5" },
+        { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" },
         { title: pageTitle },
         { name: "description", content: loaderData.description },
         { name: "keywords", content: keywords },
@@ -259,7 +259,13 @@ function EventAuthGateDialog({
     setBusy(true);
     setError("");
     try {
-      const redirectTo = `${window.location.origin}/opportunities/${item.slug}${item.registrationUrl ? "?autoredirect=1" : ""}`;
+      const targetUrl = `/opportunities/${item.slug}${item.registrationUrl ? "?autoredirect=1" : "?register=1"}`;
+      try {
+        localStorage.setItem("hd-auth-next", targetUrl);
+        sessionStorage.setItem("hd-auth-next", targetUrl);
+      } catch {}
+
+      const redirectTo = `${window.location.origin}${targetUrl}`;
       const { data, error: oauthErr } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {

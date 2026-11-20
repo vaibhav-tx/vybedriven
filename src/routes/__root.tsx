@@ -88,7 +88,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" },
       { name: "google-site-verification", content: "4o5pm1oHZ70Xwkp0j56F3sGtRlWxMMQjlv922S9betY" },
       { title: "Vybe Driven (Vybe) — Discover Nearest Hackathons, Coding Competitions & Tech Events" },
       { name: "description", content: "Vybe Driven (Vybe / Vibe) is India's leading platform discovering nearest hackathons, coding competitions, developer meetups, and creator awards in Mumbai and all-India." },
@@ -269,6 +269,21 @@ function RootComponent() {
     // Synchronize latest cloud hackathons, updates & registrations
     syncCloudStore();
 
+    const checkPendingRedirect = () => {
+      if (typeof window === "undefined") return;
+      try {
+        const savedNext = localStorage.getItem("hd-auth-next") || sessionStorage.getItem("hd-auth-next");
+        if (savedNext && savedNext !== "/auth" && savedNext.startsWith("/") && !savedNext.startsWith("//")) {
+          const current = window.location.pathname + window.location.search;
+          if (current !== savedNext && (window.location.pathname === "/" || window.location.pathname === "/auth")) {
+            localStorage.removeItem("hd-auth-next");
+            sessionStorage.removeItem("hd-auth-next");
+            window.location.replace(savedNext);
+          }
+        }
+      } catch {}
+    };
+
     const syncSession = async () => {
       // 1. Check custom builder auth session first
       const builderUser = getBuilderSession();
@@ -278,6 +293,7 @@ function RootComponent() {
         fetchProfile(builderUser.id, builderUser).finally(() => {
           if (active) setLoading(false);
         });
+        checkPendingRedirect();
         return;
       }
 
@@ -290,6 +306,7 @@ function RootComponent() {
         fetchProfile(currentUser.id, currentUser).finally(() => {
           if (active) setLoading(false);
         });
+        checkPendingRedirect();
       } else {
         setProfile(null);
         setLoading(false);
@@ -307,6 +324,7 @@ function RootComponent() {
         setLoading(false);
         router.invalidate();
         queryClient.invalidateQueries();
+        checkPendingRedirect();
         return;
       }
       syncSession();
