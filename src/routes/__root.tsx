@@ -169,8 +169,10 @@ function RootShell({ children }: { children: ReactNode }) {
   };
 
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="en" className="dark overflow-x-hidden max-w-full" suppressHydrationWarning>
       <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
         <script dangerouslySetInnerHTML={{ __html: `document.documentElement.classList.add('dark');try{localStorage.setItem('hd-theme','dark')}catch(e){}` }} />
         <script
           type="application/ld+json"
@@ -178,7 +180,7 @@ function RootShell({ children }: { children: ReactNode }) {
         />
         <HeadContent />
       </head>
-      <body>
+      <body className="overflow-x-hidden w-full max-w-full">
         {children}
         <Scripts />
       </body>

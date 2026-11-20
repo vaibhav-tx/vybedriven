@@ -1227,25 +1227,18 @@ function OpportunityDetails() {
                               {step.description}
                             </p>
 
-                            {/* Problem Statements: Unlock ONLY for registered builders */}
+                            {/* Problem Statements: Direct open link */}
                             {step.actionUrl && (
                               <div className="my-3.5">
-                                {isRegistered ? (
-                                  <a
-                                    href={step.actionUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-2 rounded-xl border border-neon/50 bg-neon/15 px-4 py-2 text-xs sm:text-sm font-bold text-neon hover:bg-neon hover:text-black transition shadow-glow-soft"
-                                  >
-                                    <span>{step.actionLabel || "View Problem Statements"}</span>
-                                    <ExternalLink className="size-3.5" />
-                                  </a>
-                                ) : (
-                                  <div className="inline-flex items-center gap-2 rounded-xl border border-border/80 bg-surface/80 px-3.5 py-2 text-xs text-muted-foreground">
-                                    <Lock className="size-3.5 text-amber-400 shrink-0" />
-                                    <span>Problem Statements unlock after Squad Registration</span>
-                                  </div>
-                                )}
+                                <a
+                                  href={step.actionUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-2 rounded-xl border border-neon/50 bg-neon/15 px-4 py-2 text-xs sm:text-sm font-bold text-neon hover:bg-neon hover:text-black transition shadow-glow-soft"
+                                >
+                                  <span>{step.actionLabel || "View Problem Statements"}</span>
+                                  <ExternalLink className="size-3.5" />
+                                </a>
                               </div>
                             )}
 
@@ -1327,85 +1320,45 @@ function OpportunityDetails() {
                   {item.rewards && item.rewards.length > 0 ? (
                     <div className="space-y-3.5">
                       {item.rewards.map((rew) => (
-                        rew.amountSub === "WORTH" ? (
-                          /* Grand Trophy Card (for Goa Buildathon) */
+                        (rew.amountSub === "WORTH" || rew.type === "cash" || rew.amount) ? (
+                          /* Grand Amber Trophy Card (Matching Goa Buildathon & Quasar 5.0 Golden Trophy Style) */
                           <div
                             key={rew.title}
-                            className="relative overflow-hidden rounded-2xl sm:rounded-3xl border-2 border-amber-500/40 bg-gradient-to-br from-amber-500/15 via-surface to-surface p-4 sm:p-7 shadow-[0_0_30px_rgba(245,158,11,0.15)] transition hover:border-amber-400"
+                            className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-amber-500/40 bg-gradient-to-r from-amber-500/10 via-[#0a0f0a] to-[#070b07] p-4 sm:p-6 shadow-[0_0_24px_rgba(245,158,11,0.12)] transition hover:border-amber-400"
                           >
                             <div className="absolute left-0 top-0 bottom-0 w-1.5 sm:w-2 bg-gradient-to-b from-amber-400 via-yellow-300 to-amber-500" />
-                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
-                              <div className="flex items-center gap-3 sm:gap-6 min-w-0">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-6 pl-1 sm:pl-2">
+                              <div className="flex items-center gap-3.5 sm:gap-6 min-w-0">
                                 <div className="relative shrink-0">
                                   <img
                                     src="/events/golden-star-trophy.png"
-                                    alt="Grand Prize Trophy"
-                                    className="h-14 sm:h-20 md:h-24 w-auto object-contain drop-shadow-[0_8px_20px_rgba(245,158,11,0.5)]"
+                                    alt="Prize Trophy"
+                                    className="h-14 sm:h-18 md:h-20 w-auto object-contain drop-shadow-[0_6px_16px_rgba(245,158,11,0.45)]"
                                   />
                                 </div>
                                 <div className="flex flex-col min-w-0">
                                   <div className="flex flex-wrap items-baseline gap-1.5 sm:gap-2">
-                                    <span className="text-2xl min-[400px]:text-3xl sm:text-4xl lg:text-5xl font-black text-amber-400 font-mono tracking-tight drop-shadow-[0_2px_10px_rgba(245,158,11,0.3)]">
+                                    <span className="text-2xl min-[400px]:text-3xl sm:text-4xl font-black text-amber-400 font-mono tracking-tight drop-shadow-[0_2px_10px_rgba(245,158,11,0.3)]">
                                       {rew.amount}
                                     </span>
-                                    <span className="text-[11px] sm:text-sm font-extrabold tracking-widest text-amber-300 uppercase shrink-0">
-                                      {rew.amountSub}
+                                    <span className="text-[11px] sm:text-xs font-black tracking-widest text-amber-300 uppercase shrink-0">
+                                      {rew.amountSub || "CASH"}
                                     </span>
                                   </div>
-                                  <h3 className="mt-1 text-sm sm:text-lg font-bold text-foreground">
+                                  <h3 className="mt-1 text-sm sm:text-base md:text-lg font-bold text-foreground">
                                     {rew.title}
                                   </h3>
-                                  <p className="mt-1 text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-xl">
-                                    {rew.description}
-                                  </p>
+                                  {rew.description && (
+                                    <p className="mt-0.5 text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-xl">
+                                      {rew.description}
+                                    </p>
+                                  )}
                                 </div>
                               </div>
-                              <div className="shrink-0 flex items-center">
-                                <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/50 bg-amber-400/15 px-3.5 py-1.5 sm:px-4 sm:py-2 text-xs font-bold text-amber-300 shadow-glow-soft">
-                                  <Trophy className="size-3.5 sm:size-4 text-amber-400" />
-                                  {rew.badge || "Certificate"}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        ) : rew.type === "cash" ? (
-                          /* Premium Problem Statement Card with glowing gradient and golden trophy badge */
-                          <div
-                            key={rew.title}
-                            className="relative overflow-hidden rounded-2xl border border-emerald-500/40 bg-gradient-to-r from-emerald-950/40 via-surface to-[#061209] p-4 sm:p-5 transition hover:border-emerald-400 hover:shadow-[0_4px_24px_rgba(16,185,129,0.18)] shadow-sm"
-                          >
-                            <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-emerald-400 via-teal-300 to-cyan-400" />
-                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 pl-2 sm:pl-3">
-                              <div className="flex items-center gap-3.5 sm:gap-6 min-w-0">
-                                {/* Cash amount badge */}
-                                <div className="flex flex-col shrink-0 min-w-[100px] sm:min-w-[125px] rounded-xl bg-emerald-500/15 border border-emerald-500/40 p-2 sm:p-2.5 text-center shadow-inner">
-                                  <span className="text-xl sm:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-300 font-mono leading-none tracking-tight">
-                                    {rew.amount}
-                                  </span>
-                                  <span className="text-[10px] sm:text-xs font-black text-emerald-300 uppercase tracking-widest mt-1">
-                                    {rew.amountSub || "CASH"}
-                                  </span>
-                                </div>
-
-                                {/* Divider */}
-                                <div className="h-9 sm:h-11 w-[1px] bg-border/80 shrink-0" />
-
-                                {/* Problem Statement details */}
-                                <div className="min-w-0">
-                                  <h3 className="text-base sm:text-lg font-black text-foreground tracking-tight">
-                                    {rew.title}
-                                  </h3>
-                                  <p className="mt-0.5 text-xs sm:text-sm text-foreground/85 leading-relaxed">
-                                    {rew.description}
-                                  </p>
-                                </div>
-                              </div>
-
-                              {/* Certificate & Trophy Badge */}
-                              <div className="shrink-0 flex items-center self-start sm:self-auto pt-1 sm:pt-0">
-                                <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/50 bg-amber-400/15 px-3.5 py-1.5 text-xs font-bold text-amber-300 shadow-[0_0_12px_rgba(251,191,36,0.2)]">
-                                  <Trophy className="size-3.5 text-amber-400 shrink-0" />
-                                  <span>{rew.badge || "Prize Winner + Certificate"}</span>
+                              <div className="shrink-0 flex items-center self-start sm:self-center">
+                                <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/50 bg-amber-400/15 px-3.5 py-1.5 text-xs font-bold text-amber-300 shadow-glow-soft">
+                                  <Trophy className="size-3.5 text-amber-400" />
+                                  <span>{rew.badge || "Certificate"}</span>
                                 </span>
                               </div>
                             </div>
@@ -1805,7 +1758,7 @@ function OpportunityDetails() {
                             onClick={handleRegisterClick}
                             className="w-full rounded-2xl bg-gradient-brand text-primary-foreground font-bold py-5 text-sm shadow-glow hover:brightness-105 flex items-center justify-center gap-2"
                           >
-                            <span>Register Squad / Solo</span>
+                            <span>Register Now</span>
                             <Sparkles className="size-4" />
                           </Button>
 
@@ -1822,15 +1775,15 @@ function OpportunityDetails() {
                       )
                     )}
 
-                    {/* Clean Sign In / View Pass Option */}
+                    {/* Clean Sign In / Login Option */}
                     <div className="text-center pt-1">
                       <Link
-                        to={user ? "/profile" : "/auth"}
-                        search={user ? undefined : { mode: "signin", next: `/opportunities/${item.slug}` }}
+                        to="/auth"
+                        search={{ mode: "signin", next: `/opportunities/${item.slug}` }}
                         className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-neon transition cursor-pointer"
                       >
                         <LogIn className="size-3.5" />
-                        <span>Already in a team? {user ? "View in Profile" : "Sign in to view pass"}</span>
+                        <span>Already in a team? <span className="font-bold text-neon underline">Login</span></span>
                       </Link>
                     </div>
                   </div>
@@ -1960,7 +1913,7 @@ function OpportunityDetails() {
                           onClick={handleRegisterClick}
                           className="w-full rounded-2xl bg-gradient-brand text-primary-foreground font-black h-11 text-xs min-[360px]:text-sm shadow-glow hover:brightness-105 active:scale-[0.98] transition flex items-center justify-center gap-1.5"
                         >
-                          <span>Register</span>
+                          <span>Register Now</span>
                           <Sparkles className="size-3.5" />
                         </Button>
 
@@ -1979,11 +1932,11 @@ function OpportunityDetails() {
 
                   <div className="text-center pt-0.5">
                     <Link
-                      to={user ? "/profile" : "/auth"}
-                      search={user ? undefined : { mode: "signin", next: `/opportunities/${item.slug}` }}
+                      to="/auth"
+                      search={{ mode: "signin", next: `/opportunities/${item.slug}` }}
                       className="text-[11px] text-muted-foreground hover:text-neon transition cursor-pointer"
                     >
-                      Already in a team? <span className="font-bold text-neon underline">{user ? "View in Profile" : "Login"}</span>
+                      Already in a team? <span className="font-bold text-neon underline">Login</span>
                     </Link>
                   </div>
                 </div>
