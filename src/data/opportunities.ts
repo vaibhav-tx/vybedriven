@@ -472,8 +472,6 @@ Key Highlights:
         date: "01 Dec 26, 12:00 AM IST → 25 Dec 26, 11:59 PM IST",
         description:
           "In the first round of Quasar 5.0, participants are required to submit a PowerPoint presentation outlining their proposed solutions & approaches to given problem statements.",
-        actionUrl: "https://quasar-vppcoe.vercel.app/#tracks",
-        actionLabel: "▶︎ Quasar_Problem Statements ◀︎",
         bullets: [
           "This submission must outline the identified problem, the innovative solution, and the expected impact.",
           "It should include a brief introduction of team members, an overview of beneficiaries & a summary of progress.",

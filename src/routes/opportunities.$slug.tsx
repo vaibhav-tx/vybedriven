@@ -1227,21 +1227,6 @@ function OpportunityDetails() {
                               {step.description}
                             </p>
 
-                            {/* Problem Statements: Direct open link */}
-                            {step.actionUrl && (
-                              <div className="my-3.5">
-                                <a
-                                  href={step.actionUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-2 rounded-xl border border-neon/50 bg-neon/15 px-4 py-2 text-xs sm:text-sm font-bold text-neon hover:bg-neon hover:text-black transition shadow-glow-soft"
-                                >
-                                  <span>{step.actionLabel || "View Problem Statements"}</span>
-                                  <ExternalLink className="size-3.5" />
-                                </a>
-                              </div>
-                            )}
-
                             {step.bullets && step.bullets.length > 0 && (
                               <ul className="mt-3.5 space-y-2 pl-1 border-t border-border/60 pt-3">
                                 {step.bullets.map((b) => (
@@ -1759,7 +1744,6 @@ function OpportunityDetails() {
                             className="w-full rounded-2xl bg-gradient-brand text-primary-foreground font-bold py-5 text-sm shadow-glow hover:brightness-105 flex items-center justify-center gap-2"
                           >
                             <span>Register Now</span>
-                            <Sparkles className="size-4" />
                           </Button>
 
                           <Button
@@ -1775,17 +1759,19 @@ function OpportunityDetails() {
                       )
                     )}
 
-                    {/* Clean Sign In / Login Option */}
-                    <div className="text-center pt-1">
-                      <Link
-                        to="/auth"
-                        search={{ mode: "signin", next: `/opportunities/${item.slug}` }}
-                        className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-neon transition cursor-pointer"
-                      >
-                        <LogIn className="size-3.5" />
-                        <span>Already in a team? <span className="font-bold text-neon underline">Login</span></span>
-                      </Link>
-                    </div>
+                    {/* Clean Sign In / Login Option ONLY for unauthenticated visitors */}
+                    {!user && (
+                      <div className="text-center pt-1">
+                        <Link
+                          to="/auth"
+                          search={{ mode: "signin", next: `/opportunities/${item.slug}` }}
+                          className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-neon transition cursor-pointer"
+                        >
+                          <LogIn className="size-3.5" />
+                          <span>Already in a team? <span className="font-bold text-neon underline">Login</span></span>
+                        </Link>
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -1914,7 +1900,6 @@ function OpportunityDetails() {
                           className="w-full rounded-2xl bg-gradient-brand text-primary-foreground font-black h-11 text-xs min-[360px]:text-sm shadow-glow hover:brightness-105 active:scale-[0.98] transition flex items-center justify-center gap-1.5"
                         >
                           <span>Register Now</span>
-                          <Sparkles className="size-3.5" />
                         </Button>
 
                         <Button
@@ -1930,15 +1915,17 @@ function OpportunityDetails() {
                     )}
                   </div>
 
-                  <div className="text-center pt-0.5">
-                    <Link
-                      to="/auth"
-                      search={{ mode: "signin", next: `/opportunities/${item.slug}` }}
-                      className="text-[11px] text-muted-foreground hover:text-neon transition cursor-pointer"
-                    >
-                      Already in a team? <span className="font-bold text-neon underline">Login</span>
-                    </Link>
-                  </div>
+                  {!user && (
+                    <div className="text-center pt-0.5">
+                      <Link
+                        to="/auth"
+                        search={{ mode: "signin", next: `/opportunities/${item.slug}` }}
+                        className="text-[11px] text-muted-foreground hover:text-neon transition cursor-pointer"
+                      >
+                        Already in a team? <span className="font-bold text-neon underline">Login</span>
+                      </Link>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
