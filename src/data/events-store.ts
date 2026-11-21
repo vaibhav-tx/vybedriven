@@ -497,6 +497,7 @@ export function submitRegistration(data: {
   gender?: string;
   location?: string;
   collegeOrCompany: string;
+  department?: string;
   userType?: string;
   teamType: "solo" | "team";
   teamName?: string;
@@ -657,6 +658,7 @@ export function mergeRemoteRegistrations(remoteRows: any[]): void {
       gender: row.gender,
       location: row.location,
       collegeOrCompany: row.college_or_company,
+      department: row.department || existing?.department,
       userType: row.user_type,
       teamType: row.team_type || "solo",
       teamName: row.team_name,
@@ -1581,4 +1583,52 @@ export function syncCloudStore(): void {
     })
     .catch(() => {});
 }
+
+// Live refresh for a specific user's registration and team roster from Cloudflare D1
+export async function refreshUserRegistrationFromD1(
+  slug: string,
+  userId?: string,
+  email?: string
+): Promise<EventRegistration | null> {
+  if (typeof window === "undefined") return null;
+  const cleanEmail = (email || "").trim().toLowerCase();
+  const cleanId = (userId || "").trim();
+  if (!cleanId && !cleanEmail) return null;
+
+  try {
+    const rows = await d1Query(
+      `SELECT * FROM registrations 
+       WHERE opportunity_slug = ? 
+         AND status != 'deleted' 
+         AND status != 'Archived' 
+         AND (
+           user_id = ? 
+           OR LOWER(email) = ? 
+           OR teammates LIKE ? 
+           OR team_members LIKE ?
+         ) 
+       ORDER BY created_at DESC LIMIT 5`,
+      [slug, cleanId || "__none__", cleanEmail || "__none__", `%${cleanEmail}%`, `%${cleanEmail}%`]
+    );
+
+    if (rows && Array.isArray(rows) && rows.length > 0) {
+      mergeRemoteRegistrations(rows);
+      notifyStoreChange();
+      const freshList = getStoredRegistrations();
+      return (
+        freshList.find(
+          (r) =>
+            r.opportunitySlug === slug &&
+            (r.userId === cleanId ||
+              r.email.toLowerCase() === cleanEmail ||
+              r.teammates?.some((t) => t.email?.toLowerCase() === cleanEmail))
+        ) || null
+      );
+    }
+  } catch (err) {
+    console.warn("[D1 Sync] Could not refresh user registration:", err);
+  }
+  return null;
+}
+
 

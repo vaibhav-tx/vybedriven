@@ -46,7 +46,7 @@ import { createBuilderAccount, signInBuilderAccount, getBuilderSession } from "@
 import { EventRegistrationModal } from "@/components/EventRegistrationModal";
 import { TeamManagementModal } from "@/components/TeamManagementModal";
 import { IdeaSubmissionModal } from "@/components/IdeaSubmissionModal";
-import { isUserRegistered, getRegistrationCount, useEventRegistrations, isEventOrganizer, getUserRegistrations, mergeRemoteRegistrations, type EventRegistration } from "@/data/events-store";
+import { isUserRegistered, getRegistrationCount, useEventRegistrations, isEventOrganizer, getUserRegistrations, mergeRemoteRegistrations, refreshUserRegistrationFromD1, type EventRegistration } from "@/data/events-store";
 import { formatExternalUrl, isInvalidPptLink } from "@/lib/utils";
 
 type OpportunitySearch = {
@@ -583,6 +583,7 @@ function OpportunityDetails() {
   useEffect(() => {
     if (loading) return;
     const hasAuth = !!user || !!getBuilderSession();
+    const alreadyRegistered = Boolean(userRegRecord) || isUserRegistered(item.slug, userIdentifier);
 
     if (search.register === "1") {
       if (item.registrationUrl) {
@@ -591,10 +592,19 @@ function OpportunityDetails() {
         if (!hasAuth) {
           setPendingAction({ mode: "create" });
           setExploreGateOpen(true);
-        } else {
+        } else if (!alreadyRegistered) {
           setActiveJoinCode(undefined);
           setModalMode("create");
           setRegModalOpen(true);
+        } else {
+          // Already registered, remove ?register=1 so it doesn't keep opening on tab switch or reload
+          navigate({
+            search: (prev: any) => ({
+              ...prev,
+              register: undefined,
+            }),
+            replace: true,
+          });
         }
       }
     } else if (incomingJoinCode && incomingJoinCode.toUpperCase() !== "JOIN") {
@@ -602,12 +612,12 @@ function OpportunityDetails() {
       if (!hasAuth) {
         setPendingAction({ mode: "join", joinCode: incomingJoinCode });
         setExploreGateOpen(true);
-      } else {
+      } else if (!alreadyRegistered) {
         setModalMode("join");
         setRegModalOpen(true);
       }
     }
-  }, [search.register, incomingJoinCode, item.registrationUrl, user, loading]);
+  }, [search.register, incomingJoinCode, item.registrationUrl, user, loading, isRegistered, userRegRecord]);
 
   // Prompt unauthenticated visitors to sign in or create an account
   useEffect(() => {
@@ -617,6 +627,22 @@ function OpportunityDetails() {
       setExploreGateOpen(false);
     }
   }, [loading, user]);
+
+  const handleRegModalChange = (open: boolean) => {
+    setRegModalOpen(open);
+    if (!open) {
+      if (search.register || search.joinCode) {
+        navigate({
+          search: (prev: any) => ({
+            ...prev,
+            register: undefined,
+            joinCode: undefined,
+          }),
+          replace: true,
+        });
+      }
+    }
+  };
 
   const handleRegisterClick = () => {
     if (!user && !getBuilderSession()) {
@@ -685,63 +711,29 @@ function OpportunityDetails() {
   const guestStoredEmail = typeof window !== "undefined" ? localStorage.getItem("hd_guest_email") || undefined : undefined;
   const userIdentifier = user?.email || user?.id || guestStoredEmail;
 
-  // For non-hosts, load only the current user's registration for this event to avoid downloading full table
+  // Live sync user's registration and team roster from Cloudflare D1
   useEffect(() => {
-    if (!user || isHost) return;
-    const userEmail = user.email?.trim().toLowerCase();
-    if (!user.id && !userEmail) return;
+    if (!user && !guestStoredEmail) return;
+    const userEmail = user?.email || guestStoredEmail;
+    const userId = user?.id;
 
-    // Egress optimization: If user's registration is already present in local state, skip network query
-    const existing = getUserRegistrations(user.id, user.email).find((r) => r.opportunitySlug === item.slug);
-    if (existing) return;
+    // Immediately fetch latest team & registration state from Cloudflare D1
+    refreshUserRegistrationFromD1(item.slug, userId, userEmail);
 
-    let active = true;
-    import("@/integrations/supabase/client")
-      .then(({ supabase }) => {
-        const queries: Promise<any>[] = [];
-        let directQuery = supabase
-          .from("registrations" as any)
-          .select("id, opportunity_slug, user_id, full_name, email, phone, college_or_company, team_type, team_name, team_size, teammates, submission, status, created_at")
-          .eq("opportunity_slug", item.slug);
-
-        if (user.id && userEmail) {
-          directQuery = directQuery.or(`user_id.eq.${user.id},email.ilike.${userEmail}`);
-        } else if (user.id) {
-          directQuery = directQuery.eq("user_id", user.id);
-        } else if (userEmail) {
-          directQuery = directQuery.ilike("email", userEmail);
-        }
-        queries.push(directQuery);
-
-        if (userEmail) {
-          queries.push(
-            supabase
-              .from("registrations" as any)
-              .select("id, opportunity_slug, user_id, full_name, email, phone, college_or_company, team_type, team_name, team_size, teammates, submission, status, created_at")
-              .eq("opportunity_slug", item.slug)
-              .contains("teammates", [{ email: userEmail }])
-          );
-        }
-
-        Promise.all(queries)
-          .then((results) => {
-            if (!active) return;
-            const rows: any[] = [];
-            for (const r of results) {
-              if (!r.error && Array.isArray(r.data)) rows.push(...r.data);
-            }
-            if (rows.length > 0) {
-              mergeRemoteRegistrations(rows);
-            }
-          })
-          .catch(() => {});
-      })
-      .catch(() => {});
+    // Auto-refresh when user switches back to tab or focuses window, plus a periodic 8s sync
+    const handleFocus = () => {
+      refreshUserRegistrationFromD1(item.slug, userId, userEmail);
+    };
+    window.addEventListener("focus", handleFocus);
+    const interval = setInterval(() => {
+      refreshUserRegistrationFromD1(item.slug, userId, userEmail);
+    }, 8000);
 
     return () => {
-      active = false;
+      window.removeEventListener("focus", handleFocus);
+      clearInterval(interval);
     };
-  }, [user?.id, user?.email, item.slug, isHost]);
+  }, [user?.id, user?.email, guestStoredEmail, item.slug]);
 
   const userRegRecord = useMemo(() => {
     const effectiveEmail = user?.email || guestStoredEmail;
@@ -2101,7 +2093,10 @@ function OpportunityDetails() {
       <EventRegistrationModal
         opportunity={item}
         open={regModalOpen}
-        onOpenChange={setRegModalOpen}
+        onOpenChange={handleRegModalChange}
+        onSuccess={() => {
+          refreshUserRegistrationFromD1(item.slug, user?.id, user?.email || guestStoredEmail);
+        }}
         initialJoinCode={activeJoinCode && activeJoinCode.toUpperCase() !== "JOIN" ? activeJoinCode : undefined}
         initialMode={modalMode}
       />

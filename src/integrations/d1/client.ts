@@ -146,10 +146,10 @@ export const d1Db = {
       INSERT OR REPLACE INTO registrations (
         id, opportunity_slug, opportunity_title, user_id, full_name,
         first_name, last_name, email, phone, gender,
-        location, college_or_company, user_type, team_type, team_name,
+        location, college_or_company, department, user_type, team_type, team_name,
         team_size, team_members, teammates, looking_for_teammates, terms_accepted,
         status, created_at, updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     const params = [
       r.id || "",
@@ -164,6 +164,7 @@ export const d1Db = {
       r.gender || "",
       r.location || "",
       r.college_or_company || r.collegeOrCompany || "",
+      r.department || "",
       r.user_type || r.userType || "",
       r.team_type || r.teamType || "",
       r.team_name || r.teamName || "",

@@ -30,6 +30,7 @@ import {
   Copy,
   Share2,
   Loader2,
+  GraduationCap,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
@@ -109,6 +110,7 @@ export function EventRegistrationModal({
   const [gender, setGender] = useState("Male");
   const [location, setLocation] = useState("");
   const [organization, setOrganization] = useState("");
+  const [department, setDepartment] = useState("");
   const [userType, setUserType] = useState("College Students");
   const [termsAccepted, setTermsAccepted] = useState(true);
   const [stayInLoop, setStayInLoop] = useState(true);
@@ -541,6 +543,7 @@ export function EventRegistrationModal({
           gender,
           location: location.trim(),
           collegeOrCompany: organization.trim(),
+          department: department.trim() || undefined,
           userType,
           teamType: "team",
           teamName: teamName.trim(),
@@ -1501,6 +1504,25 @@ Platform Support: vybedriven@gmail.com
               </div>
             </div>
 
+            {/* Branch / Department */}
+            <div className="min-w-0">
+              <label className="block text-xs font-semibold text-foreground/90 mb-1 flex items-center justify-between">
+                <span>Branch / Department <span className="text-neon">*</span></span>
+                <span className="text-[10px] text-muted-foreground">e.g. Computer Science / IT / AI</span>
+              </label>
+              <div className="relative min-w-0">
+                <input
+                  type="text"
+                  required
+                  value={department}
+                  onChange={(e) => setDepartment(e.target.value)}
+                  placeholder="e.g. Computer Engineering / AIDS / IT"
+                  className="w-full min-w-0 rounded-xl border border-border bg-surface pl-9 pr-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon focus:ring-1 focus:ring-neon"
+                />
+                <GraduationCap className="absolute left-3 top-3 size-4 text-muted-foreground pointer-events-none" />
+              </div>
+            </div>
+
             {/* User Type Pill Selector */}
             <div className="pt-2 border-t border-border/60 min-w-0">
               <label className="block text-xs font-semibold text-foreground/90 mb-2">
@@ -1841,31 +1863,31 @@ Platform Support: vybedriven@gmail.com
                   </span>
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 rounded-xl border border-neon/30 bg-black/50 p-3.5">
-                  <div>
-                    <span className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground block">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 rounded-xl border border-neon/30 bg-black/50 p-3 sm:p-3.5 min-w-0">
+                  <div className="min-w-0">
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground block truncate">
                       Team Code (Share with your friends)
                     </span>
-                    <span className="font-mono text-xl sm:text-2xl font-black tracking-widest text-neon select-all">
+                    <span className="font-mono text-xl sm:text-2xl font-black tracking-widest text-neon select-all block truncate">
                       {confirmedReg.teamCode || confirmedReg.id}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="grid grid-cols-2 gap-2 sm:flex sm:items-center min-w-0 w-full sm:w-auto shrink-0">
                     <Button
                       type="button"
                       size="sm"
                       onClick={handleCopyTeamCode}
-                      className="rounded-lg bg-neon/15 text-neon border border-neon/30 hover:bg-neon/25 text-xs font-bold"
+                      className="rounded-lg bg-neon/15 text-neon border border-neon/30 hover:bg-neon/25 text-xs font-bold w-full sm:w-auto min-w-0 justify-center h-9 px-2.5 sm:px-3"
                     >
-                      <Copy className="size-3.5 mr-1" /> Copy Code
+                      <Copy className="size-3.5 mr-1 shrink-0" /> <span className="truncate">Copy Code</span>
                     </Button>
                     <Button
                       type="button"
                       size="sm"
                       onClick={handleShareTeamWhatsApp}
-                      className="rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 hover:bg-emerald-500/30 text-xs font-bold"
+                      className="rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 hover:bg-emerald-500/30 text-xs font-bold w-full sm:w-auto min-w-0 justify-center h-9 px-2.5 sm:px-3"
                     >
-                      <Share2 className="size-3.5 mr-1" /> WhatsApp Invite
+                      <Share2 className="size-3.5 mr-1 shrink-0" /> <span className="truncate">WhatsApp Invite</span>
                     </Button>
                   </div>
                 </div>
@@ -2045,8 +2067,12 @@ Platform Support: vybedriven@gmail.com
             <div className="pt-2">
               <Button
                 type="button"
-                onClick={() => onOpenChange(false)}
-                className="w-full rounded-full bg-neon text-black font-extrabold shadow-glow hover:brightness-110"
+                onClick={() => {
+                  setStep(1);
+                  setConfirmedReg(null);
+                  onOpenChange(false);
+                }}
+                className="w-full rounded-full bg-neon text-black font-extrabold shadow-glow hover:brightness-110 h-10"
               >
                 Done
               </Button>
