@@ -378,12 +378,24 @@ html:not(.dark) .nav-icon.is-active .nav-art { filter: grayscale(1) brightness(0
   }
 }
 
-.scrollbar-none {
+.scrollbar-none,
+.no-scrollbar {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
-.scrollbar-none::-webkit-scrollbar {
+.scrollbar-none::-webkit-scrollbar,
+.no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+/* Dark mode autofill overrides so browser autofill never turns inputs white */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #080d09 inset !important;
+  -webkit-text-fill-color: #ffffff !important;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 

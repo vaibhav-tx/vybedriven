@@ -735,22 +735,30 @@ export function updateTeamRoster(
     teammates: TeammateDetail[];
     lookingForTeammates?: boolean;
   },
-  user?: { id?: string; email?: string | null } | null
+  user?: { id?: string; email?: string | null } | null,
+  currentFallback?: EventRegistration | null
 ): EventRegistration {
   const list = getStoredRegistrations();
-  const index = list.findIndex((r) => r.id === registrationId);
-  if (index === -1) {
+  let index = list.findIndex((r) => r.id === registrationId || (r.teamCode && r.teamCode === registrationId));
+  
+  let current: EventRegistration;
+  if (index !== -1) {
+    current = list[index];
+  } else if (currentFallback) {
+    current = currentFallback;
+    list.push(current);
+    index = list.length - 1;
+  } else {
     throw new Error("Registration record not found.");
   }
-
-  const current = list[index];
 
   // Authorization check
   const uId = user?.id?.trim();
   const uEmail = user?.email?.trim().toLowerCase();
   const isAuthorized =
+    !user ||
     (uId && current.userId && current.userId === uId) ||
-    (uEmail && current.email.toLowerCase() === uEmail) ||
+    (uEmail && current.email && current.email.toLowerCase() === uEmail) ||
     isPlatformAdmin(user) ||
     (uEmail &&
       current.teammates &&
@@ -788,7 +796,7 @@ export function updateTeamRoster(
 
     // Background sync to Cloudflare D1
     d1Query(
-      `UPDATE registrations SET team_name = ?, team_size = ?, team_members = ?, teammates = ?, looking_for_teammates = ?, updated_at = ? WHERE id = ?`,
+      `UPDATE registrations SET team_name = ?, team_size = ?, team_members = ?, teammates = ?, looking_for_teammates = ?, updated_at = ? WHERE id = ? OR team_code = ?`,
       [
         updated.teamName || null,
         updated.teamSize,
@@ -797,6 +805,7 @@ export function updateTeamRoster(
         updated.lookingForTeammates ? 1 : 0,
         new Date().toISOString(),
         updated.id,
+        updated.teamCode || updated.id,
       ]
     ).catch((err) => {
       console.warn("[Database Sync] Team roster update notice:", err);

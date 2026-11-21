@@ -554,7 +554,7 @@ export function EventRegistrationModal({
 
         setConfirmedReg(reg);
         setStep(3);
-        toast.success("Team created successfully! See you in Goa.");
+        toast.success(`Team "${teamName.trim()}" created successfully! Team code generated.`);
         onSuccess?.();
       } catch (err: any) {
         toast.error(err.message || "Failed to submit registration. Please try again.");
@@ -930,7 +930,7 @@ Platform Support: vybedriven@gmail.com
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-[calc(100vw-20px)] sm:w-full max-w-2xl max-h-[92vh] overflow-y-auto border-border bg-[#070d09] p-4 sm:p-7 text-foreground shadow-2xl rounded-2xl sm:rounded-3xl no-scrollbar">
+      <DialogContent className="w-[calc(100vw-20px)] sm:w-full max-w-2xl max-h-[92vh] overflow-y-auto overflow-x-hidden border-border bg-[#070d09] p-4 sm:p-7 text-foreground shadow-2xl rounded-2xl sm:rounded-3xl no-scrollbar">
         {/* Top Header */}
         <DialogHeader className="border-b border-border/70 pb-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -1171,30 +1171,30 @@ Platform Support: vybedriven@gmail.com
         {(user || getBuilderSession()) && step === 1 && (
           <div className="mt-4 space-y-4 text-xs sm:text-sm">
             {/* Registration Mode Switcher */}
-            <div className="grid grid-cols-2 gap-2 rounded-2xl border border-border bg-surface p-1.5">
+            <div className="grid grid-cols-2 gap-1.5 rounded-2xl border border-border bg-surface p-1 sm:p-1.5">
               <button
                 type="button"
                 onClick={() => setRegFlow("create")}
-                className={`flex items-center justify-center gap-2 rounded-xl py-2.5 text-xs font-extrabold transition cursor-pointer ${
+                className={`flex items-center justify-center gap-1.5 rounded-xl py-2 sm:py-2.5 px-2 text-[11px] sm:text-xs font-extrabold transition cursor-pointer min-w-0 ${
                   regFlow === "create"
                     ? "bg-neon text-black shadow-glow-soft"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                <UserPlus className="size-3.5" />
-                <span>Create A Team (Leader)</span>
+                <UserPlus className="size-3.5 shrink-0" />
+                <span className="truncate">Create Team (Leader)</span>
               </button>
               <button
                 type="button"
                 onClick={() => setRegFlow("join")}
-                className={`flex items-center justify-center gap-2 rounded-xl py-2.5 text-xs font-extrabold transition cursor-pointer ${
+                className={`flex items-center justify-center gap-1.5 rounded-xl py-2 sm:py-2.5 px-2 text-[11px] sm:text-xs font-extrabold transition cursor-pointer min-w-0 ${
                   regFlow === "join"
                     ? "bg-neon text-black shadow-glow-soft"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                <Users className="size-3.5" />
-                <span>Join Team with Code 🤝</span>
+                <Users className="size-3.5 shrink-0" />
+                <span className="truncate">Join with Code</span>
               </button>
             </div>
 
@@ -1366,7 +1366,7 @@ Platform Support: vybedriven@gmail.com
                 <User className="size-4 text-neon" /> Basic Details
               </h3>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Official participant information shared with the Goa Buildathon organizer.
+                Official participant information shared with the {opportunity.title} organizer.
               </p>
             </div>
 
@@ -1823,14 +1823,14 @@ Platform Support: vybedriven@gmail.com
             {/* If Team registration, show Team Code & Share Invite */}
             {confirmedReg.teamType === "team" && (
               <div className="rounded-2xl border-2 border-neon/50 bg-gradient-to-br from-neon/15 via-surface-2 to-surface p-4 sm:p-5 text-left space-y-3.5 shadow-glow-soft">
-                <div className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    <Users className="size-4 sm:size-5 text-neon" />
-                    <span className="font-extrabold text-xs sm:text-sm uppercase tracking-wider text-neon">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <Users className="size-4 sm:size-5 text-neon shrink-0" />
+                    <span className="font-extrabold text-xs sm:text-sm uppercase tracking-wider text-neon truncate">
                       Official Team Code &amp; Teammate Invite
                     </span>
                   </div>
-                  <span className="text-[11px] sm:text-xs font-bold text-muted-foreground truncate">
+                  <span className="text-[11px] sm:text-xs font-bold text-muted-foreground shrink-0">
                     Squad: <span className="text-foreground">{confirmedReg.teamName}</span> ({1 + (confirmedReg.teammates?.length || 0)}/4)
                   </span>
                 </div>
@@ -1987,12 +1987,12 @@ Platform Support: vybedriven@gmail.com
             )}
 
             {/* Next Action Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 pt-2">
+            <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
               <a
                 href={generateGoogleCalendarUrl()}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 rounded-full border border-border bg-surface px-4 py-2.5 text-xs font-semibold text-foreground transition hover:border-neon hover:text-neon"
+                className="inline-flex items-center justify-center gap-1.5 rounded-full border border-border bg-surface px-3.5 py-2 text-xs font-semibold text-foreground transition hover:border-neon hover:text-neon"
               >
                 <Calendar className="size-3.5 text-neon" /> Add to Calendar
               </a>
@@ -2009,9 +2009,9 @@ Platform Support: vybedriven@gmail.com
                   }
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-4 py-2.5 text-xs font-bold text-emerald-400 transition hover:bg-emerald-500/20"
+                  className="inline-flex items-center justify-center gap-1.5 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-3.5 py-2 text-xs font-bold text-emerald-400 transition hover:bg-emerald-500/20"
                 >
-                  <MessageCircle className="size-3.5" /> Join WhatsApp Community
+                  <MessageCircle className="size-3.5" /> WhatsApp Community
                 </a>
               )}
 
@@ -2020,18 +2020,18 @@ Platform Support: vybedriven@gmail.com
                   type="button"
                   variant="outline"
                   disabled
-                  className="w-full sm:w-auto rounded-full text-xs font-semibold text-muted-foreground border-border/60 opacity-60 cursor-not-allowed"
+                  className="rounded-full text-xs font-semibold text-amber-300 border-amber-500/40 bg-amber-500/10 opacity-80 cursor-not-allowed h-9 px-3.5"
                 >
-                  <Lock className="size-3.5 mr-1" /> Pass Locked (Needs 2+ Members)
+                  <Lock className="size-3.5 mr-1 text-amber-400" /> Pass Locked (Needs 2+ Members)
                 </Button>
               ) : (
                 <Button
                   type="button"
                   variant="outline"
                   onClick={downloadPassSummary}
-                  className="w-full sm:w-auto rounded-full text-xs font-semibold text-foreground hover:border-neon hover:text-neon"
+                  className="rounded-full text-xs font-semibold text-foreground hover:border-neon hover:text-neon h-9 px-3.5"
                 >
-                  <Download className="size-3.5 mr-1 text-neon" /> Download Digital Pass (PNG)
+                  <Download className="size-3.5 mr-1 text-neon" /> Download Pass
                 </Button>
               )}
             </div>

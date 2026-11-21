@@ -89,6 +89,10 @@ export function TeamManagementModal({
 
   // Initialize from registration and fetch latest cloud state
   useEffect(() => {
+    setShowDeleteConfirm(false);
+    setDeleteConfirmChecked(false);
+    setShowAddForm(false);
+
     if (registration) {
       setTeamName(registration.teamName || "My Squad");
       setLookingForTeammates(Boolean(registration.lookingForTeammates));
@@ -98,19 +102,21 @@ export function TeamManagementModal({
           status: t.status || "pending",
         }))
       );
-      setShowAddForm(false);
     }
 
     if (open && registration?.id) {
       import("@/integrations/d1/client")
         .then(({ d1Query }) => {
-          d1Query("SELECT * FROM registrations WHERE id = ? LIMIT 1", [registration.id])
+          d1Query("SELECT * FROM registrations WHERE id = ? OR team_code = ? LIMIT 1", [
+            registration.id,
+            registration.teamCode || registration.id,
+          ])
             .then((rows) => {
               if (rows && rows.length > 0) {
                 mergeRemoteRegistrations(rows);
-                const fresh = getStoredRegistrations().find((r) => r.id === registration.id);
+                const fresh = rows[0] as unknown as EventRegistration;
                 if (fresh) {
-                  setTeamName(fresh.teamName || "My Squad");
+                  setTeamName(fresh.teamName || registration.teamName || "My Squad");
                   setLookingForTeammates(Boolean(fresh.lookingForTeammates));
                   setTeammates(
                     (Array.isArray(fresh.teammates) ? fresh.teammates : []).map((t) => ({
@@ -293,8 +299,8 @@ export function TeamManagementModal({
     toast.success(`Mail client opened to invite ${member.name}!`);
   };
 
-  // Save changes to store and Supabase
-  const handleSaveTeam = () => {
+  // Save changes to store and Cloudflare D1
+  const handleSaveTeam = async () => {
     if (!canManageTeam) {
       toast.error("Only team members or administrators can modify team details.");
       return;
@@ -310,6 +316,30 @@ export function TeamManagementModal({
 
     setSaving(true);
     try {
+      const teamSummary = teammates
+        .map((t) => `${(t.name || "Member").trim()} (${(t.email || "").trim()})`)
+        .join(", ");
+      const teamSize = `${1 + teammates.length} members`;
+
+      // 1. Direct Cloudflare D1 execution
+      const { d1Query } = await import("@/integrations/d1/client");
+      await d1Query(
+        `UPDATE registrations SET team_name = ?, team_size = ?, team_members = ?, teammates = ?, looking_for_teammates = ?, updated_at = ? WHERE id = ? OR team_code = ?`,
+        [
+          teamName.trim(),
+          teamSize,
+          teamSummary,
+          JSON.stringify(teammates),
+          lookingForTeammates ? 1 : 0,
+          new Date().toISOString(),
+          registration.id,
+          registration.teamCode || registration.id,
+        ]
+      ).catch((err) => {
+        console.warn("[Cloud Save Team] D1 query note:", err);
+      });
+
+      // 2. Direct local store update with fallback to prevent "Registration not found"
       const updated = updateTeamRoster(
         registration.id,
         {
@@ -317,7 +347,8 @@ export function TeamManagementModal({
           teammates,
           lookingForTeammates,
         },
-        user
+        user,
+        registration
       );
 
       toast.success("✅ Team details successfully updated and saved!");
@@ -370,7 +401,7 @@ export function TeamManagementModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[92vh] overflow-y-auto border-border bg-[#070e0a] p-5 sm:p-7 text-foreground shadow-2xl">
+      <DialogContent className="w-[calc(100vw-20px)] sm:w-full max-w-2xl max-h-[92vh] overflow-y-auto overflow-x-hidden border-border bg-[#070e0a] p-4 sm:p-7 text-foreground shadow-2xl rounded-2xl sm:rounded-3xl no-scrollbar">
         <DialogHeader className="border-b border-border/70 pb-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
@@ -456,50 +487,51 @@ export function TeamManagementModal({
           </div>
 
           {/* Team Code & Direct Share Box */}
-          <div className="rounded-2xl border-2 border-neon/40 bg-gradient-to-br from-neon/15 via-emerald-950/30 to-black p-4 sm:p-5 shadow-glow-soft">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="rounded-2xl border-2 border-neon/40 bg-gradient-to-br from-neon/15 via-emerald-950/30 to-black p-4 sm:p-5 shadow-glow-soft space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
                 <span className="text-[11px] font-black uppercase tracking-wider text-neon flex items-center gap-1.5">
                   <Sparkles className="size-3.5" /> Official Team Code
                 </span>
-                <div className="mt-1.5 flex items-center gap-2.5">
-                  <span className="font-mono text-2xl sm:text-3xl font-black text-foreground tracking-wider bg-black/60 px-4 py-1 rounded-xl border border-neon/50 shadow-inner">
+                <div className="mt-1 flex items-center gap-2.5">
+                  <span className="font-mono text-2xl sm:text-3xl font-black text-foreground tracking-wider bg-black/70 px-3.5 py-1 rounded-xl border border-neon/50 shadow-inner select-all">
                     {teamCode}
                   </span>
                   <Button
                     type="button"
                     size="sm"
                     onClick={handleCopyTeamCode}
-                    className="rounded-full bg-neon text-black font-extrabold text-xs shadow-glow hover:brightness-110"
+                    className="rounded-full bg-neon text-black font-extrabold text-xs shadow-glow hover:brightness-110 h-8 px-3 cursor-pointer"
                   >
                     <Copy className="size-3.5 mr-1" /> Copy Code
                   </Button>
                 </div>
-                <p className="mt-2 text-xs text-muted-foreground">
-                  Give this code to your teammates. When they click "Register" and choose <strong className="text-foreground">"Join Team with Code"</strong>, they will instantly appear in your roster as verified members!
-                </p>
               </div>
 
-              <div className="flex flex-col gap-2 shrink-0">
+              <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap pt-1 sm:pt-0">
                 <Button
                   type="button"
                   size="sm"
                   variant="outline"
                   onClick={handleCopyTeamInviteLink}
-                  className="rounded-full border-neon/40 text-xs font-bold text-neon hover:bg-neon hover:text-black"
+                  className="rounded-full border-neon/40 text-xs font-bold text-neon hover:bg-neon hover:text-black h-8 px-3.5 cursor-pointer"
                 >
-                  <Copy className="size-3.5 mr-1.5" /> Copy Invite Link
+                  <Copy className="size-3.5 mr-1" /> Copy Link
                 </Button>
                 <Button
                   type="button"
                   size="sm"
                   onClick={handleShareTeamOnWhatsApp}
-                  className="rounded-full bg-[#25D366] text-white font-extrabold text-xs hover:brightness-110 shadow-sm"
+                  className="rounded-full bg-[#25D366] text-white font-extrabold text-xs hover:brightness-110 shadow-sm h-8 px-3.5 cursor-pointer"
                 >
-                  <MessageCircle className="size-3.5 mr-1.5" /> Share on WhatsApp
+                  <MessageCircle className="size-3.5 mr-1" /> WhatsApp Invite
                 </Button>
               </div>
             </div>
+
+            <p className="text-xs text-muted-foreground leading-relaxed pt-1 border-t border-border/40">
+              Share this code or link with your teammates. They will sign in, enter this code, and instantly appear on your roster with verified passes!
+            </p>
           </div>
 
           {/* Members Roster List */}

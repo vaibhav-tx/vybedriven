@@ -1817,19 +1817,26 @@ function OpportunityDetails() {
                       </div>
                     </div>
 
-                    {/* For Quasar 5.0, Problem Statements link for registered builders */}
+                    {/* For Quasar 5.0, Problem Statements link for registered builders (strictly locked until 2+ members join) */}
                     {item.slug === "quasar-5-international-hackathon-2027" && (
-                      <div className="space-y-2">
-                        <a
-                          href="https://quasar-vppcoe.vercel.app/#tracks"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center justify-center gap-2 rounded-xl border border-neon/50 bg-neon/15 px-3 py-2.5 text-xs font-bold text-neon hover:bg-neon hover:text-black transition"
-                        >
-                          <span>▶ Quasar_Problem Statements &amp; Tracks ◀</span>
-                          <ExternalLink className="size-3.5" />
-                        </a>
-                      </div>
+                      (1 + (userRegRecord?.teammates?.length || 0)) >= 2 ? (
+                        <div className="space-y-2">
+                          <a
+                            href="https://quasar-vppcoe.vercel.app/#tracks"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-center gap-2 rounded-xl border border-neon/50 bg-neon/15 px-3 py-2.5 text-xs font-bold text-neon hover:bg-neon hover:text-black transition shadow-glow-soft"
+                          >
+                            <span>▶ Quasar_Problem Statements &amp; Tracks ◀</span>
+                            <ExternalLink className="size-3.5" />
+                          </a>
+                        </div>
+                      ) : (
+                        <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-2.5 text-center text-xs text-amber-300 flex items-center justify-center gap-2">
+                          <Lock className="size-3.5 text-amber-400 shrink-0" />
+                          <span>🔒 Problem Statements (Unlocks when 2+ members join)</span>
+                        </div>
+                      )
                     )}
 
                     {/* Official WhatsApp Community - EXCLUSIVE TO REGISTERED SQUADS & TEAMS */}
@@ -2002,15 +2009,22 @@ function OpportunityDetails() {
                     )}
                   </div>
                   {item.slug === "quasar-5-international-hackathon-2027" && (
-                    <a
-                      href="https://quasar-vppcoe.vercel.app/#tracks"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-1.5 rounded-lg border border-neon/50 bg-neon/15 px-2.5 py-1.5 text-[11px] font-bold text-neon hover:bg-neon hover:text-black transition"
-                    >
-                      <span>▶ Quasar_Problem Statements ◀</span>
-                      <ExternalLink className="size-3" />
-                    </a>
+                    (1 + (userRegRecord?.teammates?.length || 0)) >= 2 ? (
+                      <a
+                        href="https://quasar-vppcoe.vercel.app/#tracks"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-1.5 rounded-lg border border-neon/50 bg-neon/15 px-2.5 py-1.5 text-[11px] font-bold text-neon hover:bg-neon hover:text-black transition"
+                      >
+                        <span>▶ Quasar_Problem Statements ◀</span>
+                        <ExternalLink className="size-3" />
+                      </a>
+                    ) : (
+                      <div className="flex items-center justify-center gap-1.5 rounded-lg border border-amber-500/40 bg-amber-500/10 px-2.5 py-1.5 text-[11px] font-semibold text-amber-300">
+                        <Lock className="size-3 text-amber-400 shrink-0" />
+                        <span>🔒 Problem Statements Locked (Needs 2+ Members)</span>
+                      </div>
+                    )
                   )}
                   {item.groupUrl && (
                     <a
