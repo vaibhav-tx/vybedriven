@@ -216,18 +216,23 @@ function ManageEventsPage() {
     }
 
     let active = true;
-    import("@/integrations/supabase/client")
-      .then(({ supabase }) => {
-        let query = supabase.from("registrations" as any).select("*");
-        if (targetSlug) {
-          query = query.eq("opportunity_slug", targetSlug);
-        } else if (myEvents.length > 0) {
-          query = query.in("opportunity_slug", myEvents.map((e) => e.slug));
-        }
+    let sql = "SELECT * FROM registrations WHERE status != 'deleted'";
+    const params: any[] = [];
+    if (targetSlug) {
+      sql += " AND opportunity_slug = ?";
+      params.push(targetSlug);
+    } else if (myEvents.length > 0) {
+      const placeholders = myEvents.map(() => "?").join(",");
+      sql += ` AND opportunity_slug IN (${placeholders})`;
+      params.push(...myEvents.map((e) => e.slug));
+    }
+    sql += " ORDER BY created_at DESC";
 
-        query
-          .then(({ data, error }) => {
-            if (!active || error || !data || !Array.isArray(data)) return;
+    import("@/integrations/d1/client")
+      .then(({ d1Query }) => {
+        d1Query(sql, params)
+          .then((data) => {
+            if (!active || !data || !Array.isArray(data)) return;
             mergeRemoteRegistrations(data);
             setSyncTick((t) => t + 1);
           })

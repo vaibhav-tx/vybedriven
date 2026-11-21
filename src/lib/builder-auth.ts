@@ -1,5 +1,6 @@
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { d1Db } from "@/integrations/d1/client";
 
 export interface BuilderAccount {
   id: string;
@@ -200,21 +201,17 @@ export async function createBuilderAccount({
   };
   setBuilderSession(session);
 
-  // Background Cloud Sync to Supabase profiles (non-blocking)
+  // Background Cloud Sync to Cloudflare D1 profiles (non-blocking)
   try {
-    (supabase.from("profiles") as any)
-      .upsert({
-        id: newAccount.id,
-        display_name: newAccount.fullName,
-        email: newAccount.email,
-        bio: JSON.stringify({ ph: pHash, phone: cleanPhone }),
-        phone: cleanPhone,
-        updated_at: new Date().toISOString(),
-      })
-      .then(({ error }: { error?: any }) => {
-        if (error) console.warn("[BuilderAuth] Cloud sync notice:", error.message);
-      })
-      .catch(() => {});
+    d1Db.upsertProfile({
+      id: newAccount.id,
+      displayName: newAccount.fullName,
+      email: newAccount.email,
+      bio: JSON.stringify({ ph: pHash, phone: cleanPhone }),
+      phone: cleanPhone,
+      passwordHash: pHash,
+      updatedAt: new Date().toISOString(),
+    }).catch(() => {});
   } catch {}
 
   return { user: toSupabaseUser(session), error: null };
@@ -222,7 +219,7 @@ export async function createBuilderAccount({
 
 /**
  * Signs in a builder account with email & password.
- * Checks local accounts, cloud profiles, and falls back to Supabase auth.
+ * Checks local accounts, cloud profiles on Cloudflare D1, and falls back to Supabase auth.
  */
 export async function signInBuilderAccount({
   email,
@@ -260,40 +257,48 @@ export async function signInBuilderAccount({
     }
   }
 
-  // 2. Check Supabase profiles in cloud (in case account was created on another device)
+  // 2. Check Cloudflare D1 profiles in cloud (in case account was created on another device)
   try {
-    const { data: cloudProfile } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("email", cleanEmail)
-      .maybeSingle();
+    const cloudProfile = await d1Db.getProfile(cleanEmail);
 
-    if (cloudProfile && cloudProfile.bio) {
-      try {
-        const parsed = JSON.parse(cloudProfile.bio);
-        if (parsed && parsed.ph === pHash) {
-          const syncedAccount: BuilderAccount = {
-            id: cloudProfile.id,
-            email: cleanEmail,
-            fullName: cloudProfile.display_name || cleanEmail.split("@")[0],
-            phone: parsed.phone || "",
-            passwordHash: pHash,
-            createdAt: cloudProfile.created_at || new Date().toISOString(),
-          };
-          accounts.push(syncedAccount);
-          saveStoredAccounts(accounts);
+    if (cloudProfile) {
+      let isMatch = false;
+      let userPhone = cloudProfile.phone || "";
 
-          const session: BuilderSession = {
-            id: syncedAccount.id,
-            email: syncedAccount.email,
-            fullName: syncedAccount.fullName,
-            phone: syncedAccount.phone,
-            createdAt: syncedAccount.createdAt,
-          };
-          setBuilderSession(session);
-          return { user: toSupabaseUser(session), error: null };
-        }
-      } catch {}
+      if (cloudProfile.password_hash && cloudProfile.password_hash === pHash) {
+        isMatch = true;
+      } else if (cloudProfile.bio) {
+        try {
+          const parsed = JSON.parse(cloudProfile.bio);
+          if (parsed && parsed.ph === pHash) {
+            isMatch = true;
+            userPhone = parsed.phone || userPhone;
+          }
+        } catch {}
+      }
+
+      if (isMatch) {
+        const syncedAccount: BuilderAccount = {
+          id: cloudProfile.id,
+          email: cleanEmail,
+          fullName: cloudProfile.display_name || cleanEmail.split("@")[0],
+          phone: userPhone,
+          passwordHash: pHash,
+          createdAt: cloudProfile.created_at || new Date().toISOString(),
+        };
+        accounts.push(syncedAccount);
+        saveStoredAccounts(accounts);
+
+        const session: BuilderSession = {
+          id: syncedAccount.id,
+          email: syncedAccount.email,
+          fullName: syncedAccount.fullName,
+          phone: syncedAccount.phone,
+          createdAt: syncedAccount.createdAt,
+        };
+        setBuilderSession(session);
+        return { user: toSupabaseUser(session), error: null };
+      }
     }
   } catch {}
 

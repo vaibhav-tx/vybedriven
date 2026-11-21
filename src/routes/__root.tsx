@@ -205,15 +205,14 @@ function RootComponent() {
       } catch {}
 
       if (!p) {
-        const { data } = await supabase
-          .from("profiles")
-          .select("id, display_name, avatar_url, bio, college_or_company, headline, location, github_url, linkedin_url, website_url, skills, interests, username, email")
-          .eq("id", userId)
-          .maybeSingle();
-        p = (data as any) ?? {};
         try {
-          if (typeof window !== "undefined") sessionStorage.setItem(cacheKey, JSON.stringify(p));
-        } catch {}
+          const { d1Db } = await import("@/integrations/d1/client");
+          const data = await d1Db.getProfile(userId);
+          p = data ?? {};
+          if (typeof window !== "undefined" && p) sessionStorage.setItem(cacheKey, JSON.stringify(p));
+        } catch {
+          p = {};
+        }
       }
 
       let localMeta: any = {};

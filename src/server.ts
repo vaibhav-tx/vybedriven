@@ -47,6 +47,52 @@ function isH3SwallowedErrorBody(body: string): boolean {
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
+      const url = new URL(request.url);
+      if (url.pathname === "/api/d1" && request.method === "POST") {
+        try {
+          const body = (await request.json()) as { sql?: string; params?: any[] };
+          const { sql, params = [] } = body || {};
+          const CF_ACCOUNT_ID =
+            process.env["CLOUDFLARE_ACCOUNT_ID"] || "dfd353579afb6efbf5f3eeb63cec3f1f";
+          const CF_DB_ID =
+            process.env["CLOUDFLARE_D1_DATABASE_ID"] || "68d5ad88-bd27-46c5-963f-edc5286847c9";
+          const CF_TOKEN = process.env["CLOUDFLARE_D1_API_TOKEN"] || "";
+
+          const cfRes = await fetch(
+            `https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/d1/database/${CF_DB_ID}/query`,
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${CF_TOKEN}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ sql, params }),
+            },
+          );
+
+          const data = (await cfRes.json()) as any;
+          return new Response(
+            JSON.stringify({
+              success: true,
+              results: data.result?.[0]?.results || [],
+              meta: data.result?.[0]?.meta || {},
+            }),
+            {
+              status: 200,
+              headers: { "Content-Type": "application/json" },
+            },
+          );
+        } catch (e: any) {
+          return new Response(
+            JSON.stringify({ success: false, error: e?.message || "D1 proxy error", results: [] }),
+            {
+              status: 500,
+              headers: { "Content-Type": "application/json" },
+            },
+          );
+        }
+      }
+
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
       return await normalizeCatastrophicSsrResponse(response);

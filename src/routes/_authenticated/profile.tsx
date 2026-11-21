@@ -104,59 +104,38 @@ function ProfilePage() {
       };
     }
 
-    // Sync only this user's cloud registrations from Supabase
+    // Sync only this user's cloud registrations from Cloudflare D1
     const userEmail = user.email?.trim().toLowerCase();
-    const queries: Promise<any>[] = [];
-    const fields = "id, opportunity_slug, opportunity_title, user_id, full_name, email, phone, college_or_company, team_type, team_name, team_size, teammates, submission, status, created_at";
+    const userId = user.id?.trim();
+    const fields =
+      "id, opportunity_slug, opportunity_title, user_id, full_name, email, phone, college_or_company, team_type, team_name, team_size, teammates, submission, status, created_at";
 
-    if (user.id && userEmail) {
-      queries.push(
-        supabase
-          .from("registrations" as any)
-          .select(fields)
-          .or(`user_id.eq.${user.id},email.ilike.${userEmail}`)
-      );
-    } else if (user.id) {
-      queries.push(
-        supabase
-          .from("registrations" as any)
-          .select(fields)
-          .eq("user_id", user.id)
-      );
+    let sql = `SELECT ${fields} FROM registrations WHERE status != 'deleted' AND status != 'Archived'`;
+    const params: any[] = [];
+    if (userId && userEmail) {
+      sql += ` AND (user_id = ? OR LOWER(email) = ? OR teammates LIKE ?)`;
+      params.push(userId, userEmail, `%"${userEmail}"%`);
     } else if (userEmail) {
-      queries.push(
-        supabase
-          .from("registrations" as any)
-          .select(fields)
-          .ilike("email", userEmail)
-      );
+      sql += ` AND (LOWER(email) = ? OR teammates LIKE ?)`;
+      params.push(userEmail, `%"${userEmail}"%`);
+    } else if (userId) {
+      sql += ` AND user_id = ?`;
+      params.push(userId);
     }
+    sql += " ORDER BY created_at DESC";
 
-    if (userEmail) {
-      queries.push(
-        supabase
-          .from("registrations" as any)
-          .select(fields)
-          .eq("opportunity_slug", "quasar-5-international-hackathon-2027")
-          .contains("teammates", [{ email: userEmail }])
-      );
-    }
-
-    Promise.all(queries)
-      .then((results) => {
-        const rows: any[] = [];
-        for (const res of results) {
-          if (!res.error && Array.isArray(res.data)) {
-            rows.push(...res.data);
-          }
-        }
-        if (rows.length > 0) {
-          mergeRemoteRegistrations(rows);
-          setSyncTick((t) => t + 1);
-        }
-        try {
-          if (typeof window !== "undefined") sessionStorage.setItem(syncCacheKey, "1");
-        } catch {}
+    import("@/integrations/d1/client")
+      .then(({ d1Query }) => {
+        d1Query(sql, params)
+          .then((rows) => {
+            if (!rows || !Array.isArray(rows) || rows.length === 0) return;
+            mergeRemoteRegistrations(rows);
+            setSyncTick((t) => t + 1);
+            try {
+              if (typeof window !== "undefined") sessionStorage.setItem(syncCacheKey, "1");
+            } catch {}
+          })
+          .catch(() => {});
       })
       .catch(() => {});
 
@@ -293,28 +272,36 @@ function ProfilePage() {
       });
     } catch {}
 
-    // 3. Upsert only real existing columns to Supabase profiles table to avoid schema cache errors
-    const { error: saveError } = await (supabase.from("profiles") as any).upsert({
-      id: user.id,
-      display_name: form.display_name.trim(),
-      avatar_url: form.avatar_url.trim() || "👨‍💻",
-      college_or_company: form.college_or_company.trim(),
-      bio: form.bio.trim(),
-      email: user.email || null,
-      updated_at: new Date().toISOString(),
-    });
+    // 3. Upsert to Cloudflare D1 profiles table
+    try {
+      const { d1Db } = await import("@/integrations/d1/client");
+      await d1Db.upsertProfile({
+        id: user.id,
+        displayName: form.display_name.trim(),
+        avatarUrl: form.avatar_url.trim() || "👨‍💻",
+        collegeOrCompany: form.college_or_company.trim(),
+        bio: form.bio.trim(),
+        headline: form.headline?.trim() || "",
+        location: form.location?.trim() || "",
+        githubUrl: form.github_url?.trim() || null,
+        linkedinUrl: form.linkedin_url?.trim() || null,
+        websiteUrl: form.website_url?.trim() || null,
+        skills: skillsArray,
+        interests: interestsArray,
+        username: form.username?.trim() || null,
+        email: user.email || null,
+        updatedAt: new Date().toISOString(),
+      });
+    } catch (saveErr: any) {
+      console.warn("D1 profile update notice:", saveErr);
+    }
 
     setSaving(false);
-
-    if (saveError) {
-      setError(saveError.message);
-    } else {
-      setMessage("Profile and avatar successfully updated! Your changes are now visible across the site.");
-      if (typeof window !== "undefined") {
-        window.dispatchEvent(new Event("storage"));
-      }
-      await refreshProfile();
+    setMessage("Profile and avatar successfully updated! Your changes are now visible across the site.");
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new Event("storage"));
     }
+    await refreshProfile();
   };
 
   const field = (label: string, key: keyof typeof form, placeholder: string, required = false) => (

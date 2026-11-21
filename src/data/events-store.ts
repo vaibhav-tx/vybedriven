@@ -7,6 +7,7 @@ import aiAtWorkPoster from "@/assets/events/ai-at-work.png.asset.json";
 import durableDevOpsPoster from "@/assets/events/durable-devops-tech-meetup.png.asset.json";
 import elevatePoster from "@/assets/events/elevate-1-0-2026.png.asset.json";
 import { useEffect, useState } from "react";
+import { d1Db, d1Query } from "@/integrations/d1/client";
 
 export const PRESET_EVENT_BANNERS = [
   { id: "quasar", title: "Quasar 5.0 (VPPCOE & VA)", image: "/events/quasar-5-banner.jpg" },
@@ -293,24 +294,20 @@ export function createHostedOpportunity(input: {
     notifyStoreChange();
   }
 
-  // Cloud sync to Supabase so new event is immediately visible across all users & devices
+  // Cloud sync to Cloudflare D1 so new event is immediately visible across all users & devices
   try {
-    import("@/integrations/supabase/client").then(({ supabase }) => {
-      supabase.from("registrations" as any).upsert([
-        {
-          id: `EVENT_CONFIG::${newEvent.slug}`,
-          opportunity_slug: newEvent.slug,
-          opportunity_title: newEvent.title,
-          email: newEvent.organizerEmail || "events@vybedriven.in",
-          full_name: newEvent.organizer || "Organizer",
-          phone: newEvent.organizerPhone || "0000000000",
-          college_or_company: "Vybe Driven Platform",
-          team_members: JSON.stringify(newEvent),
-          status: "event_config",
-          updated_at: new Date().toISOString(),
-        },
-      ]).then(() => {});
-    });
+    d1Db.upsertRegistration({
+      id: `EVENT_CONFIG::${newEvent.slug}`,
+      opportunitySlug: newEvent.slug,
+      opportunityTitle: newEvent.title,
+      email: newEvent.organizerEmail || "events@vybedriven.in",
+      fullName: newEvent.organizer || "Organizer",
+      phone: newEvent.organizerPhone || "0000000000",
+      collegeOrCompany: "Vybe Driven Platform",
+      teamMembers: JSON.stringify(newEvent),
+      status: "event_config",
+      updatedAt: new Date().toISOString(),
+    }).catch(() => {});
   } catch {}
 
   return newEvent;
@@ -425,24 +422,20 @@ export function updateHostedOpportunity(
     notifyStoreChange();
   }
 
-  // Cloud sync to Supabase registrations table so all users see the updated event
+  // Cloud sync to Cloudflare D1 registrations table so all users see the updated event
   try {
-    import("@/integrations/supabase/client").then(({ supabase }) => {
-      supabase.from("registrations" as any).upsert([
-        {
-          id: `EVENT_CONFIG::${updated.slug}`,
-          opportunity_slug: updated.slug,
-          opportunity_title: updated.title,
-          email: updated.organizerEmail || "events@vybedriven.in",
-          full_name: updated.organizer || "Organizer",
-          phone: updated.organizerPhone || "0000000000",
-          college_or_company: "Vybe Driven Platform",
-          team_members: JSON.stringify(updated),
-          status: "event_config",
-          updated_at: new Date().toISOString(),
-        },
-      ]).then(() => {});
-    });
+    d1Db.upsertRegistration({
+      id: `EVENT_CONFIG::${updated.slug}`,
+      opportunitySlug: updated.slug,
+      opportunityTitle: updated.title,
+      email: updated.organizerEmail || "events@vybedriven.in",
+      fullName: updated.organizer || "Organizer",
+      phone: updated.organizerPhone || "0000000000",
+      collegeOrCompany: "Vybe Driven Platform",
+      teamMembers: JSON.stringify(updated),
+      status: "event_config",
+      updatedAt: new Date().toISOString(),
+    }).catch(() => {});
   } catch {}
 
   return updated;
@@ -467,11 +460,9 @@ export function deleteHostedOpportunity(
     notifyStoreChange();
   }
 
-  // Cloud sync deletion to Supabase
+  // Cloud sync deletion to Cloudflare D1
   try {
-    import("@/integrations/supabase/client").then(({ supabase }) => {
-      supabase.from("registrations" as any).update({ status: "deleted" }).eq("id", `EVENT_CONFIG::${slug}`).then(() => {});
-    });
+    d1Db.deleteRegistration(`EVENT_CONFIG::${slug}`).catch(() => {});
   } catch {}
 
   return true;
@@ -538,54 +529,10 @@ export function submitRegistration(data: {
     localStorage.setItem(STORAGE_REGISTRATIONS, JSON.stringify(updated));
     notifyStoreChange();
 
-    // Background sync to Supabase database
-    import("@/integrations/supabase/client")
-      .then(({ supabase }) => {
-        supabase
-          .from("registrations" as any)
-          .upsert(
-            [
-              {
-                id: newReg.id,
-                opportunity_slug: newReg.opportunitySlug,
-                opportunity_title: newReg.opportunityTitle,
-                user_id: newReg.userId || null,
-                full_name: newReg.fullName,
-                first_name: newReg.firstName || null,
-                last_name: newReg.lastName || null,
-                email: newReg.email.toLowerCase().trim(),
-                phone: newReg.phone,
-                gender: newReg.gender || null,
-                location: newReg.location || null,
-                college_or_company: newReg.collegeOrCompany,
-                user_type: newReg.userType || null,
-                team_type: newReg.teamType,
-                team_name: newReg.teamName || null,
-                team_size: newReg.teamSize || "Solo",
-                team_members: newReg.teamMembers || null,
-                teammates: newReg.teammates || [],
-                looking_for_teammates: newReg.lookingForTeammates ?? false,
-                terms_accepted: newReg.termsAccepted ?? true,
-                status: newReg.status,
-                created_at: newReg.createdAt,
-              },
-            ],
-            { onConflict: "id" }
-          )
-          .then(({ error }) => {
-            if (error) {
-              console.warn("[Database Sync] Supabase notice:", error.message);
-            } else {
-              console.log("[Database Sync] Successfully persisted registration to Supabase cloud.");
-            }
-          })
-          .catch((err) => {
-            console.warn("[Database Sync] Supabase sync attempt:", err);
-          });
-      })
-      .catch((err) => {
-        console.warn("[Database Sync] Supabase client import:", err);
-      });
+    // Background sync to Cloudflare D1 database
+    d1Db.upsertRegistration(newReg).catch((err) => {
+      console.warn("[Database Sync] Cloudflare D1 notice:", err);
+    });
   }
 
   return newReg;
@@ -811,24 +758,21 @@ export function updateTeamRoster(
     localStorage.setItem(STORAGE_REGISTRATIONS, JSON.stringify(list));
     notifyStoreChange();
 
-    // Background sync to Supabase
-    import("@/integrations/supabase/client")
-      .then(({ supabase }) => {
-        supabase
-          .from("registrations" as any)
-          .update({
-            team_name: updated.teamName,
-            team_size: updated.teamSize,
-            team_members: updated.teamMembers,
-            teammates: updated.teammates,
-            looking_for_teammates: updated.lookingForTeammates,
-          })
-          .eq("id", updated.id)
-          .then(({ error }) => {
-            if (error) console.warn("[Database Sync] Team roster update notice:", error.message);
-          });
-      })
-      .catch(() => {});
+    // Background sync to Cloudflare D1
+    d1Query(
+      `UPDATE registrations SET team_name = ?, team_size = ?, team_members = ?, teammates = ?, looking_for_teammates = ?, updated_at = ? WHERE id = ?`,
+      [
+        updated.teamName || null,
+        updated.teamSize,
+        updated.teamMembers || null,
+        JSON.stringify(updated.teammates || []),
+        updated.lookingForTeammates ? 1 : 0,
+        new Date().toISOString(),
+        updated.id,
+      ]
+    ).catch((err) => {
+      console.warn("[Database Sync] Team roster update notice:", err);
+    });
   }
 
   return updated;
@@ -864,19 +808,11 @@ export async function deleteTeamRegistration(
     notifyStoreChange();
   }
 
-  // Cloud sync to Supabase: mark as deleted/archived so team is removed
+  // Cloud sync to Cloudflare D1: mark as deleted/archived so team is removed
   try {
-    const { supabase } = await import("@/integrations/supabase/client");
-    await supabase
-      .from("registrations" as any)
-      .update({
-        status: "deleted",
-        opportunity_slug: "deleted",
-        team_name: "[Deleted Squad]",
-      })
-      .eq("id", registrationId);
+    await d1Db.deleteRegistration(registrationId);
   } catch (err) {
-    console.warn("[Cloud Delete Team] Error syncing deletion to Supabase:", err);
+    console.warn("[Cloud Delete Team] Error syncing deletion to D1:", err);
   }
 
   return true;
@@ -940,19 +876,16 @@ export async function leaveTeamRegistration(
     notifyStoreChange();
   }
 
-  // Cloud sync to Supabase
+  // Cloud sync to Cloudflare D1
   try {
-    const { supabase } = await import("@/integrations/supabase/client");
-    await supabase
-      .from("registrations" as any)
-      .update({
-        team_size: updated.teamSize,
-        team_members: updated.teamMembers,
-        teammates: updated.teammates,
-      })
-      .eq("id", updated.id);
+    await d1Db.updateRegistrationTeam(
+      updated.id,
+      updated.teamSize,
+      updated.teamMembers || null,
+      updated.teammates || []
+    );
   } catch (err) {
-    console.warn("[Cloud Leave Team] Error updating team on Supabase:", err);
+    console.warn("[Cloud Leave Team] Error updating team on D1:", err);
   }
 
   return updated;
@@ -999,19 +932,13 @@ export function confirmTeammateInvitation(
     localStorage.setItem(STORAGE_REGISTRATIONS, JSON.stringify(list));
     notifyStoreChange();
 
-    import("@/integrations/supabase/client")
-      .then(({ supabase }) => {
-        supabase
-          .from("registrations" as any)
-          .update({
-            teammates: updatedTeammates,
-          })
-          .eq("id", updated.id)
-          .then(({ error }) => {
-            if (error) console.warn("[Database Sync] Teammate confirmation notice:", error.message);
-          });
-      })
-      .catch(() => {});
+    d1Query("UPDATE registrations SET teammates = ?, updated_at = ? WHERE id = ?", [
+      JSON.stringify(updatedTeammates),
+      new Date().toISOString(),
+      updated.id,
+    ]).catch((err) => {
+      console.warn("[Database Sync] Teammate confirmation notice on D1:", err);
+    });
   }
 
   return true;
@@ -1083,42 +1010,25 @@ export async function findTeamByCode(code: string): Promise<EventRegistration | 
   });
   if (localMatch) return localMatch;
 
-  // 2. Cloud check on Supabase - EXACT match on id or team_name
+  // 2. Cloud check on Cloudflare D1 - EXACT match on id or team_name
   try {
-    const { supabase } = await import("@/integrations/supabase/client");
     const upperCandidates = candidates.map((c) => c.toUpperCase());
     const lowerCandidates = candidates.map((c) => c.toLowerCase());
     const allMatches = Array.from(new Set([...upperCandidates, ...lowerCandidates, ...candidates]));
+    const placeholders = allMatches.map(() => "?").join(",");
 
-    // Query 1: exact match by id
-    const { data: idRows } = await supabase
-      .from("registrations" as any)
-      .select("*")
-      .in("id", allMatches)
-      .neq("status", "Archived")
-      .limit(1);
+    const rows = await d1Query(
+      `SELECT * FROM registrations WHERE (id IN (${placeholders}) OR team_name IN (${placeholders})) AND status != 'Archived' AND status != 'deleted' LIMIT 1`,
+      [...allMatches, ...allMatches]
+    );
 
-    if (idRows && idRows.length > 0) {
-      mergeRemoteRegistrations(idRows);
+    if (rows && rows.length > 0) {
+      mergeRemoteRegistrations(rows);
       const freshList = getStoredRegistrations();
-      return freshList.find((r) => r.id === idRows[0].id) || null;
-    }
-
-    // Query 2: exact match by team_name
-    const { data: nameRows } = await supabase
-      .from("registrations" as any)
-      .select("*")
-      .in("team_name", allMatches)
-      .neq("status", "Archived")
-      .limit(1);
-
-    if (nameRows && nameRows.length > 0) {
-      mergeRemoteRegistrations(nameRows);
-      const freshList = getStoredRegistrations();
-      return freshList.find((r) => r.id === nameRows[0].id) || null;
+      return freshList.find((r) => r.id === rows[0].id) || null;
     }
   } catch (err) {
-    console.warn("[Cloud Team Lookup] Error checking team code:", err);
+    console.warn("[Cloud Team Lookup] Error checking team code on D1:", err);
   }
 
   return null;
@@ -1246,20 +1156,16 @@ export async function joinTeamWithCode(
     notifyStoreChange();
   }
 
-  // Persist directly to Supabase cloud
+  // Persist directly to Cloudflare D1 cloud
   try {
-    const { supabase } = await import("@/integrations/supabase/client");
-    await supabase
-      .from("registrations" as any)
-      .update({
-        team_size: updatedTeam.teamSize,
-        team_members: updatedTeam.teamMembers,
-        teammates: updatedTeam.teammates,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", updatedTeam.id);
+    await d1Db.updateRegistrationTeam(
+      updatedTeam.id,
+      updatedTeam.teamSize,
+      updatedTeam.teamMembers || null,
+      updatedTeam.teammates || []
+    );
   } catch (err) {
-    console.warn("[Database Sync] Team member join error:", err);
+    console.warn("[Database Sync] Team member join error on D1:", err);
   }
 
   return updatedTeam;
@@ -1315,36 +1221,23 @@ export function saveIdeaSubmission(
     localStorage.setItem(STORAGE_REGISTRATIONS, JSON.stringify(list));
     notifyStoreChange();
 
-    // Persist to Supabase in team_members column
-    import("@/integrations/supabase/client")
-      .then(({ supabase }) => {
-        const teamSummary =
-          updated.teammates && updated.teammates.length > 0
-            ? updated.teammates.map((t) => `${t.name} (${t.email})`).join(", ")
-            : "";
-        const payload = JSON.stringify({
-          summary: teamSummary,
-          submission: updated.submission,
-        });
+    // Persist to Cloudflare D1
+    const teamSummary =
+      updated.teammates && updated.teammates.length > 0
+        ? updated.teammates.map((t) => `${t.name} (${t.email})`).join(", ")
+        : "";
+    const payload = JSON.stringify({
+      summary: teamSummary,
+      submission: updated.submission,
+    });
 
-        supabase
-          .from("registrations" as any)
-          .update({
-            team_members: payload,
-            updated_at: new Date().toISOString(),
-          })
-          .eq("id", updated.id)
-          .then(({ error }) => {
-            if (error) {
-              console.warn("[Database Sync] Supabase submission update notice:", error.message);
-            } else {
-              console.log("[Database Sync] Persisted Round 1 submission to Supabase cloud.");
-            }
-          });
-      })
-      .catch((err) => {
-        console.warn("[Database Sync] Error importing Supabase for submission:", err);
-      });
+    d1Query("UPDATE registrations SET team_members = ?, updated_at = ? WHERE id = ?", [
+      payload,
+      new Date().toISOString(),
+      updated.id,
+    ]).catch((err) => {
+      console.warn("[Database Sync] D1 submission update notice:", err);
+    });
   }
 
   return updated;
@@ -1610,21 +1503,16 @@ export function useEventRegistrations(slug: string, options?: { enabled?: boolea
     const fetchCloud = () => {
       if (!isEnabled) return;
       const now = Date.now();
-      // Throttle cloud refetch to 5 minutes to protect Supabase egress quota
-      if (now - lastFetch < 300000) return;
+      if (now - lastFetch < 30000) return;
       lastFetch = now;
-      import("@/integrations/supabase/client")
-        .then(({ supabase }) => {
-          supabase
-            .from("registrations" as any)
-            .select("id, opportunity_slug, user_id, full_name, email, phone, college_or_company, team_type, team_name, team_size, teammates, submission, status, created_at")
-            .eq("opportunity_slug", slug)
-            .then(({ data, error }) => {
-              if (!active || error || !data || !Array.isArray(data)) return;
-              mergeRemoteRegistrations(data);
-              update();
-            })
-            .catch(() => {});
+      d1Query(
+        "SELECT id, opportunity_slug, user_id, full_name, email, phone, college_or_company, team_type, team_name, team_size, teammates, status, created_at FROM registrations WHERE opportunity_slug = ? AND status != 'deleted'",
+        [slug]
+      )
+        .then((data) => {
+          if (!active || !data || !Array.isArray(data)) return;
+          mergeRemoteRegistrations(data);
+          update();
         })
         .catch(() => {});
     };
@@ -1648,18 +1536,11 @@ let cloudSyncDone = false;
 export function syncCloudStore(): void {
   if (typeof window === "undefined" || cloudSyncDone) return;
   cloudSyncDone = true;
-  import("@/integrations/supabase/client")
-    .then(({ supabase }) => {
-      supabase
-        .from("registrations" as any)
-        .select("*")
-        .like("id", "EVENT_CONFIG::%")
-        .then(({ data, error }) => {
-          if (!error && data && Array.isArray(data)) {
-            mergeRemoteRegistrations(data);
-          }
-        })
-        .catch(() => {});
+  d1Query("SELECT * FROM registrations WHERE id LIKE 'EVENT_CONFIG::%'")
+    .then((data) => {
+      if (data && Array.isArray(data)) {
+        mergeRemoteRegistrations(data);
+      }
     })
     .catch(() => {});
 }
