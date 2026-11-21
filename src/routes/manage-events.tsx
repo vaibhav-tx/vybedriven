@@ -782,7 +782,7 @@ function ManageEventsPage() {
                                     {applicant.teamName || "Squad"}
                                   </span>
                                   <span className="rounded-full bg-surface-2 border border-border px-1.5 py-0.2 text-[10px] font-semibold text-muted-foreground">
-                                    {applicant.teammates && applicant.teammates.length > 0
+                                    {Array.isArray(applicant.teammates) && applicant.teammates.length > 0
                                       ? `${applicant.teammates.length + 1} Members`
                                       : applicant.teamSize || "Team"}
                                   </span>
@@ -794,7 +794,7 @@ function ManageEventsPage() {
                                     <span className="size-1.5 rounded-full bg-emerald-400" />
                                     {applicant.fullName.split(" ")[0]} (Leader)
                                   </span>
-                                  {applicant.teammates &&
+                                  {Array.isArray(applicant.teammates) &&
                                     applicant.teammates.map((m, idx) => {
                                       const isVer = m.status === "verified";
                                       return (
@@ -1035,7 +1035,7 @@ function ManageEventsPage() {
                 </div>
 
                 {/* Teammates List */}
-                {inspectingApplicant.teammates && inspectingApplicant.teammates.length > 0 ? (
+                {Array.isArray(inspectingApplicant.teammates) && inspectingApplicant.teammates.length > 0 ? (
                   <div className="space-y-3">
                     <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                       Invited Teammates ({inspectingApplicant.teammates.length})

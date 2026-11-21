@@ -170,22 +170,38 @@ export function getStoredRegistrations(): EventRegistration[] {
     }
     const list = JSON.parse(raw) as EventRegistration[];
     if (!Array.isArray(list)) return [];
-    return list.filter(
-      (r) =>
-        r &&
-        r.status !== "deleted" &&
-        r.status !== "event_config" &&
-        r.status !== "Archived" &&
-        r.opportunitySlug !== "archived" &&
-        !r.id?.startsWith("JOINQSR5-") &&
-        !r.id?.startsWith("JOINGB27-") &&
-        !r.id?.startsWith("EVENT_CONFIG::") &&
-        !r.id?.startsWith("SYSTEM_") &&
-        !EXCLUDED_TEST_IDS.includes(r.id) &&
-        !r.email?.toLowerCase().includes("leader-gb27-43750") &&
-        !r.email?.toLowerCase().includes("testbuilder@example.com") &&
-        !r.email?.toLowerCase().includes("probe@example.com")
-    );
+    return list
+      .filter(
+        (r) =>
+          r &&
+          r.status !== "deleted" &&
+          r.status !== "event_config" &&
+          r.status !== "Archived" &&
+          r.opportunitySlug !== "archived" &&
+          !r.id?.startsWith("JOINQSR5-") &&
+          !r.id?.startsWith("JOINGB27-") &&
+          !r.id?.startsWith("EVENT_CONFIG::") &&
+          !r.id?.startsWith("SYSTEM_") &&
+          !EXCLUDED_TEST_IDS.includes(r.id) &&
+          !r.email?.toLowerCase().includes("leader-gb27-43750") &&
+          !r.email?.toLowerCase().includes("testbuilder@example.com") &&
+          !r.email?.toLowerCase().includes("probe@example.com")
+      )
+      .map((r) => {
+        let tm = r.teammates;
+        if (typeof tm === "string") {
+          try {
+            tm = JSON.parse(tm);
+          } catch {
+            tm = [];
+          }
+        }
+        if (!Array.isArray(tm)) tm = [];
+        return {
+          ...r,
+          teammates: tm,
+        };
+      });
   } catch (error) {
     console.error("Failed to parse registrations:", error);
     return [];
@@ -616,6 +632,18 @@ export function mergeRemoteRegistrations(remoteRows: any[]): void {
       }
     }
 
+    let parsedTeammates: TeammateDetail[] = [];
+    if (Array.isArray(row.teammates)) {
+      parsedTeammates = row.teammates;
+    } else if (typeof row.teammates === "string" && row.teammates.trim()) {
+      try {
+        const parsed = JSON.parse(row.teammates);
+        if (Array.isArray(parsed)) parsedTeammates = parsed;
+      } catch {}
+    } else if (Array.isArray(existing?.teammates)) {
+      parsedTeammates = existing.teammates;
+    }
+
     const parsed: EventRegistration = {
       id: row.id,
       opportunitySlug: row.opportunity_slug,
@@ -635,7 +663,7 @@ export function mergeRemoteRegistrations(remoteRows: any[]): void {
       teamSize: row.team_size,
       teamMembers: cleanTeamMembers,
       teamCode: row.team_code || row.id,
-      teammates: row.teammates || [],
+      teammates: parsedTeammates,
       lookingForTeammates: row.looking_for_teammates,
       termsAccepted: row.terms_accepted,
       status: row.status || "Registered",
@@ -1503,7 +1531,7 @@ export function useEventRegistrations(slug: string, options?: { enabled?: boolea
     const fetchCloud = () => {
       if (!isEnabled) return;
       const now = Date.now();
-      if (now - lastFetch < 30000) return;
+      if (now - lastFetch < 2000) return;
       lastFetch = now;
       d1Query(
         "SELECT id, opportunity_slug, user_id, full_name, email, phone, college_or_company, team_type, team_name, team_size, teammates, status, created_at FROM registrations WHERE opportunity_slug = ? AND status != 'deleted'",

@@ -21,6 +21,37 @@ export interface D1QueryResult<T = any> {
   meta?: any;
 }
 
+function normalizeD1Rows<T = any>(rows: any[]): T[] {
+  if (!Array.isArray(rows)) return [];
+  return rows.map((r) => {
+    if (!r || typeof r !== "object") return r;
+    const copy = { ...r };
+    if ("teammates" in copy) {
+      if (typeof copy.teammates === "string") {
+        try {
+          copy.teammates = JSON.parse(copy.teammates);
+        } catch {
+          copy.teammates = [];
+        }
+      }
+      if (!Array.isArray(copy.teammates)) {
+        copy.teammates = [];
+      }
+    }
+    if ("skills" in copy && typeof copy.skills === "string") {
+      try {
+        copy.skills = JSON.parse(copy.skills);
+      } catch {}
+    }
+    if ("interests" in copy && typeof copy.interests === "string") {
+      try {
+        copy.interests = JSON.parse(copy.interests);
+      } catch {}
+    }
+    return copy as T;
+  });
+}
+
 /**
  * Execute raw SQL query on Cloudflare D1.
  * Auto-detects server vs client environment.
@@ -55,7 +86,7 @@ export async function d1Query<T = any>(sql: string, params: any[] = []): Promise
         return [];
       }
       const data = (await res.json()) as any;
-      return (data.result?.[0]?.results as T[]) || [];
+      return normalizeD1Rows<T>(data.result?.[0]?.results || []);
     } catch (err) {
       console.error("[D1 Server Fetch Error]", err);
       return [];
@@ -80,7 +111,7 @@ export async function d1Query<T = any>(sql: string, params: any[] = []): Promise
     }
 
     const data = (await res.json()) as any;
-    return (data.results as T[]) || [];
+    return normalizeD1Rows<T>(data.results || []);
   } catch (err) {
     console.error("[D1 Client Fetch Error]", err);
     return [];

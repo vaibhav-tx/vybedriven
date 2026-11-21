@@ -93,7 +93,7 @@ export function TeamManagementModal({
       setTeamName(registration.teamName || "My Squad");
       setLookingForTeammates(Boolean(registration.lookingForTeammates));
       setTeammates(
-        (registration.teammates || []).map((t) => ({
+        (Array.isArray(registration.teammates) ? registration.teammates : []).map((t) => ({
           ...t,
           status: t.status || "pending",
         }))
@@ -102,22 +102,18 @@ export function TeamManagementModal({
     }
 
     if (open && registration?.id) {
-      import("@/integrations/supabase/client")
-        .then(({ supabase }) => {
-          supabase
-            .from("registrations" as any)
-            .select("*")
-            .eq("id", registration.id)
-            .maybeSingle()
-            .then(({ data }) => {
-              if (data) {
-                mergeRemoteRegistrations([data]);
+      import("@/integrations/d1/client")
+        .then(({ d1Query }) => {
+          d1Query("SELECT * FROM registrations WHERE id = ? LIMIT 1", [registration.id])
+            .then((rows) => {
+              if (rows && rows.length > 0) {
+                mergeRemoteRegistrations(rows);
                 const fresh = getStoredRegistrations().find((r) => r.id === registration.id);
                 if (fresh) {
                   setTeamName(fresh.teamName || "My Squad");
                   setLookingForTeammates(Boolean(fresh.lookingForTeammates));
                   setTeammates(
-                    (fresh.teammates || []).map((t) => ({
+                    (Array.isArray(fresh.teammates) ? fresh.teammates : []).map((t) => ({
                       ...t,
                       status: t.status || "pending",
                     }))
