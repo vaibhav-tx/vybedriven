@@ -579,11 +579,79 @@ function OpportunityDetails() {
   const [modalMode, setModalMode] = useState<"create" | "join">("create");
   const [pendingAction, setPendingAction] = useState<{ mode: "create" | "join"; joinCode?: string } | null>(null);
 
+  const isHost = isEventOrganizer(item, user);
+  const registrations = useEventRegistrations(item.slug, { enabled: isHost });
+  const regCount = registrations.length;
+
+  const guestStoredEmail = typeof window !== "undefined" ? localStorage.getItem("hd_guest_email") || undefined : undefined;
+  const userIdentifier = user?.email || user?.id || guestStoredEmail;
+
+  const userRegRecord = useMemo(() => {
+    const effectiveEmail = user?.email || guestStoredEmail;
+    const effectiveId = user?.id;
+    if (!effectiveId && !effectiveEmail) return null;
+
+    const localUserRegs = getUserRegistrations(effectiveId, effectiveEmail);
+    const matched = localUserRegs.find((r) => r.opportunitySlug === item.slug);
+    if (matched) return matched;
+
+    return (
+      registrations.find(
+        (r) =>
+          (effectiveId && r.userId === effectiveId) ||
+          (effectiveEmail && typeof r.email === "string" && r.email.toLowerCase() === effectiveEmail.toLowerCase()) ||
+          (effectiveEmail &&
+            Array.isArray(r.teammates) &&
+            r.teammates.some(
+              (t) =>
+                typeof t === "object" &&
+                t &&
+                typeof t.email === "string" &&
+                t.email.toLowerCase() === effectiveEmail.toLowerCase()
+            ))
+      ) || null
+    );
+  }, [registrations, user, guestStoredEmail, item.slug]);
+
+  const isRegistered = Boolean(userRegRecord) || isUserRegistered(item.slug, userIdentifier);
+
+  const externalPlatform = useMemo(() => {
+    if (!item.registrationUrl) return null;
+    const url = item.registrationUrl.toLowerCase();
+    if (url.includes("luma.com") || url.includes("lu.ma")) return "Lu.ma";
+    if (url.includes("unstop.com")) return "Unstop";
+    if (url.includes("devfolio.co")) return "Devfolio";
+    return "the official host platform";
+  }, [item.registrationUrl]);
+
+  // Live sync user's registration and team roster from Cloudflare D1
+  useEffect(() => {
+    if (!user && !guestStoredEmail) return;
+    const userEmail = user?.email || guestStoredEmail;
+    const userId = user?.id;
+
+    // Immediately fetch latest team & registration state from Cloudflare D1
+    refreshUserRegistrationFromD1(item.slug, userId, userEmail);
+
+    // Auto-refresh when user switches back to tab or focuses window, plus a periodic 8s sync
+    const handleFocus = () => {
+      refreshUserRegistrationFromD1(item.slug, userId, userEmail);
+    };
+    window.addEventListener("focus", handleFocus);
+    const interval = setInterval(() => {
+      refreshUserRegistrationFromD1(item.slug, userId, userEmail);
+    }, 8000);
+
+    return () => {
+      window.removeEventListener("focus", handleFocus);
+      clearInterval(interval);
+    };
+  }, [user?.id, user?.email, guestStoredEmail, item.slug]);
+
   // Auto-open modal or redirect if requested via ?register=1 or ?joinCode=...
   useEffect(() => {
     if (loading) return;
     const hasAuth = !!user || !!getBuilderSession();
-    const alreadyRegistered = Boolean(userRegRecord) || isUserRegistered(item.slug, userIdentifier);
 
     if (search.register === "1") {
       if (item.registrationUrl) {
@@ -592,7 +660,7 @@ function OpportunityDetails() {
         if (!hasAuth) {
           setPendingAction({ mode: "create" });
           setExploreGateOpen(true);
-        } else if (!alreadyRegistered) {
+        } else if (!isRegistered) {
           setActiveJoinCode(undefined);
           setModalMode("create");
           setRegModalOpen(true);
@@ -612,12 +680,12 @@ function OpportunityDetails() {
       if (!hasAuth) {
         setPendingAction({ mode: "join", joinCode: incomingJoinCode });
         setExploreGateOpen(true);
-      } else if (!alreadyRegistered) {
+      } else if (!isRegistered) {
         setModalMode("join");
         setRegModalOpen(true);
       }
     }
-  }, [search.register, incomingJoinCode, item.registrationUrl, user, loading, isRegistered, userRegRecord]);
+  }, [search.register, incomingJoinCode, item.registrationUrl, user, loading, isRegistered]);
 
   // Prompt unauthenticated visitors to sign in or create an account
   useEffect(() => {
@@ -703,75 +771,6 @@ function OpportunityDetails() {
       window.open(item.registrationUrl, "_blank", "noopener,noreferrer");
     }
   }, [search.autoredirect, user, item.registrationUrl]);
-
-  const isHost = isEventOrganizer(item, user);
-  const registrations = useEventRegistrations(item.slug, { enabled: isHost });
-  const regCount = registrations.length;
-
-  const guestStoredEmail = typeof window !== "undefined" ? localStorage.getItem("hd_guest_email") || undefined : undefined;
-  const userIdentifier = user?.email || user?.id || guestStoredEmail;
-
-  // Live sync user's registration and team roster from Cloudflare D1
-  useEffect(() => {
-    if (!user && !guestStoredEmail) return;
-    const userEmail = user?.email || guestStoredEmail;
-    const userId = user?.id;
-
-    // Immediately fetch latest team & registration state from Cloudflare D1
-    refreshUserRegistrationFromD1(item.slug, userId, userEmail);
-
-    // Auto-refresh when user switches back to tab or focuses window, plus a periodic 8s sync
-    const handleFocus = () => {
-      refreshUserRegistrationFromD1(item.slug, userId, userEmail);
-    };
-    window.addEventListener("focus", handleFocus);
-    const interval = setInterval(() => {
-      refreshUserRegistrationFromD1(item.slug, userId, userEmail);
-    }, 8000);
-
-    return () => {
-      window.removeEventListener("focus", handleFocus);
-      clearInterval(interval);
-    };
-  }, [user?.id, user?.email, guestStoredEmail, item.slug]);
-
-  const userRegRecord = useMemo(() => {
-    const effectiveEmail = user?.email || guestStoredEmail;
-    const effectiveId = user?.id;
-    if (!effectiveId && !effectiveEmail) return null;
-
-    const localUserRegs = getUserRegistrations(effectiveId, effectiveEmail);
-    const matched = localUserRegs.find((r) => r.opportunitySlug === item.slug);
-    if (matched) return matched;
-
-    return (
-      registrations.find(
-        (r) =>
-          (effectiveId && r.userId === effectiveId) ||
-          (effectiveEmail && typeof r.email === "string" && r.email.toLowerCase() === effectiveEmail.toLowerCase()) ||
-          (effectiveEmail &&
-            Array.isArray(r.teammates) &&
-            r.teammates.some(
-              (t) =>
-                typeof t === "object" &&
-                t &&
-                typeof t.email === "string" &&
-                t.email.toLowerCase() === effectiveEmail.toLowerCase()
-            ))
-      ) || null
-    );
-  }, [registrations, user, guestStoredEmail, item.slug]);
-
-  const isRegistered = Boolean(userRegRecord) || isUserRegistered(item.slug, userIdentifier);
-
-  const externalPlatform = useMemo(() => {
-    if (!item.registrationUrl) return null;
-    const url = item.registrationUrl.toLowerCase();
-    if (url.includes("luma.com") || url.includes("lu.ma")) return "Lu.ma";
-    if (url.includes("unstop.com")) return "Unstop";
-    if (url.includes("devfolio.co")) return "Devfolio";
-    return "the official host platform";
-  }, [item.registrationUrl]);
 
   const facts = [
     { icon: Calendar, label: "Event dates", value: item.date },
