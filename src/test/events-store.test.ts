@@ -10,6 +10,7 @@ import {
   updateHostedOpportunity,
   getUserRegistrations,
   joinTeamWithCode,
+  removeTeammateFromTeam,
 } from "@/data/events-store";
 
 describe("Events Store & Vybe Driven Host Hub", () => {
@@ -219,6 +220,15 @@ describe("Events Store & Vybe Driven Host Hub", () => {
       collegeOrCompany: "Thakur engineering college",
     });
     expect(joinedAgain.teammates?.length).toBe(1);
+
+    // Leader removes member test
+    const afterRemoval = await removeTeammateFromTeam(
+      code,
+      "shubham@example.com",
+      { email: "lavitra@example.com" }
+    );
+    expect(afterRemoval.teammates?.length).toBe(0);
+    expect(afterRemoval.teamSize).toBe("1 members");
   });
 });
 

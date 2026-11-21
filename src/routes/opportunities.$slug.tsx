@@ -615,6 +615,23 @@ function OpportunityDetails() {
 
   const isRegistered = Boolean(userRegRecord) || isUserRegistered(item.slug, userIdentifier);
 
+  const squadMemberCount = useMemo(() => {
+    if (!userRegRecord) return 0;
+    if (userRegRecord.teamType !== "team") return 1;
+    const tm = Array.isArray(userRegRecord.teammates)
+      ? userRegRecord.teammates
+      : typeof (userRegRecord as any).teammates === "string"
+      ? (() => {
+          try {
+            return JSON.parse((userRegRecord as any).teammates);
+          } catch {
+            return [];
+          }
+        })()
+      : [];
+    return 1 + tm.length;
+  }, [userRegRecord]);
+
   const externalPlatform = useMemo(() => {
     if (!item.registrationUrl) return null;
     const url = item.registrationUrl.toLowerCase();
@@ -1200,7 +1217,7 @@ function OpportunityDetails() {
                   {isRegistered && (
                     <div className="mt-3.5 space-y-2.5">
                       {/* PPT Round 1 CTA for Teams with >= 2 members */}
-                      {userRegRecord?.teamType === "team" && (1 + (userRegRecord.teammates?.length || 0)) >= 2 ? (
+                      {userRegRecord?.teamType === "team" && squadMemberCount >= 2 ? (
                         <Button
                           type="button"
                           onClick={() => setIdeaModalOpen(true)}
@@ -1223,7 +1240,7 @@ function OpportunityDetails() {
                           <span className="truncate">Manage Team</span>
                         </Button>
 
-                        {userRegRecord?.teamType === "team" && (1 + (userRegRecord.teammates?.length || 0)) < 2 ? (
+                        {userRegRecord?.teamType === "team" && squadMemberCount < 2 ? (
                           <Button
                             variant="outline"
                             size="sm"
@@ -1678,7 +1695,7 @@ function OpportunityDetails() {
                 {isRegistered ? (
                   <div className="mt-5 space-y-4">
                     {/* Unstop-Style Round 1: Idea Submission (PPT Round) Widget - Only active when team has at least 2 members */}
-                    {(userRegRecord?.teamType !== "team" || (1 + (userRegRecord.teammates?.length || 0)) >= 2) ? (
+                    {(userRegRecord?.teamType !== "team" || squadMemberCount >= 2) ? (
                       <div className="rounded-2xl border-2 border-neon/50 bg-gradient-to-br from-neon/15 via-emerald-950/20 to-black p-4 shadow-glow-soft">
                         <div className="flex items-center justify-between">
                           <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/50 bg-emerald-500/20 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-emerald-400">
@@ -1749,7 +1766,7 @@ function OpportunityDetails() {
                           <span>PPT Submission Locked (2+ Members Required)</span>
                         </div>
                         <p className="mt-1.5 text-amber-200/90 leading-relaxed">
-                          PPT submission round via Vybe Driven unlocks once your squad has at least <strong>2 members</strong> (currently {1 + (userRegRecord?.teammates?.length || 0)}/4). Invite a teammate using your team code <strong>{userRegRecord?.teamCode || userRegRecord?.id}</strong>.
+                          PPT submission round via Vybe Driven unlocks once your squad has at least <strong>2 members</strong> (currently {squadMemberCount}/4). Invite a teammate using your team code <strong>{userRegRecord?.teamCode || userRegRecord?.id}</strong>.
                         </p>
                         <Button
                           size="sm"
@@ -1770,7 +1787,7 @@ function OpportunityDetails() {
                           <span>Registered as squad</span>
                         </div>
                         <span className="rounded-full bg-surface px-2 py-0.5 text-[10px] font-bold text-muted-foreground border border-border">
-                          {userRegRecord?.teamName || "Squad"} ({1 + (userRegRecord?.teammates?.length || 0)}/4)
+                          {userRegRecord?.teamName || "Squad"} ({squadMemberCount}/4)
                         </span>
                       </div>
 
@@ -1784,7 +1801,7 @@ function OpportunityDetails() {
                           <span className="truncate">Manage Team</span>
                         </Button>
 
-                        {userRegRecord?.teamType === "team" && (1 + (userRegRecord.teammates?.length || 0)) < 2 ? (
+                        {userRegRecord?.teamType === "team" && squadMemberCount < 2 ? (
                           <Button
                             variant="outline"
                             size="sm"
@@ -1810,7 +1827,7 @@ function OpportunityDetails() {
 
                     {/* For Quasar 5.0, Problem Statements link for registered builders (strictly locked until 2+ members join) */}
                     {item.slug === "quasar-5-international-hackathon-2027" && (
-                      (1 + (userRegRecord?.teammates?.length || 0)) >= 2 ? (
+                      squadMemberCount >= 2 ? (
                         <div className="space-y-2">
                           <a
                             href="https://quasar-vppcoe.vercel.app/#tracks"
@@ -1977,7 +1994,7 @@ function OpportunityDetails() {
                       <span className="truncate">Manage Team</span>
                     </Button>
 
-                    {userRegRecord?.teamType === "team" && (1 + (userRegRecord.teammates?.length || 0)) >= 2 ? (
+                    {userRegRecord?.teamType === "team" && squadMemberCount >= 2 ? (
                       <Button
                         size="sm"
                         variant="outline"
@@ -2000,7 +2017,7 @@ function OpportunityDetails() {
                     )}
                   </div>
                   {item.slug === "quasar-5-international-hackathon-2027" && (
-                    (1 + (userRegRecord?.teammates?.length || 0)) >= 2 ? (
+                    squadMemberCount >= 2 ? (
                       <a
                         href="https://quasar-vppcoe.vercel.app/#tracks"
                         target="_blank"

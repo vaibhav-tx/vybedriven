@@ -184,16 +184,31 @@ export const d1Db = {
     id: string,
     teamSize: string,
     teamMembers: string | null,
-    teammates: any[]
+    teammates: any[],
+    teamName?: string | null,
+    lookingForTeammates?: boolean | number
   ) {
-    const sql = `
+    let sql = `
       UPDATE registrations
       SET team_size = ?, team_members = ?, teammates = ?, updated_at = ?
-      WHERE id = ?
     `;
     const teammatesJson = typeof teammates === "string" ? teammates : JSON.stringify(teammates || []);
     const teamMembersVal = typeof teamMembers === "string" ? teamMembers : JSON.stringify(teamMembers || null);
-    return d1Query(sql, [teamSize, teamMembersVal, teammatesJson, new Date().toISOString(), id]);
+    const params: any[] = [teamSize, teamMembersVal, teammatesJson, new Date().toISOString()];
+
+    if (teamName !== undefined) {
+      sql += `, team_name = ?`;
+      params.push(teamName);
+    }
+    if (lookingForTeammates !== undefined) {
+      sql += `, looking_for_teammates = ?`;
+      params.push(lookingForTeammates ? 1 : 0);
+    }
+
+    sql += ` WHERE id = ?`;
+    params.push(id);
+
+    return d1Query(sql, params);
   },
 
   async deleteRegistration(id: string) {

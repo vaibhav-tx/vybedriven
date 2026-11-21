@@ -641,6 +641,8 @@ export function mergeRemoteRegistrations(remoteRows: any[]): void {
         const parsed = JSON.parse(row.teammates);
         if (Array.isArray(parsed)) parsedTeammates = parsed;
       } catch {}
+    } else if (row.teammates === null || row.teammates === "" || row.teammates === "[]") {
+      parsedTeammates = [];
     } else if (Array.isArray(existing?.teammates)) {
       parsedTeammates = existing.teammates;
     }
@@ -798,7 +800,7 @@ export function updateTeamRoster(
 
     // Background sync to Cloudflare D1
     d1Query(
-      `UPDATE registrations SET team_name = ?, team_size = ?, team_members = ?, teammates = ?, looking_for_teammates = ?, updated_at = ? WHERE id = ? OR team_code = ?`,
+      `UPDATE registrations SET team_name = ?, team_size = ?, team_members = ?, teammates = ?, looking_for_teammates = ?, updated_at = ? WHERE id = ?`,
       [
         updated.teamName || null,
         updated.teamSize,
@@ -807,11 +809,89 @@ export function updateTeamRoster(
         updated.lookingForTeammates ? 1 : 0,
         new Date().toISOString(),
         updated.id,
-        updated.teamCode || updated.id,
       ]
     ).catch((err) => {
       console.warn("[Database Sync] Team roster update notice:", err);
     });
+  }
+
+  return updated;
+}
+
+// Remove a teammate from the squad (Team Leader or Platform Admin only)
+export async function removeTeammateFromTeam(
+  registrationId: string,
+  teammateEmail: string,
+  user?: { id?: string; email?: string | null } | null
+): Promise<EventRegistration> {
+  const list = getStoredRegistrations();
+  const index = list.findIndex((r) => r.id === registrationId || (r.teamCode && r.teamCode === registrationId));
+  if (index === -1) {
+    throw new Error("Team registration not found.");
+  }
+  const current = list[index];
+
+  // Leader / Admin authorization check
+  const uId = user?.id?.trim();
+  const uEmail = user?.email?.trim().toLowerCase();
+  const isLeader =
+    !user ||
+    (uId && current.userId && current.userId === uId) ||
+    (uEmail && current.email && current.email.toLowerCase() === uEmail) ||
+    isPlatformAdmin(user);
+
+  if (!isLeader) {
+    throw new Error("Only the Team Leader or Administrator can remove teammates from the squad.");
+  }
+
+  const targetEmail = teammateEmail.trim().toLowerCase();
+  const existingTeammates: TeammateDetail[] = Array.isArray(current.teammates)
+    ? current.teammates
+    : typeof (current as any).teammates === "string"
+    ? (() => {
+        try {
+          return JSON.parse((current as any).teammates);
+        } catch {
+          return [];
+        }
+      })()
+    : [];
+
+  const updatedTeammates = existingTeammates.filter(
+    (t) => typeof t === "object" && t && typeof t.email === "string" && t.email.trim().toLowerCase() !== targetEmail
+  );
+
+  const teamSummary = updatedTeammates
+    .map((t) => `${(t.name || "Member").trim()} (${(t.email || "").trim()})`)
+    .join(", ");
+
+  const updated: EventRegistration = {
+    ...current,
+    teammates: updatedTeammates,
+    teamMembers: teamSummary || undefined,
+    teamSize: `${1 + updatedTeammates.length} members`,
+    updatedAt: new Date().toISOString(),
+  };
+
+  list[index] = updated;
+
+  if (typeof window !== "undefined") {
+    localStorage.setItem(STORAGE_REGISTRATIONS, JSON.stringify(list));
+    notifyStoreChange();
+  }
+
+  // Cloudflare D1 persistence
+  try {
+    await d1Db.updateRegistrationTeam(
+      updated.id,
+      updated.teamSize,
+      updated.teamMembers || null,
+      updated.teammates || [],
+      updated.teamName,
+      updated.lookingForTeammates
+    );
+  } catch (err) {
+    console.warn("[Cloud Remove Teammate] D1 update notice:", err);
   }
 
   return updated;
@@ -940,12 +1020,24 @@ export function confirmTeammateInvitation(
   if (index === -1) return false;
 
   const current = list[index];
-  if (!current.teammates || !current.teammates.length) return false;
+  const currentTeammates: TeammateDetail[] = Array.isArray(current.teammates)
+    ? current.teammates
+    : typeof (current as any).teammates === "string"
+    ? (() => {
+        try {
+          return JSON.parse((current as any).teammates);
+        } catch {
+          return [];
+        }
+      })()
+    : [];
+
+  if (!currentTeammates.length) return false;
 
   const targetEmail = teammateEmail.trim().toLowerCase();
   let found = false;
 
-  const updatedTeammates = current.teammates.map((t) => {
+  const updatedTeammates = currentTeammates.map((t) => {
     if (typeof t === "object" && t && typeof t.email === "string" && t.email.trim().toLowerCase() === targetEmail) {
       found = true;
       return {
@@ -1261,9 +1353,21 @@ export function saveIdeaSubmission(
     notifyStoreChange();
 
     // Persist to Cloudflare D1
+    const currentTeammates = Array.isArray(updated.teammates)
+      ? updated.teammates
+      : typeof (updated as any).teammates === "string"
+      ? (() => {
+          try {
+            return JSON.parse((updated as any).teammates);
+          } catch {
+            return [];
+          }
+        })()
+      : [];
+
     const teamSummary =
-      updated.teammates && updated.teammates.length > 0
-        ? updated.teammates.map((t) => `${t.name} (${t.email})`).join(", ")
+      currentTeammates.length > 0
+        ? currentTeammates.map((t: any) => `${t.name} (${t.email})`).join(", ")
         : "";
     const payload = JSON.stringify({
       summary: teamSummary,
@@ -1620,10 +1724,34 @@ export async function refreshUserRegistrationFromD1(
           (r) =>
             r.opportunitySlug === slug &&
             (r.userId === cleanId ||
-              r.email.toLowerCase() === cleanEmail ||
-              r.teammates?.some((t) => t.email?.toLowerCase() === cleanEmail))
+              r.email?.toLowerCase() === cleanEmail ||
+              (Array.isArray(r.teammates) && r.teammates.some((t) => t.email?.toLowerCase() === cleanEmail)))
         ) || null
       );
+    } else if (cleanEmail) {
+      // D1 returned 0 matching registrations for this user on this opportunity!
+      // Clean up any stale local registration where this user was merely an invited teammate:
+      const localList = getStoredRegistrations();
+      let hasChanges = false;
+      const cleaned = localList.map((r) => {
+        if (r.opportunitySlug === slug && Array.isArray(r.teammates) && r.email?.toLowerCase() !== cleanEmail) {
+          const filtered = r.teammates.filter((t) => t.email?.toLowerCase() !== cleanEmail);
+          if (filtered.length !== r.teammates.length) {
+            hasChanges = true;
+            return {
+              ...r,
+              teammates: filtered,
+              teamSize: `${1 + filtered.length} members`,
+            };
+          }
+        }
+        return r;
+      });
+      if (hasChanges) {
+        localStorage.setItem(STORAGE_REGISTRATIONS, JSON.stringify(cleaned));
+        notifyStoreChange();
+      }
+      return null;
     }
   } catch (err) {
     console.warn("[D1 Sync] Could not refresh user registration:", err);

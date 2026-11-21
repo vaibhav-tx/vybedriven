@@ -30,6 +30,7 @@ import {
 } from "lucide-react";
 import {
   updateTeamRoster,
+  removeTeammateFromTeam,
   confirmTeammateInvitation,
   deleteTeamRegistration,
   leaveTeamRegistration,
@@ -96,8 +97,19 @@ export function TeamManagementModal({
     if (registration) {
       setTeamName(registration.teamName || "My Squad");
       setLookingForTeammates(Boolean(registration.lookingForTeammates));
+      const initTeammates = Array.isArray(registration.teammates)
+        ? registration.teammates
+        : typeof (registration as any).teammates === "string"
+        ? (() => {
+            try {
+              return JSON.parse((registration as any).teammates);
+            } catch {
+              return [];
+            }
+          })()
+        : [];
       setTeammates(
-        (Array.isArray(registration.teammates) ? registration.teammates : []).map((t) => ({
+        (Array.isArray(initTeammates) ? initTeammates : []).map((t) => ({
           ...t,
           status: t.status || "pending",
         }))
@@ -107,21 +119,29 @@ export function TeamManagementModal({
     if (open && registration?.id) {
       import("@/integrations/d1/client")
         .then(({ d1Query }) => {
-          d1Query("SELECT * FROM registrations WHERE id = ? OR team_code = ? LIMIT 1", [
+          d1Query("SELECT * FROM registrations WHERE id = ? LIMIT 1", [
             registration.id,
-            registration.teamCode || registration.id,
           ])
             .then((rows) => {
               if (rows && rows.length > 0) {
                 mergeRemoteRegistrations(rows);
-                const fresh = rows[0] as unknown as EventRegistration;
+                const fresh = rows[0] as any;
                 if (fresh) {
-                  setTeamName(fresh.teamName || registration.teamName || "My Squad");
-                  setLookingForTeammates(Boolean(fresh.lookingForTeammates));
+                  setTeamName(fresh.team_name || fresh.teamName || registration.teamName || "My Squad");
+                  setLookingForTeammates(Boolean(fresh.looking_for_teammates ?? fresh.lookingForTeammates));
+                  let freshTeammates = fresh.teammates;
+                  if (typeof freshTeammates === "string" && freshTeammates.trim()) {
+                    try {
+                      freshTeammates = JSON.parse(freshTeammates);
+                    } catch {
+                      freshTeammates = [];
+                    }
+                  }
+                  if (!Array.isArray(freshTeammates)) freshTeammates = [];
                   setTeammates(
-                    (Array.isArray(fresh.teammates) ? fresh.teammates : []).map((t) => ({
+                    freshTeammates.map((t: any) => ({
                       ...t,
-                      status: t.status || "pending",
+                      status: t?.status || "pending",
                     }))
                   );
                 }
@@ -224,10 +244,32 @@ export function TeamManagementModal({
     toast.success(`${newTeammate.name} added! Click "Save & Update Team Details" below to save.`);
   };
 
-  const handleRemoveMember = (index: number) => {
-    const memberName = teammates[index]?.name || "Member";
-    setTeammates(teammates.filter((_, i) => i !== index));
-    toast.info(`${memberName} removed from list. Remember to save changes.`);
+  const handleRemoveMember = async (index: number) => {
+    if (!canManageTeam || !isLeader) {
+      toast.error("Only the Team Leader can remove members from the squad.");
+      return;
+    }
+    if (isEventClosed) {
+      toast.error("Hackathon registration is closed. Team roster has been locked.");
+      return;
+    }
+
+    const targetMember = teammates[index];
+    if (!targetMember) return;
+    const memberName = targetMember.name || "Member";
+    const memberEmail = targetMember.email || "";
+
+    const updatedTeammates = teammates.filter((_, i) => i !== index);
+    setTeammates(updatedTeammates);
+
+    try {
+      const updated = await removeTeammateFromTeam(registration.id, memberEmail, user);
+      toast.success(`✅ ${memberName} has been removed from the team.`);
+      onUpdated?.(updated);
+    } catch (err: any) {
+      console.warn("Failed to remove member:", err);
+      toast.error(err.message || "Failed to remove member from squad.");
+    }
   };
 
   const teamCode = registration.teamCode || registration.id;
@@ -316,25 +358,21 @@ export function TeamManagementModal({
 
     setSaving(true);
     try {
-      const teamSummary = teammates
+      const safeTeammates = Array.isArray(teammates) ? teammates : [];
+      const teamSummary = safeTeammates
         .map((t) => `${(t.name || "Member").trim()} (${(t.email || "").trim()})`)
         .join(", ");
-      const teamSize = `${1 + teammates.length} members`;
+      const teamSize = `${1 + safeTeammates.length} members`;
 
       // 1. Direct Cloudflare D1 execution
-      const { d1Query } = await import("@/integrations/d1/client");
-      await d1Query(
-        `UPDATE registrations SET team_name = ?, team_size = ?, team_members = ?, teammates = ?, looking_for_teammates = ?, updated_at = ? WHERE id = ? OR team_code = ?`,
-        [
-          teamName.trim(),
-          teamSize,
-          teamSummary,
-          JSON.stringify(teammates),
-          lookingForTeammates ? 1 : 0,
-          new Date().toISOString(),
-          registration.id,
-          registration.teamCode || registration.id,
-        ]
+      const { d1Db } = await import("@/integrations/d1/client");
+      await d1Db.updateRegistrationTeam(
+        registration.id,
+        teamSize,
+        teamSummary || null,
+        safeTeammates,
+        teamName.trim(),
+        lookingForTeammates
       ).catch((err) => {
         console.warn("[Cloud Save Team] D1 query note:", err);
       });
@@ -344,7 +382,7 @@ export function TeamManagementModal({
         registration.id,
         {
           teamName: teamName.trim(),
-          teammates,
+          teammates: safeTeammates,
           lookingForTeammates,
         },
         user,
@@ -584,7 +622,7 @@ export function TeamManagementModal({
             </div>
 
             {/* 2. TEAMMATES LIST */}
-            {teammates.map((member, index) => {
+            {(Array.isArray(teammates) ? teammates : []).map((member, index) => {
               const isVerified = member.status === "verified";
               return (
                 <div
