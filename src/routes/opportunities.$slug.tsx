@@ -242,10 +242,14 @@ function EventAuthGateDialog({
   item,
   open,
   onOpenChange,
+  pendingAction,
+  onSuccess,
 }: {
   item: Opportunity;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  pendingAction?: { mode: "create" | "join"; joinCode?: string } | null;
+  onSuccess?: () => void;
 }) {
   const navigate = useNavigate();
   const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
@@ -260,7 +264,23 @@ function EventAuthGateDialog({
     setBusy(true);
     setError("");
     try {
-      const targetUrl = `/opportunities/${item.slug}${item.registrationUrl ? "?autoredirect=1" : ""}`;
+      const searchParams = new URLSearchParams();
+      if (pendingAction?.mode === "join") {
+        const code = pendingAction.joinCode;
+        if (code && code.toUpperCase() !== "JOIN") {
+          searchParams.set("joinCode", code);
+        } else {
+          searchParams.set("joinTeam", "1");
+        }
+      } else {
+        searchParams.set("register", "1");
+      }
+      if (item.registrationUrl) {
+        searchParams.set("autoredirect", "1");
+      }
+      const queryStr = searchParams.toString() ? `?${searchParams.toString()}` : "";
+      const targetUrl = `/opportunities/${item.slug}${queryStr}`;
+
       try {
         localStorage.setItem("hd-auth-next", targetUrl);
         sessionStorage.setItem("hd-auth-next", targetUrl);
@@ -328,6 +348,7 @@ function EventAuthGateDialog({
           toast.success(`Welcome, ${fullName.trim()}! Event unlocked.`);
           setBusy(false);
           onOpenChange(false);
+          onSuccess?.();
           if (item.registrationUrl && typeof window !== "undefined") {
             window.open(item.registrationUrl, "_blank", "noopener,noreferrer");
           }
@@ -351,6 +372,7 @@ function EventAuthGateDialog({
         toast.success("Welcome back! Event unlocked.");
         setBusy(false);
         onOpenChange(false);
+        onSuccess?.();
         if (item.registrationUrl && typeof window !== "undefined") {
           window.open(item.registrationUrl, "_blank", "noopener,noreferrer");
         }
@@ -365,20 +387,20 @@ function EventAuthGateDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="w-[calc(100vw-32px)] max-w-sm sm:max-w-md border-border bg-[#070d09] p-4 sm:p-6 text-foreground shadow-2xl rounded-2xl sm:rounded-3xl max-h-[90vh] overflow-y-auto overflow-x-hidden no-scrollbar"
+        className="w-[calc(100vw-20px)] sm:w-full max-w-[420px] border-border bg-[#070d09] p-3.5 sm:p-6 text-foreground shadow-2xl rounded-2xl sm:rounded-3xl max-h-[92vh] overflow-y-auto overflow-x-hidden no-scrollbar"
         onPointerDownOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => e.preventDefault()}
       >
-        <DialogHeader className="border-b border-border/70 pb-3 text-left pr-8">
+        <DialogHeader className="border-b border-border/70 pb-3 text-left pr-8 sm:pr-10">
           <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-            <div className="size-9 sm:size-10 rounded-xl border border-neon/30 bg-surface flex items-center justify-center overflow-hidden shrink-0 shadow-glow-soft">
+            <div className="size-8 sm:size-10 rounded-xl border border-neon/30 bg-surface flex items-center justify-center overflow-hidden shrink-0 shadow-glow-soft">
               <img src={item.image} alt={item.title} className="h-full w-full object-cover" />
             </div>
             <div className="min-w-0 flex-1">
-              <DialogTitle className="text-sm sm:text-base font-bold text-foreground truncate">
+              <DialogTitle className="text-xs sm:text-base font-bold text-foreground leading-snug line-clamp-2 pr-1">
                 {item.title}
               </DialogTitle>
-              <DialogDescription className="text-[11px] sm:text-xs text-muted-foreground truncate">
+              <DialogDescription className="text-[11px] sm:text-xs text-muted-foreground truncate mt-0.5">
                 {item.slug === "quasar-5-international-hackathon-2027"
                   ? "VPPCOE & VA Mumbai"
                   : item.organizer}
@@ -388,10 +410,12 @@ function EventAuthGateDialog({
         </DialogHeader>
 
         <div className="mt-3 space-y-2.5 sm:space-y-3.5 text-xs sm:text-sm">
-          <div className="rounded-xl border border-neon/40 bg-neon/5 px-3 py-2 text-xs flex items-center gap-2">
+          <div className="rounded-xl border border-neon/40 bg-neon/5 px-2.5 py-2 text-xs flex items-center gap-2">
             <Lock className="size-3.5 shrink-0 text-neon" />
             <span className="text-muted-foreground leading-tight text-[11px] sm:text-xs">
-              Sign in or create account to unlock event stages, problem statements &amp; register.
+              {pendingAction?.mode === "join"
+                ? "Sign in or create account to join your squad with Team Code."
+                : "Sign in or create account to unlock event stages, problem statements & register."}
             </span>
           </div>
 
@@ -419,18 +443,18 @@ function EventAuthGateDialog({
           </div>
 
           {/* Toggle */}
-          <div className="flex rounded-xl border border-border bg-surface p-1">
+          <div className="grid grid-cols-2 gap-1 rounded-xl border border-border bg-surface p-1">
             <button
               type="button"
               onClick={() => { setAuthMode("signin"); setError(""); }}
-              className={`flex-1 rounded-lg py-1.5 text-center text-xs font-bold transition ${authMode === "signin" ? "bg-neon/15 text-neon border border-neon/30 shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+              className={`w-full rounded-lg py-1.5 px-1 text-center text-xs font-bold transition whitespace-nowrap cursor-pointer ${authMode === "signin" ? "bg-neon/15 text-neon border border-neon/30 shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
             >
               Sign In
             </button>
             <button
               type="button"
               onClick={() => { setAuthMode("signup"); setError(""); }}
-              className={`flex-1 rounded-lg py-1.5 text-center text-xs font-bold transition ${authMode === "signup" ? "bg-neon/15 text-neon border border-neon/30 shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+              className={`w-full rounded-lg py-1.5 px-1 text-center text-xs font-bold transition whitespace-nowrap cursor-pointer ${authMode === "signup" ? "bg-neon/15 text-neon border border-neon/30 shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
             >
               Create Account
             </button>
@@ -444,19 +468,34 @@ function EventAuthGateDialog({
 
           <form onSubmit={handleEmailAuth} className="space-y-2.5">
             {authMode === "signup" && (
-              <div>
-                <label className="block text-[11px] font-semibold text-foreground/90 mb-1">
-                  Full Name <span className="text-neon">*</span>
-                </label>
-                <input
-                  required
-                  type="text"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  placeholder="e.g. Alex Johnson"
-                  className="w-full rounded-xl border border-border bg-surface px-3 py-2 text-xs text-foreground outline-none focus:border-neon"
-                />
-              </div>
+              <>
+                <div>
+                  <label className="block text-[11px] font-semibold text-foreground/90 mb-1">
+                    Full Name <span className="text-neon">*</span>
+                  </label>
+                  <input
+                    required
+                    type="text"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    placeholder="e.g. Alex Johnson"
+                    className="w-full rounded-xl border border-border bg-surface px-3 py-2 text-xs text-foreground outline-none focus:border-neon"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-semibold text-foreground/90 mb-1">
+                    Mobile Number <span className="text-neon">*</span>
+                  </label>
+                  <input
+                    required
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="+91 9876543210"
+                    className="w-full rounded-xl border border-border bg-surface px-3 py-2 text-xs text-foreground outline-none focus:border-neon"
+                  />
+                </div>
+              </>
             )}
 
             <div>
@@ -499,21 +538,23 @@ function EventAuthGateDialog({
               />
             </div>
 
-            <div className="pt-2 flex items-center justify-between gap-2.5">
+            <div className="pt-2 flex items-center justify-between gap-2 sm:gap-2.5">
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => navigate({ to: "/" })}
+                onClick={() => onOpenChange(false)}
                 className="rounded-full border-border text-xs h-9 px-3 shrink-0"
               >
-                Back to Home
+                Close
               </Button>
               <Button
                 type="submit"
                 disabled={busy}
-                className="rounded-full bg-neon text-primary-foreground font-bold shadow-glow-soft hover:brightness-105 text-xs flex-1 h-9 px-4 truncate"
+                className="rounded-full bg-neon text-primary-foreground font-bold shadow-glow-soft hover:brightness-105 text-xs flex-1 h-9 px-3"
               >
-                {busy ? "Please wait..." : authMode === "signin" ? "Sign In & Unlock" : "Create Account & Unlock"}
+                <span className="truncate">
+                  {busy ? "Please wait..." : authMode === "signin" ? "Sign In & Continue" : "Create & Continue"}
+                </span>
               </Button>
             </div>
           </form>
@@ -536,23 +577,37 @@ function OpportunityDetails() {
   const incomingJoinCode = search.joinCode || search.joinTeam;
   const [activeJoinCode, setActiveJoinCode] = useState<string | undefined>(incomingJoinCode);
   const [modalMode, setModalMode] = useState<"create" | "join">("create");
+  const [pendingAction, setPendingAction] = useState<{ mode: "create" | "join"; joinCode?: string } | null>(null);
 
   // Auto-open modal or redirect if requested via ?register=1 or ?joinCode=...
   useEffect(() => {
+    if (loading) return;
+    const hasAuth = !!user || !!getBuilderSession();
+
     if (search.register === "1") {
       if (item.registrationUrl) {
         window.open(item.registrationUrl, "_blank", "noopener,noreferrer");
       } else {
-        setActiveJoinCode(undefined);
-        setModalMode("create");
-        setRegModalOpen(true);
+        if (!hasAuth) {
+          setPendingAction({ mode: "create" });
+          setExploreGateOpen(true);
+        } else {
+          setActiveJoinCode(undefined);
+          setModalMode("create");
+          setRegModalOpen(true);
+        }
       }
     } else if (incomingJoinCode && incomingJoinCode.toUpperCase() !== "JOIN") {
       setActiveJoinCode(incomingJoinCode);
-      setModalMode("join");
-      setRegModalOpen(true);
+      if (!hasAuth) {
+        setPendingAction({ mode: "join", joinCode: incomingJoinCode });
+        setExploreGateOpen(true);
+      } else {
+        setModalMode("join");
+        setRegModalOpen(true);
+      }
     }
-  }, [search.register, incomingJoinCode, item.registrationUrl]);
+  }, [search.register, incomingJoinCode, item.registrationUrl, user, loading]);
 
   // Prompt unauthenticated visitors to sign in or create an account
   useEffect(() => {
@@ -564,15 +619,51 @@ function OpportunityDetails() {
   }, [loading, user]);
 
   const handleRegisterClick = () => {
+    if (!user && !getBuilderSession()) {
+      setPendingAction({ mode: "create" });
+      setExploreGateOpen(true);
+      return;
+    }
     setActiveJoinCode(undefined);
     setModalMode("create");
     setRegModalOpen(true);
   };
 
   const handleJoinClick = () => {
+    if (!user && !getBuilderSession()) {
+      setPendingAction({ mode: "join" });
+      setExploreGateOpen(true);
+      return;
+    }
     setActiveJoinCode(undefined);
     setModalMode("join");
     setRegModalOpen(true);
+  };
+
+  const handleAuthSuccess = () => {
+    setExploreGateOpen(false);
+    if (pendingAction?.mode === "join") {
+      const code = pendingAction.joinCode || activeJoinCode;
+      if (code && code.toUpperCase() !== "JOIN") {
+        setActiveJoinCode(code);
+      }
+      setModalMode("join");
+      setRegModalOpen(true);
+      setPendingAction(null);
+    } else if (pendingAction?.mode === "create") {
+      setActiveJoinCode(undefined);
+      setModalMode("create");
+      setRegModalOpen(true);
+      setPendingAction(null);
+    } else if (incomingJoinCode && incomingJoinCode.toUpperCase() !== "JOIN") {
+      setActiveJoinCode(incomingJoinCode);
+      setModalMode("join");
+      setRegModalOpen(true);
+    } else if (search.register === "1") {
+      setActiveJoinCode(undefined);
+      setModalMode("create");
+      setRegModalOpen(true);
+    }
   };
 
   const handleExternalRegisterClick = () => {
@@ -2025,7 +2116,14 @@ function OpportunityDetails() {
       <EventAuthGateDialog
         item={item}
         open={exploreGateOpen}
-        onOpenChange={setExploreGateOpen}
+        onOpenChange={(isOpen) => {
+          setExploreGateOpen(isOpen);
+          if (!isOpen) {
+            setPendingAction(null);
+          }
+        }}
+        pendingAction={pendingAction}
+        onSuccess={handleAuthSuccess}
       />
     </div>
   );

@@ -355,6 +355,10 @@ export function EventRegistrationModal({
   // Handle Join Team with Code
   const handleJoinTeamSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (!user && !getBuilderSession()) {
+      toast.error("Please sign in or create an account to join a team.");
+      return;
+    }
     const cleanCode = teamCodeInput.trim().replace(/^JOIN[\s\-_:]*/i, "").trim();
     if (!cleanCode || cleanCode.toUpperCase() === "JOIN") {
       toast.error("Please enter a valid Team Code (e.g. QSR5-XXXXX or GB27-XXXXX).");
@@ -494,6 +498,10 @@ export function EventRegistrationModal({
   // Final Submit Handler
   const handleFinalSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (!user && !getBuilderSession()) {
+      toast.error("Please sign in or create an account to complete registration.");
+      return;
+    }
 
     if (teamMode === "create_team") {
       if (!teamName.trim()) {
@@ -922,23 +930,23 @@ Platform Support: vybedriven@gmail.com
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[92vh] overflow-y-auto border-border bg-[#070d09] p-5 sm:p-7 text-foreground shadow-2xl">
+      <DialogContent className="w-[calc(100vw-20px)] sm:w-full max-w-2xl max-h-[92vh] overflow-y-auto border-border bg-[#070d09] p-4 sm:p-7 text-foreground shadow-2xl rounded-2xl sm:rounded-3xl no-scrollbar">
         {/* Top Header */}
         <DialogHeader className="border-b border-border/70 pb-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <div className="size-11 sm:size-12 rounded-xl border border-neon/30 bg-surface flex items-center justify-center overflow-hidden shrink-0 shadow-glow-soft">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="size-10 sm:size-12 rounded-xl border border-neon/30 bg-surface flex items-center justify-center overflow-hidden shrink-0 shadow-glow-soft">
                 <img
                   src={opportunity.image}
                   alt={opportunity.title}
                   className="h-full w-full object-cover"
                 />
               </div>
-              <div>
-                <DialogTitle className="text-base sm:text-lg font-bold text-foreground">
+              <div className="min-w-0 flex-1 pr-6 sm:pr-0">
+                <DialogTitle className="text-sm sm:text-lg font-bold text-foreground leading-snug line-clamp-2">
                   {opportunity.title}
                 </DialogTitle>
-                <DialogDescription className="text-xs text-muted-foreground">
+                <DialogDescription className="text-[11px] sm:text-xs text-muted-foreground truncate mt-0.5">
                   {opportunity.organizer}
                 </DialogDescription>
               </div>
@@ -1024,14 +1032,14 @@ Platform Support: vybedriven@gmail.com
             </div>
 
             {/* Toggle Switcher */}
-            <div className="flex rounded-xl border border-border bg-surface p-1">
+            <div className="grid grid-cols-2 gap-1 rounded-xl border border-border bg-surface p-1">
               <button
                 type="button"
                 onClick={() => {
                   setAuthMode("signin");
                   setAuthError("");
                 }}
-                className={`flex-1 rounded-lg py-2 text-center text-xs font-bold transition ${
+                className={`w-full rounded-lg py-2 px-1 text-center text-xs font-bold transition whitespace-nowrap cursor-pointer ${
                   authMode === "signin"
                     ? "bg-neon/15 text-neon border border-neon/30 shadow-sm"
                     : "text-muted-foreground hover:text-foreground"
@@ -1045,13 +1053,13 @@ Platform Support: vybedriven@gmail.com
                   setAuthMode("signup");
                   setAuthError("");
                 }}
-                className={`flex-1 rounded-lg py-2 text-center text-xs font-bold transition ${
+                className={`w-full rounded-lg py-2 px-1 text-center text-xs font-bold transition whitespace-nowrap cursor-pointer ${
                   authMode === "signup"
                     ? "bg-neon/15 text-neon border border-neon/30 shadow-sm"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                Create Account (Instant)
+                Create Account
               </button>
             </div>
 
