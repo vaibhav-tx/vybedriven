@@ -327,7 +327,7 @@ function Events() {
                 </div>
                 <div className="relative shrink-0 hidden md:flex items-center justify-center">
                   <img
-                    src="/events/golden-star-trophy.png"
+                    src="/events/golden-star-trophy.webp"
                     alt="Golden Star Trophy"
                     className="h-16 sm:h-20 w-auto object-contain drop-shadow-[0_4px_16px_rgba(250,204,21,0.4)]"
                   />
@@ -425,7 +425,7 @@ function Events() {
                 </div>
                 <div className="relative shrink-0 hidden md:flex items-center justify-center">
                   <img
-                    src="/events/golden-star-trophy.png"
+                    src="/events/golden-star-trophy.webp"
                     alt="Golden Star Trophy"
                     className="h-16 sm:h-20 w-auto object-contain drop-shadow-[0_4px_16px_rgba(250,204,21,0.4)]"
                   />

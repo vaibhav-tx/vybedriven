@@ -73,7 +73,7 @@ async function main() {
   // 1. Bangalore Product Mixer #4
   await createAmbientBanner({
     inputPath: path.join(brainUserUploads, 'media_1794982314897_d45d6c3c.png'),
-    outputPath: 'public/events/bangalore-product-mixer.jpg',
+    outputPath: 'public/events/bangalore-product-mixer.webp',
     bgBlur: 35,
     bgBrightness: 0.6,
     fgScale: 0.88
@@ -82,7 +82,7 @@ async function main() {
   // 2. DesignMyx'26 Myntra
   await createAmbientBanner({
     inputPath: path.join(brainUserUploads, 'media_1794982357844_69a340fd.png'),
-    outputPath: 'public/events/designmyx-myntra-bangalore.jpg',
+    outputPath: 'public/events/designmyx-myntra-bangalore.webp',
     bgBlur: 35,
     bgBrightness: 0.55,
     fgScale: 0.88
@@ -91,7 +91,7 @@ async function main() {
   // 3. Nerds Winter of Code
   await createAmbientBanner({
     inputPath: path.join(brainUserUploads, 'media_1794982411796_9d5b97fd.jpg'),
-    outputPath: 'public/events/nerds-winter-of-code.jpg',
+    outputPath: 'public/events/nerds-winter-of-code.webp',
     bgBlur: 35,
     bgBrightness: 0.65,
     fgScale: 0.88
@@ -100,7 +100,7 @@ async function main() {
   // 4. UNBOXED: Reimagining STEM Education
   await createAmbientBanner({
     inputPath: path.join(brainUserUploads, 'media_1794982469011_2f0b50a9.png'),
-    outputPath: 'public/events/unboxed-stem-education.jpg',
+    outputPath: 'public/events/unboxed-stem-education.webp',
     bgBlur: 35,
     bgBrightness: 0.55,
     fgScale: 0.88
@@ -109,7 +109,7 @@ async function main() {
   // 5. Apify AI Tools that Earn Hackathon
   await createAmbientBanner({
     inputPath: path.join(brainUserUploads, 'media_1794982568814_e266f694.png'),
-    outputPath: 'public/events/apify-ai-tools-that-earn.jpg',
+    outputPath: 'public/events/apify-ai-tools-that-earn.webp',
     bgBlur: 30,
     bgBrightness: 0.5,
     fgScale: 0.88
