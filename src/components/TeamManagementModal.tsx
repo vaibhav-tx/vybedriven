@@ -401,7 +401,7 @@ export function TeamManagementModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-[calc(100vw-20px)] sm:w-full max-w-2xl max-h-[92vh] overflow-y-auto overflow-x-hidden border-border bg-[#070e0a] p-4 sm:p-7 text-foreground shadow-2xl rounded-2xl sm:rounded-3xl no-scrollbar">
+      <DialogContent className="w-[calc(100vw-24px)] sm:w-full max-w-2xl max-h-[90vh] overflow-y-auto border-border bg-[#070e0a] p-4 sm:p-6 text-foreground shadow-2xl rounded-2xl sm:rounded-3xl no-scrollbar box-border">
         <DialogHeader className="border-b border-border/70 pb-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>

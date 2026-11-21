@@ -387,7 +387,7 @@ function EventAuthGateDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="w-[calc(100vw-20px)] sm:w-full max-w-[420px] border-border bg-[#070d09] p-3.5 sm:p-6 text-foreground shadow-2xl rounded-2xl sm:rounded-3xl max-h-[92vh] overflow-y-auto overflow-x-hidden no-scrollbar"
+        className="w-[calc(100vw-24px)] sm:w-full max-w-[420px] border-border bg-[#070d09] p-4 sm:p-6 text-foreground shadow-2xl rounded-2xl sm:rounded-3xl max-h-[90vh] overflow-y-auto no-scrollbar box-border"
         onPointerDownOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => e.preventDefault()}
       >

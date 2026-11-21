@@ -930,9 +930,9 @@ Platform Support: vybedriven@gmail.com
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-[calc(100vw-20px)] sm:w-full max-w-2xl max-h-[92vh] overflow-y-auto overflow-x-hidden border-border bg-[#070d09] p-4 sm:p-7 text-foreground shadow-2xl rounded-2xl sm:rounded-3xl no-scrollbar">
+      <DialogContent className="w-[calc(100vw-24px)] sm:w-full max-w-2xl max-h-[90vh] overflow-y-auto border-border bg-[#070d09] p-4 sm:p-6 text-foreground shadow-2xl rounded-2xl sm:rounded-3xl no-scrollbar box-border">
         {/* Top Header */}
-        <DialogHeader className="border-b border-border/70 pb-4">
+        <DialogHeader className="border-b border-border/70 pb-4 pr-8 sm:pr-10">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-center gap-3 min-w-0">
               <div className="size-10 sm:size-12 rounded-xl border border-neon/30 bg-surface flex items-center justify-center overflow-hidden shrink-0 shadow-glow-soft">
@@ -942,21 +942,23 @@ Platform Support: vybedriven@gmail.com
                   className="h-full w-full object-cover"
                 />
               </div>
-              <div className="min-w-0 flex-1 pr-6 sm:pr-0">
+              <div className="min-w-0 flex-1">
                 <DialogTitle className="text-sm sm:text-lg font-bold text-foreground leading-snug line-clamp-2">
                   {opportunity.title}
                 </DialogTitle>
                 <DialogDescription className="text-[11px] sm:text-xs text-muted-foreground truncate mt-0.5">
-                  {opportunity.organizer}
+                  {opportunity.slug === "quasar-5-international-hackathon-2027"
+                    ? "VPPCOE & VA Mumbai · Powered by ATS & Unstop · Co-Powered by Vybe Driven"
+                    : opportunity.organizer}
                 </DialogDescription>
               </div>
             </div>
 
             {/* User Session Pill */}
             {user ? (
-              <div className="flex items-center gap-2 rounded-full border border-border bg-surface/80 px-3 py-1 text-xs text-muted-foreground self-start sm:self-auto">
-                <span className="size-2 rounded-full bg-neon animate-pulse" />
-                <span className="truncate max-w-[170px] text-foreground font-medium">
+              <div className="flex items-center gap-2 rounded-full border border-border bg-surface/80 px-2.5 sm:px-3 py-1 text-xs text-muted-foreground shrink-0 self-start sm:self-auto max-w-full">
+                <span className="size-2 rounded-full bg-neon animate-pulse shrink-0" />
+                <span className="truncate max-w-[130px] sm:max-w-[170px] text-foreground font-medium">
                   {user.email}
                 </span>
               </div>
@@ -965,29 +967,29 @@ Platform Support: vybedriven@gmail.com
 
           {/* Stepper Indicator */}
           {step !== 3 && (
-            <div className="mt-4 flex items-center justify-between gap-2 border-t border-border/50 pt-3 text-xs">
-              <div className="flex items-center gap-2">
+            <div className="mt-4 flex items-center justify-between gap-2 border-t border-border/50 pt-3 text-xs min-w-0">
+              <div className="flex items-center gap-2 min-w-0">
                 <span
-                  className={`flex size-6 items-center justify-center rounded-full text-xs font-bold ${
+                  className={`flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
                     step === 1 ? "bg-neon text-black" : "bg-neon/20 text-neon"
                   }`}
                 >
                   1
                 </span>
-                <span className={step === 1 ? "font-bold text-foreground" : "text-muted-foreground"}>
+                <span className={`truncate ${step === 1 ? "font-bold text-foreground" : "text-muted-foreground"}`}>
                   Basic &amp; User Details
                 </span>
               </div>
-              <ChevronRight className="size-4 text-muted-foreground" />
-              <div className="flex items-center gap-2">
+              <ChevronRight className="size-4 text-muted-foreground shrink-0" />
+              <div className="flex items-center gap-2 min-w-0">
                 <span
-                  className={`flex size-6 items-center justify-center rounded-full text-xs font-bold ${
+                  className={`flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
                     step === 2 ? "bg-neon text-black" : "bg-surface-2 text-muted-foreground"
                   }`}
                 >
                   2
                 </span>
-                <span className={step === 2 ? "font-bold text-foreground" : "text-muted-foreground"}>
+                <span className={`truncate ${step === 2 ? "font-bold text-foreground" : "text-muted-foreground"}`}>
                   Team Setup
                 </span>
               </div>
@@ -1251,8 +1253,8 @@ Platform Support: vybedriven@gmail.com
                   ) : null}
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 min-w-0">
+                  <div className="min-w-0">
                     <label className="block text-xs font-semibold text-foreground/90 mb-1">
                       First Name <span className="text-neon">*</span>
                     </label>
@@ -1262,10 +1264,10 @@ Platform Support: vybedriven@gmail.com
                       value={firstName}
                       onChange={(e) => setFirstName(e.target.value)}
                       placeholder="Enter first name"
-                      className="w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon"
+                      className="w-full min-w-0 rounded-xl border border-border bg-surface px-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon"
                     />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <label className="block text-xs font-semibold text-foreground/90 mb-1">
                       Last Name
                     </label>
@@ -1274,13 +1276,13 @@ Platform Support: vybedriven@gmail.com
                       value={lastName}
                       onChange={(e) => setLastName(e.target.value)}
                       placeholder="Enter last name"
-                      className="w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon"
+                      className="w-full min-w-0 rounded-xl border border-border bg-surface px-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 min-w-0">
+                  <div className="min-w-0">
                     <label className="block text-xs font-semibold text-foreground/90 mb-1">
                       Email Address <span className="text-neon">*</span>
                     </label>
@@ -1290,15 +1292,15 @@ Platform Support: vybedriven@gmail.com
                       value={email || user?.email || ""}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="yourname@gmail.com"
-                      className="w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon"
+                      className="w-full min-w-0 rounded-xl border border-border bg-surface px-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon"
                     />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <label className="block text-xs font-semibold text-foreground/90 mb-1">
                       Mobile Number <span className="text-neon">*</span>
                     </label>
-                    <div className="flex items-center rounded-xl border border-border bg-surface overflow-hidden">
-                      <span className="flex items-center gap-1 bg-surface-2 px-3 py-2.5 text-xs font-bold text-foreground border-r border-border shrink-0 select-none">
+                    <div className="flex items-center rounded-xl border border-border bg-surface overflow-hidden min-w-0">
+                      <span className="flex items-center gap-1 bg-surface-2 px-2.5 sm:px-3 py-2 sm:py-2.5 text-xs font-bold text-foreground border-r border-border shrink-0 select-none">
                         🇮🇳 +91
                       </span>
                       <input
@@ -1307,14 +1309,14 @@ Platform Support: vybedriven@gmail.com
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         placeholder="10-digit number"
-                        className="w-full bg-transparent px-3 py-2.5 text-xs sm:text-sm text-foreground outline-none"
+                        className="w-full min-w-0 bg-transparent px-2.5 sm:px-3 py-2 sm:py-2.5 text-xs sm:text-sm text-foreground outline-none"
                       />
                     </div>
                   </div>
                 </div>
 
-                <div className="space-y-3">
-                  <div>
+                <div className="space-y-3 min-w-0">
+                  <div className="min-w-0">
                     <label className="block text-xs font-semibold text-foreground/90 mb-1">
                       College / Organization <span className="text-neon">*</span>
                     </label>
@@ -1324,10 +1326,10 @@ Platform Support: vybedriven@gmail.com
                       value={organization}
                       onChange={(e) => setOrganization(e.target.value)}
                       placeholder="Your college or organization"
-                      className="w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon focus:ring-1 focus:ring-neon"
+                      className="w-full min-w-0 rounded-xl border border-border bg-surface px-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon focus:ring-1 focus:ring-neon"
                     />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <label className="block text-xs font-semibold text-foreground/90 mb-1">
                       Branch / Department
                     </label>
@@ -1336,26 +1338,28 @@ Platform Support: vybedriven@gmail.com
                       value={joinDept}
                       onChange={(e) => setJoinDept(e.target.value)}
                       placeholder="e.g. Computer Engineering"
-                      className="w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon focus:ring-1 focus:ring-neon"
+                      className="w-full min-w-0 rounded-xl border border-border bg-surface px-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon focus:ring-1 focus:ring-neon"
                     />
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-4 border-t border-border/70">
+                <div className="flex items-center justify-between gap-2 sm:gap-3 pt-4 border-t border-border/70 min-w-0">
                   <Button
                     type="button"
                     variant="ghost"
                     onClick={() => onOpenChange(false)}
-                    className="rounded-full text-xs text-muted-foreground hover:text-foreground"
+                    className="rounded-full text-xs text-muted-foreground hover:text-foreground shrink-0 h-9 sm:h-10 px-3 sm:px-4"
                   >
                     Cancel
                   </Button>
                   <Button
                     type="submit"
                     disabled={submitting || !matchedTeam}
-                    className="rounded-full bg-gradient-brand text-primary-foreground font-bold px-7 shadow-glow hover:brightness-110 disabled:opacity-50"
+                    className="rounded-full bg-gradient-brand text-primary-foreground font-bold px-4 sm:px-6 text-xs sm:text-sm h-9 sm:h-10 shadow-glow hover:brightness-110 disabled:opacity-50 shrink-0 min-w-0"
                   >
-                    {submitting ? "Joining..." : matchedTeam ? "Join Team & Get Pass 🚀" : "Enter Valid Code to Join"}
+                    <span className="truncate">
+                      {submitting ? "Joining..." : matchedTeam ? "Join Team & Get Pass 🚀" : "Enter Valid Code"}
+                    </span>
                   </Button>
                 </div>
               </form>
@@ -1371,8 +1375,8 @@ Platform Support: vybedriven@gmail.com
             </div>
 
             {/* First & Last Name */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 min-w-0">
+              <div className="min-w-0">
                 <label className="block text-xs font-semibold text-foreground/90 mb-1">
                   First Name <span className="text-neon">*</span>
                 </label>
@@ -1382,11 +1386,11 @@ Platform Support: vybedriven@gmail.com
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   placeholder="Enter first name"
-                  className="w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon focus:ring-1 focus:ring-neon"
+                  className="w-full min-w-0 rounded-xl border border-border bg-surface px-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon focus:ring-1 focus:ring-neon"
                 />
               </div>
 
-              <div>
+              <div className="min-w-0">
                 <label className="block text-xs font-semibold text-foreground/90 mb-1">
                   Last Name <span className="text-muted-foreground font-normal">(if applicable)</span>
                 </label>
@@ -1395,14 +1399,14 @@ Platform Support: vybedriven@gmail.com
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                   placeholder="Enter last name"
-                  className="w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon focus:ring-1 focus:ring-neon"
+                  className="w-full min-w-0 rounded-xl border border-border bg-surface px-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon focus:ring-1 focus:ring-neon"
                 />
               </div>
             </div>
 
             {/* Email & Phone with +91 */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 min-w-0">
+              <div className="min-w-0">
                 <label className="block text-xs font-semibold text-foreground/90 mb-1">
                   Email Address <span className="text-neon">*</span>
                 </label>
@@ -1412,16 +1416,16 @@ Platform Support: vybedriven@gmail.com
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="enter email"
-                  className="w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon focus:ring-1 focus:ring-neon"
+                  className="w-full min-w-0 rounded-xl border border-border bg-surface px-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon focus:ring-1 focus:ring-neon"
                 />
               </div>
 
-              <div>
+              <div className="min-w-0">
                 <label className="block text-xs font-semibold text-foreground/90 mb-1">
                   Mobile Number <span className="text-neon">*</span>
                 </label>
-                <div className="flex items-center rounded-xl border border-border bg-surface overflow-hidden focus-within:border-neon focus-within:ring-1 focus-within:ring-neon">
-                  <span className="flex items-center gap-1 bg-surface-2 px-3 py-2.5 text-xs font-bold text-foreground border-r border-border shrink-0 select-none">
+                <div className="flex items-center rounded-xl border border-border bg-surface overflow-hidden focus-within:border-neon focus-within:ring-1 focus-within:ring-neon min-w-0">
+                  <span className="flex items-center gap-1 bg-surface-2 px-2.5 sm:px-3 py-2 sm:py-2.5 text-xs font-bold text-foreground border-r border-border shrink-0 select-none">
                     🇮🇳 +91
                   </span>
                   <input
@@ -1430,24 +1434,24 @@ Platform Support: vybedriven@gmail.com
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="10-digit mobile number"
-                    className="w-full bg-transparent px-3 py-2.5 text-xs sm:text-sm text-foreground outline-none"
+                    className="w-full min-w-0 bg-transparent px-2.5 sm:px-3 py-2 sm:py-2.5 text-xs sm:text-sm text-foreground outline-none"
                   />
                 </div>
               </div>
             </div>
 
             {/* Gender Pill Selector */}
-            <div>
+            <div className="min-w-0">
               <label className="block text-xs font-semibold text-foreground/90 mb-2">
                 Gender <span className="text-neon">*</span>
               </label>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1.5 sm:gap-2">
                 {GENDERS.map((g) => (
                   <button
                     key={g}
                     type="button"
                     onClick={() => setGender(g)}
-                    className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition ${
+                    className={`rounded-full px-3 sm:px-3.5 py-1.5 text-xs font-semibold transition shrink-0 ${
                       gender === g
                         ? "bg-neon text-black font-bold shadow-glow-soft"
                         : "border border-border bg-surface text-muted-foreground hover:text-foreground hover:border-border/80"
@@ -1460,37 +1464,37 @@ Platform Support: vybedriven@gmail.com
             </div>
 
             {/* Location & Organization */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 min-w-0">
+              <div className="min-w-0">
                 <label className="block text-xs font-semibold text-foreground/90 mb-1 flex items-center justify-between">
                   <span>Location <span className="text-neon">*</span></span>
                   <span className="text-[10px] text-muted-foreground">City, State</span>
                 </label>
-                <div className="relative">
+                <div className="relative min-w-0">
                   <input
                     type="text"
                     required
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                     placeholder="e.g. South Goa, Goa or Mumbai"
-                    className="w-full rounded-xl border border-border bg-surface pl-9 pr-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon focus:ring-1 focus:ring-neon"
+                    className="w-full min-w-0 rounded-xl border border-border bg-surface pl-9 pr-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon focus:ring-1 focus:ring-neon"
                   />
                   <MapPin className="absolute left-3 top-3 size-4 text-muted-foreground pointer-events-none" />
                 </div>
               </div>
 
-              <div>
+              <div className="min-w-0">
                 <label className="block text-xs font-semibold text-foreground/90 mb-1">
                   Organization / College Name <span className="text-neon">*</span>
                 </label>
-                <div className="relative">
+                <div className="relative min-w-0">
                   <input
                     type="text"
                     required
                     value={organization}
                     onChange={(e) => setOrganization(e.target.value)}
                     placeholder="Search or enter your college / company"
-                    className="w-full rounded-xl border border-border bg-surface pl-9 pr-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon focus:ring-1 focus:ring-neon"
+                    className="w-full min-w-0 rounded-xl border border-border bg-surface pl-9 pr-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon focus:ring-1 focus:ring-neon"
                   />
                   <Building2 className="absolute left-3 top-3 size-4 text-muted-foreground pointer-events-none" />
                 </div>
@@ -1498,23 +1502,23 @@ Platform Support: vybedriven@gmail.com
             </div>
 
             {/* User Type Pill Selector */}
-            <div className="pt-2 border-t border-border/60">
+            <div className="pt-2 border-t border-border/60 min-w-0">
               <label className="block text-xs font-semibold text-foreground/90 mb-2">
                 User Details &amp; Category <span className="text-neon">*</span>
               </label>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 min-w-0">
                 {USER_TYPES.map((ut) => (
                   <button
                     key={ut.label}
                     type="button"
                     onClick={() => setUserType(ut.label)}
-                    className={`flex items-center justify-center gap-1.5 rounded-xl p-2.5 text-xs font-semibold transition ${
+                    className={`flex items-center justify-center gap-1.5 rounded-xl p-2 sm:p-2.5 text-xs font-semibold transition min-w-0 ${
                       userType === ut.label
                         ? "border border-neon bg-neon/15 text-neon shadow-glow-soft"
                         : "border border-border bg-surface text-muted-foreground hover:text-foreground"
                     }`}
                   >
-                    <span>{ut.icon}</span>
+                    <span className="shrink-0">{ut.icon}</span>
                     <span className="truncate">{ut.label}</span>
                   </button>
                 ))}
@@ -1522,22 +1526,22 @@ Platform Support: vybedriven@gmail.com
             </div>
 
             {/* Notice Note */}
-            <div className="rounded-xl border border-sky-400/30 bg-sky-500/10 p-3 text-xs text-sky-300 flex items-start gap-2.5">
+            <div className="rounded-xl border border-sky-400/30 bg-sky-500/10 p-3 text-xs text-sky-300 flex items-start gap-2.5 min-w-0">
               <Sparkles className="size-4 shrink-0 text-sky-400 mt-0.5" />
-              <span>
+              <span className="leading-relaxed">
                 <strong>Note:</strong> You can create your squad and add teammates on the next step. Teams can have 2 to 4 members.
               </span>
             </div>
 
             {/* Terms and Conditions */}
-            <div className="space-y-2 pt-2 border-t border-border/60">
+            <div className="space-y-2 pt-2 border-t border-border/60 min-w-0">
               <label className="flex items-start gap-2.5 cursor-pointer">
                 <input
                   type="checkbox"
                   required
                   checked={termsAccepted}
                   onChange={(e) => setTermsAccepted(e.target.checked)}
-                  className="mt-0.5 size-4 rounded border-border text-neon focus:ring-neon"
+                  className="mt-0.5 size-4 rounded border-border text-neon focus:ring-neon shrink-0"
                 />
                 <span className="text-xs text-muted-foreground leading-relaxed">
                   By registering for this opportunity, you agree to share the data mentioned in this form or any form henceforth on this opportunity with the organizer of this opportunity for further analysis, processing, and outreach. You also agree to the privacy policy and terms of use of Vybe Driven.
@@ -1549,30 +1553,30 @@ Platform Support: vybedriven@gmail.com
                   type="checkbox"
                   checked={stayInLoop}
                   onChange={(e) => setStayInLoop(e.target.checked)}
-                  className="size-4 rounded border-border text-neon focus:ring-neon"
+                  className="size-4 rounded border-border text-neon focus:ring-neon shrink-0"
                 />
-                <span className="text-xs text-foreground font-medium">
+                <span className="text-xs text-foreground font-medium leading-relaxed">
                   Stay in the loop — Get relevant updates curated for you!
                 </span>
               </label>
             </div>
 
             {/* Modal Actions */}
-            <div className="flex items-center justify-between pt-4 border-t border-border/70">
+            <div className="flex items-center justify-between gap-2 sm:gap-3 pt-4 border-t border-border/70 min-w-0">
               <Button
                 type="button"
                 variant="ghost"
                 onClick={() => onOpenChange(false)}
-                className="rounded-full text-xs text-muted-foreground hover:text-foreground"
+                className="rounded-full text-xs text-muted-foreground hover:text-foreground shrink-0 h-9 sm:h-10 px-3 sm:px-4"
               >
                 Close
               </Button>
 
               <Button
                 type="submit"
-                className="rounded-full bg-gradient-brand text-primary-foreground font-bold px-7 shadow-glow hover:brightness-110"
+                className="rounded-full bg-gradient-brand text-primary-foreground font-bold px-5 sm:px-7 text-xs sm:text-sm h-9 sm:h-10 shadow-glow hover:brightness-110 shrink-0"
               >
-                Next Step <ChevronRight className="size-4 ml-1" />
+                <span>Next Step</span> <ChevronRight className="size-4 ml-1 shrink-0" />
               </Button>
             </div>
           </form>
@@ -1582,11 +1586,11 @@ Platform Support: vybedriven@gmail.com
 
         {/* STEP 2: TEAM SETUP & SQUAD FORMATION */}
         {(user || getBuilderSession()) && step === 2 && (
-          <form onSubmit={handleFinalSubmit} className="mt-4 space-y-5 text-xs sm:text-sm">
+          <form onSubmit={handleFinalSubmit} className="mt-4 space-y-5 text-xs sm:text-sm min-w-0">
             {/* Important Notes Banner */}
-            <div className="rounded-2xl border border-sky-400/35 bg-gradient-to-r from-sky-500/15 via-surface to-surface p-4">
+            <div className="rounded-2xl border border-sky-400/35 bg-gradient-to-r from-sky-500/15 via-surface to-surface p-3.5 sm:p-4 min-w-0">
               <h4 className="text-xs font-bold uppercase tracking-wider text-sky-400 mb-1.5 flex items-center gap-1.5">
-                <ShieldCheck className="size-4" /> Important Team Notes
+                <ShieldCheck className="size-4 shrink-0" /> Important Team Notes
               </h4>
               <ul className="space-y-1 text-xs text-muted-foreground list-disc pl-4 leading-relaxed">
                 <li>Your team must have at least 2 and no more than 4 members for the offline sprint.</li>
@@ -1596,21 +1600,21 @@ Platform Support: vybedriven@gmail.com
             </div>
 
             {/* Choice: Create A Team vs Join Existing Team */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 min-w-0">
               <button
                 type="button"
                 onClick={() => setTeamMode("create_team")}
-                className={`flex flex-col items-center justify-center rounded-2xl p-4 text-center transition cursor-pointer ${
+                className={`flex flex-col items-center justify-center rounded-2xl p-3.5 sm:p-4 text-center transition cursor-pointer min-w-0 ${
                   teamMode === "create_team"
                     ? "border-2 border-neon bg-neon/10 text-foreground shadow-glow-soft"
                     : "border border-border bg-surface text-muted-foreground hover:border-border/80"
                 }`}
               >
-                <div className="grid size-12 place-items-center rounded-xl bg-neon/15 text-neon mb-2.5">
-                  <UserPlus className="size-6" />
+                <div className="grid size-10 sm:size-12 place-items-center rounded-xl bg-neon/15 text-neon mb-2 shrink-0">
+                  <UserPlus className="size-5 sm:size-6" />
                 </div>
-                <h4 className="text-sm font-bold text-foreground">Create A Team</h4>
-                <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
+                <h4 className="text-xs sm:text-sm font-bold text-foreground">Create A Team</h4>
+                <p className="mt-1 text-[11px] sm:text-xs text-muted-foreground leading-relaxed">
                   I am the Team Leader. Form a squad &amp; get a Team Code to invite friends.
                 </p>
               </button>
@@ -1618,17 +1622,17 @@ Platform Support: vybedriven@gmail.com
               <button
                 type="button"
                 onClick={() => setTeamMode("join_team")}
-                className={`flex flex-col items-center justify-center rounded-2xl p-4 text-center transition cursor-pointer ${
+                className={`flex flex-col items-center justify-center rounded-2xl p-3.5 sm:p-4 text-center transition cursor-pointer min-w-0 ${
                   teamMode === "join_team"
                     ? "border-2 border-cyan-400 bg-cyan-500/10 text-foreground shadow-glow-soft"
                     : "border border-border bg-surface text-muted-foreground hover:border-border/80"
                 }`}
               >
-                <div className="grid size-12 place-items-center rounded-xl bg-cyan-400/15 text-cyan-400 mb-2.5">
-                  <Users className="size-6" />
+                <div className="grid size-10 sm:size-12 place-items-center rounded-xl bg-cyan-400/15 text-cyan-400 mb-2 shrink-0">
+                  <Users className="size-5 sm:size-6" />
                 </div>
-                <h4 className="text-sm font-bold text-foreground">Join Existing Team</h4>
-                <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
+                <h4 className="text-xs sm:text-sm font-bold text-foreground">Join Existing Team</h4>
+                <p className="mt-1 text-[11px] sm:text-xs text-muted-foreground leading-relaxed">
                   I have a Team Code. Enter code to join my leader&apos;s verified squad.
                 </p>
               </button>
@@ -1636,8 +1640,8 @@ Platform Support: vybedriven@gmail.com
 
             {/* CREATE TEAM FORM */}
             {teamMode === "create_team" ? (
-              <div className="space-y-4 pt-2">
-                <div>
+              <div className="space-y-4 pt-2 min-w-0">
+                <div className="min-w-0">
                   <label className="block text-xs font-semibold text-foreground mb-1">
                     Team Name <span className="text-neon">*</span>
                   </label>
@@ -1647,47 +1651,47 @@ Platform Support: vybedriven@gmail.com
                     value={teamName}
                     onChange={(e) => setTeamName(e.target.value)}
                     placeholder="Enter your team name (e.g. CodeBrewers)"
-                    className="w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon focus:ring-1 focus:ring-neon"
+                    className="w-full min-w-0 rounded-xl border border-border bg-surface px-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon focus:ring-1 focus:ring-neon"
                   />
                 </div>
 
                 {/* Teammates Header */}
-                <div className="flex items-center justify-between border-b border-border/60 pb-2">
-                  <div className="flex items-center gap-2">
-                    <Users className="size-4 text-neon" />
-                    <span className="font-bold text-foreground">
+                <div className="flex items-center justify-between border-b border-border/60 pb-2 gap-2 min-w-0">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <Users className="size-4 text-neon shrink-0" />
+                    <span className="font-bold text-foreground text-xs sm:text-sm truncate">
                       Team Roster Formation
                     </span>
                   </div>
-                  <span className="rounded-full bg-neon/15 px-2.5 py-0.5 text-[11px] font-bold text-neon">
-                    Team Code Instant Joining
+                  <span className="rounded-full bg-neon/15 px-2 sm:px-2.5 py-0.5 text-[10px] sm:text-[11px] font-bold text-neon shrink-0">
+                    Instant Join
                   </span>
                 </div>
 
                 {/* Leader Card (Member 1) */}
-                <div className="flex items-center justify-between rounded-xl border border-neon/40 bg-neon/10 p-3.5">
-                  <div className="flex items-center gap-3">
-                    <div className="size-9 rounded-full bg-neon text-black font-extrabold flex items-center justify-center shrink-0">
+                <div className="flex items-center justify-between rounded-xl border border-neon/40 bg-neon/10 p-3 sm:p-3.5 gap-2 min-w-0">
+                  <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
+                    <div className="size-8 sm:size-9 rounded-full bg-neon text-black font-extrabold flex items-center justify-center shrink-0 text-xs sm:text-sm">
                       {firstName.charAt(0) || "U"}
                     </div>
-                    <div>
-                      <p className="font-bold text-foreground text-xs sm:text-sm">
+                    <div className="min-w-0 flex-1">
+                      <p className="font-bold text-foreground text-xs sm:text-sm truncate">
                         {firstName} {lastName}
                       </p>
-                      <p className="text-[11px] text-muted-foreground">
+                      <p className="text-[11px] text-muted-foreground truncate">
                         {phone} · {email}
                       </p>
                     </div>
                   </div>
-                  <span className="rounded-full bg-neon/20 px-2.5 py-0.5 text-[10px] font-bold text-neon uppercase">
-                    Team Leader
+                  <span className="rounded-full bg-neon/20 px-2 sm:px-2.5 py-0.5 text-[10px] font-bold text-neon uppercase shrink-0">
+                    Leader
                   </span>
                 </div>
 
                 {/* Team Code Explanatory Card */}
-                <div className="rounded-xl border border-neon/30 bg-gradient-to-br from-neon/10 via-surface to-surface p-4 text-xs space-y-2">
+                <div className="rounded-xl border border-neon/30 bg-gradient-to-br from-neon/10 via-surface to-surface p-3.5 sm:p-4 text-xs space-y-2 min-w-0">
                   <div className="flex items-center gap-2 font-bold text-neon">
-                    <Sparkles className="size-4" />
+                    <Sparkles className="size-4 shrink-0" />
                     <span>How Teammates Will Join Your Team</span>
                   </div>
                   <p className="text-[11px] text-muted-foreground leading-relaxed">
@@ -1702,16 +1706,16 @@ Platform Support: vybedriven@gmail.com
               </div>
             ) : (
               /* JOIN EXISTING TEAM WITH CODE */
-              <div className="space-y-4 pt-2">
-                <div className="rounded-2xl border border-cyan-400/40 bg-cyan-950/20 p-4 space-y-3">
+              <div className="space-y-4 pt-2 min-w-0">
+                <div className="rounded-2xl border border-cyan-400/40 bg-cyan-950/20 p-3.5 sm:p-4 space-y-3 min-w-0">
                   <div className="flex items-center gap-2 text-cyan-400 font-bold text-xs uppercase tracking-wider">
-                    <Sparkles className="size-4" /> Enter Your Leader&apos;s Team Code
+                    <Sparkles className="size-4 shrink-0" /> Enter Your Leader&apos;s Team Code
                   </div>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-muted-foreground leading-relaxed">
                     Enter the Team Invitation Code shared by your Team Leader (e.g. GB27-XXXXX or 5-digit number). Once submitted, you will immediately join their verified team roster with an entry pass!
                   </p>
 
-                  <div>
+                  <div className="min-w-0">
                     <label className="block text-xs font-semibold text-foreground mb-1">
                       Team Code <span className="text-neon">*</span>
                     </label>
@@ -1721,32 +1725,32 @@ Platform Support: vybedriven@gmail.com
                       value={teamCodeInput}
                       onChange={(e) => setTeamCodeInput(e.target.value.toUpperCase())}
                       placeholder="e.g. GB27-82035"
-                      className="w-full rounded-xl border border-cyan-400/50 bg-background px-3.5 py-2.5 font-mono text-sm uppercase text-foreground outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400"
+                      className="w-full min-w-0 rounded-xl border border-cyan-400/50 bg-background px-3.5 py-2.5 font-mono text-xs sm:text-sm uppercase text-foreground outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400"
                     />
                   </div>
 
                   {isSearchingTeam ? (
-                    <div className="flex items-center gap-2 rounded-xl border border-cyan-400/30 bg-cyan-500/10 p-2.5 text-xs text-cyan-300">
+                    <div className="flex items-center gap-2 rounded-xl border border-cyan-400/30 bg-cyan-500/10 p-2.5 text-xs text-cyan-300 min-w-0">
                       <Loader2 className="size-3.5 animate-spin shrink-0" />
                       <span>Verifying team code in registry...</span>
                     </div>
                   ) : matchedTeam ? (
-                    <div className="rounded-xl border border-emerald-500/50 bg-emerald-950/40 p-3 text-xs text-emerald-300 space-y-1">
-                      <div className="flex items-center justify-between font-bold">
-                        <span>✅ Team Found: {matchedTeam.teamName}</span>
-                        <span className="font-mono">{1 + (matchedTeam.teammates?.length || 0)}/4 Members</span>
+                    <div className="rounded-xl border border-emerald-500/50 bg-emerald-950/40 p-3 text-xs text-emerald-300 space-y-1 min-w-0">
+                      <div className="flex items-center justify-between font-bold gap-2">
+                        <span className="truncate">✅ Team Found: {matchedTeam.teamName}</span>
+                        <span className="font-mono shrink-0">{1 + (matchedTeam.teammates?.length || 0)}/4 Members</span>
                       </div>
-                      <p className="text-[11px] text-muted-foreground">
+                      <p className="text-[11px] text-muted-foreground truncate">
                         Leader: {matchedTeam.fullName} · {matchedTeam.collegeOrCompany}
                       </p>
                     </div>
                   ) : searchDone && teamCodeInput.trim().replace(/^JOIN[\s\-_:]*/i, "").length >= 4 ? (
-                    <div className="rounded-xl border border-red-500/40 bg-red-950/20 p-2.5 text-xs text-red-300 space-y-1">
+                    <div className="rounded-xl border border-red-500/40 bg-red-950/20 p-2.5 text-xs text-red-300 space-y-1 min-w-0">
                       <div className="flex items-center gap-1.5 font-bold text-red-400">
                         <AlertCircle className="size-3.5 text-red-400 shrink-0" />
                         <span>Team Not Found</span>
                       </div>
-                      <p className="text-[11px] text-muted-foreground">
+                      <p className="text-[11px] text-muted-foreground leading-relaxed">
                         No team found matching code &quot;{teamCodeInput.trim().replace(/^JOIN[\s\-_:]*/i, "").toUpperCase()}&quot;. Please ask your Team Leader for the exact code (e.g. QSR5-XXXXX).
                       </p>
                     </div>
@@ -1754,34 +1758,34 @@ Platform Support: vybedriven@gmail.com
                 </div>
 
                 {/* Participant Summary */}
-                <div className="flex items-center justify-between rounded-xl border border-border bg-surface p-3.5">
-                  <div className="flex items-center gap-3">
-                    <div className="size-9 rounded-full bg-cyan-400/20 text-cyan-400 font-extrabold flex items-center justify-center shrink-0">
+                <div className="flex items-center justify-between rounded-xl border border-border bg-surface p-3 sm:p-3.5 gap-2 min-w-0">
+                  <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
+                    <div className="size-8 sm:size-9 rounded-full bg-cyan-400/20 text-cyan-400 font-extrabold flex items-center justify-center shrink-0 text-xs sm:text-sm">
                       {firstName.charAt(0) || "U"}
                     </div>
-                    <div>
-                      <p className="font-bold text-foreground text-xs sm:text-sm">
+                    <div className="min-w-0 flex-1">
+                      <p className="font-bold text-foreground text-xs sm:text-sm truncate">
                         {firstName} {lastName}
                       </p>
-                      <p className="text-[11px] text-muted-foreground">
+                      <p className="text-[11px] text-muted-foreground truncate">
                         {phone} · {email}
                       </p>
                     </div>
                   </div>
-                  <span className="rounded-full bg-cyan-500/20 px-2.5 py-0.5 text-[10px] font-bold text-cyan-300 uppercase">
-                    Joining as Teammate
+                  <span className="rounded-full bg-cyan-500/20 px-2 sm:px-2.5 py-0.5 text-[10px] font-bold text-cyan-300 uppercase shrink-0">
+                    Teammate
                   </span>
                 </div>
               </div>
             )}
 
             {/* Modal Actions */}
-            <div className="flex items-center justify-between pt-4 border-t border-border/70">
+            <div className="flex items-center justify-between gap-2 sm:gap-3 pt-4 border-t border-border/70 min-w-0">
               <Button
                 type="button"
                 variant="ghost"
                 onClick={() => setStep(1)}
-                className="rounded-full text-xs text-muted-foreground hover:text-foreground"
+                className="rounded-full text-xs text-muted-foreground hover:text-foreground shrink-0 h-9 sm:h-10 px-3 sm:px-4"
               >
                 <ArrowLeft className="size-3.5 mr-1" /> Back
               </Button>
@@ -1789,15 +1793,17 @@ Platform Support: vybedriven@gmail.com
               <Button
                 type="submit"
                 disabled={submitting || (teamMode === "join_team" && !matchedTeam)}
-                className="rounded-full bg-gradient-brand text-primary-foreground font-bold px-7 shadow-glow hover:brightness-110 disabled:opacity-50"
+                className="rounded-full bg-gradient-brand text-primary-foreground font-bold px-4 sm:px-6 text-xs sm:text-sm h-9 sm:h-10 shadow-glow hover:brightness-110 disabled:opacity-50 shrink-0 min-w-0"
               >
-                {submitting
-                  ? "Processing..."
-                  : teamMode === "create_team"
-                  ? "Create Team & Get Pass 🚀"
-                  : matchedTeam
-                  ? "Join Team & Get Pass 🤝"
-                  : "Enter Valid Code to Join"}
+                <span className="truncate">
+                  {submitting
+                    ? "Processing..."
+                    : teamMode === "create_team"
+                    ? "Create Team & Get Pass 🚀"
+                    : matchedTeam
+                    ? "Join Team & Get Pass 🤝"
+                    : "Enter Valid Code to Join"}
+                </span>
               </Button>
             </div>
           </form>
@@ -1921,24 +1927,24 @@ Platform Support: vybedriven@gmail.com
                 </div>
 
                 {/* Summary Rows */}
-                <div className="grid grid-cols-2 gap-2 text-xs">
-                  <div>
-                    <span className="text-muted-foreground block text-[11px]">Primary Participant</span>
-                    <span className="font-bold text-foreground">{confirmedReg.fullName}</span>
+                <div className="grid grid-cols-2 gap-2 text-xs min-w-0">
+                  <div className="min-w-0">
+                    <span className="text-muted-foreground block text-[11px] truncate">Primary Participant</span>
+                    <span className="font-bold text-foreground truncate block">{confirmedReg.fullName}</span>
                   </div>
-                  <div>
-                    <span className="text-muted-foreground block text-[11px]">College / Org</span>
+                  <div className="min-w-0">
+                    <span className="text-muted-foreground block text-[11px] truncate">College / Org</span>
                     <span className="font-bold text-foreground truncate block">{confirmedReg.collegeOrCompany}</span>
                   </div>
-                  <div>
-                    <span className="text-muted-foreground block text-[11px]">Participation Mode</span>
-                    <span className="font-bold text-foreground">
+                  <div className="min-w-0">
+                    <span className="text-muted-foreground block text-[11px] truncate">Participation Mode</span>
+                    <span className="font-bold text-foreground truncate block">
                       {confirmedReg.teamType === "team" ? `Team (${confirmedReg.teamName})` : "Solo Builder"}
                     </span>
                   </div>
-                  <div>
-                    <span className="text-muted-foreground block text-[11px]">Category</span>
-                    <span className="font-bold text-foreground">{confirmedReg.userType || "College Student"}</span>
+                  <div className="min-w-0">
+                    <span className="text-muted-foreground block text-[11px] truncate">Category</span>
+                    <span className="font-bold text-foreground truncate block">{confirmedReg.userType || "College Student"}</span>
                   </div>
                 </div>
 
