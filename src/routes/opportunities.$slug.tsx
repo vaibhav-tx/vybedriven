@@ -840,7 +840,7 @@ function OpportunityDetails() {
                 item.slug === "goa-buildathon-2027" ? (
                   <div className="mt-5 inline-block">
                     <img
-                      src="/events/prizes-worth-banner.jpg"
+                      src="/events/prizes-worth-banner.webp"
                       alt="Prizes Worth ₹ 10,00,000"
                       className="h-auto max-w-md md:max-w-lg rounded-2xl border border-neon/40 shadow-glow-soft hover:shadow-glow transition"
                     />
@@ -878,7 +878,7 @@ function OpportunityDetails() {
                         <div className="relative shrink-0 flex items-center justify-center pl-2">
                           <div className="absolute inset-x-[-12px] bottom-2.5 h-4 rounded-[100%] border-2 border-emerald-400/90 shadow-[0_0_14px_rgba(52,211,153,0.9)] -rotate-12 pointer-events-none" />
                           <img
-                            src="/events/golden-star-trophy.png"
+                            src="/events/golden-star-trophy.webp"
                             alt="Prize Trophy"
                             className="relative z-10 h-18 md:h-20 w-auto object-contain drop-shadow-[0_6px_22px_rgba(250,204,21,0.6)]"
                           />
@@ -895,7 +895,7 @@ function OpportunityDetails() {
                       </p>
                     </div>
                     <img
-                      src="/events/golden-star-trophy.png"
+                      src="/events/golden-star-trophy.webp"
                       alt="Prize Trophy"
                       className="h-14 sm:h-16 w-auto object-contain shrink-0 drop-shadow-[0_4px_14px_rgba(250,204,21,0.45)]"
                     />
@@ -922,7 +922,7 @@ function OpportunityDetails() {
           <div className="px-3 pt-3">
             <div className="relative overflow-hidden rounded-2xl border border-border/80 bg-black shadow-md flex items-center justify-center">
               <img
-                src={item.slug === "quasar-5-international-hackathon-2027" ? "/events/quasar-5-poster-full.jpg" : item.image}
+                src={item.slug === "quasar-5-international-hackathon-2027" ? "/events/quasar-5-poster-full.webp" : item.image}
                 alt={item.title}
                 className="w-full h-auto max-h-[380px] object-contain rounded-2xl"
               />
@@ -1033,7 +1033,7 @@ function OpportunityDetails() {
                 <div className="relative overflow-hidden rounded-2xl border border-sky-400/30 bg-gradient-to-r from-sky-500/10 via-cyan-500/15 to-sky-500/10 p-2.5 sm:p-3 shadow-sm">
                   <div className="flex items-center justify-between gap-3 px-2">
                     <img
-                      src="/events/golden-star-trophy.png"
+                      src="/events/golden-star-trophy.webp"
                       alt="Trophy"
                       className="h-9 sm:h-11 w-auto object-contain shrink-0 drop-shadow-[0_2px_8px_rgba(250,204,21,0.5)]"
                     />
@@ -1044,7 +1044,7 @@ function OpportunityDetails() {
                       </span>
                     </div>
                     <img
-                      src="/events/golden-star-trophy.png"
+                      src="/events/golden-star-trophy.webp"
                       alt="Trophy"
                       className="h-9 sm:h-11 w-auto object-contain shrink-0 drop-shadow-[0_2px_8px_rgba(250,204,21,0.5)]"
                     />
@@ -1343,7 +1343,7 @@ function OpportunityDetails() {
                               <div className="flex items-center gap-3.5 sm:gap-6 min-w-0">
                                 <div className="relative shrink-0">
                                   <img
-                                    src="/events/golden-star-trophy.png"
+                                    src="/events/golden-star-trophy.webp"
                                     alt="Prize Trophy"
                                     className="h-14 sm:h-18 md:h-20 w-auto object-contain drop-shadow-[0_6px_16px_rgba(245,158,11,0.45)]"
                                   />
@@ -1423,7 +1423,7 @@ function OpportunityDetails() {
                             <div className="flex items-center gap-4 sm:gap-6">
                               <div className="relative shrink-0">
                                 <img
-                                  src="/events/golden-star-trophy.png"
+                                  src="/events/golden-star-trophy.webp"
                                   alt="Prize Trophy"
                                   className="h-20 sm:h-24 w-auto object-contain drop-shadow-[0_8px_20px_rgba(245,158,11,0.5)]"
                                 />
