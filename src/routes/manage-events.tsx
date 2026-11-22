@@ -646,42 +646,6 @@ function ManageEventsPage() {
               )}
             </div>
 
-            {/* Quick Metrics Bar for Organizers */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <div className="rounded-xl border border-border bg-card p-3 shadow-sm">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block">
-                  Total Registrations
-                </span>
-                <span className="text-xl font-black text-foreground font-mono mt-0.5 block">
-                  {eventRegistrations.length}
-                </span>
-              </div>
-              <div className="rounded-xl border border-emerald-500/30 bg-emerald-950/20 p-3 shadow-sm">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 block">
-                  Complete Squads (2+ Members)
-                </span>
-                <span className="text-xl font-black text-emerald-400 font-mono mt-0.5 block">
-                  {eventRegistrations.filter((r) => (1 + (r.teammates?.length || 0)) >= 2).length}
-                </span>
-              </div>
-              <div className="rounded-xl border border-amber-500/30 bg-amber-950/20 p-3 shadow-sm">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400 block">
-                  Incomplete (1 Member)
-                </span>
-                <span className="text-xl font-black text-amber-400 font-mono mt-0.5 block">
-                  {eventRegistrations.filter((r) => (1 + (r.teammates?.length || 0)) < 2).length}
-                </span>
-              </div>
-              <div className="rounded-xl border border-neon/30 bg-neon/10 p-3 shadow-sm">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-neon block">
-                  PPT Decks Received
-                </span>
-                <span className="text-xl font-black text-neon font-mono mt-0.5 block">
-                  {eventRegistrations.filter((r) => !!r.submission?.pptUrl).length}
-                </span>
-              </div>
-            </div>
-
             {/* Search Bar */}
             <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-3 shadow-sm sm:flex-row">
               <label className="flex min-h-11 flex-1 items-center gap-3 rounded-xl bg-surface px-4 focus-within:ring-2 focus-within:ring-ring">
