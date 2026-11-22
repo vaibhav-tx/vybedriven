@@ -3,6 +3,7 @@ import { useState, useEffect, useMemo } from "react";
 import {
   Calendar,
   CheckCircle2,
+  Clock,
   Clock3,
   ExternalLink,
   MapPin,
