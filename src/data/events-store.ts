@@ -160,6 +160,7 @@ export const GOA_BUILDATHON_ORGANIZER_EMAILS = [
 ];
 
 export const QUASAR_ORGANIZER_EMAILS = [
+  "quasar@pvppcoe.ac.in",
   "pandeysatyam2030@gmail.com",
   "vybedriven@gmail.com",
 ];

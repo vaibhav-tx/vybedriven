@@ -108,12 +108,12 @@ describe("Events Store & Vybe Driven Host Hub", () => {
     expect(isEventOrganizer(goa, { email: "hello@goabuilds.com" })).toBe(true);
     expect(isEventOrganizer(goa, { email: "guest@test.com" })).toBe(false);
 
-    // Quasar 5.0 grants organizer access ONLY to Satyam / platform admin for now
+    // Quasar 5.0 grants organizer access ONLY to Quasar organizers / platform admin
     const quasar = findOpportunity("quasar-5-international-hackathon-2027");
     expect(quasar).toBeDefined();
     expect(isEventOrganizer(quasar, { email: "pandeysatyam2030@gmail.com" })).toBe(true);
     expect(isEventOrganizer(quasar, { email: "vybedriven@gmail.com" })).toBe(true);
-    expect(isEventOrganizer(quasar, { email: "quasar@pvppcoe.ac.in" })).toBe(false);
+    expect(isEventOrganizer(quasar, { email: "quasar@pvppcoe.ac.in" })).toBe(true);
     expect(isEventOrganizer(quasar, { email: "35shanmukhtawde@gmail.com" })).toBe(false);
     expect(isEventOrganizer(quasar, { email: "hello@goabuilds.com" })).toBe(false);
     expect(isEventOrganizer(quasar, { email: "guest@test.com" })).toBe(false);
