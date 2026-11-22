@@ -1717,6 +1717,8 @@ export function syncCloudStore(): void {
 }
 
 // Live refresh for a specific user's registration and team roster from Cloudflare D1
+const lastRefreshTimes = new Map<string, number>();
+
 export async function refreshUserRegistrationFromD1(
   slug: string,
   userId?: string,
@@ -1726,6 +1728,23 @@ export async function refreshUserRegistrationFromD1(
   const cleanEmail = (email || "").trim().toLowerCase();
   const cleanId = (userId || "").trim();
   if (!cleanId && !cleanEmail) return null;
+
+  const throttleKey = `${slug}::${cleanId}::${cleanEmail}`;
+  const now = Date.now();
+  const lastTime = lastRefreshTimes.get(throttleKey) || 0;
+  if (now - lastTime < 4000) {
+    const existing = getStoredRegistrations();
+    return (
+      existing.find(
+        (r) =>
+          r.opportunitySlug === slug &&
+          (r.userId === cleanId ||
+            r.email?.toLowerCase() === cleanEmail ||
+            (Array.isArray(r.teammates) && r.teammates.some((t) => t.email?.toLowerCase() === cleanEmail)))
+      ) || null
+    );
+  }
+  lastRefreshTimes.set(throttleKey, now);
 
   try {
     const rows = await d1Query(

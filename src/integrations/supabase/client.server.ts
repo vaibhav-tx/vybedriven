@@ -11,6 +11,15 @@ function isNewSupabaseApiKey(value: string): boolean {
 
 function createSupabaseFetch(supabaseKey: string): typeof fetch {
   return (input, init) => {
+    const urlStr = typeof input === 'string' ? input : input instanceof Request ? input.url : '';
+    // Hard block: Zero PostgREST queries ever reach Supabase. All database traffic is strictly on Cloudflare D1.
+    if (urlStr.includes('/rest/v1/')) {
+      return Promise.resolve(new Response(JSON.stringify([]), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }));
+    }
+
     const headers = new Headers(
       typeof Request !== 'undefined' && input instanceof Request ? input.headers : undefined,
     );

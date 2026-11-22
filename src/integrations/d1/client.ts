@@ -52,6 +52,13 @@ function normalizeD1Rows<T = any>(rows: any[]): T[] {
   });
 }
 
+const queryCache = new Map<string, { time: number; data: any[] }>();
+const CACHE_TTL_MS = 3000; // 3 seconds in-memory deduplication for SELECT queries
+
+export function clearD1QueryCache() {
+  queryCache.clear();
+}
+
 /**
  * Execute raw SQL query on Cloudflare D1.
  * Auto-detects server vs client environment.
@@ -59,6 +66,20 @@ function normalizeD1Rows<T = any>(rows: any[]): T[] {
 export async function d1Query<T = any>(sql: string, params: any[] = []): Promise<T[]> {
   if (typeof import.meta !== "undefined" && import.meta.env?.MODE === "test") {
     return [];
+  }
+
+  const trimmedSql = sql.trim();
+  const isSelect = trimmedSql.toUpperCase().startsWith("SELECT");
+  const cacheKey = isSelect ? `${trimmedSql}::${JSON.stringify(params)}` : "";
+
+  // If writing or modifying data, clear the read cache immediately so mutations are never stale
+  if (!isSelect) {
+    queryCache.clear();
+  } else {
+    const cached = queryCache.get(cacheKey);
+    if (cached && Date.now() - cached.time < CACHE_TTL_MS) {
+      return cached.data as T[];
+    }
   }
 
   const isServer =
@@ -86,7 +107,11 @@ export async function d1Query<T = any>(sql: string, params: any[] = []): Promise
         return [];
       }
       const data = (await res.json()) as any;
-      return normalizeD1Rows<T>(data.result?.[0]?.results || []);
+      const normalized = normalizeD1Rows<T>(data.result?.[0]?.results || []);
+      if (isSelect) {
+        queryCache.set(cacheKey, { time: Date.now(), data: normalized });
+      }
+      return normalized;
     } catch (err) {
       console.error("[D1 Server Fetch Error]", err);
       return [];
@@ -111,7 +136,11 @@ export async function d1Query<T = any>(sql: string, params: any[] = []): Promise
     }
 
     const data = (await res.json()) as any;
-    return normalizeD1Rows<T>(data.results || []);
+    const normalized = normalizeD1Rows<T>(data.results || []);
+    if (isSelect) {
+      queryCache.set(cacheKey, { time: Date.now(), data: normalized });
+    }
+    return normalized;
   } catch (err) {
     console.error("[D1 Client Fetch Error]", err);
     return [];

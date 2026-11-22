@@ -650,14 +650,16 @@ function OpportunityDetails() {
     // Immediately fetch latest team & registration state from Cloudflare D1
     refreshUserRegistrationFromD1(item.slug, userId, userEmail);
 
-    // Auto-refresh when user switches back to tab or focuses window, plus a periodic 8s sync
+    // Auto-refresh when user switches back to tab or focuses window, plus a periodic visibility-aware sync
     const handleFocus = () => {
+      if (typeof document !== "undefined" && document.hidden) return;
       refreshUserRegistrationFromD1(item.slug, userId, userEmail);
     };
     window.addEventListener("focus", handleFocus);
     const interval = setInterval(() => {
+      if (typeof document !== "undefined" && document.hidden) return;
       refreshUserRegistrationFromD1(item.slug, userId, userEmail);
-    }, 8000);
+    }, 25000);
 
     return () => {
       window.removeEventListener("focus", handleFocus);
