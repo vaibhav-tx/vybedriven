@@ -555,6 +555,18 @@ export function submitRegistration(data: {
     d1Db.upsertRegistration(newReg).catch((err) => {
       console.warn("[Database Sync] Cloudflare D1 notice:", err);
     });
+
+    if (newReg.userId || newReg.email) {
+      d1Db.upsertProfile({
+        id: newReg.userId || `user_${newReg.email.toLowerCase().replace(/[^a-z0-9]/g, "_")}`,
+        displayName: newReg.fullName,
+        email: newReg.email,
+        phone: newReg.phone,
+        collegeOrCompany: newReg.collegeOrCompany,
+        location: newReg.location,
+        updatedAt: new Date().toISOString(),
+      }).catch(() => {});
+    }
   }
 
   return newReg;
@@ -1300,6 +1312,16 @@ export async function joinTeamWithCode(
       updatedTeam.teamMembers || null,
       updatedTeam.teammates || []
     );
+    if (memberData.userId || memberEmail) {
+      d1Db.upsertProfile({
+        id: memberData.userId || `user_${memberEmail.toLowerCase().replace(/[^a-z0-9]/g, "_")}`,
+        displayName: memberData.fullName,
+        email: memberEmail,
+        phone: memberData.phone,
+        collegeOrCompany: memberData.collegeOrCompany,
+        updatedAt: new Date().toISOString(),
+      }).catch(() => {});
+    }
   } catch (err) {
     console.warn("[Database Sync] Team member join error on D1:", err);
   }
