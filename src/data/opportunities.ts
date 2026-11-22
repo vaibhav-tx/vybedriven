@@ -81,6 +81,7 @@ export type Opportunity = {
   rewardsSubtitle?: string;
   rewards?: OpportunityReward[];
   rewardsFootnote?: string;
+  pptTemplateUrl?: string;
 };
 
 export const opportunities: Opportunity[] = [
@@ -437,7 +438,8 @@ Participation is application-based and limited to 150–200 selected participant
     teamSize: "2–4 Members",
     fee: "Free",
     status: "Registration open",
-    registrationNote: "Round 0 (PPT Submission) is conducted directly via Vybe Driven until 25 Dec 2026. Register your squad (minimum 2 members) to unlock problem statements, download the official PPT template, and submit your deck.",
+    pptTemplateUrl: "https://docs.google.com/presentation/d/1X3Z5uzfAHhiQfyw-xAf06AQpkuWxlw48rU8ZQblrRJ4/edit?slide=id.h1f2b58c52b4784ea_3_75#slide=id.h1f2b58c52b4784ea_3_75",
+    registrationNote: "Round 0 (PPT Submission) opens 1 Dec 2026 via Vybe Driven. Register your squad (minimum 2 members) to unlock problem statements and download the official PPT template.",
     groupUrl: "https://chat.whatsapp.com/K3sHKGtXYJ06l02R2eLmVA",
     groupLabel: "Join Quasar WhatsApp Group",
     contacts: [

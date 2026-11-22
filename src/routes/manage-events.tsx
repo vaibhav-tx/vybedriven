@@ -23,6 +23,7 @@ import {
   Ticket,
   X,
   AlertTriangle,
+  AlertCircle,
 } from "lucide-react";
 import { Navbar, Footer } from "@/components/SiteChrome";
 import { Button } from "@/components/ui/button";
@@ -645,6 +646,42 @@ function ManageEventsPage() {
               )}
             </div>
 
+            {/* Quick Metrics Bar for Organizers */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="rounded-xl border border-border bg-card p-3 shadow-sm">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block">
+                  Total Registrations
+                </span>
+                <span className="text-xl font-black text-foreground font-mono mt-0.5 block">
+                  {eventRegistrations.length}
+                </span>
+              </div>
+              <div className="rounded-xl border border-emerald-500/30 bg-emerald-950/20 p-3 shadow-sm">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 block">
+                  Complete Squads (2+ Members)
+                </span>
+                <span className="text-xl font-black text-emerald-400 font-mono mt-0.5 block">
+                  {eventRegistrations.filter((r) => (1 + (r.teammates?.length || 0)) >= 2).length}
+                </span>
+              </div>
+              <div className="rounded-xl border border-amber-500/30 bg-amber-950/20 p-3 shadow-sm">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400 block">
+                  Incomplete (1 Member)
+                </span>
+                <span className="text-xl font-black text-amber-400 font-mono mt-0.5 block">
+                  {eventRegistrations.filter((r) => (1 + (r.teammates?.length || 0)) < 2).length}
+                </span>
+              </div>
+              <div className="rounded-xl border border-neon/30 bg-neon/10 p-3 shadow-sm">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-neon block">
+                  PPT Decks Received
+                </span>
+                <span className="text-xl font-black text-neon font-mono mt-0.5 block">
+                  {eventRegistrations.filter((r) => !!r.submission?.pptUrl).length}
+                </span>
+              </div>
+            </div>
+
             {/* Search Bar */}
             <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-3 shadow-sm sm:flex-row">
               <label className="flex min-h-11 flex-1 items-center gap-3 rounded-xl bg-surface px-4 focus-within:ring-2 focus-within:ring-ring">
@@ -679,7 +716,7 @@ function ManageEventsPage() {
                         <th className="px-4 py-3">Contact & Links</th>
                         <th className="px-4 py-3">College / Company</th>
                         <th className="px-4 py-3">Team Details</th>
-                        <th className="px-4 py-3">Round 1 (PPT)</th>
+                        <th className="px-4 py-3">Team Status & Round 1</th>
                         <th className="px-4 py-3">Applied At</th>
                       </tr>
                     </thead>
@@ -832,80 +869,104 @@ function ManageEventsPage() {
                             )}
                           </td>
 
-                          {/* Round 1 PPT Submission */}
+                          {/* Team Status & Round 1 PPT Submission */}
                           <td className="px-4 py-3.5 text-xs">
-                            {applicant.submission?.pptUrl ? (
-                              <div className="space-y-1">
-                                {isInvalidPptLink(applicant.submission.pptUrl) ? (
-                                  <>
-                                    <span className="inline-flex items-center gap-1 rounded bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 text-[10px] font-bold text-amber-400">
-                                      <AlertTriangle className="size-3" /> Invite Link (No Slides)
-                                    </span>
-                                    <div className="font-semibold text-foreground truncate max-w-[180px]">
-                                      {applicant.submission.projectTitle}
-                                    </div>
-                                    <div className="text-[10px] text-muted-foreground truncate max-w-[180px]">
-                                      {applicant.submission.track}
-                                    </div>
-                                    <div className="flex items-center gap-2 pt-0.5 flex-wrap">
-                                      <button
-                                        type="button"
-                                        onClick={() => setEditingPptReg(applicant)}
-                                        className="text-[11px] font-bold text-amber-400 hover:underline"
-                                      >
-                                        Update Deck ✏️
-                                      </button>
-                                      {applicant.phone && (
-                                        <a
-                                          href={`https://wa.me/91${applicant.phone.replace(/\D/g, "")}?text=${encodeURIComponent(
-                                            `Hi ${applicant.fullName}, regarding your Goa Buildathon submission for "${applicant.submission.projectTitle}": You accidentally submitted your team join code/link instead of your Google Drive/Canva presentation deck. Please send your slide link so we can update it!`
-                                          )}`}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                          className="text-[11px] font-semibold text-emerald-400 hover:underline inline-flex items-center gap-1"
-                                        >
-                                          <MessageCircle className="size-3" /> WhatsApp
-                                        </a>
+                            {(() => {
+                              const totalSquad = 1 + (applicant.teammates?.length || 0);
+                              const isTeamComplete = totalSquad >= 2;
+                              const isQuasar = currentEvent?.slug === "quasar-5-international-hackathon-2027";
+
+                              return (
+                                <div className="space-y-1.5">
+                                  {/* Registration Completion Status Badge */}
+                                  <div>
+                                    {isTeamComplete ? (
+                                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 text-[10px] font-bold text-emerald-400 whitespace-nowrap">
+                                        <CheckCircle2 className="size-3 shrink-0" /> Registration Complete ({totalSquad}/4)
+                                      </span>
+                                    ) : (
+                                      <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 text-[10px] font-bold text-amber-400 whitespace-nowrap">
+                                        <AlertCircle className="size-3 shrink-0" /> Incomplete ({totalSquad} Member)
+                                      </span>
+                                    )}
+                                  </div>
+
+                                  {/* Round 1 PPT Status */}
+                                  {applicant.submission?.pptUrl ? (
+                                    <div className="space-y-1 pt-0.5">
+                                      {isInvalidPptLink(applicant.submission.pptUrl) ? (
+                                        <>
+                                          <span className="inline-flex items-center gap-1 rounded bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 text-[10px] font-bold text-amber-400">
+                                            <AlertTriangle className="size-3" /> Invite Link (No Slides)
+                                          </span>
+                                          <div className="font-semibold text-foreground truncate max-w-[180px]">
+                                            {applicant.submission.projectTitle}
+                                          </div>
+                                          <div className="text-[10px] text-muted-foreground truncate max-w-[180px]">
+                                            {applicant.submission.track}
+                                          </div>
+                                          <div className="flex items-center gap-2 pt-0.5 flex-wrap">
+                                            <button
+                                              type="button"
+                                              onClick={() => setEditingPptReg(applicant)}
+                                              className="text-[11px] font-bold text-amber-400 hover:underline"
+                                            >
+                                              Update Deck ✏️
+                                            </button>
+                                            {applicant.phone && (
+                                              <a
+                                                href={`https://wa.me/91${applicant.phone.replace(/\D/g, "")}?text=${encodeURIComponent(
+                                                  `Hi ${applicant.fullName}, regarding your submission for "${applicant.submission.projectTitle}": You accidentally submitted your team join code/link instead of your Google Drive/Canva presentation deck. Please send your slide link so we can update it!`
+                                                )}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-[11px] font-semibold text-emerald-400 hover:underline inline-flex items-center gap-1"
+                                              >
+                                                <MessageCircle className="size-3" /> WhatsApp
+                                              </a>
+                                            )}
+                                          </div>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <span className="inline-flex items-center gap-1 rounded bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 text-[10px] font-bold text-emerald-400">
+                                            <CheckCircle2 className="size-3" /> Submitted
+                                          </span>
+                                          <div className="font-semibold text-foreground truncate max-w-[180px]">
+                                            {applicant.submission.projectTitle}
+                                          </div>
+                                          <div className="text-[10px] text-muted-foreground truncate max-w-[180px]">
+                                            {applicant.submission.track}
+                                          </div>
+                                          <div className="flex items-center gap-2 pt-0.5">
+                                            <a
+                                              href={formatExternalUrl(applicant.submission.pptUrl)}
+                                              target="_blank"
+                                              rel="noopener noreferrer"
+                                              className="inline-flex items-center gap-1 text-[11px] font-bold text-neon hover:underline"
+                                            >
+                                              Open Slides ↗
+                                            </a>
+                                            <button
+                                              type="button"
+                                              onClick={() => setEditingPptReg(applicant)}
+                                              className="text-[10px] text-muted-foreground hover:text-foreground"
+                                              title="Edit Slide Link"
+                                            >
+                                              ✏️
+                                            </button>
+                                          </div>
+                                        </>
                                       )}
                                     </div>
-                                  </>
-                                ) : (
-                                  <>
-                                    <span className="inline-flex items-center gap-1 rounded bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 text-[10px] font-bold text-emerald-400">
-                                      <CheckCircle2 className="size-3" /> Submitted
+                                  ) : (
+                                    <span className="inline-flex items-center gap-1 rounded bg-surface-2 border border-border px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+                                      <Clock className="size-3" /> {isQuasar ? "PPT: Opens 1 Dec" : "Pending"}
                                     </span>
-                                    <div className="font-semibold text-foreground truncate max-w-[180px]">
-                                      {applicant.submission.projectTitle}
-                                    </div>
-                                    <div className="text-[10px] text-muted-foreground truncate max-w-[180px]">
-                                      {applicant.submission.track}
-                                    </div>
-                                    <div className="flex items-center gap-2 pt-0.5">
-                                      <a
-                                        href={formatExternalUrl(applicant.submission.pptUrl)}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-1 text-[11px] font-bold text-neon hover:underline"
-                                      >
-                                        Open Slides ↗
-                                      </a>
-                                      <button
-                                        type="button"
-                                        onClick={() => setEditingPptReg(applicant)}
-                                        className="text-[10px] text-muted-foreground hover:text-foreground"
-                                        title="Edit Slide Link"
-                                      >
-                                        ✏️
-                                      </button>
-                                    </div>
-                                  </>
-                                )}
-                              </div>
-                            ) : (
-                              <span className="rounded bg-surface-2 border border-border px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-                                Pending
-                              </span>
-                            )}
+                                  )}
+                                </div>
+                              );
+                            })()}
                           </td>
 
                           {/* Applied date */}

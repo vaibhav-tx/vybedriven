@@ -866,6 +866,39 @@ export function TeamManagementModal({
                 )}
               </div>
             )}
+
+            {/* Quasar Official PPT Format Gate */}
+            {(registration?.opportunitySlug === "quasar-5-international-hackathon-2027" || registration?.eventName?.includes("Quasar")) && (
+              members.length >= 2 ? (
+                <div className="rounded-2xl border border-neon/40 bg-neon/10 p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <Sparkles className="size-4 text-neon shrink-0" />
+                      <span className="text-xs font-bold text-foreground">Official Quasar 5.0 PPT Template</span>
+                      <span className="rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 text-[10px] font-bold">
+                        ✓ Unlocked ({members.length}/4 Members)
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-muted-foreground mt-1">
+                      Make a copy of the official slides to prepare your presentation deck. Submissions open on 1 Dec 2026.
+                    </p>
+                  </div>
+                  <a
+                    href="https://docs.google.com/presentation/d/1X3Z5uzfAHhiQfyw-xAf06AQpkuWxlw48rU8ZQblrRJ4/edit?slide=id.h1f2b58c52b4784ea_3_75#slide=id.h1f2b58c52b4784ea_3_75"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-neon px-3.5 py-2 text-xs font-black text-black hover:brightness-105 shrink-0"
+                  >
+                    Open PPT Format 📊 ↗
+                  </a>
+                </div>
+              ) : (
+                <div className="rounded-2xl border border-amber-500/40 bg-amber-500/10 p-3.5 text-xs text-amber-300 flex items-center gap-2.5">
+                  <Lock className="size-4 text-amber-400 shrink-0" />
+                  <span>Official Quasar PPT Template unlocks once at least 2 members join your squad (currently {members.length}/4). Share your team code above!</span>
+                </div>
+              )
+            )}
           </div>
 
           {/* Unstop Legend */}

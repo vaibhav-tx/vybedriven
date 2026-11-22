@@ -1463,6 +1463,8 @@ export function exportRegistrationsToCSV(
   const headers = [
     "Registration ID",
     "Registration Date",
+    "Registration Completion",
+    "Squad Member Count",
     "Full Name",
     "First Name",
     "Last Name",
@@ -1491,37 +1493,44 @@ export function exportRegistrationsToCSV(
     return `"${String(str).replace(/"/g, '""')}"`;
   };
 
-  const rows = list.map((r) => [
-    escapeCSV(r.id),
-    escapeCSV(new Date(r.createdAt).toLocaleString()),
-    escapeCSV(r.fullName),
-    escapeCSV(r.firstName || "-"),
-    escapeCSV(r.lastName || "-"),
-    escapeCSV(r.email),
-    escapeCSV(r.phone),
-    escapeCSV(r.gender || "-"),
-    escapeCSV(r.location || "-"),
-    escapeCSV(r.collegeOrCompany),
-    escapeCSV(r.userType || "-"),
-    escapeCSV(r.teamType),
-    escapeCSV(r.teamName || "-"),
-    escapeCSV(r.teamSize || "-"),
-    escapeCSV(
-      r.teammates && Array.isArray(r.teammates) && r.teammates.length
-        ? r.teammates
-            .map((t) => `${t?.name || "Member"} (${t?.email || ""}${t?.phone ? ", " + t.phone : ""})`)
-            .join(" | ")
-        : r.teamMembers || "-"
-    ),
-    escapeCSV(r.lookingForTeammates ? "Yes" : "No"),
-    escapeCSV(r.status),
-    escapeCSV(r.submission?.pptUrl ? "Submitted" : "Pending"),
-    escapeCSV(r.submission?.projectTitle || r.projectIdea || "-"),
-    escapeCSV(r.submission?.track || "-"),
-    escapeCSV(r.submission?.pptUrl || "-"),
-    escapeCSV(r.submission?.demoUrl || "-"),
-    escapeCSV(r.submission?.summary || "-"),
-  ]);
+  const rows = list.map((r) => {
+    const totalMembers = 1 + (r.teammates?.length || 0);
+    const completionStatus = totalMembers >= 2 ? "Complete (2+ Members)" : "Incomplete (1 Member)";
+
+    return [
+      escapeCSV(r.id),
+      escapeCSV(new Date(r.createdAt).toLocaleString()),
+      escapeCSV(completionStatus),
+      escapeCSV(String(totalMembers)),
+      escapeCSV(r.fullName),
+      escapeCSV(r.firstName || "-"),
+      escapeCSV(r.lastName || "-"),
+      escapeCSV(r.email),
+      escapeCSV(r.phone),
+      escapeCSV(r.gender || "-"),
+      escapeCSV(r.location || "-"),
+      escapeCSV(r.collegeOrCompany),
+      escapeCSV(r.userType || "-"),
+      escapeCSV(r.teamType),
+      escapeCSV(r.teamName || "-"),
+      escapeCSV(r.teamSize || "-"),
+      escapeCSV(
+        r.teammates && Array.isArray(r.teammates) && r.teammates.length
+          ? r.teammates
+              .map((t) => `${t?.name || "Member"} (${t?.email || ""}${t?.phone ? ", " + t.phone : ""})`)
+              .join(" | ")
+          : r.teamMembers || "-"
+      ),
+      escapeCSV(r.lookingForTeammates ? "Yes" : "No"),
+      escapeCSV(r.status),
+      escapeCSV(r.submission?.pptUrl ? "Submitted" : "Pending"),
+      escapeCSV(r.submission?.projectTitle || r.projectIdea || "-"),
+      escapeCSV(r.submission?.track || "-"),
+      escapeCSV(r.submission?.pptUrl || "-"),
+      escapeCSV(r.submission?.demoUrl || "-"),
+      escapeCSV(r.submission?.summary || "-"),
+    ];
+  });
 
   const csvContent =
     "\uFEFF" +

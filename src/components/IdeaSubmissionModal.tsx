@@ -84,9 +84,18 @@ export function IdeaSubmissionModal({
   const totalMembers = 1 + (registration.teammates?.length || 0);
   const isMinMembersMet = totalMembers >= 2;
   const isSubmitted = Boolean(registration.submission?.pptUrl);
+  const isQuasar =
+    registration.opportunitySlug === "quasar-5-international-hackathon-2027" ||
+    registration.eventName?.includes("Quasar");
+  const isSubmissionsOpen = !isQuasar || new Date() >= new Date("2026-12-01T00:00:00+05:30");
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+
+    if (isQuasar && !isSubmissionsOpen) {
+      toast.error("Quasar 5.0 PPT Submissions officially open on 1 December 2026!");
+      return;
+    }
 
     if (!isMinMembersMet) {
       toast.error("At least 2 team members are required to submit Round 1!");
@@ -204,6 +213,40 @@ export function IdeaSubmissionModal({
             <p className="mt-1 leading-relaxed text-amber-200/90">
               Your squad currently has {totalMembers} member. Share your team code (<strong>{registration.teamCode || registration.id}</strong>) with your teammates to join. Once at least 2 members have joined, Round 1 PPT submission unlocks automatically!
             </p>
+          </div>
+        )}
+
+        {/* Quasar Submissions Paused until Dec 1 & Official Template Banner */}
+        {isQuasar && (
+          <div className="rounded-xl border border-neon/40 bg-neon/10 p-3.5 text-xs text-foreground flex items-center justify-between gap-3 flex-wrap">
+            <div className="flex items-center gap-2">
+              <Clock className="size-4 text-neon shrink-0" />
+              <span>
+                {!isSubmissionsOpen ? (
+                  <>
+                    <strong className="text-neon">Submissions Open 1 Dec 2026:</strong> Slide portal will accept entries from 1 Dec. Prepare your deck using the official template!
+                  </>
+                ) : (
+                  <>
+                    <strong className="text-neon">Official PPT Format:</strong> Use the official Quasar 5.0 slide deck template.
+                  </>
+                )}
+              </span>
+            </div>
+            {isMinMembersMet ? (
+              <a
+                href="https://docs.google.com/presentation/d/1X3Z5uzfAHhiQfyw-xAf06AQpkuWxlw48rU8ZQblrRJ4/edit?slide=id.h1f2b58c52b4784ea_3_75#slide=id.h1f2b58c52b4784ea_3_75"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 rounded-lg bg-neon px-3 py-1.5 text-[11px] font-black text-black hover:brightness-105 transition"
+              >
+                Open Official PPT Format 📊 <ExternalLink className="size-3" />
+              </a>
+            ) : (
+              <span className="text-[11px] font-semibold text-amber-400">
+                🔒 Template unlocks at 2+ members
+              </span>
+            )}
           </div>
         )}
 
@@ -366,11 +409,13 @@ export function IdeaSubmissionModal({
             </Button>
             <Button
               type="submit"
-              disabled={!isMinMembersMet || saving}
+              disabled={!isMinMembersMet || saving || (isQuasar && !isSubmissionsOpen)}
               className="rounded-xl bg-neon text-primary-foreground font-black text-xs sm:text-sm px-6 py-2.5 shadow-glow hover:brightness-105 disabled:opacity-50"
             >
               {saving
                 ? "Saving..."
+                : isQuasar && !isSubmissionsOpen
+                ? "Submissions Open 1 Dec 2026 🔒"
                 : isSubmitted
                 ? "Update Submission ✓"
                 : "Submit Round 1 Entry 🚀"}

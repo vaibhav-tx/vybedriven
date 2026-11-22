@@ -1220,16 +1220,34 @@ function OpportunityDetails() {
                     <div className="mt-3.5 space-y-2.5">
                       {/* PPT Round 1 CTA for Teams with >= 2 members */}
                       {userRegRecord?.teamType === "team" && squadMemberCount >= 2 ? (
-                        <Button
-                          type="button"
-                          onClick={() => setIdeaModalOpen(true)}
-                          className="w-full rounded-xl bg-neon text-primary-foreground font-black text-xs py-3 shadow-glow hover:brightness-105"
-                        >
-                          <Sparkles className="size-3.5 mr-1.5" />
-                          {userRegRecord?.submission?.pptUrl
-                            ? "View / Edit Round 1 PPT Deck ✓"
-                            : "Submit Round 1 Idea (PPT) 🚀"}
-                        </Button>
+                        item.slug === "quasar-5-international-hackathon-2027" ? (
+                          <Button
+                            type="button"
+                            asChild
+                            className="w-full rounded-xl bg-neon text-black font-black text-xs py-3 shadow-glow hover:brightness-105"
+                          >
+                            <a
+                              href="https://docs.google.com/presentation/d/1X3Z5uzfAHhiQfyw-xAf06AQpkuWxlw48rU8ZQblrRJ4/edit?slide=id.h1f2b58c52b4784ea_3_75#slide=id.h1f2b58c52b4784ea_3_75"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center justify-center gap-1.5"
+                            >
+                              <Sparkles className="size-3.5 mr-1 text-black shrink-0" />
+                              <span className="truncate">Official PPT Format (Submissions Open 1 Dec) 📊 ↗</span>
+                            </a>
+                          </Button>
+                        ) : (
+                          <Button
+                            type="button"
+                            onClick={() => setIdeaModalOpen(true)}
+                            className="w-full rounded-xl bg-neon text-primary-foreground font-black text-xs py-3 shadow-glow hover:brightness-105"
+                          >
+                            <Sparkles className="size-3.5 mr-1.5" />
+                            {userRegRecord?.submission?.pptUrl
+                              ? "View / Edit Round 1 PPT Deck ✓"
+                              : "Submit Round 1 Idea (PPT) 🚀"}
+                          </Button>
+                        )
                       ) : null}
 
                       <div className="grid grid-cols-2 gap-2">
@@ -1698,77 +1716,139 @@ function OpportunityDetails() {
                   <div className="mt-5 space-y-4">
                     {/* Unstop-Style Round 1: Idea Submission (PPT Round) Widget - Only active when team has at least 2 members */}
                     {(userRegRecord?.teamType !== "team" || squadMemberCount >= 2) ? (
-                      <div className="rounded-2xl border-2 border-neon/50 bg-gradient-to-br from-neon/15 via-emerald-950/20 to-black p-4 shadow-glow-soft">
-                        <div className="flex items-center justify-between">
-                          <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/50 bg-emerald-500/20 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-emerald-400">
-                            <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                            Round Live · Via Vybe Driven
-                          </span>
-                          <span className="text-[11px] text-muted-foreground font-mono">
-                            {item.slug === "quasar-5-international-hackathon-2027" ? "Dec 25, 2026" : "Dec 31, 2026"}
-                          </span>
-                        </div>
+                      item.slug === "quasar-5-international-hackathon-2027" ? (
+                        <div className="rounded-2xl border-2 border-neon/50 bg-gradient-to-br from-neon/15 via-emerald-950/20 to-black p-4 shadow-glow-soft">
+                          <div className="flex items-center justify-between">
+                            <span className="inline-flex items-center gap-1.5 rounded-full border border-neon/50 bg-neon/20 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-neon">
+                              <span className="size-1.5 rounded-full bg-neon animate-pulse" />
+                              Opens 1 Dec 2026 · Online PPT Round
+                            </span>
+                            <span className="text-[11px] text-muted-foreground font-mono">
+                              1 Dec – 25 Dec 2026
+                            </span>
+                          </div>
 
-                        <h3 className="mt-2 text-base font-black text-foreground tracking-tight">
-                          Idea Submission — PPT Round
-                        </h3>
-                        <p className="mt-0.5 text-xs text-muted-foreground leading-relaxed">
-                          {item.slug === "goa-buildathon-2027"
-                            ? "Submit your team's proposed solution deck to qualify for the Grand Finale in Goa."
-                            : item.slug === "quasar-5-international-hackathon-2027"
-                            ? "Submit your team's proposed solution deck via Vybe Driven to qualify for Round 1 & the 36-Hour Offline Finale at VPPCOE & VA Sion, Mumbai."
-                            : "Submit your team's proposed solution deck to qualify for the finale."}
-                        </p>
+                          <h3 className="mt-2 text-base font-black text-foreground tracking-tight">
+                            Idea Submission — Quasar 5.0 PPT Round
+                          </h3>
+                          <p className="mt-0.5 text-xs text-muted-foreground leading-relaxed">
+                            PPT Submissions officially open on <strong>1 December 2026</strong>. Since your squad has {squadMemberCount} members, your official Quasar presentation format is unlocked below. Prepare your slides using this template!
+                          </p>
 
-                        <div className="mt-3 space-y-2">
-                          <Button
-                            onClick={() => setIdeaModalOpen(true)}
-                            className="w-full rounded-xl bg-neon text-primary-foreground font-black text-xs sm:text-sm py-2.5 shadow-glow hover:brightness-105"
-                          >
-                            {userRegRecord?.submission?.pptUrl ? (
-                              <>
-                                <CheckCircle2 className="size-4 mr-1.5" />
-                                View / Edit PPT Submission
-                              </>
-                            ) : (
-                              <>
-                                <Sparkles className="size-4 mr-1.5" />
-                                Submit Idea / PPT Round 🚀
-                              </>
-                            )}
-                          </Button>
+                          <div className="mt-3.5 space-y-2.5">
+                            <a
+                              href="https://docs.google.com/presentation/d/1X3Z5uzfAHhiQfyw-xAf06AQpkuWxlw48rU8ZQblrRJ4/edit?slide=id.h1f2b58c52b4784ea_3_75#slide=id.h1f2b58c52b4784ea_3_75"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="w-full flex items-center justify-center gap-2 rounded-xl bg-neon text-black font-black text-xs sm:text-sm py-2.5 shadow-glow hover:brightness-105 transition"
+                            >
+                              <Sparkles className="size-4 text-black shrink-0" />
+                              Open Official PPT Format (Slides) ↗
+                            </a>
 
-                          {userRegRecord?.submission?.pptUrl && (
-                            <div className="flex items-center justify-between text-[11px] px-1 text-muted-foreground">
-                              <span className="text-emerald-400 font-bold truncate max-w-[190px]">
-                                ✓ {userRegRecord.submission.projectTitle}
-                              </span>
-                              {!isInvalidPptLink(userRegRecord.submission.pptUrl) ? (
+                            <Button
+                              type="button"
+                              disabled
+                              className="w-full rounded-xl bg-surface border border-border text-muted-foreground font-bold text-xs py-2.5 cursor-not-allowed opacity-80"
+                            >
+                              <Clock className="size-3.5 mr-1.5 text-neon" />
+                              Submissions Open on 1 Dec 2026 🔒
+                            </Button>
+
+                            {userRegRecord?.submission?.pptUrl && (
+                              <div className="flex items-center justify-between text-[11px] px-1 text-muted-foreground pt-0.5">
+                                <span className="text-emerald-400 font-bold truncate max-w-[190px]">
+                                  ✓ {userRegRecord.submission.projectTitle}
+                                </span>
                                 <a
                                   href={formatExternalUrl(userRegRecord.submission.pptUrl)}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="text-neon hover:underline font-semibold inline-flex items-center gap-1"
                                 >
-                                  View Slides ↗
+                                  View Submitted Deck ↗
                                 </a>
-                              ) : (
-                                <span className="text-amber-400 font-semibold text-[10px]">
-                                  ⚠️ Invalid link (re-submit)
-                                </span>
-                              )}
-                            </div>
-                          )}
+                              </div>
+                            )}
+                          </div>
                         </div>
-                      </div>
+                      ) : (
+                        <div className="rounded-2xl border-2 border-neon/50 bg-gradient-to-br from-neon/15 via-emerald-950/20 to-black p-4 shadow-glow-soft">
+                          <div className="flex items-center justify-between">
+                            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/50 bg-emerald-500/20 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-emerald-400">
+                              <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                              Round Live · Via Vybe Driven
+                            </span>
+                            <span className="text-[11px] text-muted-foreground font-mono">
+                              Dec 31, 2026
+                            </span>
+                          </div>
+
+                          <h3 className="mt-2 text-base font-black text-foreground tracking-tight">
+                            Idea Submission — PPT Round
+                          </h3>
+                          <p className="mt-0.5 text-xs text-muted-foreground leading-relaxed">
+                            {item.slug === "goa-buildathon-2027"
+                              ? "Submit your team's proposed solution deck to qualify for the Grand Finale in Goa."
+                              : "Submit your team's proposed solution deck to qualify for the finale."}
+                          </p>
+
+                          <div className="mt-3 space-y-2">
+                            <Button
+                              onClick={() => setIdeaModalOpen(true)}
+                              className="w-full rounded-xl bg-neon text-primary-foreground font-black text-xs sm:text-sm py-2.5 shadow-glow hover:brightness-105"
+                            >
+                              {userRegRecord?.submission?.pptUrl ? (
+                                <>
+                                  <CheckCircle2 className="size-4 mr-1.5" />
+                                  View / Edit PPT Submission
+                                </>
+                              ) : (
+                                <>
+                                  <Sparkles className="size-4 mr-1.5" />
+                                  Submit Idea / PPT Round 🚀
+                                </>
+                              )}
+                            </Button>
+
+                            {userRegRecord?.submission?.pptUrl && (
+                              <div className="flex items-center justify-between text-[11px] px-1 text-muted-foreground">
+                                <span className="text-emerald-400 font-bold truncate max-w-[190px]">
+                                  ✓ {userRegRecord.submission.projectTitle}
+                                </span>
+                                {!isInvalidPptLink(userRegRecord.submission.pptUrl) ? (
+                                  <a
+                                    href={formatExternalUrl(userRegRecord.submission.pptUrl)}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-neon hover:underline font-semibold inline-flex items-center gap-1"
+                                  >
+                                    View Slides ↗
+                                  </a>
+                                ) : (
+                                  <span className="text-amber-400 font-semibold text-[10px]">
+                                    ⚠️ Invalid link (re-submit)
+                                  </span>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )
                     ) : (
                       <div className="rounded-2xl border border-amber-500/40 bg-amber-500/10 p-4 text-xs">
                         <div className="flex items-center gap-2 font-bold text-sm text-amber-300">
                           <Lock className="size-4 text-amber-400" />
-                          <span>PPT Submission Locked (2+ Members Required)</span>
+                          <span>
+                            {item.slug === "quasar-5-international-hackathon-2027"
+                              ? "PPT Format & Submission Locked (2+ Members Required)"
+                              : "PPT Submission Locked (2+ Members Required)"}
+                          </span>
                         </div>
                         <p className="mt-1.5 text-amber-200/90 leading-relaxed">
-                          PPT submission round via Vybe Driven unlocks once your squad has at least <strong>2 members</strong> (currently {squadMemberCount}/4). Invite a teammate using your team code <strong>{userRegRecord?.teamCode || userRegRecord?.id}</strong>.
+                          {item.slug === "quasar-5-international-hackathon-2027"
+                            ? `The official Quasar 5.0 presentation template & submission unlock once your squad has at least 2 members (currently ${squadMemberCount}/4). Invite a teammate using your team code (${userRegRecord?.teamCode || userRegRecord?.id}).`
+                            : `PPT submission round via Vybe Driven unlocks once your squad has at least 2 members (currently ${squadMemberCount}/4). Invite a teammate using your team code (${userRegRecord?.teamCode || userRegRecord?.id}).`}
                         </p>
                         <Button
                           size="sm"
@@ -1776,7 +1856,9 @@ function OpportunityDetails() {
                           className="mt-3 w-full rounded-xl bg-amber-500 text-black font-extrabold text-xs hover:bg-amber-400"
                         >
                           <Users className="size-3.5 mr-1.5" />
-                          Invite Teammate to Unlock PPT Round
+                          {item.slug === "quasar-5-international-hackathon-2027"
+                            ? "Invite Teammate to Unlock PPT Template"
+                            : "Invite Teammate to Unlock PPT Round"}
                         </Button>
                       </div>
                     )}
@@ -1997,15 +2079,34 @@ function OpportunityDetails() {
                     </Button>
 
                     {userRegRecord?.teamType === "team" && squadMemberCount >= 2 ? (
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => setIdeaModalOpen(true)}
-                        className="rounded-xl border-neon/50 text-neon font-bold text-xs h-10 px-2 hover:bg-neon hover:text-black flex items-center justify-center gap-1.5"
-                      >
-                        <Sparkles className="size-3.5 shrink-0" />
-                        <span className="truncate">{userRegRecord?.submission?.pptUrl ? "Edit PPT" : "Submit PPT 🚀"}</span>
-                      </Button>
+                      item.slug === "quasar-5-international-hackathon-2027" ? (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          asChild
+                          className="rounded-xl border-neon/50 text-neon font-bold text-xs h-10 px-2 hover:bg-neon hover:text-black flex items-center justify-center gap-1.5"
+                        >
+                          <a
+                            href="https://docs.google.com/presentation/d/1X3Z5uzfAHhiQfyw-xAf06AQpkuWxlw48rU8ZQblrRJ4/edit?slide=id.h1f2b58c52b4784ea_3_75#slide=id.h1f2b58c52b4784ea_3_75"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-center gap-1.5"
+                          >
+                            <Sparkles className="size-3.5 shrink-0" />
+                            <span className="truncate">PPT Format 📊</span>
+                          </a>
+                        </Button>
+                      ) : (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => setIdeaModalOpen(true)}
+                          className="rounded-xl border-neon/50 text-neon font-bold text-xs h-10 px-2 hover:bg-neon hover:text-black flex items-center justify-center gap-1.5"
+                        >
+                          <Sparkles className="size-3.5 shrink-0" />
+                          <span className="truncate">{userRegRecord?.submission?.pptUrl ? "Edit PPT" : "Submit PPT 🚀"}</span>
+                        </Button>
+                      )
                     ) : (
                       <Button
                         size="sm"
