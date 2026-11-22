@@ -167,50 +167,53 @@ function ProfilePage() {
 
     const authMeta: any = user.user_metadata || {};
 
-    supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", user.id)
-      .maybeSingle()
-      .then(({ data }) => {
-        const profile = data as any;
-        const skillsVal =
-          (Array.isArray(localMeta.skills) ? localMeta.skills.join(", ") : localMeta.skills) ||
-          (Array.isArray(authMeta.skills) ? authMeta.skills.join(", ") : authMeta.skills) ||
-          (Array.isArray(profile?.skills) ? profile.skills.join(", ") : "") ||
-          "";
+    import("@/integrations/d1/client")
+      .then(({ d1Db }) => {
+        d1Db.getProfile(user.id)
+          .then((profile: any) => {
+            const skillsVal =
+              (Array.isArray(localMeta.skills) ? localMeta.skills.join(", ") : localMeta.skills) ||
+              (Array.isArray(authMeta.skills) ? authMeta.skills.join(", ") : authMeta.skills) ||
+              (Array.isArray(profile?.skills) ? profile.skills.join(", ") : typeof profile?.skills === "string" ? profile.skills : "") ||
+              "";
 
-        const interestsVal =
-          (Array.isArray(localMeta.interests) ? localMeta.interests.join(", ") : localMeta.interests) ||
-          (Array.isArray(authMeta.interests) ? authMeta.interests.join(", ") : authMeta.interests) ||
-          (Array.isArray(profile?.interests) ? profile.interests.join(", ") : "") ||
-          "";
+            const interestsVal =
+              (Array.isArray(localMeta.interests) ? localMeta.interests.join(", ") : localMeta.interests) ||
+              (Array.isArray(authMeta.interests) ? authMeta.interests.join(", ") : authMeta.interests) ||
+              (Array.isArray(profile?.interests) ? profile.interests.join(", ") : typeof profile?.interests === "string" ? profile.interests : "") ||
+              "";
 
-        setForm({
-          display_name:
-            profile?.display_name ||
-            localMeta.display_name ||
-            authMeta.full_name ||
-            authMeta.name ||
-            user.email?.split("@")[0] ||
-            "",
-          username: localMeta.username || authMeta.username || profile?.username || "",
-          headline: localMeta.headline || authMeta.headline || profile?.headline || "",
-          bio: profile?.bio || localMeta.bio || authMeta.bio || "",
-          location: localMeta.location || authMeta.location || profile?.location || "",
-          college_or_company:
-            profile?.college_or_company ||
-            localMeta.college_or_company ||
-            authMeta.college_or_company ||
-            "",
-          skills: skillsVal,
-          interests: interestsVal,
-          github_url: localMeta.github_url || authMeta.github_url || profile?.github_url || "",
-          linkedin_url: localMeta.linkedin_url || authMeta.linkedin_url || profile?.linkedin_url || "",
-          website_url: localMeta.website_url || authMeta.website_url || profile?.website_url || "",
-          avatar_url: profile?.avatar_url || localMeta.avatar_url || authMeta.avatar_url || "👨‍💻",
-        });
-        setLoading(false);
+            setForm({
+              display_name:
+                profile?.display_name ||
+                profile?.displayName ||
+                localMeta.display_name ||
+                authMeta.full_name ||
+                authMeta.name ||
+                user.email?.split("@")[0] ||
+                "",
+              username: localMeta.username || authMeta.username || profile?.username || "",
+              headline: localMeta.headline || authMeta.headline || profile?.headline || "",
+              bio: profile?.bio || localMeta.bio || authMeta.bio || "",
+              location: localMeta.location || authMeta.location || profile?.location || "",
+              college_or_company:
+                profile?.college_or_company ||
+                profile?.collegeOrCompany ||
+                localMeta.college_or_company ||
+                authMeta.college_or_company ||
+                "",
+              skills: skillsVal,
+              interests: interestsVal,
+              github_url: localMeta.github_url || authMeta.github_url || profile?.github_url || profile?.githubUrl || "",
+              linkedin_url: localMeta.linkedin_url || authMeta.linkedin_url || profile?.linkedin_url || profile?.linkedinUrl || "",
+              website_url: localMeta.website_url || authMeta.website_url || profile?.website_url || profile?.websiteUrl || "",
+              avatar_url: profile?.avatar_url || profile?.avatarUrl || localMeta.avatar_url || authMeta.avatar_url || "👨‍💻",
+            });
+            setLoading(false);
+          })
+          .catch(() => {
+            setLoading(false);
+          });
       })
       .catch(() => {
         setLoading(false);
