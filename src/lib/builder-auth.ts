@@ -88,6 +88,9 @@ export function clearBuilderSession() {
   if (typeof window === "undefined") return;
   try {
     localStorage.removeItem(STORAGE_SESSION_KEY);
+    localStorage.removeItem("hd_guest_email");
+    localStorage.removeItem("hd-auth-next");
+    sessionStorage.removeItem("hd-auth-next");
     window.dispatchEvent(new Event(BUILDER_AUTH_CHANGE_EVENT));
     window.dispatchEvent(new Event("storage"));
   } catch {}

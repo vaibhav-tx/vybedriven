@@ -584,12 +584,22 @@ function OpportunityDetails() {
   const registrations = useEventRegistrations(item.slug, { enabled: isHost });
   const regCount = registrations.length;
 
-  const guestStoredEmail = typeof window !== "undefined" ? localStorage.getItem("hd_guest_email") || undefined : undefined;
-  const userIdentifier = user?.email || user?.id || guestStoredEmail;
+  // Cleanup any legacy or stale guest email when not logged in
+  useEffect(() => {
+    if (!user && typeof window !== "undefined") {
+      try {
+        localStorage.removeItem("hd_guest_email");
+      } catch {}
+    }
+  }, [user]);
+
+  // Registrations and squad data are strictly tied to an authenticated user
+  const userIdentifier = user?.email || user?.id;
 
   const userRegRecord = useMemo(() => {
-    const effectiveEmail = user?.email || guestStoredEmail;
-    const effectiveId = user?.id;
+    if (!user) return null;
+    const effectiveEmail = user.email;
+    const effectiveId = user.id;
     if (!effectiveId && !effectiveEmail) return null;
 
     const localUserRegs = getUserRegistrations(effectiveId, effectiveEmail);
@@ -612,9 +622,9 @@ function OpportunityDetails() {
             ))
       ) || null
     );
-  }, [registrations, user, guestStoredEmail, item.slug]);
+  }, [registrations, user, item.slug]);
 
-  const isRegistered = Boolean(userRegRecord) || isUserRegistered(item.slug, userIdentifier);
+  const isRegistered = Boolean(user && (userRegRecord || (userIdentifier && isUserRegistered(item.slug, userIdentifier))));
 
   const squadMemberCount = useMemo(() => {
     if (!userRegRecord) return 0;
@@ -644,9 +654,9 @@ function OpportunityDetails() {
 
   // Live sync user's registration and team roster from Cloudflare D1
   useEffect(() => {
-    if (!user && !guestStoredEmail) return;
-    const userEmail = user?.email || guestStoredEmail;
-    const userId = user?.id;
+    if (!user) return;
+    const userEmail = user.email;
+    const userId = user.id;
 
     // Immediately fetch latest team & registration state from Cloudflare D1
     refreshUserRegistrationFromD1(item.slug, userId, userEmail);
@@ -666,7 +676,7 @@ function OpportunityDetails() {
       window.removeEventListener("focus", handleFocus);
       clearInterval(interval);
     };
-  }, [user?.id, user?.email, guestStoredEmail, item.slug]);
+  }, [user?.id, user?.email, item.slug]);
 
   // Auto-open modal or redirect if requested via ?register=1 or ?joinCode=...
   useEffect(() => {
@@ -2251,7 +2261,7 @@ function OpportunityDetails() {
         open={regModalOpen}
         onOpenChange={handleRegModalChange}
         onSuccess={() => {
-          refreshUserRegistrationFromD1(item.slug, user?.id, user?.email || guestStoredEmail);
+          if (user) refreshUserRegistrationFromD1(item.slug, user.id, user.email);
         }}
         initialJoinCode={activeJoinCode && activeJoinCode.toUpperCase() !== "JOIN" ? activeJoinCode : undefined}
         initialMode={modalMode}
