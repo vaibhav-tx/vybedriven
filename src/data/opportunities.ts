@@ -642,9 +642,9 @@ Key Highlights:
       },
       {
         icon: "brain",
-        emoji: "🤖",
-        title: "AI Agents & Emerging Tech",
-        description: "Hands-on tracks for AI agents, web apps, automation workflows, data science, and hardware.",
+        emoji: "🚀",
+        title: "Track 01: Open Innovation",
+        description: "Build anything you believe in with no constraints. Pick your domain, assemble your squad, and ship.",
       },
       {
         icon: "handshake",
@@ -702,13 +702,15 @@ What To Expect:
 Who Can Participate?:
 GOA BUILDATHON ’27 welcomes students, aspiring developers, designers, AI builders and technology enthusiasts who want to learn by building. Whether you're an experienced hackathon participant or attending your first hackathon, the focus is on curiosity, collaboration and the willingness to create something meaningful. Bring your skills, find teammates, explore unfamiliar technologies and turn your ideas into something people can experience.
 
-What Can You Build?:
-• Artificial Intelligence & AI Agents: Build intelligent assistants, agentic workflows and practical AI-powered applications.
-• Web Development: Create websites, platforms and full-stack applications that address real problems.
-• Automation: Develop tools that reduce repetitive work and improve everyday processes.
-• Data Science & Analytics: Turn data into insights, useful tools and better decisions.
-• Software & Developer Tools: Build products that improve workflows, productivity and collaboration.
-• Electronics & Emerging Technology: Explore innovative solutions that connect software with the physical world.
+Mission Arenas · Tracks & Problem Statements:
+• TRACK 01 — PRIMARY: OPEN INNOVATION (Open for Builders)
+Build anything you believe in. No constraints, no prescribed problem. Pick your domain, assemble your squad, and ship something the world hasn't seen yet. Your imagination is the only brief.
+• Any domain — AI, Web, Hardware, Mobile, Climate, Fintech, Games, ...
+• Teams of 2–4 builders
+• 36 non-stop hours in Goa
+• Judged on impact, execution & craft
+
+Sponsor Challenges & Partner Bounties will be announced closer to the event, giving you even more ways to win.
 
 The goal is not simply to present an idea, but to make meaningful progress towards a working solution within the hackathon.
 

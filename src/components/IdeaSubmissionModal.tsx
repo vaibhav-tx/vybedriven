@@ -35,14 +35,13 @@ interface IdeaSubmissionModalProps {
   onSubmitted?: () => void;
 }
 
-const TRACK_OPTIONS = [
-  "Artificial Intelligence & AI Agents",
-  "Web Development & Software Engineering",
-  "Automation & Workflow Optimization",
-  "Data Science & Analytics",
-  "Software & Developer Tools",
-  "Electronics & Emerging Technology",
-  "Open Innovation",
+const QUASAR_TRACKS = [
+  "Problem Statement 1",
+  "Problem Statement 2",
+  "Problem Statement 3",
+  "Problem Statement 4",
+  "Problem Statement 5",
+  "Open Track / General",
 ];
 
 export function IdeaSubmissionModal({
@@ -53,8 +52,18 @@ export function IdeaSubmissionModal({
 }: IdeaSubmissionModalProps) {
   const { user } = useAuth();
 
+  const isGoa = registration
+    ? registration.opportunitySlug === "goa-buildathon-2027" ||
+      Boolean(registration.eventName?.toLowerCase().includes("goa"))
+    : false;
+  const isQuasar = registration
+    ? registration.opportunitySlug === "quasar-5-international-hackathon-2027" ||
+      Boolean(registration.eventName?.toLowerCase().includes("quasar"))
+    : false;
+  const isSubmissionsOpen = !isQuasar || new Date() >= new Date("2026-12-01T00:00:00+05:30");
+
   const [projectTitle, setProjectTitle] = useState("");
-  const [track, setTrack] = useState(TRACK_OPTIONS[0]);
+  const [track, setTrack] = useState(isGoa ? "Open Innovation" : isQuasar ? "Problem Statement 1" : "Open Innovation");
   const [summary, setSummary] = useState("");
   const [pptUrl, setPptUrl] = useState("");
   const [demoUrl, setDemoUrl] = useState("");
@@ -66,28 +75,24 @@ export function IdeaSubmissionModal({
 
     if (registration.submission) {
       setProjectTitle(registration.submission.projectTitle || "");
-      setTrack(registration.submission.track || TRACK_OPTIONS[0]);
+      setTrack(isGoa ? "Open Innovation" : (registration.submission.track || (isQuasar ? "Problem Statement 1" : "Open Innovation")));
       setSummary(registration.submission.summary || "");
       setPptUrl(registration.submission.pptUrl || "");
       setDemoUrl(registration.submission.demoUrl || "");
     } else {
       setProjectTitle(registration.projectIdea || "");
-      setTrack(TRACK_OPTIONS[0]);
+      setTrack(isGoa ? "Open Innovation" : (isQuasar ? "Problem Statement 1" : "Open Innovation"));
       setSummary("");
       setPptUrl("");
       setDemoUrl("");
     }
-  }, [open, registration?.id, registration?.submission]);
+  }, [open, registration?.id, registration?.submission, isGoa, isQuasar]);
 
   if (!registration) return null;
 
   const totalMembers = 1 + (registration.teammates?.length || 0);
   const isMinMembersMet = totalMembers >= 2;
   const isSubmitted = Boolean(registration.submission?.pptUrl);
-  const isQuasar =
-    registration.opportunitySlug === "quasar-5-international-hackathon-2027" ||
-    registration.eventName?.includes("Quasar");
-  const isSubmissionsOpen = !isQuasar || new Date() >= new Date("2026-12-01T00:00:00+05:30");
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -128,7 +133,7 @@ export function IdeaSubmissionModal({
         registration.id,
         {
           projectTitle: trimmedTitle,
-          track,
+          track: isGoa ? "Open Innovation" : track,
           summary: trimmedSummary,
           pptUrl: finalPptUrl,
           demoUrl: demoUrl.trim() ? formatExternalUrl(demoUrl.trim()) : undefined,
@@ -285,23 +290,81 @@ export function IdeaSubmissionModal({
           </div>
 
           {/* 2. Track / Category */}
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5">
-              Domain / Track <span className="text-neon">*</span>
-            </label>
-            <select
-              value={track}
-              onChange={(e) => setTrack(e.target.value)}
-              disabled={!isMinMembersMet}
-              className="w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon focus:ring-1 focus:ring-neon transition disabled:opacity-50"
-            >
-              {TRACK_OPTIONS.map((opt) => (
-                <option key={opt} value={opt}>
-                  {opt}
-                </option>
-              ))}
-            </select>
-          </div>
+          {isGoa ? (
+            <div className="rounded-xl border border-neon/40 bg-neon/10 p-4 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-neon">
+                  Domain / Track
+                </span>
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-neon/50 bg-neon/20 px-2.5 py-0.5 text-[10px] font-bold text-neon uppercase">
+                  <span className="size-1.5 rounded-full bg-neon animate-pulse" />
+                  Open Innovation Live Now
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Sparkles className="size-4 text-neon shrink-0" />
+                <span className="text-sm font-black text-foreground">
+                  Track 01 — Open Innovation (Primary Track)
+                </span>
+              </div>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Build anything you believe in. No constraints, no prescribed problem. Pick your domain (AI, Web, Hardware, Mobile, Climate, Fintech, Games, etc.), assemble your squad of 2–4 builders, and ship something the world hasn't seen yet. Your imagination is the only brief.
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 pt-1 text-[11px] text-muted-foreground">
+                <div className="flex items-center gap-1.5">
+                  <CheckCircle2 className="size-3.5 text-neon shrink-0" />
+                  <span>Any domain (AI, Web, Hardware, Games...)</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <CheckCircle2 className="size-3.5 text-neon shrink-0" />
+                  <span>Teams of 2–4 builders</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <CheckCircle2 className="size-3.5 text-neon shrink-0" />
+                  <span>36 non-stop hours in Goa</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <CheckCircle2 className="size-3.5 text-neon shrink-0" />
+                  <span>Judged on impact, execution & craft</span>
+                </div>
+              </div>
+            </div>
+          ) : isQuasar ? (
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5">
+                Problem Statement / Track <span className="text-neon">*</span>
+              </label>
+              <select
+                value={track}
+                onChange={(e) => setTrack(e.target.value)}
+                disabled={!isMinMembersMet}
+                className="w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon focus:ring-1 focus:ring-neon transition disabled:opacity-50"
+              >
+                {QUASAR_TRACKS.map((opt) => (
+                  <option key={opt} value={opt}>
+                    {opt}
+                  </option>
+                ))}
+              </select>
+              <p className="text-[11px] text-muted-foreground mt-1">
+                Select which Quasar 5.0 problem statement or open track your slide deck addresses.
+              </p>
+            </div>
+          ) : (
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5">
+                Domain / Track <span className="text-neon">*</span>
+              </label>
+              <input
+                type="text"
+                value={track}
+                onChange={(e) => setTrack(e.target.value)}
+                disabled={!isMinMembersMet}
+                placeholder="e.g. Open Innovation, FinTech, HealthTech..."
+                className="w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon focus:ring-1 focus:ring-neon transition disabled:opacity-50"
+              />
+            </div>
+          )}
 
           {/* 3. 1-Sentence Summary */}
           <div>
