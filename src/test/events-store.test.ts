@@ -221,14 +221,118 @@ describe("Events Store & Vybe Driven Host Hub", () => {
     });
     expect(joinedAgain.teammates?.length).toBe(1);
 
+    // Join 3rd member (Member #3)
+    const joinedMember3 = await joinTeamWithCode(code, {
+      fullName: "Member Three",
+      email: "member3@example.com",
+      phone: "+91 93725 80327",
+      collegeOrCompany: "Thakur engineering college",
+      opportunitySlug: "goa-buildathon-2027",
+    });
+    expect(joinedMember3.teammates?.length).toBe(2);
+    expect(joinedMember3.teamSize).toBe("3 members");
+
+    // Join 4th member (Member #4 - maximum capacity)
+    const joinedMember4 = await joinTeamWithCode(code, {
+      fullName: "Member Four",
+      email: "member4@example.com",
+      phone: "+91 93725 80328",
+      collegeOrCompany: "Thakur engineering college",
+      opportunitySlug: "goa-buildathon-2027",
+    });
+    expect(joinedMember4.teammates?.length).toBe(3);
+    expect(joinedMember4.teamSize).toBe("4 members");
+    // Verify all 3 joined teammates are present and none was removed!
+    const teammateEmails = joinedMember4.teammates?.map((t) => t.email);
+    expect(teammateEmails).toContain("shubham@example.com");
+    expect(teammateEmails).toContain("member3@example.com");
+    expect(teammateEmails).toContain("member4@example.com");
+
+    // Attempting to join a 5th member should fail
+    await expect(
+      joinTeamWithCode(code, {
+        fullName: "Member Five",
+        email: "member5@example.com",
+        phone: "+91 93725 80329",
+        collegeOrCompany: "Thakur engineering college",
+        opportunitySlug: "goa-buildathon-2027",
+      })
+    ).rejects.toThrow("already full (maximum 4 members allowed)");
+
     // Leader removes member test
     const afterRemoval = await removeTeammateFromTeam(
       code,
       "shubham@example.com",
       { email: "lavitra@example.com" }
     );
-    expect(afterRemoval.teammates?.length).toBe(0);
-    expect(afterRemoval.teamSize).toBe("1 members");
+    expect(afterRemoval.teammates?.length).toBe(2);
+    expect(afterRemoval.teamSize).toBe("3 members");
+  });
+
+  it("supports full 4-member squads for Quasar 5.0 without dropping members", async () => {
+    const quasar = findOpportunity("quasar-5-international-hackathon-2027");
+    expect(quasar).toBeTruthy();
+
+    const leader = submitRegistration({
+      opportunitySlug: "quasar-5-international-hackathon-2027",
+      opportunityTitle: quasar!.title,
+      fullName: "Krushna Leader",
+      email: "krushna.lead@example.com",
+      phone: "+91 93132 91418",
+      collegeOrCompany: "R. N. G. Patel Institute of Technology",
+      teamType: "team",
+      teamName: "Bitshift",
+    });
+
+    const code = leader.teamCode || leader.id;
+
+    // Add Member 2
+    const step2 = await joinTeamWithCode(code, {
+      fullName: "Sahil Gandhi",
+      email: "sahil@example.com",
+      phone: "+91 83200 89964",
+      collegeOrCompany: "R. N. G. Patel Institute of Technology",
+      opportunitySlug: "quasar-5-international-hackathon-2027",
+    });
+    expect(step2.teammates?.length).toBe(1);
+
+    // Add Member 3
+    const step3 = await joinTeamWithCode(code, {
+      fullName: "Kavya Bhandari",
+      email: "kavya@example.com",
+      phone: "+91 70460 49421",
+      collegeOrCompany: "R. N. G. Patel Institute of Technology",
+      opportunitySlug: "quasar-5-international-hackathon-2027",
+    });
+    expect(step3.teammates?.length).toBe(2);
+    expect(step3.teammates?.map((t) => t.email)).toEqual(["sahil@example.com", "kavya@example.com"]);
+
+    // Add Member 4
+    const step4 = await joinTeamWithCode(code, {
+      fullName: "Fourth Member",
+      email: "fourth@example.com",
+      phone: "+91 98765 43210",
+      collegeOrCompany: "R. N. G. Patel Institute of Technology",
+      opportunitySlug: "quasar-5-international-hackathon-2027",
+    });
+    expect(step4.teammates?.length).toBe(3);
+    expect(step4.teamSize).toBe("4 members");
+    expect(step4.teammates?.map((t) => t.email)).toEqual([
+      "sahil@example.com",
+      "kavya@example.com",
+      "fourth@example.com",
+    ]);
+
+    // Member 5 rejected
+    await expect(
+      joinTeamWithCode(code, {
+        fullName: "Fifth Member",
+        email: "fifth@example.com",
+        phone: "+91 98765 43211",
+        collegeOrCompany: "R. N. G. Patel Institute of Technology",
+        opportunitySlug: "quasar-5-international-hackathon-2027",
+      })
+    ).rejects.toThrow("already full (maximum 4 members allowed)");
   });
 });
 
