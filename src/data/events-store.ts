@@ -1138,28 +1138,13 @@ export function normalizeTeamCodeCandidates(raw: string): string[] {
   return Array.from(candidates);
 }
 
-// Find team by team code or registration id (checks local cache first, then Supabase cloud)
+// Find team by team code or registration id (checks Cloudflare D1 first, then local cache)
 export async function findTeamByCode(code: string): Promise<EventRegistration | null> {
   if (!code || typeof code !== "string") return null;
   const candidates = normalizeTeamCodeCandidates(code);
   if (candidates.length === 0) return null;
 
-  const list = getStoredRegistrations();
-
-  // 1. Check local storage - EXACT match only
-  const localMatch = list.find((r) => {
-    if (!r || r.teamType !== "team" || r.status === "Archived") return false;
-    const rId = (r.id || "").trim().toUpperCase();
-    const rCode = (r.teamCode || "").trim().toUpperCase();
-    const rTeam = (r.teamName || "").trim().toUpperCase();
-    return candidates.some((c) => {
-      const cUpper = c.toUpperCase();
-      return rId === cUpper || rCode === cUpper || (cUpper.length >= 4 && rTeam === cUpper);
-    });
-  });
-  if (localMatch) return localMatch;
-
-  // 2. Cloud check on Cloudflare D1 - EXACT match on id or team_name
+  // 1. Cloud check on Cloudflare D1 first to always guarantee the freshest remote squad roster
   try {
     const upperCandidates = candidates.map((c) => c.toUpperCase());
     const lowerCandidates = candidates.map((c) => c.toLowerCase());
@@ -1174,13 +1159,27 @@ export async function findTeamByCode(code: string): Promise<EventRegistration | 
     if (rows && rows.length > 0) {
       mergeRemoteRegistrations(rows);
       const freshList = getStoredRegistrations();
-      return freshList.find((r) => r.id === rows[0].id) || null;
+      const found = freshList.find((r) => r.id === rows[0].id);
+      if (found) return found;
     }
   } catch (err) {
     console.warn("[Cloud Team Lookup] Error checking team code on D1:", err);
   }
 
-  return null;
+  // 2. Fallback to local storage if offline or network error
+  const list = getStoredRegistrations();
+  return (
+    list.find((r) => {
+      if (!r || r.teamType !== "team" || r.status === "Archived") return false;
+      const rId = (r.id || "").trim().toUpperCase();
+      const rCode = (r.teamCode || "").trim().toUpperCase();
+      const rTeam = (r.teamName || "").trim().toUpperCase();
+      return candidates.some((c) => {
+        const cUpper = c.toUpperCase();
+        return rId === cUpper || rCode === cUpper || (cUpper.length >= 4 && rTeam === cUpper);
+      });
+    }) || null
+  );
 }
 
 // Synchronous local team finder for instant UI checks
@@ -1244,25 +1243,44 @@ export async function joinTeamWithCode(
     throw new Error("Registration for this hackathon is closed. Team roster has been locked.");
   }
 
-  const existingTeammates: TeammateDetail[] = Array.isArray(current.teammates) ? [...current.teammates] : [];
-  const currentTotal = 1 + existingTeammates.length; // 1 Leader + teammates
-  if (currentTotal >= 4) {
-    throw new Error(`Team "${current.teamName || "Squad"}" is already full (maximum 4 members allowed).`);
-  }
-
   if (current.email && current.email.trim().toLowerCase() === memberEmail) {
     throw new Error("You are already the Team Leader of this team!");
   }
 
-  const alreadyJoined = existingTeammates.some(
-    (t) =>
-      typeof t === "object" &&
-      t &&
-      typeof t.email === "string" &&
-      t.email.trim().toLowerCase() === memberEmail
-  );
-  if (alreadyJoined) {
-    return current; // Idempotent
+  // Atomic check against D1: fetch fresh cloud teammates so we NEVER overwrite concurrent joins!
+  let cloudTeammates: TeammateDetail[] = [];
+  try {
+    const latestRows = await d1Query(
+      `SELECT teammates FROM registrations WHERE id = ? LIMIT 1`,
+      [current.id]
+    );
+    if (latestRows && latestRows.length > 0) {
+      const raw = latestRows[0].teammates;
+      if (Array.isArray(raw)) cloudTeammates = raw;
+      else if (typeof raw === "string" && raw.trim()) {
+        try { cloudTeammates = JSON.parse(raw); } catch {}
+      }
+    }
+  } catch (err) {
+    console.warn("[joinTeamWithCode] D1 teammates fetch note:", err);
+  }
+
+  // Merge teammates from both current and cloudTeammates, deduplicating by email
+  const existingMap = new Map<string, TeammateDetail>();
+  const baseTeammates = Array.isArray(current.teammates) ? current.teammates : [];
+  for (const t of baseTeammates) {
+    if (t && t.email) existingMap.set(t.email.trim().toLowerCase(), t);
+  }
+  for (const t of cloudTeammates) {
+    if (t && t.email) existingMap.set(t.email.trim().toLowerCase(), t);
+  }
+
+  if (existingMap.has(memberEmail)) {
+    return current; // Idempotent: already joined
+  }
+
+  if (1 + existingMap.size >= 4) {
+    throw new Error(`Team "${current.teamName || "Squad"}" is already full (maximum 4 members allowed).`);
   }
 
   const newMember: TeammateDetail = {
@@ -1277,7 +1295,8 @@ export async function joinTeamWithCode(
     confirmedAt: new Date().toISOString(),
   };
 
-  const updatedTeammates = [...existingTeammates, newMember];
+  existingMap.set(memberEmail, newMember);
+  const updatedTeammates = Array.from(existingMap.values());
   const teamSummary = updatedTeammates
     .map((t) => `${(t.name || "Member").trim()} (${(t.email || "").trim()})`)
     .join(", ");
@@ -1764,8 +1783,8 @@ export async function refreshUserRegistrationFromD1(
          AND (
            user_id = ? 
            OR LOWER(email) = ? 
-           OR teammates LIKE ? 
-           OR team_members LIKE ?
+           OR LOWER(teammates) LIKE ? 
+           OR LOWER(team_members) LIKE ?
          ) 
        ORDER BY created_at DESC LIMIT 5`,
       [slug, cleanId || "__none__", cleanEmail || "__none__", `%${cleanEmail}%`, `%${cleanEmail}%`]
@@ -1784,30 +1803,6 @@ export async function refreshUserRegistrationFromD1(
               (Array.isArray(r.teammates) && r.teammates.some((t) => t.email?.toLowerCase() === cleanEmail)))
         ) || null
       );
-    } else if (cleanEmail) {
-      // D1 returned 0 matching registrations for this user on this opportunity!
-      // Clean up any stale local registration where this user was merely an invited teammate:
-      const localList = getStoredRegistrations();
-      let hasChanges = false;
-      const cleaned = localList.map((r) => {
-        if (r.opportunitySlug === slug && Array.isArray(r.teammates) && r.email?.toLowerCase() !== cleanEmail) {
-          const filtered = r.teammates.filter((t) => t.email?.toLowerCase() !== cleanEmail);
-          if (filtered.length !== r.teammates.length) {
-            hasChanges = true;
-            return {
-              ...r,
-              teammates: filtered,
-              teamSize: `${1 + filtered.length} members`,
-            };
-          }
-        }
-        return r;
-      });
-      if (hasChanges) {
-        localStorage.setItem(STORAGE_REGISTRATIONS, JSON.stringify(cleaned));
-        notifyStoreChange();
-      }
-      return null;
     }
   } catch (err) {
     console.warn("[D1 Sync] Could not refresh user registration:", err);

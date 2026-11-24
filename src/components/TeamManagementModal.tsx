@@ -365,10 +365,37 @@ export function TeamManagementModal({
     setSaving(true);
     try {
       const safeTeammates = Array.isArray(teammates) ? teammates : [];
-      const teamSummary = safeTeammates
+
+      // Fetch latest cloud teammates so we never overwrite members who joined remotely!
+      let latestCloudTeammates: TeammateDetail[] = [];
+      try {
+        const { d1Query } = await import("@/integrations/d1/client");
+        const freshRows = await d1Query("SELECT teammates FROM registrations WHERE id = ? LIMIT 1", [registration.id]);
+        if (freshRows && freshRows.length > 0) {
+          const raw = freshRows[0].teammates;
+          if (Array.isArray(raw)) latestCloudTeammates = raw;
+          else if (typeof raw === "string" && raw.trim()) {
+            try { latestCloudTeammates = JSON.parse(raw); } catch {}
+          }
+        }
+      } catch (err) {
+        console.warn("[Cloud Save Team] D1 pre-fetch note:", err);
+      }
+
+      // Merge modal teammates with cloud teammates (keeping all verified joined members)
+      const mergedMap = new Map<string, TeammateDetail>();
+      for (const t of latestCloudTeammates) {
+        if (t?.email) mergedMap.set(t.email.trim().toLowerCase(), t);
+      }
+      for (const t of safeTeammates) {
+        if (t?.email) mergedMap.set(t.email.trim().toLowerCase(), t);
+      }
+      const finalTeammates = Array.from(mergedMap.values());
+
+      const teamSummary = finalTeammates
         .map((t) => `${(t.name || "Member").trim()} (${(t.email || "").trim()})`)
         .join(", ");
-      const teamSize = `${1 + safeTeammates.length} members`;
+      const teamSize = `${1 + finalTeammates.length} members`;
 
       // 1. Direct Cloudflare D1 execution
       const { d1Db } = await import("@/integrations/d1/client");
@@ -376,7 +403,7 @@ export function TeamManagementModal({
         registration.id,
         teamSize,
         teamSummary || null,
-        safeTeammates,
+        finalTeammates,
         teamName.trim(),
         lookingForTeammates
       ).catch((err) => {
@@ -388,7 +415,7 @@ export function TeamManagementModal({
         registration.id,
         {
           teamName: teamName.trim(),
-          teammates: safeTeammates,
+          teammates: finalTeammates,
           lookingForTeammates,
         },
         user,
