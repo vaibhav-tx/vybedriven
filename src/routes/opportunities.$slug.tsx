@@ -1411,8 +1411,8 @@ function OpportunityDetails() {
                               </div>
                             )}
 
-                            {/* Unstop-style PPT Template box in Stage card */}
-                            {(step.title?.toLowerCase().includes("ppt") || (item.slug === "quasar-5-international-hackathon-2027" && index === 0) || item.pptTemplateUrl) && (
+                            {/* Unstop-style PPT Template box in Stage card - EXCLUSIVELY for Quasar 5.0 */}
+                            {item.slug === "quasar-5-international-hackathon-2027" && index === 0 && (
                               <div className="mt-4 rounded-xl border border-neon/40 bg-neon/10 p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-glow-soft">
                                 <div className="flex items-start gap-3">
                                   <div className="p-2 sm:p-2.5 rounded-xl bg-neon/20 border border-neon/30 text-neon shrink-0 mt-0.5">
@@ -1431,7 +1431,7 @@ function OpportunityDetails() {
                                   </div>
                                 </div>
                                 <a
-                                  href={item.pptTemplateUrl || "https://docs.google.com/presentation/d/1X3Z5uzfAHhiQfyw-xAf06AQpkuWxlw48rU8ZQblrRJ4/edit?slide=id.h1f2b58c52b4784ea_3_75#slide=id.h1f2b58c52b4784ea_3_75"}
+                                  href="https://docs.google.com/presentation/d/1X3Z5uzfAHhiQfyw-xAf06AQpkuWxlw48rU8ZQblrRJ4/edit?slide=id.h1f2b58c52b4784ea_3_75#slide=id.h1f2b58c52b4784ea_3_75"
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="inline-flex items-center justify-center gap-2 rounded-xl bg-neon px-4 py-2.5 text-xs font-black text-black hover:brightness-105 transition shadow-glow shrink-0"

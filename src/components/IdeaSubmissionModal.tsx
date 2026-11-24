@@ -165,7 +165,7 @@ export function IdeaSubmissionModal({
           </div>
 
           <DialogTitle className="text-xl sm:text-2xl font-black text-foreground tracking-tight">
-            Idea Submission — {registration.eventName || "Quasar 5.0"}
+            Idea Submission — {registration.eventName || registration.opportunityTitle || (isQuasar ? "Quasar 5.0" : "Round 1")}
           </DialogTitle>
 
           <DialogDescription className="text-xs sm:text-sm text-muted-foreground">
@@ -233,20 +233,14 @@ export function IdeaSubmissionModal({
                 )}
               </span>
             </div>
-            {isMinMembersMet ? (
-              <a
-                href="https://docs.google.com/presentation/d/1X3Z5uzfAHhiQfyw-xAf06AQpkuWxlw48rU8ZQblrRJ4/edit?slide=id.h1f2b58c52b4784ea_3_75#slide=id.h1f2b58c52b4784ea_3_75"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 rounded-lg bg-neon px-3 py-1.5 text-[11px] font-black text-black hover:brightness-105 transition"
-              >
-                Open Official PPT Format 📊 <ExternalLink className="size-3" />
-              </a>
-            ) : (
-              <span className="text-[11px] font-semibold text-amber-400">
-                🔒 Template unlocks at 2+ members
-              </span>
-            )}
+            <a
+              href="https://docs.google.com/presentation/d/1X3Z5uzfAHhiQfyw-xAf06AQpkuWxlw48rU8ZQblrRJ4/edit?slide=id.h1f2b58c52b4784ea_3_75#slide=id.h1f2b58c52b4784ea_3_75"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 rounded-lg bg-neon px-3 py-1.5 text-[11px] font-black text-black hover:brightness-105 transition"
+            >
+              Open Official PPT Format 📊 <ExternalLink className="size-3" />
+            </a>
           </div>
         )}
 
