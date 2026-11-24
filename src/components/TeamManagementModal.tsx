@@ -178,6 +178,8 @@ export function TeamManagementModal({
       )
   );
 
+  const isQuasar = registration.opportunitySlug === "quasar-5-international-hackathon-2027" || Boolean(registration.eventName?.includes("Quasar"));
+
   const isAdmin = isPlatformAdmin(user);
 
   // Anyone in the squad (Leader, Members) or Platform Admin can manage & invite teammates!
@@ -304,7 +306,9 @@ export function TeamManagementModal({
       `🚀 Join my team "${teamName}" for ${registration.opportunityTitle} on Vybe Driven!\n\n` +
       `🔑 Official Team Code: ${teamCode}\n\n` +
       `🔗 Click link to join directly: ${link}\n\n` +
-      `Simply sign in, enter our Team Code, and you'll instantly get your verified participant pass! 🎟️`
+      (isQuasar
+        ? `Simply sign in, enter our Team Code, and you'll instantly join our verified squad roster! 🚀`
+        : `Simply sign in, enter our Team Code, and you'll instantly get your verified participant pass! 🎟️`)
     );
     window.open(`https://api.whatsapp.com/send?text=${msg}`, "_blank");
   };
@@ -334,7 +338,9 @@ export function TeamManagementModal({
       `Hey ${member.name},\n\n` +
       `You have been invited by ${registration.fullName} to join Team "${teamName}" for ${registration.opportunityTitle} on Vybe Driven!\n\n` +
       `Click the link below to confirm and join the official team roster:\n${link}\n\n` +
-      `Once confirmed, your official participant pass will be available in your Vybe Driven builder profile.\n\n` +
+      (isQuasar
+        ? `Once confirmed, you will be verified on the official squad roster on Vybe Driven.\n\n`
+        : `Once confirmed, your official participant pass will be available in your Vybe Driven builder profile.\n\n`) +
       `See you at the hackathon!\n— Team Vybe Driven`
     );
     window.open(`mailto:${member.email}?subject=${subject}&body=${body}`, "_blank");
@@ -568,7 +574,9 @@ export function TeamManagementModal({
             </div>
 
             <p className="text-xs text-muted-foreground leading-relaxed pt-1 border-t border-border/40">
-              Share this code or link with your teammates. They will sign in, enter this code, and instantly appear on your roster with verified passes!
+              {isQuasar
+                ? "Share this code or link with your teammates. They will sign in, enter this code, and instantly appear on your official squad roster!"
+                : "Share this code or link with your teammates. They will sign in, enter this code, and instantly appear on your roster with verified passes!"}
             </p>
           </div>
 
@@ -753,7 +761,9 @@ export function TeamManagementModal({
                       <Trash2 className="size-3.5" /> Danger Zone · Disband Squad
                     </div>
                     <p className="text-[11px] text-muted-foreground mt-0.5">
-                      Need to disband this squad? Disbanding will permanently cancel all member passes and free everyone to join or create another team.
+                      {isQuasar
+                        ? "Need to disband this squad? Disbanding will remove all members from the roster and free everyone to join or create another team."
+                        : "Need to disband this squad? Disbanding will permanently cancel all member passes and free everyone to join or create another team."}
                     </p>
                   </div>
                   {!showDeleteConfirm && (
@@ -772,7 +782,7 @@ export function TeamManagementModal({
                 {showDeleteConfirm && (
                   <div className="rounded-xl border border-red-500/50 bg-red-950/40 p-3.5 space-y-3 text-xs">
                     <p className="text-red-200 leading-relaxed font-medium">
-                      ⚠️ Are you sure you want to disband <strong>&quot;{teamName}&quot;</strong>? This will permanently disband this squad, invalidate all member entry passes, and cannot be undone.
+                      ⚠️ Are you sure you want to disband <strong>&quot;{teamName}&quot;</strong>? {isQuasar ? "This will permanently disband this squad and remove all members from the roster, and cannot be undone." : "This will permanently disband this squad, invalidate all member entry passes, and cannot be undone."}
                     </p>
 
                     <label className="flex items-start gap-2.5 cursor-pointer text-foreground select-none bg-red-950/50 p-2.5 rounded-lg border border-red-500/30">
@@ -783,7 +793,9 @@ export function TeamManagementModal({
                         className="mt-0.5 size-4 rounded border-red-500/50 accent-red-500 cursor-pointer"
                       />
                       <span className="text-[11px] leading-tight font-semibold text-red-100">
-                        I confirm that I want to permanently disband this squad and cancel all member passes.
+                        {isQuasar
+                          ? "I confirm that I want to permanently disband this squad."
+                          : "I confirm that I want to permanently disband this squad and cancel all member passes."}
                       </span>
                     </label>
 
@@ -840,7 +852,7 @@ export function TeamManagementModal({
                 {showLeaveConfirm && (
                   <div className="rounded-xl border border-amber-500/50 bg-amber-950/40 p-3.5 space-y-3 text-xs">
                     <p className="text-amber-200 leading-relaxed font-medium">
-                      Are you sure you want to leave <strong>&quot;{teamName}&quot;</strong>? Your current entry pass will be cancelled, and you will be free to join or create another squad.
+                      Are you sure you want to leave <strong>&quot;{teamName}&quot;</strong>? {isQuasar ? "You will be removed from this squad, and you will be free to join or create another squad." : "Your current entry pass will be cancelled, and you will be free to join or create another squad."}
                     </p>
 
                     <div className="flex items-center gap-2 pt-1">

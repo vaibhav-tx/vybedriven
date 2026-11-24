@@ -1195,7 +1195,7 @@ function OpportunityDetails() {
                       Squad Registered
                     </span>
                     <span className="text-xs font-bold text-neon font-mono">
-                      {userRegRecord?.teamName || "Squad Pass"}
+                      {userRegRecord?.teamName || (item.slug === "quasar-5-international-hackathon-2027" ? "Registered Squad" : "Squad Pass")}
                     </span>
                   </div>
 
@@ -1259,7 +1259,7 @@ function OpportunityDetails() {
                         </Button>
                       ) : null}
 
-                      <div className="grid grid-cols-2 gap-2">
+                      {item.slug === "quasar-5-international-hackathon-2027" ? (
                         <Button
                           size="sm"
                           onClick={() => setTeamModalOpen(true)}
@@ -1268,29 +1268,40 @@ function OpportunityDetails() {
                           <Users className="size-3.5 shrink-0 text-black" />
                           <span className="truncate">Manage Team</span>
                         </Button>
+                      ) : (
+                        <div className="grid grid-cols-2 gap-2">
+                          <Button
+                            size="sm"
+                            onClick={() => setTeamModalOpen(true)}
+                            className="h-10 sm:h-11 w-full rounded-xl bg-neon text-black font-extrabold text-xs px-2 shadow-glow-soft hover:brightness-105 flex items-center justify-center gap-1.5"
+                          >
+                            <Users className="size-3.5 shrink-0 text-black" />
+                            <span className="truncate">Manage Team</span>
+                          </Button>
 
-                        {userRegRecord?.teamType === "team" && squadMemberCount < 2 ? (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={handleRegisterClick}
-                            className="h-10 sm:h-11 w-full rounded-xl border-amber-500/50 text-xs font-bold text-amber-400 hover:bg-amber-500/15 px-2 flex items-center justify-center gap-1.5"
-                          >
-                            <Lock className="size-3.5 text-amber-400 shrink-0" />
-                            <span className="truncate">Pass Locked</span>
-                          </Button>
-                        ) : (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={handleRegisterClick}
-                            className="h-10 sm:h-11 w-full rounded-xl border-neon/50 text-xs font-bold text-neon hover:bg-neon hover:text-black px-2 flex items-center justify-center gap-1.5"
-                          >
-                            <Ticket className="size-3.5 shrink-0" />
-                            <span className="truncate">Entry Pass</span>
-                          </Button>
-                        )}
-                      </div>
+                          {userRegRecord?.teamType === "team" && squadMemberCount < 2 ? (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={handleRegisterClick}
+                              className="h-10 sm:h-11 w-full rounded-xl border-amber-500/50 text-xs font-bold text-amber-400 hover:bg-amber-500/15 px-2 flex items-center justify-center gap-1.5"
+                            >
+                              <Lock className="size-3.5 text-amber-400 shrink-0" />
+                              <span className="truncate">Pass Locked</span>
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={handleRegisterClick}
+                              className="h-10 sm:h-11 w-full rounded-xl border-neon/50 text-xs font-bold text-neon hover:bg-neon hover:text-black px-2 flex items-center justify-center gap-1.5"
+                            >
+                              <Ticket className="size-3.5 shrink-0" />
+                              <span className="truncate">Entry Pass</span>
+                            </Button>
+                          )}
+                        </div>
+                      )}
 
                       {/* WhatsApp Community - EXCLUSIVE TO REGISTERED TEAMS & MEMBERS */}
                       {item.groupUrl && (
@@ -1911,38 +1922,49 @@ function OpportunityDetails() {
                         </span>
                       </div>
 
-                      <div className="mt-3 grid grid-cols-2 gap-2">
+                      {item.slug === "quasar-5-international-hackathon-2027" ? (
                         <Button
                           size="sm"
                           onClick={() => setTeamModalOpen(true)}
-                          className="h-10 sm:h-11 w-full rounded-xl bg-neon text-black font-extrabold text-xs px-2 shadow-glow-soft hover:brightness-105 flex items-center justify-center gap-1.5"
+                          className="mt-3 h-10 sm:h-11 w-full rounded-xl bg-neon text-black font-extrabold text-xs px-2 shadow-glow-soft hover:brightness-105 flex items-center justify-center gap-1.5"
                         >
                           <Users className="size-3.5 shrink-0 text-black" />
                           <span className="truncate">Manage Team</span>
                         </Button>
+                      ) : (
+                        <div className="mt-3 grid grid-cols-2 gap-2">
+                          <Button
+                            size="sm"
+                            onClick={() => setTeamModalOpen(true)}
+                            className="h-10 sm:h-11 w-full rounded-xl bg-neon text-black font-extrabold text-xs px-2 shadow-glow-soft hover:brightness-105 flex items-center justify-center gap-1.5"
+                          >
+                            <Users className="size-3.5 shrink-0 text-black" />
+                            <span className="truncate">Manage Team</span>
+                          </Button>
 
-                        {userRegRecord?.teamType === "team" && squadMemberCount < 2 ? (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={handleRegisterClick}
-                            className="h-10 sm:h-11 w-full rounded-xl border-amber-500/50 text-xs font-bold text-amber-400 hover:bg-amber-500/15 px-2 flex items-center justify-center gap-1.5"
-                          >
-                            <Lock className="size-3.5 text-amber-400 shrink-0" />
-                            <span className="truncate">Pass Locked</span>
-                          </Button>
-                        ) : (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={handleRegisterClick}
-                            className="h-10 sm:h-11 w-full rounded-xl border-neon/50 text-xs font-bold text-neon hover:bg-neon hover:text-black px-2 flex items-center justify-center gap-1.5"
-                          >
-                            <Ticket className="size-3.5 shrink-0" />
-                            <span className="truncate">Entry Pass</span>
-                          </Button>
-                        )}
-                      </div>
+                          {userRegRecord?.teamType === "team" && squadMemberCount < 2 ? (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={handleRegisterClick}
+                              className="h-10 sm:h-11 w-full rounded-xl border-amber-500/50 text-xs font-bold text-amber-400 hover:bg-amber-500/15 px-2 flex items-center justify-center gap-1.5"
+                            >
+                              <Lock className="size-3.5 text-amber-400 shrink-0" />
+                              <span className="truncate">Pass Locked</span>
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={handleRegisterClick}
+                              className="h-10 sm:h-11 w-full rounded-xl border-neon/50 text-xs font-bold text-neon hover:bg-neon hover:text-black px-2 flex items-center justify-center gap-1.5"
+                            >
+                              <Ticket className="size-3.5 shrink-0" />
+                              <span className="truncate">Entry Pass</span>
+                            </Button>
+                          )}
+                        </div>
+                      )}
                     </div>
 
                     {/* For Quasar 5.0, Problem Statements link for registered builders (strictly locked until 2+ members join) */}
@@ -2162,7 +2184,7 @@ function OpportunityDetails() {
                         className="rounded-xl border-neon/50 text-neon font-bold text-xs h-10 px-2 hover:bg-neon hover:text-black flex items-center justify-center gap-1.5"
                       >
                         <Ticket className="size-3.5 shrink-0" />
-                        <span className="truncate">View Pass</span>
+                        <span className="truncate">{item.slug === "quasar-5-international-hackathon-2027" ? "Team Details" : "View Pass"}</span>
                       </Button>
                     )}
                   </div>

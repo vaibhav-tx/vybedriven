@@ -1893,13 +1893,15 @@ Platform Support: vybedriven@gmail.com
                 </div>
 
                 <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed">
-                  💡 Teammates simply visit Vybe Driven, click <strong className="text-foreground">&quot;Join Team with Code&quot;</strong>, enter this code, and they&apos;ll instantly get verified on your roster and unlock their official entry pass!
+                  {opportunity.slug === "quasar-5-international-hackathon-2027"
+                    ? <>💡 Teammates simply visit Vybe Driven, click <strong className="text-foreground">&quot;Join Team with Code&quot;</strong>, enter this code, and they&apos;ll instantly get verified on your squad roster!</>
+                    : <>💡 Teammates simply visit Vybe Driven, click <strong className="text-foreground">&quot;Join Team with Code&quot;</strong>, enter this code, and they&apos;ll instantly get verified on your roster and unlock their official entry pass!</>}
                 </p>
               </div>
             )}
 
-            {/* Pass Lock Notice when team has fewer than 2 members */}
-            {confirmedReg.teamType === "team" && (1 + (confirmedReg.teammates?.length || 0)) < 2 && (
+            {/* Pass Lock Notice when team has fewer than 2 members - OMITTED FOR QUASAR */}
+            {opportunity.slug !== "quasar-5-international-hackathon-2027" && confirmedReg.teamType === "team" && (1 + (confirmedReg.teammates?.length || 0)) < 2 && (
               <div className="rounded-2xl border-2 border-amber-500/50 bg-gradient-to-r from-amber-500/15 via-black to-amber-950/20 p-4 sm:p-5 text-left space-y-2 shadow-glow-soft">
                 <div className="flex items-center gap-2 text-amber-400 font-extrabold text-sm sm:text-base">
                   <Lock className="size-5 shrink-0" />
@@ -1912,8 +1914,8 @@ Platform Support: vybedriven@gmail.com
               </div>
             )}
 
-            {/* Official Pass Card (Only fully shown when unlocked) */}
-            {confirmedReg.teamType === "team" && (1 + (confirmedReg.teammates?.length || 0)) < 2 ? (
+            {/* Official Pass / Registration Card */}
+            {opportunity.slug !== "quasar-5-international-hackathon-2027" && confirmedReg.teamType === "team" && (1 + (confirmedReg.teammates?.length || 0)) < 2 ? (
               <div className="rounded-2xl border border-dashed border-border/80 bg-surface/50 p-6 text-center space-y-2 opacity-75">
                 <Lock className="size-8 text-amber-400 mx-auto" />
                 <h4 className="text-sm font-bold text-foreground">Digital Pass &amp; Entry Barcode Locked</h4>
@@ -1970,45 +1972,100 @@ Platform Support: vybedriven@gmail.com
                   </div>
                 </div>
 
-                {/* What's Next in Goa Buildathon */}
+                {/* Quasar Problem Statements & Tracks Access */}
+                {opportunity.slug === "quasar-5-international-hackathon-2027" && (
+                  <div className="border-t border-border/60 pt-3 space-y-2">
+                    <p className="text-[11px] font-bold uppercase tracking-wider text-neon">
+                      Official Problem Statements &amp; Tracks
+                    </p>
+                    {(1 + (confirmedReg.teammates?.length || 0)) >= 2 ? (
+                      <a
+                        href="https://quasar-vppcoe.vercel.app/#tracks"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2 rounded-xl border border-neon/50 bg-neon/15 px-3 py-2.5 text-xs font-bold text-neon hover:bg-neon hover:text-black transition shadow-glow-soft"
+                      >
+                        <span>▶ Quasar_Problem Statements &amp; Tracks ◀</span>
+                        <ExternalLink className="size-3.5" />
+                      </a>
+                    ) : (
+                      <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-2.5 text-center text-xs text-amber-300 flex items-center justify-center gap-2">
+                        <Lock className="size-3.5 text-amber-400 shrink-0" />
+                        <span>🔒 Problem Statements (Unlocks when 2+ members join)</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* What's Next Section */}
                 <div className="border-t border-border/60 pt-3 space-y-2">
                   <p className="text-[11px] font-bold uppercase tracking-wider text-neon">
                     What&apos;s Next in {opportunity.title}?
                   </p>
                   <div className="rounded-xl bg-background/60 border border-border p-2.5 space-y-2 text-xs">
-                    <div className="flex items-center justify-between">
-                      <span className="font-semibold text-foreground">
-                        1. Idea Submission — PPT Round
-                      </span>
-                      <span className="rounded-full bg-neon/15 px-2 py-0.5 text-[10px] font-bold text-neon">
-                        🟢 Live Now
-                      </span>
-                    </div>
+                    {opportunity.slug === "quasar-5-international-hackathon-2027" ? (
+                      <>
+                        <div className="flex items-center justify-between">
+                          <span className="font-semibold text-foreground">
+                            1. Idea Submission — Quasar 5.0 PPT Round
+                          </span>
+                          <span className="rounded-full bg-neon/15 px-2 py-0.5 text-[10px] font-bold text-neon">
+                            Opens 1 Dec 2026
+                          </span>
+                        </div>
+                        <div className="pt-1">
+                          <a
+                            href="https://docs.google.com/presentation/d/1X3Z5uzfAHhiQfyw-xAf06AQpkuWxlw48rU8ZQblrRJ4/edit?slide=id.h1f2b58c52b4784ea_3_75#slide=id.h1f2b58c52b4784ea_3_75"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-full flex items-center justify-center gap-2 rounded-xl bg-neon text-black font-black text-xs py-2 shadow-glow hover:brightness-105 transition"
+                          >
+                            <Sparkles className="size-3.5 text-black shrink-0" />
+                            Open Official PPT Format (Slides) ↗
+                          </a>
+                        </div>
+                        <div className="flex items-center justify-between text-muted-foreground pt-1">
+                          <span>2. 36-Hour Offline Hackathon — Grand Finale</span>
+                          <span className="text-[11px] font-mono text-foreground font-semibold">To be announced (TBA)</span>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="flex items-center justify-between">
+                          <span className="font-semibold text-foreground">
+                            1. Idea Submission — PPT Round
+                          </span>
+                          <span className="rounded-full bg-neon/15 px-2 py-0.5 text-[10px] font-bold text-neon">
+                            🟢 Live Now
+                          </span>
+                        </div>
 
-                    {confirmedReg.teamType === "team" && (1 + (confirmedReg.teammates?.length || 0)) >= 2 ? (
-                      <div className="pt-1">
-                        <Button
-                          type="button"
-                          size="sm"
-                          onClick={() => setIdeaModalOpen(true)}
-                          className="w-full rounded-xl bg-neon text-primary-foreground font-black text-xs py-2 shadow-glow hover:brightness-105"
-                        >
-                          <Sparkles className="size-3.5 mr-1" />
-                          {confirmedReg.submission?.pptUrl
-                            ? "View / Edit Round 1 PPT Deck ✓"
-                            : "Submit Round 1 Idea (PPT Deck) 🚀"}
-                        </Button>
-                      </div>
-                    ) : confirmedReg.teamType === "team" ? (
-                      <div className="rounded-lg bg-amber-500/10 border border-amber-500/30 p-2 text-[11px] text-amber-300">
-                        🔒 Round 1 PPT submission unlocks once teammate #2 joins.
-                      </div>
-                    ) : null}
+                        {confirmedReg.teamType === "team" && (1 + (confirmedReg.teammates?.length || 0)) >= 2 ? (
+                          <div className="pt-1">
+                            <Button
+                              type="button"
+                              size="sm"
+                              onClick={() => setIdeaModalOpen(true)}
+                              className="w-full rounded-xl bg-neon text-primary-foreground font-black text-xs py-2 shadow-glow hover:brightness-105"
+                            >
+                              <Sparkles className="size-3.5 mr-1" />
+                              {confirmedReg.submission?.pptUrl
+                                ? "View / Edit Round 1 PPT Deck ✓"
+                                : "Submit Round 1 Idea (PPT Deck) 🚀"}
+                            </Button>
+                          </div>
+                        ) : confirmedReg.teamType === "team" ? (
+                          <div className="rounded-lg bg-amber-500/10 border border-amber-500/30 p-2 text-[11px] text-amber-300">
+                            🔒 Round 1 PPT submission unlocks once teammate #2 joins.
+                          </div>
+                        ) : null}
 
-                    <div className="flex items-center justify-between text-muted-foreground">
-                      <span>2. 36-Hour Offline Hackathon — Grand Finale</span>
-                      <span className="text-[11px] font-mono text-foreground font-semibold">To be announced (TBA)</span>
-                    </div>
+                        <div className="flex items-center justify-between text-muted-foreground">
+                          <span>2. 36-Hour Offline Hackathon — Grand Finale</span>
+                          <span className="text-[11px] font-mono text-foreground font-semibold">To be announced (TBA)</span>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
@@ -2043,24 +2100,27 @@ Platform Support: vybedriven@gmail.com
                 </a>
               )}
 
-              {confirmedReg.teamType === "team" && (1 + (confirmedReg.teammates?.length || 0)) < 2 ? (
-                <Button
-                  type="button"
-                  variant="outline"
-                  disabled
-                  className="rounded-full text-xs font-semibold text-amber-300 border-amber-500/40 bg-amber-500/10 opacity-80 cursor-not-allowed h-9 px-3.5"
-                >
-                  <Lock className="size-3.5 mr-1 text-amber-400" /> Pass Locked (Needs 2+ Members)
-                </Button>
-              ) : (
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={downloadPassSummary}
-                  className="rounded-full text-xs font-semibold text-foreground hover:border-neon hover:text-neon h-9 px-3.5"
-                >
-                  <Download className="size-3.5 mr-1 text-neon" /> Download Pass
-                </Button>
+              {/* Only non-Quasar hackathons have offline venue passes */}
+              {opportunity.slug !== "quasar-5-international-hackathon-2027" && (
+                confirmedReg.teamType === "team" && (1 + (confirmedReg.teammates?.length || 0)) < 2 ? (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    disabled
+                    className="rounded-full text-xs font-semibold text-amber-300 border-amber-500/40 bg-amber-500/10 opacity-80 cursor-not-allowed h-9 px-3.5"
+                  >
+                    <Lock className="size-3.5 mr-1 text-amber-400" /> Pass Locked (Needs 2+ Members)
+                  </Button>
+                ) : (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={downloadPassSummary}
+                    className="rounded-full text-xs font-semibold text-foreground hover:border-neon hover:text-neon h-9 px-3.5"
+                  >
+                    <Download className="size-3.5 mr-1 text-neon" /> Download Pass
+                  </Button>
+                )
               )}
             </div>
 
