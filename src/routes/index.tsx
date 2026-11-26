@@ -207,16 +207,17 @@ function Partners() {
 
 const HOMEPAGE_PRIORITY: Record<string, number> = {
   // Grid Priority: Start with Luminar Creators Award, followed by Top Hackathons & Challenges
-  "luminar-creators-award-2027": 1,
-  "beyond-9to5-buildathon-bengaluru-2026": 2,
-  "beyond-9to5-buildathon-mumbai-2026": 3,
-  "code-relay-5-iit-bhubaneswar": 4,
-  "apify-ai-tools-that-earn-bangalore-2026": 5,
-  "lighthouse-hackathon-chandigarh-university-2027": 6,
-  "hacksprint-3-kahe-coimbatore": 7,
-  "skysparks-boeing-techkriti-iit-kanpur-2027": 8,
-  "shaastra-ctf-iit-madras-2027": 9,
-  "idea-competition-2026": 10,
+  "supernova-2026-quantumhack": 1,
+  "luminar-creators-award-2027": 2,
+  "beyond-9to5-buildathon-bengaluru-2026": 3,
+  "beyond-9to5-buildathon-mumbai-2026": 4,
+  "code-relay-5-iit-bhubaneswar": 5,
+  "apify-ai-tools-that-earn-bangalore-2026": 6,
+  "lighthouse-hackathon-chandigarh-university-2027": 7,
+  "hacksprint-3-kahe-coimbatore": 8,
+  "skysparks-boeing-techkriti-iit-kanpur-2027": 9,
+  "shaastra-ctf-iit-madras-2027": 10,
+  "idea-competition-2026": 11,
   // Top Meetups & Summits
   "semiconductor-deep-dive-hackerfab-mumbai": 11,
   "mumbai-community-year-end-meet-ai-agents": 12,

@@ -1034,7 +1034,13 @@ function OpportunityDetails() {
           <div className="px-3 pt-3">
             <div className="relative overflow-hidden rounded-2xl border border-border/80 bg-black shadow-md flex items-center justify-center">
               <img
-                src={item.slug === "quasar-5-international-hackathon-2027" ? "/events/quasar-5-poster-full.jpg" : item.image}
+                src={
+                  item.slug === "quasar-5-international-hackathon-2027"
+                    ? "/events/quasar-5-poster-full.jpg"
+                    : item.slug === "supernova-2026-quantumhack"
+                    ? "/events/supernova-quantumhack-poster.jpg"
+                    : item.image
+                }
                 alt={item.title}
                 className="w-full h-auto max-h-[380px] object-contain rounded-2xl"
               />

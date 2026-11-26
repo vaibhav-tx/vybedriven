@@ -86,6 +86,146 @@ export type Opportunity = {
 
 export const opportunities: Opportunity[] = [
   {
+    slug: "supernova-2026-quantumhack",
+    title: "Supernova 2026 – Quantumhack",
+    type: "Hackathon",
+    tag: "One Day · Two Tracks · Inter-Collegiate",
+    description: "Think Beyond Limits. Build Beyond Imagination. Join Tolani College for an intense one-day hackathon competition with AI/ML and Web Debugging tracks, cash prizes, trophies, and internship opportunities.",
+    date: "Dec 1, 2026",
+    location: "Tolani College of Commerce, Andheri East, Mumbai",
+    format: "In person",
+    prize: "₹6,000 Cash + Trophies & Internships",
+    image: "/events/supernova-quantumhack-banner.jpg",
+    imageFit: "contain",
+    imagePosition: "center center",
+    organizer: "Tolani College of Commerce (Autonomous) · Co-Powered by Vybe Driven · Community Partner: Mumbai Tech Community",
+    registrationDeadline: "Dec 1, 2026 · Limited slots available",
+    eligibility: "Inter-collegiate students, developers, aspiring coders and tech enthusiasts across colleges (Solo or Teams of up to 3)",
+    teamSize: "Solo or Teams of 2–3 Members",
+    fee: "₹300 per team",
+    status: "Registration open",
+    registrationUrl: "https://supernova-hackathon-frontend.vercel.app",
+    registrationLabel: "Register now",
+    registrationNote: "Limited slots available. Register directly on the official Supernova portal. Teams can participate as solo, duo, or trio (up to 3 members).",
+    contacts: [
+      { name: "Riya (Coordinator)", phone: "+91 88505 00749" },
+      { name: "Amit (Coordinator)", phone: "+91 99872 69437" },
+    ],
+    relatedLinks: [
+      { label: "Official Registration Portal", url: "https://supernova-hackathon-frontend.vercel.app" },
+      { label: "Tolani College of Commerce", url: "https://tcc.tolani.edu" },
+    ],
+    perks: [
+      {
+        icon: "trophy",
+        emoji: "🏆",
+        title: "₹6,000 Cash + Trophies",
+        description: "Cash prizes for track champions plus official trophies for 1st, 2nd & 3rd place winners.",
+      },
+      {
+        icon: "briefcase",
+        emoji: "💼",
+        title: "Internship Opportunities",
+        description: "Direct internship opportunities for winners through an interview-based selection process.",
+      },
+      {
+        icon: "cpu",
+        emoji: "🤖",
+        title: "AI & Machine Learning Track",
+        description: "Compete in solving challenges using artificial intelligence and machine learning models.",
+      },
+      {
+        icon: "code",
+        emoji: "💻",
+        title: "Web Debugging Track",
+        description: "Test your engineering craft by diagnosing, debugging, and fixing real-world web codebases.",
+      },
+    ],
+    overview: `🚀 SUPERNOVA 2026 – QUANTUMHACK
+Think Beyond Limits. Build Beyond Imagination. Ideas Ignite Worlds.
+
+Tolani College of Commerce (Autonomous), Andheri East, Mumbai presents SUPERNOVA 2026 – QUANTUMHACK, an action-packed inter-collegiate hackathon competition co-powered by Vybe Driven and Community Partner Mumbai Tech Community.
+
+Ready to showcase your skills and turn ideas into innovation? Join us for an exciting day of technology, challenges, and competition on 1st December 2026!
+
+🔥 ONE DAY. TWO TRACKS. UNLIMITED INNOVATION.
+
+Competition Categories:
+1. 🤖 AI & Machine Learning Track:
+• 1st Prize: ₹4,000 Cash Prize + Winner Trophy
+• 2nd Prize: Runner-Up Trophy
+• 3rd Prize: 2nd Runner-Up Trophy
+
+2. 💻 Web Debugging Track:
+• 1st Prize: ₹2,000 Cash Prize + Winner Trophy
+• 2nd Prize: Runner-Up Trophy
+• 3rd Prize: 2nd Runner-Up Trophy
+
+💼 Internship Opportunities:
+Internship opportunities will be provided to the winners through an interview-based selection process, offering direct industry experience!
+
+📍 Event Details:
+• Date: 1st December 2026
+• Venue: Tolani College of Commerce, Andheri East, Mumbai
+• Registration Fee: ₹300 per team
+• Team Size: Solo or teams of up to 3 members (Duo & Trio)
+• Total Cash Prize Pool: ₹6,000 + Trophies & Certificates
+
+📞 Student Coordinators & Contact:
+• Riya: +91 88505 00749
+• Amit: +91 99872 69437
+
+⚠️ Limited slots available. Register now through the official Supernova portal!`,
+    schedule: [
+      {
+        title: "Registration & Slot Confirmation",
+        date: "Open until 1 Dec 2026",
+        description: "Register online via the official Supernova portal. Secure your squad's slot (Solo, Duo, or Trio).",
+      },
+      {
+        title: "Supernova Quantumhack — Live Hackathon Competition",
+        date: "1 Dec 2026 · Offline at Tolani College",
+        description: "Full-day offline hackathon at Tolani College of Commerce, Andheri East. Compete in AI/ML Intelligence or Web Debugging tracks.",
+      },
+      {
+        title: "Project Evaluation, Trophies & Prize Distribution",
+        date: "1 Dec 2026 · Evening",
+        description: "Judging panel evaluates submissions, awards ₹6,000 cash prizes, trophies, and initiates internship interview pipelines.",
+      },
+    ],
+    rewardsSubtitle: "Total Prize Pool: ₹6,000 Cash + Trophies & Internship Pipelines",
+    rewards: [
+      {
+        amount: "₹4,000",
+        amountSub: "CASH + TROPHY",
+        title: "1st Place — AI & Machine Learning Track",
+        description: "Top performing team in the AI/ML Intelligence track receives ₹4,000 cash, official trophy, and interview-based internship opportunities.",
+        badge: "Champion",
+        type: "cash",
+      },
+      {
+        amount: "₹2,000",
+        amountSub: "CASH + TROPHY",
+        title: "1st Place — Web Debugging Track",
+        description: "Top performing team in the Web Debugging track receives ₹2,000 cash, official trophy, and interview-based internship opportunities.",
+        badge: "Champion",
+        type: "cash",
+      },
+      {
+        title: "2nd & 3rd Place Trophies",
+        description: "Runner-up and 2nd runner-up trophies awarded across both AI/ML and Web Debugging categories.",
+        badge: "Trophy",
+        type: "special",
+      },
+      {
+        title: "Internship Opportunities",
+        description: "Direct internship interviews and placement opportunities for competition winners.",
+        badge: "Career",
+        type: "grant",
+      },
+    ],
+  },
+  {
     slug: "beyond-9to5-buildathon-mumbai-2026",
     title: "BEYOND 9TO5 — Buildathon (Mumbai Edition)",
     type: "Hackathon",
