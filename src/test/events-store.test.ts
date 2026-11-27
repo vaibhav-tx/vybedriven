@@ -368,6 +368,7 @@ describe("Events Store & Vybe Driven Host Hub", () => {
       fullName: "Teammate One",
       email: "mate1@example.com",
       phone: "9876543211",
+      gender: "Female",
       collegeOrCompany: "Tech University",
       department: "CSE",
       graduationYear: "2027",
@@ -397,6 +398,8 @@ describe("Events Store & Vybe Driven Host Hub", () => {
       expect(lines[2]).toContain('"Team Member"');
       expect(lines[2]).toContain('"Teammate One"');
       expect(lines[2]).toContain('"mate1@example.com"');
+      expect(lines[2]).toContain('"Female"');
+      expect(lines[2]).toContain('"2027"');
     }
 
     window.URL.createObjectURL = origCreate;

@@ -85,6 +85,7 @@ export function TeamManagementModal({
   const [newCollege, setNewCollege] = useState("");
   const [newDept, setNewDept] = useState("");
   const [newYear, setNewYear] = useState("");
+  const [newGender, setNewGender] = useState("Male");
 
   const [saving, setSaving] = useState(false);
 
@@ -226,6 +227,7 @@ export function TeamManagementModal({
       name: newName.trim(),
       email: newEmail.trim().toLowerCase(),
       phone: newPhone.trim() || undefined,
+      gender: newGender,
       collegeOrCompany: newCollege.trim() || undefined,
       department: newDept.trim() || undefined,
       graduationYear: newYear.trim() || undefined,

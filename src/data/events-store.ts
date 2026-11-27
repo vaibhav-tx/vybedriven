@@ -48,6 +48,7 @@ export type TeammateDetail = {
   name: string;
   email: string;
   phone?: string;
+  gender?: string;
   collegeOrCompany?: string;
   department?: string;
   graduationYear?: string;
@@ -1212,6 +1213,7 @@ export async function joinTeamWithCode(
     fullName: string;
     email: string;
     phone: string;
+    gender?: string;
     collegeOrCompany: string;
     department?: string;
     graduationYear?: string;
@@ -1288,6 +1290,7 @@ export async function joinTeamWithCode(
     name: memberData.fullName.trim(),
     email: memberEmail,
     phone: memberData.phone.trim(),
+    gender: memberData.gender?.trim() || undefined,
     collegeOrCompany: memberData.collegeOrCompany.trim(),
     department: memberData.department?.trim() || undefined,
     graduationYear: memberData.graduationYear?.trim() || undefined,
@@ -1528,7 +1531,7 @@ export function exportRegistrationsToCSV(
     const completionStatus = totalMembers >= 2 ? "Complete" : "Incomplete";
     const teamId = r.teamCode || r.id;
     const teamName = r.teamName || (r.teamType === "solo" ? "Solo Builder" : `${r.fullName}'s Squad`);
-    const regDate = r.createdAt ? new Date(r.createdAt).toISOString().replace("T", " ").slice(0, 19) : "-";
+    const regDate = r.createdAt ? new Date(r.createdAt).toISOString().slice(0, 10) : "-";
 
     // 1. Team Leader Row
     rows.push([
@@ -1561,7 +1564,7 @@ export function exportRegistrationsToCSV(
     teammateList.forEach((tm) => {
       if (!tm || (!tm.name && !tm.email)) return;
       const tmDate = tm.confirmedAt
-        ? new Date(tm.confirmedAt).toISOString().replace("T", " ").slice(0, 19)
+        ? new Date(tm.confirmedAt).toISOString().slice(0, 10)
         : regDate;
 
       rows.push([
@@ -1571,7 +1574,7 @@ export function exportRegistrationsToCSV(
         escapeCSV(tm.name || "Member"),
         escapeCSV(tm.email || "-"),
         escapeCSV(tm.phone || "-"),
-        escapeCSV("-"),
+        escapeCSV(tm.gender || "-"),
         escapeCSV(r.location || "-"),
         escapeCSV("College Student"),
         escapeCSV(tm.department || r.department || "-"),

@@ -99,6 +99,7 @@ export function EventRegistrationModal({
   const [searchDone, setSearchDone] = useState(false);
   const [joinDept, setJoinDept] = useState("");
   const [joinYear, setJoinYear] = useState("");
+  const [joinGender, setJoinGender] = useState("Male");
 
   // Wizard Step: 1 = Basic/User Details, 2 = Team Setup, 3 = Confirmation
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -112,6 +113,7 @@ export function EventRegistrationModal({
   const [location, setLocation] = useState("");
   const [organization, setOrganization] = useState("");
   const [department, setDepartment] = useState("");
+  const [graduationYear, setGraduationYear] = useState("");
   const [userType, setUserType] = useState("College Students");
   const [termsAccepted, setTermsAccepted] = useState(true);
   const [stayInLoop, setStayInLoop] = useState(true);
@@ -388,6 +390,10 @@ export function EventRegistrationModal({
       toast.error("Please enter your College or Organization Name.");
       return;
     }
+    if (!joinYear.trim()) {
+      toast.error("Please enter your Graduation Year / Class (e.g. 2028 or 3rd Year).");
+      return;
+    }
 
     setSubmitting(true);
     try {
@@ -397,6 +403,7 @@ export function EventRegistrationModal({
         fullName: fullParticipantName,
         email: attendeeEmail,
         phone: phone.trim(),
+        gender: joinGender,
         collegeOrCompany: organization.trim(),
         department: joinDept.trim() || undefined,
         graduationYear: joinYear.trim() || undefined,
@@ -469,6 +476,10 @@ export function EventRegistrationModal({
     }
     if (!organization.trim()) {
       toast.error("Please enter your College or Organization Name.");
+      return;
+    }
+    if (!graduationYear.trim()) {
+      toast.error("Please enter your Graduation Year or Class (e.g. 2028 or 3rd Year).");
       return;
     }
     if (!termsAccepted) {
@@ -545,6 +556,7 @@ export function EventRegistrationModal({
           location: location.trim(),
           collegeOrCompany: organization.trim(),
           department: department.trim() || undefined,
+          graduationYear: graduationYear.trim() || undefined,
           userType,
           teamType: "team",
           teamName: teamName.trim(),
@@ -585,9 +597,10 @@ export function EventRegistrationModal({
           fullName: fullParticipantName,
           email: user?.email || email.trim().toLowerCase(),
           phone: phone.trim(),
+          gender: gender || joinGender,
           collegeOrCompany: organization.trim(),
-          department: joinDept.trim() || undefined,
-          graduationYear: joinYear.trim() || undefined,
+          department: (department || joinDept).trim() || undefined,
+          graduationYear: (graduationYear || joinYear).trim() || undefined,
           opportunitySlug: opportunity.slug,
         });
 
@@ -1319,6 +1332,30 @@ Platform Support: vybedriven@gmail.com
                   </div>
                 </div>
 
+                {/* Gender Selector for Teammate */}
+                <div className="min-w-0">
+                  <label className="block text-xs font-semibold text-foreground/90 mb-1.5 flex items-center justify-between">
+                    <span>Gender <span className="text-neon">*</span></span>
+                    <span className="text-[10px] text-muted-foreground">Select one</span>
+                  </label>
+                  <div className="flex flex-wrap gap-2 min-w-0">
+                    {["Male", "Female", "Other", "Prefer not to say"].map((g) => (
+                      <button
+                        key={g}
+                        type="button"
+                        onClick={() => setJoinGender(g)}
+                        className={`rounded-full px-3 py-1.5 text-xs font-semibold transition shrink-0 ${
+                          joinGender === g
+                            ? "bg-neon text-black font-bold shadow-glow-soft"
+                            : "border border-border bg-surface text-muted-foreground hover:text-foreground"
+                        }`}
+                      >
+                        {g}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
                 <div className="space-y-3 min-w-0">
                   <div className="min-w-0">
                     <label className="block text-xs font-semibold text-foreground/90 mb-1">
@@ -1333,17 +1370,34 @@ Platform Support: vybedriven@gmail.com
                       className="w-full min-w-0 rounded-xl border border-border bg-surface px-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon focus:ring-1 focus:ring-neon"
                     />
                   </div>
-                  <div className="min-w-0">
-                    <label className="block text-xs font-semibold text-foreground/90 mb-1">
-                      Branch / Department
-                    </label>
-                    <input
-                      type="text"
-                      value={joinDept}
-                      onChange={(e) => setJoinDept(e.target.value)}
-                      placeholder="e.g. Computer Engineering"
-                      className="w-full min-w-0 rounded-xl border border-border bg-surface px-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon focus:ring-1 focus:ring-neon"
-                    />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 min-w-0">
+                    <div className="min-w-0">
+                      <label className="block text-xs font-semibold text-foreground/90 mb-1">
+                        Branch / Department <span className="text-neon">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={joinDept}
+                        onChange={(e) => setJoinDept(e.target.value)}
+                        placeholder="e.g. Computer Engineering"
+                        className="w-full min-w-0 rounded-xl border border-border bg-surface px-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon focus:ring-1 focus:ring-neon"
+                      />
+                    </div>
+                    <div className="min-w-0">
+                      <label className="block text-xs font-semibold text-foreground/90 mb-1 flex items-center justify-between">
+                        <span>Graduation Year / Class <span className="text-neon">*</span></span>
+                        <span className="text-[10px] text-muted-foreground">e.g. 2028 or 3rd Year</span>
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={joinYear}
+                        onChange={(e) => setJoinYear(e.target.value)}
+                        placeholder="e.g. 2028, 2027, or 3rd Year"
+                        className="w-full min-w-0 rounded-xl border border-border bg-surface px-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon focus:ring-1 focus:ring-neon"
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -1505,22 +1559,42 @@ Platform Support: vybedriven@gmail.com
               </div>
             </div>
 
-            {/* Branch / Department */}
-            <div className="min-w-0">
-              <label className="block text-xs font-semibold text-foreground/90 mb-1 flex items-center justify-between">
-                <span>Branch / Department <span className="text-neon">*</span></span>
-                <span className="text-[10px] text-muted-foreground">e.g. Computer Science / IT / AI</span>
-              </label>
-              <div className="relative min-w-0">
-                <input
-                  type="text"
-                  required
-                  value={department}
-                  onChange={(e) => setDepartment(e.target.value)}
-                  placeholder="e.g. Computer Engineering / AIDS / IT"
-                  className="w-full min-w-0 rounded-xl border border-border bg-surface pl-9 pr-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon focus:ring-1 focus:ring-neon"
-                />
-                <GraduationCap className="absolute left-3 top-3 size-4 text-muted-foreground pointer-events-none" />
+            {/* Branch / Department & Graduation Year */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 min-w-0">
+              <div className="min-w-0">
+                <label className="block text-xs font-semibold text-foreground/90 mb-1 flex items-center justify-between">
+                  <span>Branch / Department <span className="text-neon">*</span></span>
+                  <span className="text-[10px] text-muted-foreground">e.g. Computer Science</span>
+                </label>
+                <div className="relative min-w-0">
+                  <input
+                    type="text"
+                    required
+                    value={department}
+                    onChange={(e) => setDepartment(e.target.value)}
+                    placeholder="e.g. Computer Engineering / AIDS"
+                    className="w-full min-w-0 rounded-xl border border-border bg-surface pl-9 pr-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon focus:ring-1 focus:ring-neon"
+                  />
+                  <GraduationCap className="absolute left-3 top-3 size-4 text-muted-foreground pointer-events-none" />
+                </div>
+              </div>
+
+              <div className="min-w-0">
+                <label className="block text-xs font-semibold text-foreground/90 mb-1 flex items-center justify-between">
+                  <span>Graduation Year / Class <span className="text-neon">*</span></span>
+                  <span className="text-[10px] text-muted-foreground">e.g. 2028 or 3rd Year</span>
+                </label>
+                <div className="relative min-w-0">
+                  <input
+                    type="text"
+                    required
+                    value={graduationYear}
+                    onChange={(e) => setGraduationYear(e.target.value)}
+                    placeholder="e.g. 2028, 2027, or 3rd Year"
+                    className="w-full min-w-0 rounded-xl border border-border bg-surface pl-9 pr-3.5 py-2.5 text-xs sm:text-sm text-foreground outline-none focus:border-neon focus:ring-1 focus:ring-neon"
+                  />
+                  <Calendar className="absolute left-3 top-3 size-4 text-muted-foreground pointer-events-none" />
+                </div>
               </div>
             </div>
 
