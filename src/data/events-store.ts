@@ -60,6 +60,7 @@ export type EventRegistration = {
   id: string;
   opportunitySlug: string;
   opportunityTitle: string;
+  eventName?: string;
   userId?: string;
   fullName: string;
   firstName?: string;

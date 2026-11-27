@@ -57,6 +57,7 @@ export type Opportunity = {
   date: string;
   location: string;
   format: "Online" | "In person" | "Hybrid";
+  organizerEmail?: string;
   prize?: string;
   perks?: OpportunityPerk[];
   image: string;

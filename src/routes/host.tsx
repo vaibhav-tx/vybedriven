@@ -40,10 +40,10 @@ export const Route = createFileRoute("/host")({
   validateSearch: (search: Record<string, unknown>): HostSearch => ({
     edit: typeof search["edit"] === "string" ? search["edit"] : undefined,
   }),
-  head: ({ search }) => ({
+  head: (ctx: any) => ({
     meta: [
       { name: "viewport", content: "width=device-width, initial-scale=1.0" },
-      { title: search.edit ? "Edit Hosted Event — Vybe Driven" : "Host a Hackathon or Event (Free Organizer Portal) — Vybe Driven (Vybe)" },
+      { title: ctx?.search?.edit ? "Edit Hosted Event — Vybe Driven" : "Host a Hackathon or Event (Free Organizer Portal) — Vybe Driven (Vybe)" },
       { name: "description", content: "Host your college hackathon, coding competition, or developer meetup on Vybe Driven (Vybe / Vibe Driven). Publish in minutes, reach thousands of ambitious students, and manage applications." },
       { name: "keywords", content: "host hackathon, list hackathon, college hackathon organizer, hackathon management platform, vybe driven, vybe, vibe driven, vibe" },
       { property: "og:title", content: "Host a Hackathon or Tech Event on Vybe Driven" },
