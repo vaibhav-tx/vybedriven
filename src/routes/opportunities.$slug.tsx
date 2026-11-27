@@ -2301,10 +2301,10 @@ function OpportunityDetails() {
         open={teamModalOpen}
         onOpenChange={setTeamModalOpen}
         onUpdated={() => {
-          refetchRegistrations();
+          refreshUserRegistrationFromD1(item.slug, user?.id, user?.email);
         }}
         onDeleted={() => {
-          refetchRegistrations();
+          refreshUserRegistrationFromD1(item.slug, user?.id, user?.email);
         }}
       />
 
