@@ -1481,25 +1481,23 @@ export function exportRegistrationsToCSV(
   }
 
   const headers = [
-    "Registration ID",
-    "Registration Date",
-    "Registration Completion",
-    "Squad Member Count",
-    "Full Name",
-    "First Name",
-    "Last Name",
-    "Email",
-    "Phone",
-    "Gender",
-    "Location",
-    "College / Organization",
-    "User Type",
-    "Participation Type",
+    "Team ID",
     "Team Name",
-    "Team Size",
-    "Teammates Breakdown",
-    "Looking for Teammates",
-    "Status",
+    "Candidate Role",
+    "Candidate Name",
+    "Candidate Email",
+    "Candidate Contact No",
+    "Candidate Gender",
+    "Candidate Location",
+    "User type",
+    "Domain / Department",
+    "Course / Degree",
+    "Class / Graduation Year",
+    "Candidate College / Organization",
+    "Registration Date",
+    "Registration Status",
+    "Ref Code",
+    "Total Team Members",
     "Round 1 (PPT) Status",
     "Project Title",
     "Domain / Track",
@@ -1513,43 +1511,85 @@ export function exportRegistrationsToCSV(
     return `"${String(str).replace(/"/g, '""')}"`;
   };
 
-  const rows = list.map((r) => {
-    const totalMembers = 1 + (r.teammates?.length || 0);
-    const completionStatus = totalMembers >= 2 ? "Complete (2+ Members)" : "Incomplete (1 Member)";
+  const rows: string[][] = [];
 
-    return [
-      escapeCSV(r.id),
-      escapeCSV(new Date(r.createdAt).toLocaleString()),
-      escapeCSV(completionStatus),
-      escapeCSV(String(totalMembers)),
+  list.forEach((r) => {
+    let teammateList: TeammateDetail[] = [];
+    if (Array.isArray(r.teammates)) {
+      teammateList = r.teammates;
+    } else if (typeof r.teammates === "string" && (r.teammates as string).trim()) {
+      try {
+        const parsed = JSON.parse(r.teammates);
+        if (Array.isArray(parsed)) teammateList = parsed;
+      } catch {}
+    }
+
+    const totalMembers = 1 + teammateList.length;
+    const completionStatus = totalMembers >= 2 ? "Complete" : "Incomplete";
+    const teamId = r.teamCode || r.id;
+    const teamName = r.teamName || (r.teamType === "solo" ? "Solo Builder" : `${r.fullName}'s Squad`);
+    const regDate = r.createdAt ? new Date(r.createdAt).toISOString().replace("T", " ").slice(0, 19) : "-";
+
+    // 1. Team Leader Row
+    rows.push([
+      escapeCSV(teamId),
+      escapeCSV(teamName),
+      escapeCSV("Team Lead"),
       escapeCSV(r.fullName),
-      escapeCSV(r.firstName || "-"),
-      escapeCSV(r.lastName || "-"),
       escapeCSV(r.email),
       escapeCSV(r.phone),
       escapeCSV(r.gender || "-"),
       escapeCSV(r.location || "-"),
+      escapeCSV(r.userType || "College Student"),
+      escapeCSV(r.department || "-"),
+      escapeCSV(r.userType?.includes("College") ? "B.Tech/BE" : "-"),
+      escapeCSV(r.graduationYear || "-"),
       escapeCSV(r.collegeOrCompany),
-      escapeCSV(r.userType || "-"),
-      escapeCSV(r.teamType),
-      escapeCSV(r.teamName || "-"),
-      escapeCSV(r.teamSize || "-"),
-      escapeCSV(
-        r.teammates && Array.isArray(r.teammates) && r.teammates.length
-          ? r.teammates
-              .map((t) => `${t?.name || "Member"} (${t?.email || ""}${t?.phone ? ", " + t.phone : ""})`)
-              .join(" | ")
-          : r.teamMembers || "-"
-      ),
-      escapeCSV(r.lookingForTeammates ? "Yes" : "No"),
-      escapeCSV(r.status),
+      escapeCSV(regDate),
+      escapeCSV(completionStatus),
+      escapeCSV(teamId),
+      escapeCSV(String(totalMembers)),
       escapeCSV(r.submission?.pptUrl ? "Submitted" : "Pending"),
       escapeCSV(r.submission?.projectTitle || r.projectIdea || "-"),
       escapeCSV(r.submission?.track || "-"),
       escapeCSV(r.submission?.pptUrl || "-"),
       escapeCSV(r.submission?.demoUrl || "-"),
       escapeCSV(r.submission?.summary || "-"),
-    ];
+    ]);
+
+    // 2. Teammates Rows (Unstop format: individual row right beneath Team Leader)
+    teammateList.forEach((tm) => {
+      if (!tm || (!tm.name && !tm.email)) return;
+      const tmDate = tm.confirmedAt
+        ? new Date(tm.confirmedAt).toISOString().replace("T", " ").slice(0, 19)
+        : regDate;
+
+      rows.push([
+        escapeCSV(teamId),
+        escapeCSV(teamName),
+        escapeCSV("Team Member"),
+        escapeCSV(tm.name || "Member"),
+        escapeCSV(tm.email || "-"),
+        escapeCSV(tm.phone || "-"),
+        escapeCSV("-"),
+        escapeCSV(r.location || "-"),
+        escapeCSV("College Student"),
+        escapeCSV(tm.department || r.department || "-"),
+        escapeCSV("B.Tech/BE"),
+        escapeCSV(tm.graduationYear || r.graduationYear || "-"),
+        escapeCSV(tm.collegeOrCompany || r.collegeOrCompany),
+        escapeCSV(tmDate),
+        escapeCSV(completionStatus),
+        escapeCSV(teamId),
+        escapeCSV(String(totalMembers)),
+        escapeCSV(r.submission?.pptUrl ? "Submitted" : "Pending"),
+        escapeCSV(r.submission?.projectTitle || r.projectIdea || "-"),
+        escapeCSV(r.submission?.track || "-"),
+        escapeCSV(r.submission?.pptUrl || "-"),
+        escapeCSV(r.submission?.demoUrl || "-"),
+        escapeCSV(r.submission?.summary || "-"),
+      ]);
+    });
   });
 
   const csvContent =

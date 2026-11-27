@@ -11,6 +11,7 @@ import {
   getUserRegistrations,
   joinTeamWithCode,
   removeTeammateFromTeam,
+  exportRegistrationsToCSV,
 } from "@/data/events-store";
 
 describe("Events Store & Vybe Driven Host Hub", () => {
@@ -333,6 +334,73 @@ describe("Events Store & Vybe Driven Host Hub", () => {
         opportunitySlug: "quasar-5-international-hackathon-2027",
       })
     ).rejects.toThrow("already full (maximum 4 members allowed)");
+  });
+
+  it("exports registrations CSV in Unstop format with individual rows for teammates", async () => {
+    let capturedBlob: any = null;
+    const origCreate = window.URL.createObjectURL;
+    const origClick = HTMLAnchorElement.prototype.click;
+    HTMLAnchorElement.prototype.click = () => {};
+
+    window.URL.createObjectURL = (blob: any) => {
+      capturedBlob = blob;
+      return "blob:mock";
+    };
+    window.URL.revokeObjectURL = () => {};
+
+    const quasar = findOpportunity("quasar-5-international-hackathon-2027");
+    expect(quasar).toBeDefined();
+
+    const leaderReg = submitRegistration({
+      opportunitySlug: "quasar-5-international-hackathon-2027",
+      opportunityTitle: "Quasar 5.0",
+      fullName: "Team Captain",
+      email: "captain@example.com",
+      phone: "9876543210",
+      collegeOrCompany: "Tech University",
+      department: "CSE",
+      graduationYear: "2027",
+      teamType: "team",
+      teamName: "Alpha Squad",
+    });
+
+    await joinTeamWithCode(leaderReg.teamCode || leaderReg.id, {
+      fullName: "Teammate One",
+      email: "mate1@example.com",
+      phone: "9876543211",
+      collegeOrCompany: "Tech University",
+      department: "CSE",
+      graduationYear: "2027",
+      opportunitySlug: "quasar-5-international-hackathon-2027",
+    });
+
+    exportRegistrationsToCSV(
+      "quasar-5-international-hackathon-2027",
+      "Quasar 5.0",
+      { email: "pandeysatyam2030@gmail.com" }
+    );
+
+    expect(capturedBlob).not.toBeNull();
+    if (capturedBlob) {
+      const text = await new Promise<string>((resolve) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result));
+        reader.readAsText(capturedBlob);
+      });
+      const lines = text.trim().split(/\r?\n/);
+      // Header + 1 leader row + 1 teammate row = 3 lines
+      expect(lines.length).toBe(3);
+      expect(lines[0]).toContain("Team ID,Team Name,Candidate Role,Candidate Name,Candidate Email");
+      expect(lines[1]).toContain('"Team Lead"');
+      expect(lines[1]).toContain('"Team Captain"');
+      expect(lines[1]).toContain('"captain@example.com"');
+      expect(lines[2]).toContain('"Team Member"');
+      expect(lines[2]).toContain('"Teammate One"');
+      expect(lines[2]).toContain('"mate1@example.com"');
+    }
+
+    window.URL.createObjectURL = origCreate;
+    HTMLAnchorElement.prototype.click = origClick;
   });
 });
 
